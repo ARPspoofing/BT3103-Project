@@ -1,4 +1,5 @@
 <template>
+    <router-link :to="{name:'Signup'}">Signup</router-link>
     Register
     <p><input :class="{shake:emailErrorPresent,'input-error':emailErrorPresent}" type="text" v-model="email" ></p>
     <p><input :class="{shake:passwordErrorPresent,'input-error':passwordErrorPresent}" type="password" v-model="password"></p>
