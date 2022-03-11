@@ -1,5 +1,6 @@
 <template>
   <div class="about">
+    <router-link :to="{name:'Home'}">Home</router-link> |
     About
   </div>
 </template>
