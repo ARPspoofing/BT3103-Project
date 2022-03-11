@@ -1,5 +1,7 @@
 <template>
   <div class="about">
+    <router-link :to="{name:'StudentHomePage'}">Student Home</router-link> |
+    <router-link :to="{name:'BusinessHomePage'}">Business Home</router-link> |
     About
   </div>
 </template>
