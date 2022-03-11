@@ -59,11 +59,26 @@
             <div class="work flex flex-column">
               <div class="input flex flex-column">
                     <label for="resume">Resume</label>
-                    <input required type="file" id="resume" accept=".jpeg,.pdf,.docx" v-on:change="changeResume">
+                    <input required type="file" multiple name="files[]" id="resume" accept=".jpeg,.pdf,.docx" v-on:change="changeResume">
                 </div>
-                <div class="input flex flex-column">
-                    <label for="transcript">Personal Email</label>
-                    <input required type="file" id="transcript" accept=".jpeg,.pdf,.docx" v-on:change="changeTranscript">
+              <div class="input flex flex-column">
+                  <label for="transcript">Personal Email</label>
+                  <input required type="file" multiple name="files[]" id="transcript" accept=".jpeg,.pdf,.docx" v-on:change="changeTranscript">
+              </div>
+              <div @click="addNewFile" class="flex button">
+                <img src="blah" alt="add button">
+                Add New File
+              </div>
+            </div>
+            <!--Save Exit-->
+            <div class="save flex">
+                <div class="left">
+                  <button @click="closeInvoice" class="red">Cancel</button>
+                </div>
+                <div class="right flex">
+                  <button @click="saveDraft" class="dark-purple">Save Profile</button>
+                  <button @click="publishProfile" class="purple">Publish Profile</button>
+                  
                 </div>
             </div>
         </form>
@@ -90,14 +105,27 @@ export default {
 </script>
 
 <style scoped>
-    .invoice-enter-active,
-    .invoice-leave-active {
-    transition: 0.8s ease all;
+    
+    .form-wrap {
+      position:fixed;
+      top:0;
+      left:0;
+      background-color: transparent;
+      width:100%;
+      height:100vh;
+      overflow:scroll;
     }
-    .invoice-enter-from,
-    .invoice-leave-to {
-    transform: translateX(-700px);
+
+    .content {
+      position:relative;
+      padding:50px;
+      width:100%;
+      background-color: green;
+      color:aliceblue;
     }
+
+
+
     button,
     .button {
     cursor: pointer;
