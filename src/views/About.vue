@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    About
   </div>
 </template>
 
@@ -21,8 +21,6 @@ h1 {
     font-family: verdana;
     font-size: 170%;
     text-align: center;
-    /* border:2px solid rgba(0, 0, 0, 0.541); */
-    background-color: rgb(248, 172, 31); 
     padding: 8px
 }
 
