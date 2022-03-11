@@ -15,8 +15,9 @@
         Navigate
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <router-link class="nav-item nav-link active" :to="{name:'Home'}" >Home</router-link>
+        <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" >Home</router-link>
         <router-link class="nav-item nav-link active" :to="{name:'About'}">About</router-link>
+        <router-link class="nav-item nav-link active" :to="{name:'BusinessHomePage'}">Business Home</router-link>
       </div>
     </div>
   </nav>
@@ -30,7 +31,7 @@
 
 <script>
 export default {
-  name: 'Home',
+  name: 'StudentHomePage',
   components: {
   },
 }
