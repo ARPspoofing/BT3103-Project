@@ -11,6 +11,7 @@
     </form>
     <div class="navbar-nav">
       <router-link class="nav-item nav-link active" :to="{name:'Home'}" >Home</router-link>
+      <div class="dropdown-divider"></div>
       <router-link class="nav-item nav-link active" :to="{name:'About'}">About</router-link>
       <a class="nav-item nav-link" href="#">Pricing</a>
       <a class="nav-item nav-link disabled" href="#">Disabled</a>

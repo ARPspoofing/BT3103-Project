@@ -19,6 +19,16 @@ const routes = [
     component: () => import('../views/BusinessHomePage.vue')
   },
   {
+    path: '/business/inprogress',
+    name: 'BusinessInProgress',
+    component: () => import('../views/BusinessInProgress.vue')
+  },
+  {
+    path: '/business/completed',
+    name: 'BusinessCompleted',
+    component: () => import('../views/BusinessCompleted.vue')
+  },
+  {
     path: '/signup',
     name: 'Signup',
     component: () => import('../views/Signup.vue')

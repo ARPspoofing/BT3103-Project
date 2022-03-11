@@ -15,16 +15,18 @@
         Navigate
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" >Home</router-link>
-        <router-link class="nav-item nav-link active" :to="{name:'About'}">About</router-link>
-        <router-link class="nav-item nav-link active" :to="{name:'BusinessHomePage'}">Business Home</router-link>
+        <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" ><b>Home</b></router-link>
+        <div class="dropdown-divider"></div>
+        <router-link class="nav-item nav-link active" :to="{name:'About'}"><b>About</b></router-link>
+        <div class="dropdown-divider"></div>
+        <router-link class="nav-item nav-link active" :to="{name:'BusinessHomePage'}"><b>Business Home</b></router-link>
       </div>
     </div>
   </nav>
   <div class="mainBody">
-    <h1 id="interest">Projects you may like</h1>
+    <h1 id="interest">Projects You May Like</h1>
     <hr/>
-    <h1 id="latest">Latest projects</h1>
+    <h1 id="latest">Latest Projects</h1>
     <hr/>
   </div>
 </template>
@@ -47,14 +49,16 @@ export default {
   } 
 
   input {
-    border-radius: 5px;
+    margin-left:30px;
+    border-radius: 10px;
     border-width: 0px;
     height: 35px;
-    width: 350px;
+    width: 500px;
   }
 
   .btn {
     margin: 10px;
+    border-radius: 10px;
   }
 
   .mainBody {
@@ -69,6 +73,7 @@ export default {
     font-size: 28px;
     margin: 30px 30px 0px 30px;
     color: #606060;
+    font-weight: bold;
   }
 
   hr {
@@ -78,4 +83,7 @@ export default {
     margin: 5px 0px 16px 38px;
   }
 
+  .dropdown-menu nav-item nav-link {
+    background-color: #D8D1D1;
+  }
 </style>
