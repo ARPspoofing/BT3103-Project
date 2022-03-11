@@ -26,8 +26,94 @@
   <div class="mainBody">
     <h1 id="interest">Projects You May Like</h1>
     <hr/>
-    <h1 id="latest">Latest Projects</h1>
+    <div class="card-text">
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+      
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+    </div>
+
+    <div class="card-text">
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+      
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+    </div>
+
+    <br><br><br>
+  
+    <h1 id="latest">Latest projects</h1>
     <hr/>
+
+
   </div>
 </template>
 
@@ -81,6 +167,51 @@ export default {
     border-top: 2px solid #606060;
     width: 90%;
     margin: 5px 0px 16px 38px;
+  }
+  
+  .card-text {
+    width: 100%;
+    margin: 15px;
+  }
+
+  .card-body {
+    background-color: #F2F5F7;
+    border-radius: 8px;
+    width: 30%;
+    float: left;
+    padding: 20px;
+    border: 2px solid #0E8044;
+    margin: 10px;
+    box-shadow: 1px 1px grey;
+  }
+
+  .card-title {
+    display: inline-block;
+  }
+
+  .card-content {
+    text-align: left;
+    margin-bottom: 10px;
+  }
+
+  .clogo {
+    text-align: left;
+  }
+
+  .btn-apply {
+    background-color: #0E8044;
+    color: white;
+    border-radius: 8px;
+    width: 40%
+  }
+
+  .logo {
+    vertical-align: left;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 10px;
+    margin-right: 10px;
   }
 
   .dropdown-menu nav-item nav-link {

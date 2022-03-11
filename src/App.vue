@@ -1,9 +1,10 @@
 <template>
   <div id="nav">
-    <!-- <router-link :to="{name:'Signup'}">Signup</router-link> -->
+    
   </div>
   <router-view/>
 </template>
+
 
 <style>
 #app {
