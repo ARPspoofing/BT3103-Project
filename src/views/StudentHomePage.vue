@@ -108,9 +108,9 @@
       </div>
     </div>
 
-    <br><br><br>
+    <br><br><br><br><br>
   
-    <h1 id="latest">Latest projects</h1>
+    <h1 id="latest">Latest Projects</h1>
     <hr/>
 
 
