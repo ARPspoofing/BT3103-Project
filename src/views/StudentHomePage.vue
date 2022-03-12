@@ -15,17 +15,58 @@
         Navigate
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" ><b>Home</b></router-link>
-        <div class="dropdown-divider"></div>
-        <router-link class="nav-item nav-link active" :to="{name:'About'}"><b>About</b></router-link>
-        <div class="dropdown-divider"></div>
-        <router-link class="nav-item nav-link active" :to="{name:'BusinessHomePage'}"><b>Business Home</b></router-link>
+        <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" >Home</router-link>
+        <router-link class="nav-item nav-link active" :to="{name:'About'}">About</router-link>
+        <router-link class="nav-item nav-link active" :to="{name:'BusinessHomePage'}">Business Home</router-link>
       </div>
     </div>
   </nav>
   <div class="mainBody">
-    <h1 id="interest">Projects You May Like</h1>
+    <h1 id="interest">Projects you may like</h1>
     <hr/>
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="card-text">
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+      
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+    </div>
     <div class="card-text">
       <div class="card-body">
         <div class = "clogo">
@@ -66,54 +107,109 @@
         <button href="#" class="btn-apply">Apply Now</button>
       </div>
     </div>
-
-    <div class="card-text">
-      <div class="card-body">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
         </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <div class="carousel-item">
+          <img src="../assets/Pathfinders.png" class="d-block w-100" alt="pic">
         </div>
-        <button href="#" class="btn-apply">Apply Now</button>
+        <div class="carousel-item">
+          <img src="../assets/Pathfinders.png" class="d-block w-100" alt="pic">
+        </div>
       </div>
-      
-      <div class="card-body">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-        <button href="#" class="btn-apply">Apply Now</button>
-      </div>
-
-      <div class="card-body">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-        <button href="#" class="btn-apply">Apply Now</button>
-      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
 
-    <br><br><br><br><br>
+    <br><br><br>
   
-    <h1 id="latest">Latest Projects</h1>
+    <h1 id="latest">Latest projects</h1>
     <hr/>
+    <div class="card-text">
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+      
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
 
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+    </div>
 
+    <div class="card-text">
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+      
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -135,16 +231,14 @@ export default {
   } 
 
   input {
-    margin-left:30px;
-    border-radius: 10px;
+    border-radius: 5px;
     border-width: 0px;
     height: 35px;
-    width: 500px;
+    width: 350px;
   }
 
   .btn {
     margin: 10px;
-    border-radius: 10px;
   }
 
   .mainBody {
@@ -152,6 +246,8 @@ export default {
     width: 100%;
     height: 100%;
     position: fixed;
+    overflow-y: scroll;
+    padding-bottom: 550px;
   }
 
   #interest, #latest {
@@ -159,7 +255,6 @@ export default {
     font-size: 28px;
     margin: 30px 30px 0px 30px;
     color: #606060;
-    font-weight: bold;
   }
 
   hr {
@@ -214,7 +309,5 @@ export default {
     margin-right: 10px;
   }
 
-  .dropdown-menu nav-item nav-link {
-    background-color: #D8D1D1;
-  }
+
 </style>

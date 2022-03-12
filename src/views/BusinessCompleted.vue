@@ -21,6 +21,9 @@
     </ul>
   </nav>
   <div class="mainBody">
+    <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
+      <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
+    </router-link>
     <h1 id="interest">
       <span>
         <router-link class="optionsOff" :to="{name:'BusinessHomePage'}" ><b>POSTED</b></router-link>
@@ -100,5 +103,24 @@ export default {
     text-align: center;
     color: #606060;
     text-decoration: none;
+  }
+
+  .floating-right-bottom-btn {
+    position : fixed;
+    right : 40px;
+    bottom : 50px;
+    background-color: white;
+    border-width: 0px;
+    height: 70px;
+    width: 70px;
+    z-index: 110;
+    border-radius: 50%;
+    padding: 0px;
+  }
+
+  #plusIcon {
+    height: 70px;
+    width: 70px;
+    color: #004A23;
   }
 </style>
