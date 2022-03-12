@@ -1,14 +1,19 @@
 <template>
   <div>
+    <!--
   <Home/>
+  -->
+  <ProfileForm/>
   </div>
 </template>
 
 <script>
 import Home from './views/Home.vue'
+import ProfileForm from './views/ProfilePage/ProfileForm.vue'
   export default {
     components: {
       Home,
+      ProfileForm,
     }
   }
 </script>

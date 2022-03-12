@@ -21,6 +21,11 @@ const routes = [
     path: '/Profile/SelectInterest',
     name: 'SelectInterest',
     component: () => import('../views/ProfilePage/SelectInterest.vue')
+  },
+  {
+    path: '/Profile/ProfileForm',
+    name: 'ProfileForm',
+    component: () => import('../views/ProfilePage/ProfileForm.vue')
   }
 ]
 
