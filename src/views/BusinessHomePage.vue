@@ -21,9 +21,9 @@
     </ul>
   </nav>
   <div class="mainBody">
-    <button class="floating-right-bottom-btn">
+    <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
-    </button>
+    </router-link>
     <h1 id="interest">
       <span class="options">
         <b>POSTED</b>
