@@ -24,11 +24,89 @@
   <div class="mainBody">
     <h1 id="interest">Projects you may like</h1>
     <hr/>
-    <button class="fabtn btn-primary position-static" type="submit">Button</button>
     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="../assets/Pathfinders.png" class="d-block w-100" alt="pic">
+          <div class="card-text">
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+      
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+    </div>
+    <div class="card-text">
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+      
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+
+      <div class="card-body">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <button href="#" class="btn-apply">Apply Now</button>
+      </div>
+    </div>
         </div>
         <div class="carousel-item">
           <img src="../assets/Pathfinders.png" class="d-block w-100" alt="pic">
@@ -45,87 +123,6 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
-    </div>
-    <div class="card-text">
-      <div class="card-body">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-        <button href="#" class="btn-apply">Apply Now</button>
-      </div>
-      
-      <div class="card-body">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-        <button href="#" class="btn-apply">Apply Now</button>
-      </div>
-
-      <div class="card-body">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-        <button href="#" class="btn-apply">Apply Now</button>
-      </div>
-    </div>
-
-    <div class="card-text">
-      <div class="card-body">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-        <button href="#" class="btn-apply">Apply Now</button>
-      </div>
-      
-      <div class="card-body">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-        <button href="#" class="btn-apply">Apply Now</button>
-      </div>
-
-      <div class="card-body">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-        <button href="#" class="btn-apply">Apply Now</button>
-      </div>
     </div>
 
     <br><br><br>
@@ -312,9 +309,5 @@ export default {
     margin-right: 10px;
   }
 
-  .fabtn {
-    position: fixed;
-    bottom: 550px;
-  }
 
 </style>
