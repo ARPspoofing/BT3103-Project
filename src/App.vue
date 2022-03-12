@@ -1,8 +1,5 @@
 <template>
   <div>
-    <!--
-  <Home/>
-  -->
   <ProfileForm/>
   </div>
 </template>
