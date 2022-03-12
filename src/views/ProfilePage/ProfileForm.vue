@@ -1,4 +1,6 @@
 <template>
+
+    <PopUp @return="close" v-if="popUp"/>
     <div @click="check" ref="formWrap" class="form-wrap flex flex-column">
         <form @submit.prevent="submitForm" class="content">
             <!--Personal Details-->
@@ -68,19 +70,7 @@
                   <input required type="file" multiple name="files[]" id="transcript" accept=".jpeg,.pdf,.docx" v-on:change="changeTranscript">
               </div>
             </div>
-            <!--Test Adding Interest -->
-            <!--
-            <table class="item-list">
-                <tr class="heading flex">
-                    <th class="item-name">Item Name</th>
-                </tr>
-                <tr class="table-items flex" v-for="(item,index) in interests" :key="index">
-                    <td class="item-name"><input type="text" v-model="item.value"/></td>
-                    <img @click="deleteInterest(item.id)" src="../../assets/plus.png" alt="add button">
-                </tr>
-            </table>
-            -->
-            
+
             <div class="interest flex" v-for="(item,index) in interests" :key="index">
                 <div class="input flex flex-column">
                     <label class = "labelTag" for="interest">Interest</label>
@@ -108,20 +98,13 @@
                 <img src="../../assets/add.png" alt="add button">
                 Add New Interest
             </div>
-            
-
-
-
-
-
-
             <!--Save Exit-->
             <div class="save flex">
                 <div class="left">
-                  <button @click="closeInvoice" class="red">Cancel</button>
+                  <button type="button" @click="showPopUp" class="red">Cancel</button>
                 </div>
                 <div class="right flex">
-                  <button @click="saveDraft" class="green">Save</button>                  
+                  <button type="submit" @click="save" class="green">Save</button>                  
                 </div>
             </div>
         </form>
@@ -130,6 +113,9 @@
 
 <script>
 import { v4 as uuidv4 } from 'uuid';
+import PopUp from '../../components/PopUp.vue'
+import {useRouter} from "vue-router"
+const router = useRouter()
 export default {
     //Fetch data from Firebase afterwards
     name: 'ProfileForm',
@@ -145,8 +131,10 @@ export default {
             personalEmail:'',
             contactNo:'',
             interests: [],
+            popUp:false,
         }
     },
+    //Change to remove from firebase later
     methods: {
          add() {
              const maxSize = 3
@@ -158,12 +146,26 @@ export default {
              }
              
          },
-         //Change to remove from firebase later
          deleteInterest(id) {
              if (this.interests.length -1 > 0) {
                  this.interests = this.interests.filter(interest => interest.id != id)
              }
-         }
+         },
+         showPopUp() {
+             this.popUp = true
+         },
+         close(leave) {
+             if (leave) {
+                 //TBC
+                 //this.$router.push('')
+                 this.popUp = false
+             } else {
+                 this.popUp = false
+             }
+         },
+    },
+    components: {
+        PopUp,
     }
 } 
 </script>
