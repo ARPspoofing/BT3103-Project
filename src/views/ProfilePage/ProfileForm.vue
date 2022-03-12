@@ -72,10 +72,32 @@
             </div>
 
             <div class="interest flex" v-for="(item,index) in interests" :key="index">
+                <div @click="toggleMenu" class="input flex flex-column">
+                    <span>Select Interest</span>
+                    <ul v-show="menu" class="menu">
+                        <li>Artificial Intelligence</li>
+                        <li>Scientific Computing Applications</li>
+                        <li>Data Structures and Algorithms</li>
+                        <li>Computer Architecture</li>
+                        <li>Computer Networks</li>
+                        <li>Computer Database</li>
+                        <li>Database Mining</li>
+                        <li>Data Analytics</li>
+                        <li>Computer Graphics and Visualisation</li>
+                        <li>Image and Sound Processing</li>
+                        <li>Distributed Computing</li>
+                        <li>Human-Computer Interaction</li>
+                        <li>Software Engineering</li>
+                        <li>Information and Coding Theory</li>
+                    </ul>
+                </div>
+                <img class="delete" @click="deleteInterest(item.id)" src="../../assets/bin.png" alt="del button">
+            </div>
+
+            <div class="interest flex" v-for="(item,index) in interests" :key="index">
                 <div class="input flex flex-column">
                     <label class = "labelTag" for="interest">Interest</label>
-                    <select class="inputTag" required type="text" id="interest" v-model="item.value" >
-                        
+                    <select class="inputTag" required type="text" id="interest" v-model="item.value" >   
                         <option value="Artificial Intelligence">Artificial Intelligence</option>
                         <option value="Scientific Computing Applications">Scientific Computing Applications</option>
                         <option value="Data Structures and Algorithms">Data Structures and Algorithms</option>
@@ -132,6 +154,7 @@ export default {
             contactNo:'',
             interests: [],
             popUp:false,
+            menu:false,
         }
     },
     //Change to remove from firebase later
@@ -162,6 +185,9 @@ export default {
              } else {
                  this.popUp = false
              }
+         },
+         toggleMenu() {
+             this.menu = !this.menu
          },
     },
     components: {
@@ -204,6 +230,24 @@ export default {
         gap:10px;
         div {
             flex: 1;
+        }
+    }
+
+    .menu {
+        width:300px;
+        position:absolute;
+        top:25px;
+        list-style:none;
+        background-color: black;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1) 0 2px 4px -1px rgba(0,0,0,0.06);
+        li {
+            cursor:pointer;
+            font-size:12px;
+
+            &:hover {
+                color:white;
+                background-color: purple;
+            }
         }
     }
 
