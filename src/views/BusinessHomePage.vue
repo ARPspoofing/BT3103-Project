@@ -116,6 +116,7 @@ export default {
     z-index: 110;
     border-radius: 50%;
     padding: 0px;
+    background: #F8F8F8; 
   }
 
   #plusIcon {
