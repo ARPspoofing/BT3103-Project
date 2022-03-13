@@ -1,5 +1,5 @@
 <template>
-
+    
     <PopUp @return="close" v-if="popUp"/>
     <div @click="check" ref="formWrap" class="form-wrap flex flex-column">
         <form @submit.prevent="submitForm" class="content">
@@ -27,6 +27,7 @@
                     <label for="year">Year of Study</label>
                     <input required type="text" id="year" v-model="year">
                 </div>
+                <!--
                 <div class="interest flex">
                     <div class="input flex flex-column">
                         <label for="interest1">Interest1</label>
@@ -41,6 +42,7 @@
                         <input required type="text" id="interest3" v-model="interest3" >
                     </div>
                 </div>
+                -->
             </div>
             <!--Contact Details-->
             <div class="contact-details flex flex-column">
@@ -70,12 +72,12 @@
                   <input required type="file" multiple name="files[]" id="transcript" accept=".jpeg,.pdf,.docx" v-on:change="changeTranscript">
               </div>
             </div>
-
+            <!--
             <div class="interest flex" v-for="(item,index) in interests" :key="index">
-                <div @click="toggleMenu" class="input flex flex-column">
+                <div @click="toggleMenu" class="dropdown flex">
                     <span>Select Interest</span>
-                    <ul v-show="menu" class="menu">
-                        <li>Artificial Intelligence</li>
+                    <ul v-show="menu" class="dropdown-menu">
+                        <li @click="try">Artificial Intelligence</li>
                         <li>Scientific Computing Applications</li>
                         <li>Data Structures and Algorithms</li>
                         <li>Computer Architecture</li>
@@ -91,11 +93,38 @@
                         <li>Information and Coding Theory</li>
                     </ul>
                 </div>
+                
                 <img class="delete" @click="deleteInterest(item.id)" src="../../assets/bin.png" alt="del button">
             </div>
-
+            -->
+            <div style="margin-top: 5px;width: 100%;">
+                <ul  style="display: grid;grid-template-columns:repeat(5,1fr);">
+                    <li v-for="(item,index) in interests" style="width: 20%;display: inline" >
+                        <div class="interest-flex">
+                            <label class = "labelTag" for="interest">Interest</label>                            <select class="inputTag" required type="text" id="interest" v-model="item.value" >   
+                                <option value="Artificial Intelligence">Artificial Intelligence</option>
+                                <option value="Scientific Computing">Scientific Computing</option>
+                                <option value="Data Structures">Data Structures</option>
+                                <option value="Computer Architecture">Computer Architecture</option>
+                                <option value="Computer Networks">Computer Networks</option>
+                                <option value="Computer Database">Computer Database</option>
+                                <option value="Database Mining">Database Mining</option>
+                                <option value="Data Analytics">Data Analytics</option>
+                                <option value="Computer Graphics">Computer Graphics</option>
+                                <option value="Image/Sound Processing">Image/Sound Processing</option>
+                                <option value="Distributed Computing">Distributed Computing</option>
+                                <option value="Human-Computer Interaction">Human-Computer Interaction</option>
+                                <option value="Software Engineering">Software Engineering</option>
+                                <option value="Information Theory">Information Theory</option>                        
+                            </select>
+                        </div>
+                        <p class="delete" @click="deleteInterest(item.id)">x</p>
+                    </li>
+                </ul>                                                                  
+            </div>
+            <!--
             <div class="interest flex" v-for="(item,index) in interests" :key="index">
-                <div class="input flex flex-column">
+                <div class="interest-flex">
                     <label class = "labelTag" for="interest">Interest</label>
                     <select class="inputTag" required type="text" id="interest" v-model="item.value" >   
                         <option value="Artificial Intelligence">Artificial Intelligence</option>
@@ -116,9 +145,9 @@
                 </div>
                 <img class="delete" @click="deleteInterest(item.id)" src="../../assets/bin.png" alt="del button">
             </div>
-            <div @click="add" class="flex button">
-                <img src="../../assets/add.png" alt="add button">
-                Add New Interest
+            -->
+            <div>
+                <img class="addBtn" @click="add" src="../../assets/add.png" alt="add button">
             </div>
             <!--Save Exit-->
             <div class="save flex">
@@ -141,6 +170,12 @@ const router = useRouter()
 export default {
     //Fetch data from Firebase afterwards
     name: 'ProfileForm',
+    created() {
+        this.interests.push({
+            id:uuidv4(),
+            value: "",
+        })
+    },
     data() {
         return {
             name:'',
@@ -168,6 +203,9 @@ export default {
                 })
              }
              
+         },
+         try() {
+             console.log("testc")
          },
          deleteInterest(id) {
              if (this.interests.length -1 > 0) {
@@ -214,6 +252,11 @@ export default {
         margin-left:10px;
     }
 
+    .interest-flex {
+        width:200px;
+        margin-left:10px;
+    }
+
     input,
     select {
         width:100%;
@@ -230,24 +273,6 @@ export default {
         gap:10px;
         div {
             flex: 1;
-        }
-    }
-
-    .menu {
-        width:300px;
-        position:absolute;
-        top:25px;
-        list-style:none;
-        background-color: black;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1) 0 2px 4px -1px rgba(0,0,0,0.06);
-        li {
-            cursor:pointer;
-            font-size:12px;
-
-            &:hover {
-                color:white;
-                background-color: purple;
-            }
         }
     }
 
@@ -268,12 +293,27 @@ export default {
         
     }
 
+    .addBtn {
+        margin-left:70%;
+        margin-top:-50px;
+    }
+    
+    select{
+        padding-left:0.55rem;
+    }
+
+    .delete {
+        margin-top:-42px;
+        margin-right:-15px;
+        color:red;
+    }
+
     button,
     .button {
     cursor: pointer;
     padding: 16px 24px;
     border-radius: 30px;
-    border: none;
+    borer: none;
     font-size: 12px;
     margin-right: 8px;
     color: #fff;
@@ -327,4 +367,9 @@ export default {
     color: initial;
     }
 
+    li {
+        cursor: pointer;
+    }
+
+  
 </style>

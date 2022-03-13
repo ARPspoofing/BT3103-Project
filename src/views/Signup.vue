@@ -31,7 +31,7 @@ export default {
         register() {                
                 createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                 .then((data) => {
-                    this.$router.push('/home')
+                    this.$router.push('/ProfileForm')
                     setDoc(doc(db,"students",this.email),{
                             email:this.email,
                 })
