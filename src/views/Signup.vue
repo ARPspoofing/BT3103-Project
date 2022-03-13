@@ -1,4 +1,5 @@
 <template>
+        <Loading v-if="loading"/>
     <div class="form-wrap">
         <form class="signup">
             <div class="inputs">
@@ -30,7 +31,7 @@
                     <img class="icon" src="../assets/lock.png">
                 </div>
                 <div class="input">
-                    <button @click="register"><b>Log In</b></button>
+                    <button @click="register"><b>Sign Up</b></button>
                 </div>
             </div>
         </form>
@@ -45,6 +46,7 @@ import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
 import {ref} from "vue"
 import {getAuth,createUserWithEmailAndPassword} from "firebase/auth"
 import {useRouter} from "vue-router"
+import Loading from '../components/Loading.vue'
 
 //Style 
 
@@ -63,16 +65,22 @@ export default {
             passwordErrorPresent:false,
             confirmPasswordErrorPresent:false,
             errorMessage:'',
+            loading: null,
         }
     },
+    components: {
+        Loading,
+    },
     methods: {
-        register() {                
+        register() { 
+                this.loading = true               
                 createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                 .then((data) => {
                     this.$router.push('/ProfileForm')
                     setDoc(doc(db,"students",this.email),{
                             email:this.email,
                 })
+                    this.loading = false
                 }).catch((err) => {
                     this.error = err.code
                     if (this.error === "auth/invalid-email") {
@@ -103,7 +111,6 @@ export default {
 </script>
 
 <style scoped>
-
     .form-wrap {
         overflow:hidden;
         display:flex;
@@ -179,7 +186,6 @@ export default {
         color: white;
     }
 
-
     .shake {
     animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     transform: translate3d(0, 0, 0);
@@ -209,6 +215,6 @@ export default {
     }
 
     .input-error {
-        border: 2px solid red;
+        order: 2px solid red;
     }
 </style>

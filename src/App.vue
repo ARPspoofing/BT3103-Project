@@ -1,5 +1,6 @@
 <template>
   <div>
+  <ProfileForm v-if="!navigation"/>
   <Home v-if="navigation"/>
   </div>
 </template>
