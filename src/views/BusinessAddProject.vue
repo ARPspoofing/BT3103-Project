@@ -92,14 +92,52 @@
             </div>
         </div>
         
-        <button id="saveButton" type="button" v-on:click=""  >Save</button>
+        <button id="saveButton" type="button" v-on:click="saveProject()">Save</button>
     </form>
   </div>
 </template>
 
 <script>
-export default {
+import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore"
+import { doc, setDoc } from "firebase/firestore"
+const db = getFirestore(firebaseApp);
 
+export default {
+  methods: {
+    async saveProject() {
+      var a = document.getElementById("projectTitle").value;
+      var b = document.getElementById("position").value;
+      var c = document.getElementById("noOfVacancies").value;
+      var d = document.getElementById("projectPeriodStart").value;
+      var e = document.getElementById("projectPeriodEnd").value;
+      var f = document.getElementById("projectAllowance").value;
+      var g = document.getElementById("tagSelect").value;
+      var h = document.getElementById("projectDescription").value;
+
+      alert("Saving your data for Project: " + a);
+
+      try {
+        const docRef = await setDoc(doc(db, "Project", a), {
+          Project_Title: a,
+          Position: b,
+          Num_Of_Vacancies: c,
+          Project_Start: d,
+          Project_End: e,
+          Allowance: f,
+          Tags: g,
+          Description: h
+        })
+
+        console.log(docRef)
+        document.getElementById("projectForm").reset();
+        this.$emit("added")
+      }
+      catch(error) {
+        console.error("Error adding document: ", error);
+      }
+    }
+  }
 }
 </script>
 
