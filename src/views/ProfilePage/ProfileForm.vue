@@ -7,7 +7,7 @@
             </div>
             <div class="profile-icon">
                 <input style="display:none" ref="profileUpload" type="file" @change="onFileSelected">
-                <h4 class="uploadIcon" @click="$refs.profileUpload.click()">Pick Profile</h4>
+                <h4 @click="$refs.profileUpload.click()">Pick Profile</h4>
             </div>
             <!--Personal Details-->
             <div class="personal-details flex flex-column">
@@ -101,7 +101,7 @@
                     <input required type="file" multiple name="files[]" id="resume" accept=".jpeg,.pdf,.docx" v-on:change="changeResume">
                 </div>
               <div class="input flex flex-column">
-                  <label for="transcript">Personal Email</label>
+                  <label for="transcript">Transcript</label>
                   <input required type="file" multiple name="files[]" id="transcript" accept=".jpeg,.pdf,.docx" v-on:change="changeTranscript">
               </div>
             </div>
@@ -331,8 +331,8 @@ export default {
     }
 
     img {
-        width:50px;
-        height:50px;
+        width:40px;
+        height:40px;
         left:10px;
         margin-top:-10px;  
     }
@@ -356,6 +356,9 @@ export default {
     .profile-pic {
         border-radius: 50%;
         margin-top:10px;
+        width:10%;
+        height:10%;
+
     }
 
     button,
@@ -429,9 +432,11 @@ export default {
         margin-top:-5px;
     }
 
-    .profile-icon {
+    .profile-icon h4 {
         display: grid;
         place-items: center;
-    }
-  
+        cursor:pointer;
+        color:blue;
+    }    
+
 </style>

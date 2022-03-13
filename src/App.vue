@@ -1,6 +1,6 @@
 <template>
   <div>
-  <ProfileForm/>
+  <Home v-if="navigation"/>
   </div>
 </template>
 
@@ -11,7 +11,30 @@ import ProfileForm from './views/ProfilePage/ProfileForm.vue'
     components: {
       Home,
       ProfileForm,
-    }
+    },
+    data() {
+      return {
+        navigation: true,
+      }
+    },
+    created() {
+      this.checkRoute()
+      console.log(this.$route.name)
+    },
+    watch: {
+      $route() {
+        this.checkRoute()
+      },
+    },
+    methods: {
+      checkRoute() {
+        if (this.$route.name === "Login" || this.$route.name === "Signup" || this.$route.name === "ForgetPassword") {
+          this.navigation = true
+          return 
+        } 
+        this.navigation = false
+      },
+    },
   }
 </script>
 

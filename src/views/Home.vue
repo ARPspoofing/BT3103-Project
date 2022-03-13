@@ -3,7 +3,6 @@
       <div id="nav">
         <router-link :to="{name:'Login'}">Login</router-link>
         <router-link :to="{name:'Signup'}">Signup</router-link>
-        <h1>A platform to bridge business and students</h1>
       </div>
       <router-view></router-view>
     
