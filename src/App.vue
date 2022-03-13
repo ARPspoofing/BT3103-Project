@@ -1,9 +1,9 @@
 <template>
   <div>
-    <!--
+    
   <Home/>
-  -->
-  <ProfileForm/>
+  
+  <!--<ProfileForm/> -->
   </div>
 </template>
 
