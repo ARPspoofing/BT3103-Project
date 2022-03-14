@@ -66,30 +66,28 @@
             <textarea id="projectDescription" name="projectDescription" rows="4" cols="60" placeholder="Project Description"></textarea> <br><br>
 
             <label for="projectDeliverables">Deliverables</label>
-            <button id="addDeliverableButton" @click="add"> <!--data-bs-toggle="modal" data-bs-target="#exampleModal">-->
+            <button id="addDeliverableButton" @click="addTask">
               <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
               <p> Add deliverables</p>
             </button>
-            <!----->
             <br>
-            <br>
-            <button @click="addTask">Add Deliverables</button>
             <br>
             <div class="previous"
             v-for="(task, counter) in tasks"
             v-bind:key="counter">
-              <span @click="deleteTask(counter)">x</span>
+              <button id="deleteDeliverable" @click="deleteTask(counter)"> 
+                <i class="fa fa-times" id="crossIcon"></i>
+              </button> <br>
               <label for="duration">Task Name*</label>
-              <input type="text" v-model.lazy="task.taskName" required>
+              <input type="text" v-model.lazy="task.taskName" required> <br><br>
               <label for="description">Description</label>
-              <input type="text" v-model.lazy="task.taskDescription" required> 
+              <input type="text" v-model.lazy="task.taskDescription" required> <br><br>
               <label for="duedate">Due Date*</label>
-              <input type="date" v-model.lazy="task.taskDueDate" required> 
+              <input type="date" v-model.lazy="task.taskDueDate" required>
             </div>
-            <br>
              <!----->
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" 
+            <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" 
               data-bs-backdrop="false" style="background: rgba(0, 0, 0, 0.5);">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -110,8 +108,8 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="addDeliverableBtn">Add Deliverable</button>
                 </div>
               </div>
-             </div>
-             </div>
+             </div> -->
+            </div>
         <button id="saveButton" type="button" v-on:click="saveProject()">Save</button>
     </form>
   </div>
@@ -209,21 +207,6 @@ export default {
 </script>
 
 <style scoped>
-  /*
-  .navbar-custom {
-    background-color: #004A23;
-  }
-
-  #title {
-      color: white;
-      margin-left:30px;
-      margin-right: 30px;
-      margin-bottom: 0px;
-  }
-
-  .btn {
-      margin: 10px;
-  }*/
 
   .mainBody {
     background-color: #F5F5F5;
@@ -289,30 +272,6 @@ export default {
     margin-bottom: 20px;
   }
 
-  .modal-body {
-    max-width: max-content; 
-    padding-left: 40px;
-  }
-
-  .modal-content {
-    background-color: #BBDFCC;
-  }
-
-  .modal-body #deliverableInput label {
-    color: #797979;
-  }
-
-  .modal-body #deliverableInput input {
-    background-color: white;
-    width:317px; 
-    margin-left: 15px;
-  }
-
-  .modal-body #deliverableInput textarea {
-    background-color: white;
-    margin-left: 15px;
-  }
-
   #saveButton {
     background-color: #004A23;
     border-width: 0px;
@@ -320,7 +279,30 @@ export default {
     color: white;
     width: 200px;
     height: 35px;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-left: 490px;
+  }
+
+  #projectForm .previous {
+    background-color: #BBDFCC;
+    width: max-content;
+    text-align: right;
+    margin: 0px 0px 20px auto;
+    padding: 10px 10px 15px 10px;
+  }
+
+  #projectForm .previous input {
+    width: 364px;
+    background-color: white;
+  }
+
+  #deleteDeliverable {
+    background-color: transparent;
+    border-width: 0px;
+    padding-bottom: 5px;
+  }
+
+  #crossIcon:hover {
+    color: #004A23;
   }
 </style>
