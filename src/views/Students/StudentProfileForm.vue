@@ -147,7 +147,7 @@
             </div>
             -->
             <div>
-                <img class="addBtn" @click="add" src="../../../assets/add.png" alt="add button">
+                <img class="addBtn" @click="add" src="../../assets/add.png" alt="add button">
             </div>
             <!--Save Exit-->
             <div class="save flex">
@@ -164,7 +164,7 @@
 
 <script>
 import { v4 as uuidv4 } from 'uuid';
-import PopUp from '../../../components/PopUp.vue'
+import PopUp from '../../components/PopUp.vue'
 import {useRouter} from "vue-router"
 const router = useRouter()
 export default {

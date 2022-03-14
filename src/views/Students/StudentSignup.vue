@@ -31,7 +31,7 @@ export default {
         register() {                
                 createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                 .then((data) => {
-                    this.$router.push('/ProfileForm')
+                    this.$router.push({name:"StudentProfileForm"})
                     setDoc(doc(db,"students",this.email),{
                             email:this.email,
                             //when a user logs in when this attribute is false, he/she will be directed to the 

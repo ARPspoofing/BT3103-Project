@@ -1,11 +1,10 @@
 <template>
   <div class="home">
-      <div id="nav">
-        <router-link to='/'>Home</router-link> |
+      <div id="nav" v-if="navigation">
        <router-link :to="{name:'StudentHome'}">Student</router-link> |
         <router-link :to="{name:'BusinessHome'}">Business</router-link> |        
       </div>
-      <router-view v-if="pageRoute"/>
+      <router-view/>
   </div>
       
 </template>
@@ -13,17 +12,32 @@
 <script>
 import Home from './views/Home.vue'
 //import ProfileForm from './views/Students/StudentProfilePage/StudentProfileForm.vue'
-  export default {
+export default {
     components: {
       Home,
     },
-
-    
-
     data() {
       return {
-        pageRoute: true,
+        navigation: true,
       }
+    },
+    created() {
+      this.checkRoute()
+      console.log(this.$route.name)
+    },
+    watch: {
+      $route() {
+        this.checkRoute()
+      },
+    },
+    methods: {
+      checkRoute() {
+        if (this.$route.name == 'Home') {
+          this.navigation = true
+          return 
+        } 
+        this.navigation = false
+      },
     },
   }
 </script>
