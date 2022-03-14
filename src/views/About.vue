@@ -1,4 +1,5 @@
 <template>
+<!--
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
   <img src="../assets/Pathfinders.png" class="d-inline-block align-top" width=200 alt="logo">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,12 +23,17 @@
     <router-link :to="{name:'StudentHomePage'}">Student Home</router-link> |
     <router-link :to="{name:'BusinessHomePage'}">Business Home</router-link> |
     About
-  </div>
+  </div>-->
+  <NavBarStudent/>
 </template>
 
 <script>
+import NavBarStudent from '../components/NavBarStudent.vue'
 export default {
-    name:"About" 
+  name: 'About',
+  components: {
+    NavBarStudent
+  },
 }
 </script>
 

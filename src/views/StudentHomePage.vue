@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-custom">
+  <!--<nav class="navbar navbar-expand-lg navbar-custom">
     <img src="../assets/Pathfinders.png" class="d-inline-block align-top" width=250 alt="logo">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -20,7 +20,8 @@
         <router-link class="nav-item nav-link active" :to="{name:'BusinessHomePage'}">Business Home</router-link>
       </div>
     </div>
-  </nav>
+  </nav>-->
+  <NavBarStudent/>
   <div class="mainBody">
     <h1 id="interest">Projects you may like</h1>
     <hr/>
@@ -214,9 +215,11 @@
 </template>
 
 <script>
+import NavBarStudent from '../components/NavBarStudent.vue'
 export default {
   name: 'StudentHomePage',
   components: {
+    NavBarStudent
   },
 }
 </script>
