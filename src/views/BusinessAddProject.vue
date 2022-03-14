@@ -70,6 +70,7 @@
               <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
               <p> Add deliverables</p>
             </button>
+
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" 
               data-bs-backdrop="false" style="background: rgba(0, 0, 0, 0.5);">
               <div class="modal-dialog">
@@ -91,9 +92,10 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="addDeliverableBtn">Add Deliverable</button>
                 </div>
               </div>
-            </div>
-        </div>
-        
+             </div>
+            
+             </div>
+              
         <button id="saveButton" type="button" v-on:click="saveProject()">Save</button>
     </form>
   </div>
@@ -153,7 +155,9 @@ export default {
 </script>
 
 <style scoped>
-    .navbar-custom {
+
+  /*
+  .navbar-custom {
     background-color: #004A23;
   }
 
@@ -166,7 +170,7 @@ export default {
 
   .btn {
       margin: 10px;
-  }
+  }*/
 
   .mainBody {
     background-color: #F5F5F5;

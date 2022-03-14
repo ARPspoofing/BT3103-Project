@@ -230,6 +230,7 @@ export default {
 </script>
 
 <style scoped>
+/*
   .navbar-custom {
     background-color: #004A23;
   }
@@ -247,7 +248,7 @@ export default {
 
   .btn {
     margin: 10px;
-  }
+  }*/
 
   .mainBody {
     background-color: #F5F5F5;
