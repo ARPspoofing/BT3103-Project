@@ -1,16 +1,27 @@
 <template>
-  <div>
-  <ProfileForm/>
+  <div class="home">
+      <div id="nav">
+        <router-link to='/'>Home</router-link> |
+       <router-link to='/student'>Students</router-link> |
+        <router-link to='/business'>Businesses</router-link> | 
+        <router-link to='/about'>About</router-link>
+
+        
+
+        
+      </div>
+      <router-view/>
   </div>
+      
 </template>
 
 <script>
 import Home from './views/Home.vue'
-import ProfileForm from './views/ProfilePage/ProfileForm.vue'
+//import ProfileForm from './views/Students/StudentProfilePage/StudentProfileForm.vue'
   export default {
     components: {
       Home,
-      ProfileForm,
+      
     }
   }
 </script>

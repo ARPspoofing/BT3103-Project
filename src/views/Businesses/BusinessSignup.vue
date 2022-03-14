@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import firebaseApp from '../firebase.js';
+import firebaseApp from '../../firebase.js';
 import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
 import {ref} from "vue"
@@ -32,8 +32,12 @@ export default {
                 createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                 .then((data) => {
                     this.$router.push('/ProfileForm')
-                    setDoc(doc(db,"students",this.email),{
+                    setDoc(doc(db,"businesses",this.email),{
                             email:this.email,
+                            //when a user logs in when this attribute is false, he/she will be directed to the 
+                            //profile page otherwise will be directed to the landing page
+                            profilePageCreated:false,
+
                 })
                 }).catch((err) => {
                     this.error = err.code

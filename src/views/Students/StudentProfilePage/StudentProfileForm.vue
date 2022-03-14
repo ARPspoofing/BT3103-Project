@@ -68,7 +68,7 @@
                     <input required type="file" multiple name="files[]" id="resume" accept=".jpeg,.pdf,.docx" v-on:change="changeResume">
                 </div>
               <div class="input flex flex-column">
-                  <label for="transcript">Personal Email</label>
+                  <label for="transcript">Transcript</label>
                   <input required type="file" multiple name="files[]" id="transcript" accept=".jpeg,.pdf,.docx" v-on:change="changeTranscript">
               </div>
             </div>
@@ -147,7 +147,7 @@
             </div>
             -->
             <div>
-                <img class="addBtn" @click="add" src="../../assets/add.png" alt="add button">
+                <img class="addBtn" @click="add" src="../../../assets/add.png" alt="add button">
             </div>
             <!--Save Exit-->
             <div class="save flex">
@@ -164,7 +164,7 @@
 
 <script>
 import { v4 as uuidv4 } from 'uuid';
-import PopUp from '../../components/PopUp.vue'
+import PopUp from '../../../components/PopUp.vue'
 import {useRouter} from "vue-router"
 const router = useRouter()
 export default {
@@ -216,11 +216,13 @@ export default {
              this.popUp = true
          },
          close(leave) {
-             if (leave) {
+             if (leave === false) {
                  //TBC
-                 //this.$router.push('')
+              
                  this.popUp = false
+                 this.$router.push({name:'StudentLogin'})
              } else {
+                 
                  this.popUp = false
              }
          },

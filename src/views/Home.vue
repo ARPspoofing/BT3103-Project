@@ -1,13 +1,7 @@
 <template>
-    <div class="home">
-      <div id="nav">
-        <router-link :to="{name:'Login'}">Login</router-link>
-        <router-link :to="{name:'Signup'}">Signup</router-link>
-        <h1>A platform to bridge business and students</h1>
-      </div>
-      <router-view></router-view>
     
-    </div>
+    <h1>Welcome Everyone!</h1>
+    
 </template>
 
 <script>
@@ -15,8 +9,7 @@ import {useRouter} from "vue-router"
 const router = useRouter()
 export default {
   name: 'Home',
-  components: {
-  },
+  
 }
 </script>
 

@@ -1,27 +1,70 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import Home from "@/views/Home.vue";
-import About from "@/views/About.vue";
+import Home from "../views/Home.vue";
+import About from "../views/About.vue";
 
 const routes = [
   {
+    path: "/",
+    name: "Home",
+    component: Home,
+  },
+
+  {
     path: "/about",
     name: "About",
-    component: () => import("../views/About.vue"),
+    component: About,
+  },
+
+  //Student routes
+
+  {
+    path: "/student",
+    name: "StudentHome",
+    component: () => import("../views/Students/StudentHome.vue"),
+  },
+
+  {
+    path: "/student/signup",
+    name: "StudentSignup",
+    component: () => import("../views/Students/StudentSignup.vue"),
+  },
+
+  {
+    path: "/student/login",
+    name: "StudentLogin",
+    component: () => import("../views/Students/StudentLogin.vue"),
   },
   {
-    path: "/signup",
-    name: "Signup",
-    component: () => import("../views/Signup.vue"),
+    path: "/student/profileForm",
+    name: "StudentProfileForm",
+    component: () =>
+      import("../views/Students/StudentProfilePage/StudentProfileForm.vue"),
   },
+
+  //Business routes
+
   {
-    path: "/login",
-    name: "Login",
-    component: () => import("../views/Login.vue"),
+    path: "/business",
+    name: "BusinessHome",
+    component: () => import("../views/Businesses/BusinessHome.vue"),
   },
+
   {
-    path: "/Profile/ProfileForm",
-    name: "ProfileForm",
-    component: () => import("../views/ProfilePage/ProfileForm.vue"),
+    path: "/business/signup",
+    name: "BusinessSignup",
+    component: () => import("../views/Businesses/BusinessSignup.vue"),
+  },
+
+  {
+    path: "/business/login",
+    name: "BusinessLogin",
+    component: () => import("../views/Businesses/BusinessLogin.vue"),
+  },
+
+  {
+    path: "/business/profilepage",
+    name: "BusinessProfilePage",
+    component: () => import("../views/Businesses/BusinessProfileForm.vue"),
   },
 ];
 
