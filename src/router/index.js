@@ -62,8 +62,8 @@ const routes = [
   },
 
   {
-    path: "/business/profilepage",
-    name: "BusinessProfilePage",
+    path: "/business/profileForm",
+    name: "BusinessProfileForm",
     component: () => import("../views/Businesses/BusinessProfileForm.vue"),
   },
 ];

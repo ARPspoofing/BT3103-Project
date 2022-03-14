@@ -1,8 +1,14 @@
-<template>
-    
+<template>    
     <PopUp @return="close" v-if="popUp"/>
     <div @click="check" ref="formWrap" class="form-wrap flex flex-column">
         <form @submit.prevent="submitForm" class="content">
+            <div class="profile-pic-outer">
+                <img class="profile-pic" :src="finalProfile"/>
+            </div>
+            <div class="profile-icon">
+                <input style="display:none" ref="profileUpload" type="file" @change="onFileSelected">
+                <h4 @click="$refs.profileUpload.click()">Pick Profile</h4>
+            </div>
             <!--Personal Details-->
             <div class="personal-details flex flex-column">
                 <h4>Personal Details</h4>
@@ -24,9 +30,40 @@
                       </select>   
                 </div>
                 <div class="input flex flex-column">
-                    <label for="year">Year of Study</label>
+                    <label for="year">Year</label>
                     <input required type="text" id="year" v-model="year">
                 </div>
+                <div class="flex flex-row">
+                    <div style="margin-top: 5px;width: 100%;">
+                        <ul  style="display: grid;grid-template-columns:repeat(5,1fr);">
+                            <li v-for="(item,index) in interests" style="width: 20%;display: inline" >
+                                <div class="interest-flex">
+                                    <label class = "labelTag" for="interest">Interest</label>                            
+                                    <select class="inputTag" required type="text" id="interest" v-model="item.value" >   
+                                        <option value="Artificial Intelligence">Artificial Intelligence</option>
+                                        <option value="Scientific Computing">Scientific Computing</option>
+                                        <option value="Data Structures">Data Structures</option>
+                                        <option value="Computer Architecture">Computer Architecture</option>
+                                        <option value="Computer Networks">Computer Networks</option>
+                                        <option value="Computer Database">Computer Database</option>
+                                        <option value="Database Mining">Database Mining</option>
+                                        <option value="Data Analytics">Data Analytics</option>
+                                        <option value="Computer Graphics">Computer Graphics</option>
+                                        <option value="Image/Sound Processing">Image/Sound Processing</option>
+                                        <option value="Distributed Computing">Distributed Computing</option>
+                                        <option value="Human-Computer Interaction">Human-Computer Interaction</option>
+                                        <option value="Software Engineering">Software Engineering</option>
+                                        <option value="Information Theory">Information Theory</option>                        
+                                    </select>
+                                </div>
+                                <p class="delete" @click="deleteInterest(item.id)">x</p>
+                            </li>
+                        </ul>     
+                    </div> 
+                    <div class="addBtn">
+                    <img @click="add" src="../../assets/add.png" alt="add button">                                                                   
+                    </div>
+                </div> 
                 <!--
                 <div class="interest flex">
                     <div class="input flex flex-column">
@@ -65,11 +102,11 @@
                 <h4>File Details</h4>
               <div class="input flex flex-column">
                     <label for="resume">Resume</label>
-                    <input required type="file" multiple name="files[]" id="resume" accept=".jpeg,.pdf,.docx" v-on:change="changeResume">
+                    <input type="file" multiple name="files[]" id="resume" accept=".jpeg,.pdf,.docx" v-on:change="changeResume">
                 </div>
               <div class="input flex flex-column">
                   <label for="transcript">Transcript</label>
-                  <input required type="file" multiple name="files[]" id="transcript" accept=".jpeg,.pdf,.docx" v-on:change="changeTranscript">
+                  <input type="file" multiple name="files[]" id="transcript" accept=".jpeg,.pdf,.docx" v-on:change="changeTranscript">
               </div>
             </div>
             <!--
@@ -97,31 +134,7 @@
                 <img class="delete" @click="deleteInterest(item.id)" src="../../assets/bin.png" alt="del button">
             </div>
             -->
-            <div style="margin-top: 5px;width: 100%;">
-                <ul  style="display: grid;grid-template-columns:repeat(5,1fr);">
-                    <li v-for="(item,index) in interests" style="width: 20%;display: inline" >
-                        <div class="interest-flex">
-                            <label class = "labelTag" for="interest">Interest</label>                            <select class="inputTag" required type="text" id="interest" v-model="item.value" >   
-                                <option value="Artificial Intelligence">Artificial Intelligence</option>
-                                <option value="Scientific Computing">Scientific Computing</option>
-                                <option value="Data Structures">Data Structures</option>
-                                <option value="Computer Architecture">Computer Architecture</option>
-                                <option value="Computer Networks">Computer Networks</option>
-                                <option value="Computer Database">Computer Database</option>
-                                <option value="Database Mining">Database Mining</option>
-                                <option value="Data Analytics">Data Analytics</option>
-                                <option value="Computer Graphics">Computer Graphics</option>
-                                <option value="Image/Sound Processing">Image/Sound Processing</option>
-                                <option value="Distributed Computing">Distributed Computing</option>
-                                <option value="Human-Computer Interaction">Human-Computer Interaction</option>
-                                <option value="Software Engineering">Software Engineering</option>
-                                <option value="Information Theory">Information Theory</option>                        
-                            </select>
-                        </div>
-                        <p class="delete" @click="deleteInterest(item.id)">x</p>
-                    </li>
-                </ul>                                                                  
-            </div>
+            
             <!--
             <div class="interest flex" v-for="(item,index) in interests" :key="index">
                 <div class="interest-flex">
@@ -146,9 +159,16 @@
                 <img class="delete" @click="deleteInterest(item.id)" src="../../assets/bin.png" alt="del button">
             </div>
             -->
-            <div>
-                <img class="addBtn" @click="add" src="../../assets/add.png" alt="add button">
+
+            <!--Description-->
+            <div class="description flex flex-column">
+                <h4>Please limit your description to 500 characters</h4>
+              <div class="input flex flex-column">
+                    <label for="description">Description</label>
+                    <textarea required type="text" id="schoolEmail" rows="4" cols="50" maxlength="500" v-model="description"></textarea> 
+                </div>
             </div>
+
             <!--Save Exit-->
             <div class="save flex">
                 <div class="left">
@@ -163,9 +183,23 @@
 </template>
 
 <script>
+import firebaseApp from '../../firebase.js';
+import {getFirestore} from 'firebase/firestore';
+import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
+
+import {getAuth,createUserWithEmailAndPassword} from "firebase/auth"
+
+const db = getFirestore(firebaseApp)
+
 import { v4 as uuidv4 } from 'uuid';
 import PopUp from '../../components/PopUp.vue'
 import {useRouter} from "vue-router"
+//import axios from 'axios'
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+
+
+const user = getAuth().currentUser
+console.log(user)
 const router = useRouter()
 export default {
     //Fetch data from Firebase afterwards
@@ -190,6 +224,10 @@ export default {
             interests: [],
             popUp:false,
             menu:false,
+            //change to default later
+            profileImage: null,
+            //change to firebase later
+            finalProfile: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",
         }
     },
     //Change to remove from firebase later
@@ -204,8 +242,31 @@ export default {
              }
              
          },
-         try() {
-             console.log("testc")
+         onUpload() {
+             /*
+             const data = new FormData()
+             data.append('image',this.profileImage,this.profileImage.name)
+             axios.post(,data, {
+                 onUploadProgress: uploadEvent => {
+                     console.log("progress" + Math.round(uploadEvent.loaded/uploadEvent.total * 100) + '%')
+                 }
+             }).then((res) => {
+                 console.log("success")
+             })
+             */
+
+         },
+         onFileSelected(event) {
+            this.profileImage = event.target.files[0]
+            const storage = getStorage();
+            const profileRef = ref(storage, this.profileImage.name);
+            const uploadTask = uploadBytesResumable(profileRef, this.profileImage)
+            uploadTask.on('state_changed', (snapshot) => {}, (error) => {}, () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log('File available at', this.finalProfile = downloadURL);
+                });
+            }
+            );
          },
          deleteInterest(id) {
              if (this.interests.length -1 > 0) {
@@ -229,6 +290,18 @@ export default {
          toggleMenu() {
              this.menu = !this.menu
          },
+         save() {
+            setDoc(doc(db,"students",this.schoolEmail),{
+                email:this.schoolEmail,
+                name:this.name,
+                course:this.course,
+                year:this.year,
+                interests:this.interests,
+                personalEmail:this.personalEmail,
+                contactNo:this.contactNo,
+                finalProfile:this.finalProfile,
+            })
+         },
     },
     components: {
         PopUp,
@@ -241,7 +314,7 @@ export default {
     .form-wrap {
       position:fixed;
       top:0;
-      left:5%;
+      left:0%;
       background-color: transparent;
       width:100%;
       height:100vh;
@@ -256,19 +329,30 @@ export default {
 
     .interest-flex {
         width:200px;
-        margin-left:10px;
+        
     }
 
     input,
-    select {
+    select,
+    textarea {
         width:100%;
         background-color: #33d69f;
         border: none;
+        outline:none;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    textarea {
+        margin-bottom: 8px;
     }
 
     .labelTag,
     .inputTag {
         border-radius:20px;
+    }
+
+    .addBtn {
+        margin-top: 6vh;
     }
 
     .interest {
@@ -281,23 +365,19 @@ export default {
     .content {
       position:relative;
       padding:50px;
-      width:80%;
+      width:90%;
       background-color: green;
       color:aliceblue;
     }
 
     img {
-        position: absolute;
-        width:20px;
-        height:20px;
-        left:10px;
-        right:0px;
-        
+        width:40px;
+        height:40px;
     }
 
     .addBtn {
-        margin-left:70%;
-        margin-top:-50px;
+    
+  
     }
     
     select{
@@ -308,6 +388,14 @@ export default {
         margin-top:-42px;
         margin-right:-15px;
         color:red;
+    }
+
+    .profile-pic {
+        border-radius: 50%;
+        margin-top:10px;
+        width:10%;
+        height:10%;
+
     }
 
     button,
@@ -355,6 +443,11 @@ export default {
     .flex-column {
     flex-direction: column;
     }
+
+    .flex-row {
+    flex-direction: row;
+    }
+
     .container {
     width: 100%;
     padding: 40px 10px;
@@ -373,5 +466,19 @@ export default {
         cursor: pointer;
     }
 
-  
+    .uploadIcon {
+        border-radius: 10%;
+        background-color:green;
+        width:100px;
+        text-align: center;
+        margin-top:-5px;
+    }
+
+    .profile-icon h4 {
+        display: grid;
+        place-items: center;
+        cursor:pointer;
+        color:blue;
+    }    
+
 </style>
