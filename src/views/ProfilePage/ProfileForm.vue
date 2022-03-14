@@ -38,7 +38,8 @@
                 <ul  style="display: grid;grid-template-columns:repeat(5,1fr);">
                     <li v-for="(item,index) in interests" style="width: 20%;display: inline" >
                         <div class="interest-flex">
-                            <label class = "labelTag" for="interest">Interest</label>                            <select class="inputTag" required type="text" id="interest" v-model="item.value" >   
+                            <label class = "labelTag" for="interest">Interest</label>                            
+                            <select class="inputTag" required type="text" id="interest" v-model="item.value" >   
                                 <option value="Artificial Intelligence">Artificial Intelligence</option>
                                 <option value="Scientific Computing">Scientific Computing</option>
                                 <option value="Data Structures">Data Structures</option>
@@ -98,11 +99,11 @@
                 <h4>File Details</h4>
               <div class="input flex flex-column">
                     <label for="resume">Resume</label>
-                    <input required type="file" multiple name="files[]" id="resume" accept=".jpeg,.pdf,.docx" v-on:change="changeResume">
+                    <input type="file" multiple name="files[]" id="resume" accept=".jpeg,.pdf,.docx" v-on:change="changeResume">
                 </div>
               <div class="input flex flex-column">
                   <label for="transcript">Transcript</label>
-                  <input required type="file" multiple name="files[]" id="transcript" accept=".jpeg,.pdf,.docx" v-on:change="changeTranscript">
+                  <input type="file" multiple name="files[]" id="transcript" accept=".jpeg,.pdf,.docx" v-on:change="changeTranscript">
               </div>
             </div>
             <!--
@@ -184,7 +185,8 @@ import {useRouter} from "vue-router"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 
-
+const user = getAuth().currentUser
+console.log(user)
 const router = useRouter()
 export default {
     //Fetch data from Firebase afterwards
@@ -273,6 +275,18 @@ export default {
          toggleMenu() {
              this.menu = !this.menu
          },
+         save() {
+            setDoc(doc(db,"students",this.schoolEmail),{
+                email:this.schoolEmail,
+                name:this.name,
+                course:this.course,
+                year:this.year,
+                interests:this.interests,
+                personalEmail:this.personalEmail,
+                contactNo:this.contactNo,
+                finalProfile:this.finalProfile,
+            })
+         },
     },
     components: {
         PopUp,
@@ -300,7 +314,7 @@ export default {
 
     .interest-flex {
         width:200px;
-        margin-left:10px;
+        
     }
 
     input,
@@ -333,8 +347,7 @@ export default {
     img {
         width:40px;
         height:40px;
-        left:10px;
-        margin-top:-10px;  
+
     }
 
     .addBtn {
