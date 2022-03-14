@@ -45,7 +45,7 @@
             <input type="number" id="projectAllowance" required="" placeholder="Allowance"> <br><br>
 
             <label for="projectTags">Tags*</label>
-            <select name="tagSelect" multiple size="5" id="tagSelect" required="">
+            <select v-model="selected" name="tagSelect" multiple size="5" id="tagSelect" required="">
               <option value="ArtificialIntelligence">Artificial Intelligence</option>
               <option value="ScientificComputingApplications">Scientific Computing Applications</option>
               <option value="DataStructuresAlgorithms">Data Structures and Algorithms</option>
@@ -109,6 +109,12 @@ import { doc, setDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 
 export default {
+  data() {
+    return {
+      Heading: "ADD PROJECT", 
+      selected:[]
+    }
+  },
   methods: {
     async saveProject() {
       var a = document.getElementById("projectTitle").value;
@@ -117,7 +123,8 @@ export default {
       var d = document.getElementById("projectPeriodStart").value;
       var e = document.getElementById("projectPeriodEnd").value;
       var f = document.getElementById("projectAllowance").value;
-      var g = document.getElementById("tagSelect").value;
+      //var g = document.getElementById("tagSelect").value;
+      var g = this.selected;
       var h = document.getElementById("projectDescription").value;
 
       alert("Saving your data for Project: " + a);
@@ -146,11 +153,6 @@ export default {
   components: {
     NavBar
   },
-  data() {
-    return {
-      Heading: "ADD PROJECT", 
-    }
-  }
 }
 </script>
 
