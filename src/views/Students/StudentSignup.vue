@@ -1,5 +1,8 @@
 <template>
         <Loading v-if="loading"/>
+        <router-link :to="{name:'StudentLogin'}">Login</router-link>
+        <router-link :to="{name:'StudentSignup'}">Signup</router-link>
+        <router-view/>
     <div class="form-wrap">
         <form class="signup">
             <div class="inputs">
@@ -112,6 +115,18 @@ export default {
 </script>
 
 <style scoped>
+
+     a {
+        font-weight: bold;
+        color: #2c3e50;
+        text-decoration: none;
+    }
+
+    a.router-link-exact-active {
+        color: #42b983;
+        font-weight:700px;
+    }
+
     .form-wrap {
         overflow:hidden;
         display:flex;

@@ -1,8 +1,8 @@
 <template>
   <div class="home">
       <div id="nav" v-if="navigation">
-       <router-link :to="{name:'StudentHome'}">Student</router-link> 
-        <router-link :to="{name:'BusinessHome'}">Business</router-link>        
+       <router-link :to="{name:'StudentLogin'}">Student</router-link> 
+        <router-link :to="{name:'BusinessLogin'}">Business</router-link>        
       </div>
       <router-view/>
   </div>
@@ -61,7 +61,7 @@ export default {
   justify-content: flex-end;
   gap: 10px;
 }
-
+ 
 #nav a {
   font-weight: bold;
   color: #2c3e50;
@@ -70,10 +70,21 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+  font-weight:700px;
 }
 
 .home {
   height:80vh;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity:0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease-out;
 }
 
 </style>
