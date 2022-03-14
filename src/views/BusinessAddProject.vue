@@ -1,4 +1,5 @@
 <template>
+<!--
   <nav class="navbar navbar-expand-lg navbar-custom">
     <img src="../assets/Pathfinders.png" class="d-inline-block align-top" width=250 alt="logo">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +20,8 @@
         </div>
         </div>
     </ul>
-  </nav>
+  </nav>-->
+  <NavBarBusiness :Heading="Heading"/>
   <div class="mainBody">
     <form id="projectForm">
         <div class="inputs">
@@ -98,6 +100,7 @@
 </template>
 
 <script>
+import NavBarBusiness from '../components/NavBarBusiness.vue'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { doc, setDoc } from "firebase/firestore"
@@ -136,6 +139,14 @@ export default {
       catch(error) {
         console.error("Error adding document: ", error);
       }
+    }
+  },
+  components: {
+    NavBarBusiness
+  },
+  data() {
+    return {
+      Heading: "ADD PROJECT"
     }
   }
 }

@@ -42,6 +42,11 @@ const routes = [
     path: '/login',
     name:'Login',
     component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/:catchall(.*)',
+    name:'NotFound',
+    component: () => import('../views/NotFound.vue')
   }
 ]
 

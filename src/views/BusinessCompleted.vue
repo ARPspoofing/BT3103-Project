@@ -36,46 +36,6 @@
       </span>
     </h1>
     <hr>
-    <div class="dropdown">
-  <Multiselect
-    v-model="value"
-    mode="tags"
-    placeholder="Select Interests"
-    track-by="name"
-    label="name"
-    :close-on-select="true"
-    :searchable="true"
-    :options="[
-      { value: 'ArtificialIntelligence', name: 'Artificial Intelligence'},
-      { value: 'ScientificComputingApplications', name: 'Scientific Computing Applications' },
-      { value: 'DataStructuresAlgorithms', name: 'Data Structures Algorithms' },
-      { value: 'ComputerArchitecture', name: 'Computer Architecture' },
-      { value: 'ComputerNetworks', name: 'Computer Networks' },
-      { value: 'ComputerDatabase', name: 'Computer Database' },
-      { value: 'DatabaseMining', name: 'Database Mining' },
-      { value: 'DataAnalytics', name: 'Data Analytics' },
-      { value: 'ComputerGraphicsVisualisation', name: 'Computer Graphics Visualisation' }, 
-      { value: 'ImageSoundProcessing', name: 'Image Sound Processing' },
-      { value: 'DistributedComputing', name: 'Distributed Computing' },
-      { value: 'HumanComputerInteraction', name: 'Human Computer Interaction' },
-      { value: 'SoftwareEngineering', name: 'Software Engineering' },
-      { value: 'InformationCodingTheory', name: 'Information Coding Theory' }
-    ]"
-  >
-      <template v-slot:tag="{ option, handleTagRemove, disabled }">
-        <div class="multiselect-tag is-user">
-          {{ option.name }}
-          <span
-            v-if="!disabled"
-            class="multiselect-tag-remove"
-            @select="handleTagRemove(option, $event)"
-          >
-            <span class="multiselect-tag-remove-icon"></span>
-          </span>
-        </div>
-      </template>
-  </Multiselect>
-  </div>
 </div>
 </template>
 
@@ -84,7 +44,7 @@ import Multiselect from '@vueform/multiselect'
 export default {
 name: 'BusinessCompleted',
 components: {
-  Multiselect
+  Multiselect,
 },
 }
 </script>

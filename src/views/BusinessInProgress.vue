@@ -1,4 +1,5 @@
 <template>
+<!--
   <nav class="navbar navbar-expand-lg navbar-custom">
     <img src="../assets/Pathfinders.png" class="d-inline-block align-top" width=250 alt="logo">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +20,8 @@
         </div>
         </div>
     </ul>
-  </nav>
+  </nav>-->
+  <NavBarBusiness :Heading="Heading"/>
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
@@ -40,10 +42,17 @@
 </template>
 
 <script>
+import NavBarBusiness from '../components/NavBarBusiness.vue'
 export default {
   name: 'BusinessInProgress',
   components: {
+    NavBarBusiness
   },
+  data() {
+    return {
+      Heading: "MY PROJECTS"
+    }
+  }
 }
 </script>
 
