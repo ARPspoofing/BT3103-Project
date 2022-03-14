@@ -1,4 +1,5 @@
 <template>
+<!--
   <nav class="navbar navbar-expand-lg navbar-custom">
     <img src="../assets/Pathfinders.png" class="d-inline-block align-top" width=250 alt="logo">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +20,8 @@
         </div>
         </div>
     </ul>
-  </nav>
+  </nav>-->
+  <NavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
@@ -41,19 +43,26 @@
 
 <script>
 import Multiselect from '@vueform/multiselect'
+import NavBar from '../components/NavBar.vue'
 export default {
-name: 'BusinessCompleted',
-components: {
-  Multiselect,
-},
+  name: 'BusinessCompleted',
+  components: {
+    Multiselect, 
+    NavBar
+  },
+  data() {
+    return {
+      Heading: "MY PROJECTS"
+    }
+  }
 }
 </script>
 
 
 <style scoped>
-.dropdown {
-  width: 50%;
-}
+  .dropdown {
+    width: 50%;
+  }
   .navbar-custom {
     background-color: #004A23;
   }

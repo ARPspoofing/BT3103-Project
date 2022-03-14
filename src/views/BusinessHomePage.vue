@@ -21,7 +21,7 @@
         </div>
     </ul>
   </nav>-->
-  <NavBarBusiness :Heading="Heading"/>
+  <NavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
@@ -42,11 +42,11 @@
 </template>
 
 <script>
-import NavBarBusiness from '../components/NavBarBusiness.vue'
+import NavBar from '../components/NavBar.vue'
 export default {
   name: 'BusinessHomePage',
   components: {
-    NavBarBusiness
+    NavBar
   },
   data() {
     return {
