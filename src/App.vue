@@ -1,8 +1,8 @@
 <template>
   <div class="home">
       <div id="nav" v-if="navigation">
-       <router-link :to="{name:'StudentHome'}">Student</router-link> |
-        <router-link :to="{name:'BusinessHome'}">Business</router-link> |        
+       <router-link :to="{name:'StudentHome'}">Student</router-link> 
+        <router-link :to="{name:'BusinessHome'}">Business</router-link>        
       </div>
       <router-view/>
   </div>
