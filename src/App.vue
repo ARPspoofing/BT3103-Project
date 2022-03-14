@@ -2,15 +2,10 @@
   <div class="home">
       <div id="nav">
         <router-link to='/'>Home</router-link> |
-       <router-link to='/student'>Students</router-link> |
-        <router-link to='/business'>Businesses</router-link> | 
-        <router-link to='/about'>About</router-link>
-
-        
-
-        
+       <router-link :to="{name:'StudentHome'}">Student</router-link> |
+        <router-link :to="{name:'BusinessHome'}">Business</router-link> |        
       </div>
-      <router-view/>
+      <router-view v-if="pageRoute"/>
   </div>
       
 </template>
@@ -21,8 +16,15 @@ import Home from './views/Home.vue'
   export default {
     components: {
       Home,
-      
-    }
+    },
+
+    
+
+    data() {
+      return {
+        pageRoute: true,
+      }
+    },
   }
 </script>
 
