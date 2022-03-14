@@ -36,10 +36,10 @@
 
             <label for="projectPeriodStart, projectPeriodEnd">Project Period*</label>
             <input type="date" id="projectPeriodStart" required="" placeholder="Choose Start Date"
-              style="width: 228px; margin-right: 15px">
+              style="width: 228px; margin-right: 15px; color:#797979;">
             <p>to</p>
             <input type="date" id="projectPeriodEnd" required="" placeholder="Choose End Date"
-              style="width: 228px; margin-left: 15px;"> <br><br>
+              style="width: 228px; margin-left: 15px; color:#797979;"> <br><br>
 
             <label for="projectAllowance">Allowance (in SGD)*</label>
             <input type="number" id="projectAllowance" required="" placeholder="Allowance"> <br><br>
@@ -66,10 +66,28 @@
             <textarea id="projectDescription" name="projectDescription" rows="4" cols="60" placeholder="Project Description"></textarea> <br><br>
 
             <label for="projectDeliverables">Deliverables</label>
-            <button id="addDeliverableButton" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button id="addDeliverableButton" @click="add"> <!--data-bs-toggle="modal" data-bs-target="#exampleModal">-->
               <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
               <p> Add deliverables</p>
             </button>
+            <!----->
+            <br>
+            <br>
+            <button @click="addTask">Add Deliverables</button>
+            <br>
+            <div class="previous"
+            v-for="(task, counter) in tasks"
+            v-bind:key="counter">
+              <span @click="deleteTask(counter)">x</span>
+              <label for="duration">Task Name*</label>
+              <input type="text" v-model.lazy="task.taskName" required>
+              <label for="description">Description</label>
+              <input type="text" v-model.lazy="task.taskDescription" required> 
+              <label for="duedate">Due Date*</label>
+              <input type="date" v-model.lazy="task.taskDueDate" required> 
+            </div>
+            <br>
+             <!----->
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" 
               data-bs-backdrop="false" style="background: rgba(0, 0, 0, 0.5);">
@@ -93,9 +111,7 @@
                 </div>
               </div>
              </div>
-            
              </div>
-              
         <button id="saveButton" type="button" v-on:click="saveProject()">Save</button>
     </form>
   </div>
@@ -112,10 +128,44 @@ export default {
   data() {
     return {
       Heading: "ADD PROJECT", 
-      selected:[]
+      selected:[],
+      /*tasks: [
+        {
+        taskName: "", 
+        taskDescription: "", 
+        taskDueDate: ""
+        }
+      ],*/
+      tasks:[
+       {
+        taskName: '',
+        taskDescription:'',
+        taskDueDate: ''
+       }
+     ]
     }
   },
   methods: {
+    /*add(){
+      this.tasks.push({
+        taskName: "", 
+        taskDescription: "", 
+        taskDueDate: ""
+      })
+    },
+    delete(counter){
+      this.tasks.splice(counter,1);
+    },*/
+    addTask(){
+      this.tasks.push({
+        taskName:'',
+        taskDescription: '', 
+        taskDueDate: ''
+      })
+    },
+    deleteTask(counter){
+      this.tasks.splice(counter,1);
+    },
     async saveProject() {
       var a = document.getElementById("projectTitle").value;
       var b = document.getElementById("position").value;
@@ -126,6 +176,7 @@ export default {
       //var g = document.getElementById("tagSelect").value;
       var g = this.selected;
       var h = document.getElementById("projectDescription").value;
+      var i = this.tasks;
 
       alert("Saving your data for Project: " + a);
 
@@ -138,7 +189,8 @@ export default {
           Project_End: e,
           Allowance: f,
           Tags: g,
-          Description: h
+          Description: h,
+          Tasks: i,
         })
 
         console.log(docRef)
@@ -157,7 +209,6 @@ export default {
 </script>
 
 <style scoped>
-
   /*
   .navbar-custom {
     background-color: #004A23;
@@ -272,5 +323,4 @@ export default {
     margin-top: 20px;
     margin-left: 490px;
   }
-
 </style>
