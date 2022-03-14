@@ -21,7 +21,7 @@
         </div>
     </ul>
   </nav>-->
-  <NavBarBusiness :Heading="Heading"/>
+  <NavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <form id="projectForm">
         <div class="inputs">
@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import NavBarBusiness from '../components/NavBarBusiness.vue'
+import NavBar from '../components/NavBar.vue'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { doc, setDoc } from "firebase/firestore"
@@ -142,11 +142,11 @@ export default {
     }
   },
   components: {
-    NavBarBusiness
+    NavBar
   },
   data() {
     return {
-      Heading: "ADD PROJECT"
+      Heading: "ADD PROJECT", 
     }
   }
 }

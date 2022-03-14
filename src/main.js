@@ -16,13 +16,11 @@ library.add(far);
 import { dom } from "@fortawesome/fontawesome-svg-core";
 dom.watch();
 import Multiselect from 'vue-multiselect'
-import NavBarStudent from './components/NavBarStudent.vue'
-import NavBarBusiness from './components/NavBarBusiness.vue'
+import NavBar from './components/NavBar.vue'
 
 
 createApp(App).use(store).use(router).use(BootstrapVue3)
 .component('font-awesome-icon', FontAwesomeIcon)
 .component('multiselect', Multiselect)
-.component('NavBarStudent', NavBarStudent)
-.component('NavBarBusiness', NavBarBusiness)
+.component('NavBar', NavBar)
 .mount('#app')

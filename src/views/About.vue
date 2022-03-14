@@ -24,16 +24,21 @@
     <router-link :to="{name:'BusinessHomePage'}">Business Home</router-link> |
     About
   </div>-->
-  <NavBarStudent/>
+  <NavBar :search=true :Heading="Heading" :header=true />
 </template>
 
 <script>
-import NavBarStudent from '../components/NavBarStudent.vue'
+import NavBar from '../components/NavBar.vue'
 export default {
   name: 'About',
   components: {
-    NavBarStudent
+    NavBar
   },
+  data() {
+    return {
+      Heading: "PROFILE",
+    }
+  }
 }
 </script>
 

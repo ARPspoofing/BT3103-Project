@@ -21,7 +21,7 @@
       </div>
     </div>
   </nav>-->
-  <NavBarStudent/>
+  <NavBar :search=true :header=false />
   <div class="mainBody">
     <h1 id="interest">Projects you may like</h1>
     <hr/>
@@ -215,12 +215,17 @@
 </template>
 
 <script>
-import NavBarStudent from '../components/NavBarStudent.vue'
+import NavBar from '../components/NavBar.vue'
 export default {
   name: 'StudentHomePage',
   components: {
-    NavBarStudent
+    NavBar
   },
+  data() {
+    return {
+      Heading: " ",
+    }
+  }
 }
 </script>
 
