@@ -38,20 +38,91 @@
       </span>
     </h1>
     <hr/>
+      <div class="card-body" @click="indivproj">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+      </div>
+      
+      <div class="card-body" @click="indivproj">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content" @click="indivproj">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+      </div>
+
+      <div class="card-body" @click="indivproj">
+        <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+          </span>
+        </div>
+        <div class="card-content">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+      </div>
+      <div :key="item.key" v-for="item in testCollection" @click="indivproj">
+        <Card :projectTitle = "item.projectTitle" :description="item.description"/>
+      </div>
   </div>
 </template>
 
 <script>
 import NavBar from '../components/NavBar.vue'
+import Card from '../components/Card.vue'
+import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
+const db = getFirestore(firebaseApp);
+
 export default {
   name: 'BusinessHomePage',
   components: {
-    NavBar
+    NavBar,
+    Card
   },
+
   data() {
     return {
-      Heading: "MY PROJECTS"
+      Heading: "MY PROJECTS",
+      testCollection: [],
     }
+  },
+
+  methods: {
+    indivproj() {
+      this.$router.push('project')
+    }
+  },
+
+  mounted() {
+    const that = this;
+    async function fetchProject() {
+      let snapshot = await getDocs(collection(db, "Project"))
+      const testCollection = [];
+      snapshot.forEach((docs) => {
+        let data = docs.data()
+        testCollection.push({ 
+            projectTitle: data.Project_Title, 
+            description: data.Description
+        });
+      });
+      that.testCollection = testCollection
+      console.log(testCollection)
+    }
+    fetchProject();
   }
 }
 </script>
@@ -132,5 +203,47 @@ export default {
     height: 70px;
     width: 70px;
     color: #004A23;
+  }
+
+  .card-text {
+    width: 100%;
+    margin: 15px;
+  }
+
+  .card-body {
+    background-color: #F2F5F7;
+    border-radius: 8px;
+    width: 30%;
+    float: left;
+    padding: 20px;
+    border: 2px solid #0E8044;
+    margin: 10px;
+    box-shadow: 1px 1px grey;
+  }
+
+  .card-body:hover {
+    background-color: rgba(236, 236, 236, 0.993);
+  }
+
+  .card-title {
+    display: inline-block;
+  }
+
+  .card-content {
+    text-align: left;
+    margin-bottom: 10px;
+  }
+
+  .clogo {
+    text-align: left;
+  }
+
+  .logo {
+    vertical-align: left;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 10px;
+    margin-right: 10px;
   }
 </style>

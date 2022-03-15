@@ -34,6 +34,26 @@ const routes = [
     component: () => import('../views/BusinessAddProject.vue')
   },
   {
+    path: '/project',
+    name: 'IndividualProjectInfo',
+    component: () => import('../views/IndividualProjectInfo.vue')
+  },
+  {
+    path: '/project/new_apps',
+    name: 'IndividualProjectNewApps',
+    component: () => import('../views/IndividualProjectNewApps.vue')
+  },
+  {
+    path: '/project/acc_apps',
+    name: 'IndividualProjectAccApps',
+    component: () => import('../views/IndividualProjectAccApps.vue')
+  },
+  {
+    path: '/project/rej_apps',
+    name: 'IndividualProjectRejApps',
+    component: () => import('../views/IndividualProjectRejApps.vue')
+  },
+  {
     path: '/signup',
     name: 'Signup',
     component: () => import('../views/Signup.vue')
