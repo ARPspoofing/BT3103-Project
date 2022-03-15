@@ -216,6 +216,12 @@
 
 <script>
 import NavBar from '../components/NavBar.vue'
+import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore"
+import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+
+const db = getFirestore(firebaseApp);
+
 export default {
   name: 'StudentHomePage',
   components: {

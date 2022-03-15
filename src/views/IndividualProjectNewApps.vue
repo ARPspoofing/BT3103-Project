@@ -27,71 +27,33 @@
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
     <h1 id="interest">
+      <span>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectInfo'}" ><b>PROJECT INFO</b></router-link>
+      </span>
       <span class="options">
-        <b>POSTED</b>
+        <b>NEW APPLICANTS</b>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'BusinessInProgress'}" ><b>IN PROGRESS</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectAccApps'}" ><b>ACCEPTED APPLICANTS</b></router-link>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'BusinessCompleted'}" ><b>COMPLETED</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectRejApps'}" ><b>REJECTED APPLICANTS</b></router-link>
       </span>
     </h1>
     <hr/>
-      <div class="card-body" @click="indivproj">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-      </div>
-      
-      <div class="card-body" @click="indivproj">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content" @click="indivproj">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-      </div>
-
-      <div class="card-body">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-      </div>
   </div>
 </template>
 
 <script>
 import NavBar from '../components/NavBar.vue'
 export default {
-  name: 'BusinessHomePage',
+  name: 'IndividualProjectNewApps',
   components: {
     NavBar
   },
   data() {
     return {
-      Heading: "MY PROJECTS"
-    }
-  },
-
-  methods: {
-    indivproj() {
-      this.$router.push('project')
+      Heading: "APPLICANTS"
     }
   }
 }
@@ -173,47 +135,5 @@ export default {
     height: 70px;
     width: 70px;
     color: #004A23;
-  }
-
-  .card-text {
-    width: 100%;
-    margin: 15px;
-  }
-
-  .card-body {
-    background-color: #F2F5F7;
-    border-radius: 8px;
-    width: 30%;
-    float: left;
-    padding: 20px;
-    border: 2px solid #0E8044;
-    margin: 10px;
-    box-shadow: 1px 1px grey;
-  }
-
-  .card-body:hover {
-    background-color: rgba(236, 236, 236, 0.993);
-  }
-
-  .card-title {
-    display: inline-block;
-  }
-
-  .card-content {
-    text-align: left;
-    margin-bottom: 10px;
-  }
-
-  .clogo {
-    text-align: left;
-  }
-
-  .logo {
-    vertical-align: left;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-left: 10px;
-    margin-right: 10px;
   }
 </style>
