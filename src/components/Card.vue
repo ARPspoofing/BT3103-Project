@@ -29,14 +29,14 @@ export default {
   }
 
   .card-body {
-    background-color: #F2F5F7;
+    background-color: #BBDFCC;
     border-radius: 8px;
     width: 30%;
+    height: 200px;
     float: left;
     padding: 20px;
-    border: 2px solid #0E8044;
     margin: 10px;
-    box-shadow: 1px 1px grey;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.15);
   }
 
   .card-title {
@@ -46,17 +46,22 @@ export default {
   .card-content {
     text-align: left;
     margin-bottom: 10px;
+    width:320px;
   }
 
   .clogo {
     text-align: left;
+    font-size: 22px;
   }
 
   .btn-apply {
     background-color: #0E8044;
     color: white;
+    width: 40%;
     border-radius: 8px;
-    width: 40%
+    border-width: 0px;
+    height: 30px;
+    margin-top: 10px;
   }
 
   .logo {
