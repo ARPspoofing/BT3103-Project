@@ -207,8 +207,8 @@
           <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
         </div>
         <button href="#" class="btn-apply">Apply Now</button>
+      
       </div>
-
       <div class="card-body">
         <div class = "clogo">
           <img src="../assets/google-logo.png" alt="Logo" class = "logo">
