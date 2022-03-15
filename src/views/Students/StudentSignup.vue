@@ -34,9 +34,10 @@
                     <h4>Confirm Password</h4>
                 </div>
                 <div class="input">
-                    <input type="password" v-model="confirmPassword">
+                    <input :class="{shake:confirmPasswordErrorPresent,'input-error':confirmPasswordErrorPresent}" type="password" v-model="confirmPassword">
                     <img class="icon" src="../../assets/lock.png">
                 </div>
+                <div class="errorMsg" v-if="confirmPasswordErrorPresent">{{this.errorMessage}}</div>
                 <div class="input">
                     <button @click="register"><b>Sign Up</b></button>
                 </div>
@@ -91,16 +92,88 @@ export default {
     },
     methods: {
         register() { 
-                if (!validEmails.includes(this.email)) {
-                        this.errorMessage = 'Unregistered NUS email'
-                        this.emailErrorPresent = true
-                        setTimeout(() => {
-                            this.emailErrorPresent = false
-                        }, 1500)
-                }
-                else {
-                    
-                
+                if(this.email == '') {
+                    this.errorMessage = 'email field is empty'
+                    this.emailErrorPresent = true
+                    setTimeout(() => {
+                        this.emailErrorPresent = false
+                    }, 1500)
+                } else if(this.password == '') {
+                    this.errorMessage = 'password field is empty'
+                    this.passwordErrorPresent = true
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500)
+                } else if (this.confirmPassword == '') {
+                    this.errorMessage = 'confirm password field is empty'
+                    this.confirmPasswordErrorPresent = true
+                    setTimeout(() => {
+                        this.confirmPasswordErrorPresent = false
+                    }, 1500)
+                } else if(this.confirmPassword != this.password) {
+                    this.errorMessage = 'Password and confirm password do not match'
+                    this.passwordErrorPresent = true
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500) 
+                    /*
+                } else if (this.email == '' && this.password == '') {
+                    this.errorMessage = 'email field is empty'
+                    this.emailErrorPresent = true
+                    setTimeout(() => {
+                        this.emailErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'password field is empty'
+                    this.passwordErrorPresent = true
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500)
+                }else if(this.email == '' && this.confirmPassword == '') {
+                    this.errorMessage = 'email field is empty'
+                    this.emailErrorPresent = true
+                    setTimeout(() => {
+                        this.emailErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'Confirm password field is empty'
+                    this.confirmPasswordErrorPresent = true
+                    setTimeout(() => {
+                        this.confirmPasswordErrorPresent = false
+                    }, 1500)
+                } else if (this.password == '' && this.confirmPassword == '') {
+                    this.errorMessage = 'Confirm password field is empty'
+                    this.confirmPasswordErrorPresent = true
+                    setTimeout(() => {
+                        this.confirmPasswordErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'password field is empty'
+                    this.passwordErrorPresent = true
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500)
+                } else if(this.email == '' && this.password == '' && this.confirmPassword == '') {
+                    this.errorMessage = 'email field is empty'
+                    this.emailErrorPresent = true
+                    setTimeout(() => {
+                        this.emailErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'Confirm password field is empty'
+                    this.confirmPasswordErrorPresent = true
+                    setTimeout(() => {
+                        this.confirmPasswordErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'password field is empty'
+                    this.passwordErrorPresent = true
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500)
+                    */
+                }else if (!validEmails.includes(this.email)) {
+                    this.errorMessage = 'Unregistered NUS email'
+                    this.emailErrorPresent = true
+                    setTimeout(() => {
+                        this.emailErrorPresent = false
+                    }, 1500)
+                } else {
                     this.loading = true               
                     createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                     .then((data) => {

@@ -4,18 +4,17 @@
 <router-link :to="{name:'StudentSignup'}">Signup</router-link>
 </div>
 <div class="form-wrap">
+    <ResetPassword @close="close" v-if="forgetPassword"/>
         <form class="login">
             <div class="inputs">
                 <div class="input">
                     <h1>Welcome Back Student!</h1>
                 </div>
                 <div class="input">
-                    <h4>Login with your details</h4>
+                    <h4>Dont't have an account?&nbsp;</h4>
+                    <router-link class="link" :to="{name:'StudentSignup'}">Signup</router-link>
+                    <router-view/>
                 </div>
-                <div class="input">
-                    <h4>Login with your details</h4>
-                </div>
-
                 <div class="input">
                     <h4>Email</h4>
                 </div>
@@ -30,6 +29,10 @@
                     <input type="password" v-model="password">
                     <img class="icon" src="../../assets/lock.png">
                 </div>
+                <div @click="forgot" class="forgot">
+                    <h4>Forgot Password</h4>
+                </div>
+                
                 <div class="input">
                     <button @click="login"><b>Log In</b></button>
                 </div>
@@ -43,6 +46,7 @@
 import {ref} from "vue"
 import {getAuth,signInWithEmailAndPassword} from "firebase/auth"
 import {useRouter} from "vue-router"
+import ResetPassword from '../../components/ResetPassword.vue'
 
 const email = ref("")
 const password = ref("")
@@ -57,7 +61,23 @@ const login = () => {
 }
 
 export default {
-    name:'StudentLogin'
+    name:'StudentLogin',
+    data() {
+        return {
+            forgetPassword: false
+        }
+    },
+    components: {
+        ResetPassword,
+    },
+    methods: {
+        forgot() {
+            this.forgetPassword = true
+        },
+        close(e) {
+            this.forgetPassword = false
+        }
+    }
 }
 </script>
 
@@ -71,6 +91,11 @@ export default {
     a.router-link-exact-active {
         color: #42b983;
         font-weight:700px;
+    }
+
+    .link {
+        font-weight: bold;
+        color: blue;
     }
 
     .form-wrap {
@@ -123,6 +148,12 @@ export default {
 
     input:focus {
         outline: none;
+    }
+
+    .forgot {
+        font-size: 12px;
+        color:darkgreen;
+        cursor: pointer;
     }
 
     .icon {
