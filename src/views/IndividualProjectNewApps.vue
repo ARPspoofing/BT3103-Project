@@ -1,26 +1,4 @@
 <template>
-  <!--
-  <nav class="navbar navbar-expand-lg navbar-custom">
-    <img src="../assets/Pathfinders.png" class="d-inline-block align-top" width=250 alt="logo">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <h2 id="title"><b>MY PROJECTS</b></h2>
-    <ul class="navbar-nav ms-auto">
-        <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Navigate
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" >Home</router-link>
-            <div class="dropdown-divider"></div>
-            <router-link class="nav-item nav-link active" :to="{name:'About'}">About</router-link>
-            <div class="dropdown-divider"></div>
-            <router-link class="nav-item nav-link active" :to="{name:'BusinessHomePage'}">Business Home</router-link>
-        </div>
-        </div>
-    </ul>
-  </nav>-->
   <NavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">

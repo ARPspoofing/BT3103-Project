@@ -1,32 +1,10 @@
 <template>
-  <!--
-  <nav class="navbar navbar-expand-lg navbar-custom">
-    <img src="../assets/Pathfinders.png" class="d-inline-block align-top" width=250 alt="logo">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <h2 id="title"><b>MY PROJECTS</b></h2>
-    <ul class="navbar-nav ms-auto">
-        <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Navigate
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" >Home</router-link>
-            <div class="dropdown-divider"></div>
-            <router-link class="nav-item nav-link active" :to="{name:'About'}">About</router-link>
-            <div class="dropdown-divider"></div>
-            <router-link class="nav-item nav-link active" :to="{name:'BusinessHomePage'}">Business Home</router-link>
-        </div>
-        </div>
-    </ul>
-  </nav>-->
   <NavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
-    <h1 id="interest">
+    <h1 id="status">
       <span class="options">
         <b>POSTED</b>
       </span>
@@ -38,43 +16,10 @@
       </span>
     </h1>
     <hr/>
-      <div class="card-body" @click="indivproj">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
+      <div class="projectContainer">
+        <div :key="item.key" v-for="item in testCollection" @click="indivproj">
+          <Card :apply=false :projectTitle = "item.projectTitle" :description="item.description"/>
         </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-      </div>
-      
-      <div class="card-body" @click="indivproj">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content" @click="indivproj">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-      </div>
-
-      <div class="card-body" @click="indivproj">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-      </div>
-      <div :key="item.key" v-for="item in testCollection" @click="indivproj">
-        <Card :apply=false :projectTitle = "item.projectTitle" :description="item.description"/>
       </div>
   </div>
 </template>
@@ -152,7 +97,11 @@ export default {
     padding-bottom: 550px;
   }
 
-  #interest {
+  .projectContainer {
+    margin-left: 30px;
+  }
+
+  #status {
     text-align: left;
     font-size: 28px;
     margin: 30px 30px 0px 30px;
@@ -205,47 +154,5 @@ export default {
     height: 70px;
     width: 70px;
     color: #004A23;
-  }
-
-  .card-text {
-    width: 100%;
-    margin: 15px;
-  }
-
-  .card-body {
-    background-color: #F2F5F7;
-    border-radius: 8px;
-    width: 30%;
-    float: left;
-    padding: 20px;
-    border: 2px solid #0E8044;
-    margin: 10px;
-    box-shadow: 1px 1px grey;
-  }
-
-  .card-body:hover {
-    background-color: rgba(236, 236, 236, 0.993);
-  }
-
-  .card-title {
-    display: inline-block;
-  }
-
-  .card-content {
-    text-align: left;
-    margin-bottom: 10px;
-  }
-
-  .clogo {
-    text-align: left;
-  }
-
-  .logo {
-    vertical-align: left;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-left: 10px;
-    margin-right: 10px;
   }
 </style>

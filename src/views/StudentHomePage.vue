@@ -1,26 +1,4 @@
 <template>
-  <!--<nav class="navbar navbar-expand-lg navbar-custom">
-    <img src="../assets/Pathfinders.png" class="d-inline-block align-top" width=250 alt="logo">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control-inline mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
-    </div>
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Navigate
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" >Home</router-link>
-        <router-link class="nav-item nav-link active" :to="{name:'About'}">About</router-link>
-        <router-link class="nav-item nav-link active" :to="{name:'BusinessHomePage'}">Business Home</router-link>
-      </div>
-    </div>
-  </nav>-->
   <NavBar :search=true :header=false />
   <div class="mainBody">
     <h1 id="interest">Projects you may like</h1>
