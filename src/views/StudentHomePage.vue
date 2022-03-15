@@ -223,7 +223,7 @@
       </div>
     </div>
     <div :key="item.key" v-for="item in testCollection">
-      <Card :projectTitle = "item.projectTitle" :description="item.description"/>
+      <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description"/>
     </div>
   </div>
 </template>
@@ -242,11 +242,11 @@ export default {
     NavBar, 
     Card
   },
+
   data() {
     return {
       Heading: " ",
-      testCollection: [], 
-
+      testCollection: [],
     }
   },
   mounted() {

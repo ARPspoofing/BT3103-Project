@@ -74,7 +74,7 @@
         </div>
       </div>
       <div :key="item.key" v-for="item in testCollection" @click="indivproj">
-        <Card :projectTitle = "item.projectTitle" :description="item.description"/>
+        <Card :apply=false :projectTitle = "item.projectTitle" :description="item.description"/>
       </div>
   </div>
 </template>
@@ -148,6 +148,8 @@ export default {
     width: 100%;
     height: 100%;
     position: fixed;
+    overflow-y: scroll;
+    padding-bottom: 550px;
   }
 
   #interest {
