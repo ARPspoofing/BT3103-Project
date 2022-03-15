@@ -62,7 +62,7 @@
         </div>
       </div>
 
-      <div class="card-body">
+      <div class="card-body" @click="indivproj">
         <div class = "clogo">
           <img src="../assets/google-logo.png" alt="Logo" class = "logo">
           <span class="card-title">
@@ -73,19 +73,31 @@
           <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
         </div>
       </div>
+      <div :key="item.key" v-for="item in testCollection" @click="indivproj">
+        <Card :projectTitle = "item.projectTitle" :description="item.description"/>
+      </div>
   </div>
 </template>
 
 <script>
 import NavBar from '../components/NavBar.vue'
+import Card from '../components/Card.vue'
+import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
+const db = getFirestore(firebaseApp);
+
 export default {
   name: 'BusinessHomePage',
   components: {
-    NavBar
+    NavBar,
+    Card
   },
+
   data() {
     return {
-      Heading: "MY PROJECTS"
+      Heading: "MY PROJECTS",
+      testCollection: [],
     }
   },
 
@@ -93,6 +105,24 @@ export default {
     indivproj() {
       this.$router.push('project')
     }
+  },
+
+  mounted() {
+    const that = this;
+    async function fetchProject() {
+      let snapshot = await getDocs(collection(db, "Project"))
+      const testCollection = [];
+      snapshot.forEach((docs) => {
+        let data = docs.data()
+        testCollection.push({ 
+            projectTitle: data.Project_Title, 
+            description: data.Description
+        });
+      });
+      that.testCollection = testCollection
+      console.log(testCollection)
+    }
+    fetchProject();
   }
 }
 </script>

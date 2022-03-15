@@ -224,7 +224,7 @@
     </div>
     <div :key="item.key" v-for="item in testCollection">
       <Card :projectTitle = "item.projectTitle" :description="item.description"/>
-      </div>
+    </div>
   </div>
 </template>
 
