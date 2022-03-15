@@ -1,7 +1,7 @@
 <template>
         <router-link :to="{name:'StudentLogin'}">Login</router-link>
         <router-link :to="{name:'StudentSignup'}">Signup</router-link>
-        <router-view/>
+        
 <div class="form-wrap">
         <form class="login">
             <div class="inputs">

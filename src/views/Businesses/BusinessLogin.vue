@@ -1,4 +1,8 @@
 <template>
+<div class="routerLinks">
+<router-link :to="{name:'BusinessLogin'}">Login</router-link>
+<router-link :to="{name:'BusinessSignup'}">Signup</router-link>
+</div>
 <div class="form-wrap">
         <form class="login">
             <div class="inputs">
@@ -52,6 +56,18 @@ const login = () => {
 </script>
 
 <style scoped>
+
+    a {
+        font-weight: bold;
+        color: #2c3e50;
+        text-decoration: none;
+    }
+
+    a.router-link-exact-active {
+        color: #42b983;
+        font-weight:700px;
+    }
+
     .form-wrap {
         overflow:hidden;
         display:flex;
