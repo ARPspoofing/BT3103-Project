@@ -24,6 +24,17 @@
   <NavBar :search=true :header=false />
   <div class="mainBody">
     <h1 id="interest">Projects you may like</h1>
+    <!--
+    <div v-if="isLoading">
+      Loading...
+    </div>
+    <div v-else>
+    <div v-for="(project, index) in projectList" v-bind:key=index >
+      {{project.projectTitle}}
+      {{project.description}}
+        <Card :projectTitle=project.projectTitle :description=project.description />
+      </div>
+      </div>-->
     <hr/>
     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
@@ -211,26 +222,49 @@
         <button href="#" class="btn-apply">Apply Now</button>
       </div>
     </div>
+    <div :key="item.key" v-for="item in testCollection">
+      <Card :projectTitle = "item.projectTitle" :description="item.description"/>
+      </div>
   </div>
 </template>
 
 <script>
 import NavBar from '../components/NavBar.vue'
+import Card from '../components/Card.vue'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
-
+import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 
 export default {
   name: 'StudentHomePage',
   components: {
-    NavBar
+    NavBar, 
+    Card
   },
   data() {
     return {
       Heading: " ",
+      testCollection: [], 
+
     }
+  },
+  mounted() {
+    const that = this;
+    async function fetchProject() {
+      let snapshot = await getDocs(collection(db, "Project"))
+      const testCollection = [];
+      snapshot.forEach((docs) => {
+        let data = docs.data()
+        testCollection.push({ 
+            projectTitle: data.Project_Title, 
+            description: data.Description
+        });
+      });
+      that.testCollection = testCollection
+      console.log(testCollection)
+    }
+    fetchProject();
   }
 }
 </script>
@@ -323,6 +357,5 @@ export default {
     margin-left: 10px;
     margin-right: 10px;
   }
-
 
 </style>

@@ -36,10 +36,10 @@
 
             <label for="projectPeriodStart, projectPeriodEnd">Project Period*</label>
             <input type="date" id="projectPeriodStart" required="" placeholder="Choose Start Date"
-              style="width: 228px; margin-right: 15px; color:#797979;">
+              style="width: 228px; margin-right: 15px; ">
             <p>to</p>
             <input type="date" id="projectPeriodEnd" required="" placeholder="Choose End Date"
-              style="width: 228px; margin-left: 15px; color:#797979;"> <br><br>
+              style="width: 228px; margin-left: 15px;"> <br><br>
 
             <label for="projectAllowance">Allowance (in SGD)*</label>
             <input type="number" id="projectAllowance" required="" placeholder="Allowance"> <br><br>
