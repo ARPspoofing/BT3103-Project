@@ -96,11 +96,11 @@ export default {
     NavBar, 
     Card
   },
+
   data() {
     return {
       Heading: " ",
-      testCollection: [], 
-
+      testCollection: [],
     }
   },
   mounted() {

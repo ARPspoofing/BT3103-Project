@@ -9,7 +9,7 @@
         <div class="card-content">
           <p class="card-text">{{description}}</p>
         </div>
-        <button href="#" class="btn-apply">Apply Now</button>
+        <button v-show=apply href="#" class="btn-apply">Apply Now</button>
       </div>
 </template>
 
@@ -18,12 +18,13 @@ export default {
     props:{
         projectTitle: String,
         description: String,
+        apply: Boolean,
     }
 }
 </script>
 
 <style>
-.card-text {
+  .card-text {
     width: 100%;
     margin: 15px;
   }

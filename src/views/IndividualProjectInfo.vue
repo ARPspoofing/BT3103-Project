@@ -41,6 +41,25 @@
       </span>
     </h1>
     <hr/>
+    <div>
+      <div class = "clogo">
+          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+          <span class="card-title">
+            Project Title <br>
+            Company Name <br>
+            Tags
+          </span>
+          <span>
+            <button href="#" class="edit-proj">EDIT PROJECT DETAILS</button> <br>
+            <button href="#" class="close-proj">CLOSE PROJECT</button> <br>
+            <button href="#" class="del-proj">DELETE PROJECT</button> 
+          </span>
+      </div>
+      <div class = "projInfo">
+
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -54,6 +73,13 @@ export default {
   data() {
     return {
       Heading: " "
+    }
+  },
+
+  data() {
+    return {
+      Heading: "MY PROJECTS",
+      testCollection: [],
     }
   }
 }
@@ -135,5 +161,40 @@ export default {
     height: 70px;
     width: 70px;
     color: #004A23;
+  }
+
+  .logo {
+    vertical-align: left;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .clogo {
+    text-align: left;
+    margin: 20px;
+  }
+
+  .edit-proj {
+    background-color: #0E8044;
+    color: white;
+    border-radius: 8px;
+    width: 30%
+  }
+
+  .close-proj {
+    background-color: #E58686;
+    color: white;
+    border-radius: 8px;
+    width: 30%
+  }
+
+  .del-proj {
+    background-color: #D23333;
+    color: white;
+    border-radius: 8px;
+    width: 30%
   }
 </style>
