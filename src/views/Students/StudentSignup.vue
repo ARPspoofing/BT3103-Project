@@ -1,13 +1,15 @@
 <template>
+<div id="nav">
+<router-link :to="{name:'StudentLogin'}">Login</router-link>
+<router-link :to="{name:'StudentSignup'}">Signup</router-link>
+</div>
         <Loading v-if="loading"/>
-        <router-link :to="{name:'StudentLogin'}">Login</router-link>
-        <router-link :to="{name:'StudentSignup'}">Signup</router-link>
         <router-view/>
     <div class="form-wrap">
         <form class="signup">
             <div class="inputs">
                 <div class="input">
-                    <h1>Welcome!</h1>
+                    <h1>Welcome Student!</h1>
                 </div>
                 <div class="input">
                     <h4>Signup with your NUS email</h4>
@@ -19,6 +21,7 @@
                     <input :class="{shake:emailErrorPresent,'input-error':emailErrorPresent}" type="text" v-model="email" placeholder="e1234567@u.nus.edu" >
                     <img class="icon" src="../../assets/envelope.png">
                 </div>
+                <div class="errorMsg" v-if="emailErrorPresent">{{this.errorMessage}}</div>
                 <div class="input">
                     <h4>Password</h4>
                 </div>
@@ -26,6 +29,7 @@
                     <input :class="{shake:passwordErrorPresent,'input-error':passwordErrorPresent}" type="password" v-model="password">
                     <img class="icon" src="../../assets/lock.png">
                 </div>
+                <div class="errorMsg" v-if="passwordErrorPresent">{{this.errorMessage}}</div>
                 <div class="input">
                     <h4>Confirm Password</h4>
                 </div>
@@ -39,7 +43,6 @@
             </div>
         </form>
     </div>
-    <span>{{this.errorMessage}}</span>
 </template>
 
 <script>
@@ -55,6 +58,7 @@ import Loading from '../../components/Loading.vue'
 
 const db = getFirestore(firebaseApp)
 const router = useRouter()
+var validEmails = []
 export default {
     data() {
         return {
@@ -69,46 +73,71 @@ export default {
             loading: null,
         }
     },
+    created() {
+      async function getValidEmail() {
+          var validEmail = []
+          let database = await getDocs(collection(db,"nusEmails"))
+          database.forEach((doc) => {
+              var data = doc.data()
+              validEmail.push(data.email)
+              console.log(validEmail)
+              })
+      validEmails = validEmail
+      }
+      getValidEmail()
+    },
     components: {
         Loading,
     },
     methods: {
         register() { 
-                this.loading = true               
-                createUserWithEmailAndPassword(getAuth(),this.email,this.password)
-                .then((data) => {
-                    this.$router.push({name:'StudentProfileForm'})
-                    setDoc(doc(db,"businesses",this.email),{
-                            email:this.email,
-                            //when a user logs in when this attribute is false, he/she will be directed to the 
-                            //profile page otherwise will be directed to the landing page
-                            profilePageCreated:false,
+                if (!validEmails.includes(this.email)) {
+                        this.errorMessage = 'Unregistered NUS email'
+                        this.emailErrorPresent = true
+                        setTimeout(() => {
+                            this.emailErrorPresent = false
+                        }, 1500)
+                }
+                else {
+                    
+                
+                    this.loading = true               
+                    createUserWithEmailAndPassword(getAuth(),this.email,this.password)
+                    .then((data) => {
+                        this.$router.push({name:'StudentProfileForm'})
+                        setDoc(doc(db,"businesses",this.email),{
+                                email:this.email,
+                                //when a user logs in when this attribute is false, he/she will be directed to the 
+                                //profile page otherwise will be directed to the landing page
+                                profilePageCreated:false,
 
-                })
-                    this.loading = false
-                }).catch((err) => {
-                    this.error = err.code
-                    if (this.error === "auth/invalid-email") {
-                        this.errorMessage = 'Invalid email'
-                        this.emailErrorPresent = true
-                        setTimeout(() => {
-                            this.emailErrorPresent = false
-                        }, 1500)
-                    } else if (this.error === "auth/email-already-in-use") {
-                        this.errorMessage = 'Email already registered. Please login'
-                        this.emailErrorPresent = true
-                        setTimeout(() => {
-                            this.emailErrorPresent = false
-                        }, 1500)
-                    } else if (this.error === "auth/weak-password") {
-                        this.errorMessage = 'Weak password'
-                        this.passwordErrorPresent = true
-                        setTimeout(() => {
-                            this.passwordErrorPresent = false
-                        }, 1500)
-                    }
-                    console.log(this.error)
-                })
+                    })
+                        this.loading = false
+                    }).catch((err) => {
+                        this.error = err.code
+                        if (this.error === "auth/invalid-email") {
+                            this.errorMessage = 'Invalid email'
+                            this.emailErrorPresent = true
+                            setTimeout(() => {
+                                this.emailErrorPresent = false
+                            }, 1500)
+                        } else if (this.error === "auth/email-already-in-use") {
+                            this.errorMessage = 'Email already registered. Please login'
+                            this.emailErrorPresent = true
+                            setTimeout(() => {
+                                this.emailErrorPresent = false
+                            }, 1500)
+                        } else if (this.error === "auth/weak-password") {
+                            this.errorMessage = 'Weak password'
+                            this.passwordErrorPresent = true
+                            setTimeout(() => {
+                                this.passwordErrorPresent = false
+                            }, 1500)
+                        }
+                        console.log(this.error)
+                        this.loading = false
+                    })
+                }
         }    
     },
 }
@@ -161,6 +190,11 @@ export default {
         justify-content: left;
         align-items: center;
         margin-bottom:-10px;
+    }
+
+    .errorMsg {
+        color: red;
+        margin-top:10px;
     }
 
     input {

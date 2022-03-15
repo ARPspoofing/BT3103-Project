@@ -1,16 +1,21 @@
 <template>
-        <router-link :to="{name:'StudentLogin'}">Login</router-link>
-        <router-link :to="{name:'StudentSignup'}">Signup</router-link>
-        
+<div id="nav">
+<router-link :to="{name:'StudentLogin'}">Login</router-link>
+<router-link :to="{name:'StudentSignup'}">Signup</router-link>
+</div>
 <div class="form-wrap">
         <form class="login">
             <div class="inputs">
                 <div class="input">
-                    <h1>Welcome Back!</h1>
+                    <h1>Welcome Back Student!</h1>
                 </div>
                 <div class="input">
                     <h4>Login with your details</h4>
                 </div>
+                <div class="input">
+                    <h4>Login with your details</h4>
+                </div>
+
                 <div class="input">
                     <h4>Email</h4>
                 </div>

@@ -1,5 +1,5 @@
 <template>
-<div class="routerLinks">
+<div id="nav">
 <router-link :to="{name:'BusinessLogin'}">Login</router-link>
 <router-link :to="{name:'BusinessSignup'}">Signup</router-link>
 </div>
@@ -7,7 +7,7 @@
         <form class="login">
             <div class="inputs">
                 <div class="input">
-                    <h1>Welcome Back!</h1>
+                    <h1>Welcome Back Business!</h1>
                 </div>
                 <div class="input">
                     <h4>Login with your details</h4>
