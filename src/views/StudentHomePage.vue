@@ -1,7 +1,7 @@
 <template>
   <NavBar :search=true :header=false />
   <div class="mainBody">
-    <h1 id="interest">Projects you may like</h1>
+    <h1 id="interest">Projects You May Like</h1>
     <!--
     <div v-if="isLoading">
       Loading...
@@ -50,7 +50,7 @@
 
     <br><br>
   
-    <h1 id="latest">Latest projects</h1>
+    <h1 id="latest">Latest Projects</h1>
     <hr/>
     <div class="carouContainer">
       <div :key="item.key" v-for="(item, index) in testCollection">

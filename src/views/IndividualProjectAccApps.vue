@@ -41,7 +41,7 @@ export default {
   },
   data() {
     return {
-      Heading: "APPLICANTS"
+      Heading: "ACCEPTED APPLICANTS"
     }
   }
 }

@@ -4,7 +4,7 @@
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
-    <h1 id="interest">
+    <h1 id="interest">  
       <span class="options">
         <b>PROJECT INFO</b>
       </span>
@@ -24,10 +24,16 @@
         <img src="../assets/google-logo.png" alt="Logo" class = "logo">
         <span>
           <div class="projTitle">
-            Project Title <br>
+            {{this.$route.params.projectTitle}}  <br>
             Company Name <br>
-            Tags
+            <!--Tags-->
+            <div id="tagsbox">
+            <div id="tags" :key="item.key" v-for="(item, index) in tags">
+              {{item}}
+            </div>
+            </div>
           </div>
+          
         </span>
         <span>
           <div class="projButtons" >
@@ -50,10 +56,10 @@
       </span>
       <span>
         <div class="projDetails">
-          Software Engineer <br>
-          2 <br>
-          01 Jan 2022 - 01 May 2022 <br>
-          SGD 1,000 <br>            
+          {{this.$route.params.position}} <br>
+          {{this.$route.params.vancancies}} <br>
+          {{formatDate(this.$route.params.projectStart)}} - {{formatDate(this.$route.params.projectEnd)}} <br>
+          SGD {{this.$route.params.allowance}} <br>            
         </div>
       </span>
     </div>
@@ -61,9 +67,12 @@
     <div class = "projDesc">
       <span>
         <div class="projDescLabel">
-          Description <br>          
+          Description <br> 
+            
         </div>
         <div class="projDescContent">
+          {{this.$route.params.description}}    
+          <!--
           We are looking for a Software Engineering Intern who preferably 
           has experience working with video analytics algorithms. Lorem Ipsum is simply dummy text 
           of the printing and typesetting industry. Lorem Ipsum has been the industry's standard 
@@ -72,7 +81,7 @@
           but also the leap into electronic typesetting, remaining essentially unchanged. It was 
           popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum 
           passages, and more recently with desktop publishing software like Aldus PageMaker including 
-          versions of Lorem Ipsum.
+          versions of Lorem Ipsum.-->
         </div>
       </span>
     </div>
@@ -89,11 +98,16 @@
                 <div class="delicard">
                     <div class="delicard-body">
                         <div id="delicontent">
-                            <ul class="timeline">
+                            <ul class="timeline" :key="item.key" v-for="(item, index) in tasks">
+                                <Deliverable :data-date="formatDate(item.taskDueDate)" :description="item.taskDescription" :title="item.taskName"/>
+                                <!--<Deliverable />
+                                <Deliverable />
+                                <Deliverable />
                                 <li class="event" data-date="1 January 2022">
                                     <h3>Registration</h3>
                                     <p>Get here on time, it's first come first serve. Be late, get turned away.</p>
                                 </li>
+                                
                                 <li class="event" data-date="22 February 2022">
                                     <h3>Opening Ceremony</h3>
                                     <p>Get ready for an exciting event, this will kick off in amazing fashion with MOP &amp; Busta Rhymes as an opening show.</p>
@@ -106,6 +120,7 @@
                                     <h3>Closing Ceremony</h3>
                                     <p>See how is the victor and who are the losers. The big stage is where the winners bask in their own glory.</p>
                                 </li>
+                                -->
                             </ul>
                         </div>
                     </div>
@@ -120,22 +135,35 @@
 
 <script>
 import NavBar from '../components/NavBar.vue'
+import Deliverable from '../components/Deliverable.vue'
+import * as moment from 'moment'
+
 export default {
   name: 'IndividualProjectInfo',
+  props: ['items'],
   components: {
-    NavBar
+    NavBar, 
+    Deliverable
   },
-  data() {
-    return {
-      Heading: " "
-    }
-  },
-
   data() {
     return {
       Heading: "MY PROJECTS",
       testCollection: [],
+      props: ['items'],
+      tags: [],
+      tasks: [],
     }
+  },
+  mounted() {
+    this.tasks = JSON.parse(this.$route.params.tasks)
+    this.tags = JSON.parse(this.$route.params.tags)
+    /*console.log(JSON.parse(this.$route.params.tasks))*/
+    console.log(this.tags);
+  },
+  methods: {
+    formatDate(date) {
+      return moment(date).format("DD MMMM YYYY");
+    },
   }
 }
 </script>
@@ -163,6 +191,24 @@ export default {
     position: fixed;
     overflow-y: scroll;
     padding-bottom: 150px;
+  }
+  #tagsbox {
+    width: 550px;
+    word-wrap: break-word; 
+  }
+
+  #tags {
+    font-size: 12px;
+    background-color: #FFE0B1;
+    margin-top: 5px;
+    padding: 3px 20px;
+    text-align: center;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline;
+    margin-right: 5px;
+    white-space: nowrap;
+
   }
 
   #interest {
@@ -245,7 +291,7 @@ export default {
   .edit-proj {
     background-color: #0E8044;
     color: white;
-    border-radius: 8px;
+    border-radius: 15px;
     width: 250px;
     border-width: 0px;
     font-size: 18px;
@@ -254,7 +300,7 @@ export default {
   .close-proj {
     background-color: #E58686;
     color: white;
-    border-radius: 8px;
+    border-radius: 15px;
     width: 250px;
     border-width: 0px;
     font-size: 18px;
@@ -263,7 +309,7 @@ export default {
   .del-proj {
     background-color: #D23333;
     color: white;
-    border-radius: 8px;
+    border-radius: 15px;
     width: 250px;
     border-width: 0px;
     font-size: 18px;
@@ -282,6 +328,7 @@ export default {
     background-color: #DBEBE3;
     border-radius: 10px;
     border: 2px solid rgba(14, 128, 68, 0.54);
+    margin-top: 15px;
   }
 
   .projDesc, .projDeliverable {
@@ -323,7 +370,7 @@ export default {
     border-bottom-right-radius: 4px;
     border-top-right-radius: 4px;
     background: #DBEBE3;
-    margin: 40px;
+    margin: 0px;
     letter-spacing: 0.2px;
     position: relative;
     line-height: 1.4em;
@@ -332,6 +379,8 @@ export default {
     list-style: none;
     text-align: left;
     max-width: 65%;
+    margin-top: 10px;
+    margin-left:40px;
   }
 
   .timeline h1 {
@@ -375,7 +424,7 @@ export default {
       left: -207px;
       content: attr(data-date);
       text-align: right;
-      font-weight: 100;
+      font-weight: 550;
       font-size: 0.9em;
       min-width: 120px;
   }

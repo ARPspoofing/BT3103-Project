@@ -24,20 +24,20 @@
 
             <label for="projectTags">Tags*</label>
             <select v-model="selected" name="tagSelect" multiple size="5" id="tagSelect" required="">
-              <option value="ArtificialIntelligence">Artificial Intelligence</option>
-              <option value="ScientificComputingApplications">Scientific Computing Applications</option>
-              <option value="DataStructuresAlgorithms">Data Structures and Algorithms</option>
-              <option value="ComputerArchitecture">Computer Architecture</option>
-              <option value="ComputerNetworks">Computer Networks</option>
-              <option value="ComputerDatabase">Computer Database</option>
-              <option value="DatabaseMining">Database Mining</option>
-              <option value="DataAnalytics">Data Analytics</option>
-              <option value="ComputerGraphicsVisualisation">Computer Graphics and Visualisation</option>
-              <option value="ImageSoundProcessing">Image and Sound Processing</option>
-              <option value="DistributedComputing">Distributed Computing</option>
-              <option value="HumanComputerInteraction">Human-Computer Interaction</option>
-              <option value="SoftwareEngineering">Software Engineering</option>
-              <option value="InformationCodingTheory">Information and Coding Theory</option>
+              <option value="Artificial Intelligence">Artificial Intelligence</option>
+              <option value="Scientific Computing Applications">Scientific Computing Applications</option>
+              <option value="Data Structures Algorithms">Data Structures and Algorithms</option>
+              <option value="Computer Architecture">Computer Architecture</option>
+              <option value="Computer Networks">Computer Networks</option>
+              <option value="Computer Database">Computer Database</option>
+              <option value="Database Mining">Database Mining</option>
+              <option value="Data Analytics">Data Analytics</option>
+              <option value="Computer Graphics Visualisation">Computer Graphics and Visualisation</option>
+              <option value="Image Sound Processing">Image and Sound Processing</option>
+              <option value="Distributed Computing">Distributed Computing</option>
+              <option value="Human Computer Interaction">Human-Computer Interaction</option>
+              <option value="Software Engineering">Software Engineering</option>
+              <option value="Information Coding Theory">Information and Coding Theory</option>
             </select> <br><br>
 
             <label for="projectDescription">Description</label>

@@ -20,6 +20,7 @@
     "bootstrap-vue-3": "^0.1.7",
     "core-js": "^3.6.5",
     "firebase": "^9.6.8",
+    "moment": "^2.29.1",
     "vue": "^3.2.31",
     "vue-class-component": "^7.2.6",
     "vue-multiselect": "^2.1.6",
