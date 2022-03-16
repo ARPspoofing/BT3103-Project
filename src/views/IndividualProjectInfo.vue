@@ -9,13 +9,13 @@
         <b>PROJECT INFO</b>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectNewApps'}" ><b>NEW APPLICANTS</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectNewApps', params:{items: JSON.stringify(this.items)}}" ><b>NEW APPLICANTS</b></router-link>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectAccApps'}" ><b>ACCEPTED APPLICANTS</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectAccApps', params:{items: JSON.stringify(this.items)}}" ><b>ACCEPTED APPLICANTS</b></router-link>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectRejApps'}" ><b>REJECTED APPLICANTS</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectRejApps', params:{items: JSON.stringify(this.items)}}" ><b>REJECTED APPLICANTS</b></router-link>
       </span>
     </h1>
     <hr/>
@@ -24,7 +24,7 @@
         <img src="../assets/google-logo.png" alt="Logo" class = "logo">
         <span>
           <div class="projTitle">
-            {{this.$route.params.projectTitle}}  <br>
+            {{items.projectTitle}}  <br>
             Company Name <br>
             <!--Tags-->
             <div id="tagsbox">
@@ -56,10 +56,10 @@
       </span>
       <span>
         <div class="projDetails">
-          {{this.$route.params.position}} <br>
-          {{this.$route.params.vancancies}} <br>
-          {{formatDate(this.$route.params.projectStart)}} - {{formatDate(this.$route.params.projectEnd)}} <br>
-          SGD {{this.$route.params.allowance}} <br>            
+          {{items.position}} <br>
+          {{items.vacancies}} <br>
+          {{formatDate(items.projectStart)}} - {{formatDate(items.projectEnd)}} <br>
+          SGD {{items.allowance}} <br>            
         </div>
       </span>
     </div>
@@ -71,7 +71,7 @@
             
         </div>
         <div class="projDescContent">
-          {{this.$route.params.description}}    
+          {{this.items.description}}    
           <!--
           We are looking for a Software Engineering Intern who preferably 
           has experience working with video analytics algorithms. Lorem Ipsum is simply dummy text 
@@ -152,11 +152,13 @@ export default {
       props: ['items'],
       tags: [],
       tasks: [],
+      items: [],
     }
   },
   mounted() {
-    this.tasks = JSON.parse(this.$route.params.tasks)
-    this.tags = JSON.parse(this.$route.params.tags)
+    this.tasks = JSON.parse(this.$route.params.items).tasks
+    this.tags = JSON.parse(this.$route.params.items).tags
+    this.items = JSON.parse(this.$route.params.items)
     /*console.log(JSON.parse(this.$route.params.tasks))*/
     console.log(this.tags);
   },
