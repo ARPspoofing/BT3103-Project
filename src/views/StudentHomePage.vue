@@ -57,53 +57,6 @@
         <Card v-if="index <= 5" :projectTitle = "item.projectTitle" :description="item.description"/>
       </div>
     </div>
-<<<<<<< HEAD
-
-    <div class="card-text">
-      <div class="card-body">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-        <button href="#" class="btn-apply">Apply Now</button>
-      </div>
-      
-      <div class="card-body">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-        <button href="#" class="btn-apply">Apply Now</button>
-      
-      </div>
-      <div class="card-body">
-        <div class = "clogo">
-          <img src="../assets/google-logo.png" alt="Logo" class = "logo">
-          <span class="card-title">
-            Project Title <br>
-          </span>
-        </div>
-        <div class="card-content">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-        <button href="#" class="btn-apply">Apply Now</button>
-      </div>
-    </div>
-    <div :key="item.key" v-for="item in testCollection">
-      <Card :projectTitle = "item.projectTitle" :description="item.description"/>
-    </div>
-=======
->>>>>>> emily
   </div>
 </template>
 
