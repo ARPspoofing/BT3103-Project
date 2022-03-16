@@ -6,16 +6,16 @@
     </router-link>
     <h1 id="interest">
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectInfo'}" ><b>PROJECT INFO</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectInfo', params:{items: JSON.stringify(this.items)}}" ><b>PROJECT INFO</b></router-link>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectNewApps'}" ><b>NEW APPLICANTS</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectNewApps', params:{items: JSON.stringify(this.items)}}" ><b>NEW APPLICANTS</b></router-link>
       </span>
       <span class="options">
         <b>ACCEPTED APPLICANTS</b>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectRejApps'}" ><b>REJECTED APPLICANTS</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectRejApps', params:{items: JSON.stringify(this.items)}}" ><b>REJECTED APPLICANTS</b></router-link>
       </span>
     </h1>
     <hr/>
@@ -41,8 +41,13 @@ export default {
   },
   data() {
     return {
-      Heading: "ACCEPTED APPLICANTS"
+      Heading: "ACCEPTED APPLICANTS",
+      items: [],
     }
+  },
+  mounted() {
+    this.items = JSON.parse(this.$route.params.items)
+    console.log(this.items)
   }
 }
 </script>
