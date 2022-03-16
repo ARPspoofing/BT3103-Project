@@ -11,21 +11,14 @@
                 <div class="input">
                     <h1>Welcome Back Student!</h1>
                 </div>
-                <div class="input">
-                    <h4>Dont't have an account?&nbsp;</h4>
-                    <router-link class="link" :to="{name:'StudentSignup'}">Signup</router-link>
-                    <router-view/>
-                </div>
-                <div class="input">
+               
                     <h4>Email</h4>
                 </div>
                 <div class="input">
                     <input type="text" v-model="email">
                     <img class="icon" src="../../assets/envelope.png">
                 </div>
-                <div class="input">
-                    <h4>Password</h4>
-                </div>
+                
                 <div class="input">
                     <input type="password" v-model="password">
                     <img class="icon" src="../../assets/lock.png">
@@ -72,7 +65,7 @@ const login = async () => {
         if(!formFilled) {
             router.push({name:'StudentProfileForm'})
         } else {
-            router.push({name:'StudentLandingPage'})
+            router.push({name:'StudentHomePage'})
 
         }
     } ).catch((error) => {

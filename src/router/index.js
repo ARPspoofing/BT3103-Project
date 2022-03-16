@@ -1,12 +1,19 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import About from "../views/About.vue";
+import StudentHomePage from "@/views/Students/StudentHomePage.vue";
 
 const routes = [
   {
     path: "/",
     name: "Home",
     component: Home,
+  },
+
+  {
+    path: "/",
+    name: "StudentHomePage",
+    component: StudentHomePage,
   },
 
   {
@@ -24,9 +31,24 @@ const routes = [
   },
 
   {
-    path: "/student/signup",
-    name: "StudentSignup",
-    component: () => import("../views/Students/StudentSignup.vue"),
+    path: "/project",
+    name: "IndividualProjectInfo",
+    component: () => import("../views/IndividualProjectInfo.vue"),
+  },
+  {
+    path: "/project/new_apps",
+    name: "IndividualProjectNewApps",
+    component: () => import("../views/IndividualProjectNewApps.vue"),
+  },
+  {
+    path: "/project/acc_apps",
+    name: "IndividualProjectAccApps",
+    component: () => import("../views/IndividualProjectAccApps.vue"),
+  },
+  {
+    path: "/project/rej_apps",
+    name: "IndividualProjectRejApps",
+    component: () => import("../views/IndividualProjectRejApps.vue"),
   },
 
   {
@@ -47,9 +69,37 @@ const routes = [
   },
 
   //Business routes
+  {
+    path: "/business/inprogress",
+    name: "BusinessInProgress",
+    component: () => import("../views/Businesses/BusinessInProgress.vue"),
+  },
+
+  {
+    path: "/student/signup",
+    name: "StudentSignup",
+    component: () => import("../views/Students/StudentSignup.vue"),
+  },
 
   {
     path: "/business",
+    name: "BusinessHomePage",
+    component: () => import("../views/Businesses/BusinessHomePage.vue"),
+  },
+  {
+    path: "/business/completed",
+    name: "BusinessCompleted",
+    component: () => import("../views/Businesses/BusinessCompleted.vue"),
+  },
+
+  {
+    path: "/business/add_project",
+    name: "BusinessAddProject",
+    component: () => import("../views/Businesses/BusinessAddProject.vue"),
+  },
+
+  {
+    path: "/business/home",
     name: "BusinessHome",
     component: () => import("../views/Businesses/BusinessHome.vue"),
   },
@@ -76,6 +126,12 @@ const routes = [
     path: "/business/landingpage",
     name: "BusinessLandingPage",
     component: () => import("../views/Businesses/BusinessLandingPage.vue"),
+  },
+
+  {
+    path: "/:catchall(.*)",
+    name: "NotFound",
+    component: () => import("../views/NotFound.vue"),
   },
 ];
 

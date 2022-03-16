@@ -57,7 +57,7 @@ const login = async () => {
     signInWithEmailAndPassword(getAuth(), email.value,password.value)
     .then((data) => {
         if(formFilled) {        
-            router.push({name:'BusinessLandingPage'})
+            router.push({name:'BusinessHome'})
         } else {
             router.push({name:'BusinessProfileForm'})
         }
