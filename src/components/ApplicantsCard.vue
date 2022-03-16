@@ -4,7 +4,7 @@
           <img src="../assets/google-logo.png" alt="Logo" class = "logo">
           <span>
             <div class="appDetails">
-                Applicant Name <br>
+                {{applicantName}} <br>
                 Course
             </div>
           </span>
@@ -22,6 +22,7 @@
 export default {
     props:{
         buttons: Boolean,
+        applicantName: String,
     }
 }
 </script>

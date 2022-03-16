@@ -26,14 +26,14 @@
         <div class="carousel-item">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, key) in testCollection.slice(6)">
-              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @click="addApplicant(key)"/>
+              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @click="addApplicant(key + 6)"/>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, key) in testCollection.slice(12)">
-              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @click="addApplicant(key)"/>
+              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @click="addApplicant(key + 2*6)"/>
             </div>
           </div>
         </div>
@@ -85,9 +85,11 @@ export default {
   
   methods: {
     async addApplicant(key) {
-      var applicants = this.testCollection[key]["applicants"]
+      console.log(key)
+      var newApplicants = this.testCollection[key]["newApplicants"]
+      console.log(newApplicants)
       var projTitle = this.testCollection[key]["projectTitle"]
-      applicants.push("random");
+      newApplicants.push("random");
 
       alert("Applying for proj: " + projTitle);
       
@@ -96,7 +98,7 @@ export default {
 
       try {
           const docRef = await updateDoc(doc(db, "Project", projTitle), {
-              Applicants: applicants
+              New_Applicants: newApplicants
           })
           
           console.log(docRef)
@@ -105,7 +107,7 @@ export default {
         catch(error) {
           console.error("Error updating document: ", error);
       }
-      console.log(applicants);
+      console.log(newApplicants);
       console.log(key)
       console.log(this.testCollection[key])
       // var applicants = testCollection[key]["Applicants"]
@@ -122,7 +124,7 @@ export default {
         testCollection.push({ 
             projectTitle: data.Project_Title, 
             description: data.Description,
-            applicants: data.Applicants
+            newApplicants: data.New_Applicants
         });
       });
       that.testCollection = testCollection

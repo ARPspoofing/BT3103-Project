@@ -85,7 +85,10 @@ export default {
             projectStart: data.Project_Start,
             projectEnd: data.Project_End,
             tasks: data.Tasks,
-            tags: data.Tags
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
         });
       });
       that.testCollection = testCollection

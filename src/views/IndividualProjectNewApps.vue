@@ -21,10 +21,10 @@
     <hr/>
     <div>
         <div class="appContainer">
-            <ApplicantsCard :buttons=true />
-            <ApplicantsCard :buttons=true />
-            <ApplicantsCard :buttons=true />
+        <div :key="item.key" v-for="item in newApplicants">
+          <ApplicantsCard :buttons=true :applicantName="item" @click=""/>
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -32,6 +32,7 @@
 <script>
 import NavBar from '../components/NavBar.vue'
 import ApplicantsCard from '../components/ApplicantsCard.vue'
+
 
 export default {
   name: 'IndividualProjectNewApps',
@@ -43,11 +44,13 @@ export default {
     return {
       Heading: "NEW APPLICANTS",
       items: [],
+      newApplicants: [],
     }
   },
   mounted() {
     this.items = JSON.parse(this.$route.params.items)
-    console.log(this.items)
+    this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
+    console.log(this.newApplicants)
   }
 }
 </script>
