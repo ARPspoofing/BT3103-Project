@@ -1,26 +1,4 @@
 <template>
-  <!--
-  <nav class="navbar navbar-expand-lg navbar-custom">
-    <img src="../assets/Pathfinders.png" class="d-inline-block align-top" width=250 alt="logo">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <h2 id="title"><b>MY PROJECTS</b></h2>
-    <ul class="navbar-nav ms-auto">
-        <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Navigate
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" >Home</router-link>
-            <div class="dropdown-divider"></div>
-            <router-link class="nav-item nav-link active" :to="{name:'About'}">About</router-link>
-            <div class="dropdown-divider"></div>
-            <router-link class="nav-item nav-link active" :to="{name:'BusinessHomePage'}">Business Home</router-link>
-        </div>
-        </div>
-    </ul>
-  </nav>-->
   <NavBar :search=true :header=false />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
@@ -41,6 +19,102 @@
       </span>
     </h1>
     <hr/>
+    <div>
+      <div class = "clogo">
+        <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+        <span>
+          <div class="projTitle">
+            Project Title <br>
+            Company Name <br>
+            Tags
+          </div>
+        </span>
+        <span>
+          <div class="projButtons" >
+            <button href="#" class="edit-proj">EDIT PROJECT DETAILS</button> <br>
+            <button href="#" class="close-proj">CLOSE PROJECT</button> <br>
+            <button href="#" class="del-proj">DELETE PROJECT</button>
+          </div> 
+        </span>
+      </div>
+    </div>
+    <br>
+    <div class = "projInfo">
+      <span>
+        <div class="projLabels">
+          Position <br>
+          Number of Vacancies <br>
+          Project Period <br>
+          Payment Amount <br>            
+        </div>
+      </span>
+      <span>
+        <div class="projDetails">
+          Software Engineer <br>
+          2 <br>
+          01 Jan 2022 - 01 May 2022 <br>
+          SGD 1,000 <br>            
+        </div>
+      </span>
+    </div>
+    <br>
+    <div class = "projDesc">
+      <span>
+        <div class="projDescLabel">
+          Description <br>          
+        </div>
+        <div class="projDescContent">
+          We are looking for a Software Engineering Intern who preferably 
+          has experience working with video analytics algorithms. Lorem Ipsum is simply dummy text 
+          of the printing and typesetting industry. Lorem Ipsum has been the industry's standard 
+          dummy text ever since the 1500s, when an unknown printer took a galley of type and 
+          scrambled it to make a type specimen book. It has survived not only five centuries, 
+          but also the leap into electronic typesetting, remaining essentially unchanged. It was 
+          popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum 
+          passages, and more recently with desktop publishing software like Aldus PageMaker including 
+          versions of Lorem Ipsum.
+        </div>
+      </span>
+    </div>
+    <br>
+    <div class = "projDeliverable">
+      <span>
+        <div class="projDescLabel">
+          Deliverables <br>          
+        </div>
+      </span>
+      <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="delicard">
+                    <div class="delicard-body">
+                        <div id="delicontent">
+                            <ul class="timeline">
+                                <li class="event" data-date="1 January 2022">
+                                    <h3>Registration</h3>
+                                    <p>Get here on time, it's first come first serve. Be late, get turned away.</p>
+                                </li>
+                                <li class="event" data-date="22 February 2022">
+                                    <h3>Opening Ceremony</h3>
+                                    <p>Get ready for an exciting event, this will kick off in amazing fashion with MOP &amp; Busta Rhymes as an opening show.</p>
+                                </li>
+                                <li class="event" data-date="7 March 2022">
+                                    <h3>Main Event</h3>
+                                    <p>This is where it all goes down. You will compete head to head with your friends and rivals. Get ready!</p>
+                                </li>
+                                <li class="event" data-date="21 April 2022">
+                                    <h3>Closing Ceremony</h3>
+                                    <p>See how is the victor and who are the losers. The big stage is where the winners bask in their own glory.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <br><br>
   </div>
 </template>
 
@@ -54,6 +128,13 @@ export default {
   data() {
     return {
       Heading: " "
+    }
+  },
+
+  data() {
+    return {
+      Heading: "MY PROJECTS",
+      testCollection: [],
     }
   }
 }
@@ -80,6 +161,8 @@ export default {
     width: 100%;
     height: 100%;
     position: fixed;
+    overflow-y: scroll;
+    padding-bottom: 150px;
   }
 
   #interest {
@@ -135,5 +218,177 @@ export default {
     height: 70px;
     width: 70px;
     color: #004A23;
+  }
+
+  .logo {
+    vertical-align: left;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-left: 220px;
+    margin-right: 10px;
+    float: left;
+  }
+
+  .clogo {
+    text-align: left;
+    margin: 40px 20px 20px 20px;
+    height: 100px;
+  }
+
+  .projTitle {
+    width: max-content;
+    float: left;
+    margin-left: 20px;
+  }
+
+  .edit-proj {
+    background-color: #0E8044;
+    color: white;
+    border-radius: 8px;
+    width: 250px;
+    border-width: 0px;
+    font-size: 18px;
+  }
+
+  .close-proj {
+    background-color: #E58686;
+    color: white;
+    border-radius: 8px;
+    width: 250px;
+    border-width: 0px;
+    font-size: 18px;
+  }
+
+  .del-proj {
+    background-color: #D23333;
+    color: white;
+    border-radius: 8px;
+    width: 250px;
+    border-width: 0px;
+    font-size: 18px;
+  }
+
+  .projButtons {
+    width: max-content;
+    float: right;
+    margin-right: 220px;
+  }
+
+  .projInfo {
+    margin: auto;
+    width: 800px;
+    height: 150px;
+    background-color: #DBEBE3;
+    border-radius: 10px;
+    border: 2px solid rgba(14, 128, 68, 0.54);
+  }
+
+  .projDesc, .projDeliverable {
+    margin: auto;
+    width: 800px;
+    height: max-content;
+  }
+
+  .projLabels, .projDescLabel {
+    text-align: left;
+    width: max-content;
+    font-weight: bold;
+    float: left;
+    margin: 10px 20px 5px 100px;
+    line-height: 30px;
+  }
+
+  .projDescContent {
+    text-align: left;
+    width: 650px;
+    float: left;
+    margin: 0px 20px 20px 100px;
+  }
+
+  .projDetails {
+    text-align: left;
+    width: max-content;
+    float: left;
+    margin: 10px 20px 20px 30px;
+    line-height: 30px;
+  }
+
+  #delicontent {
+    margin-top: 50px;
+  }
+
+  .timeline {
+    border-left: 3px solid #004A23;
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+    background: #DBEBE3;
+    margin: 40px;
+    letter-spacing: 0.2px;
+    position: relative;
+    line-height: 1.4em;
+    font-size: 1.03em;
+    padding: 50px 35px 50px 50px;
+    list-style: none;
+    text-align: left;
+    max-width: 65%;
+  }
+
+  .timeline h1 {
+      font-weight: 300;
+      font-size: 1.4em;
+  }
+
+  .timeline h2,
+  .timeline h3 {
+      font-weight:600;
+      font-size: 16px;
+      margin-bottom: 10px;
+      text-align: left;
+  }
+
+  .timeline p {
+      font-size: 14px;
+  }
+
+  .timeline .event {
+      border-bottom: 1px dashed #e8ebf1;
+      padding-bottom: 25px;
+      margin-bottom: 25px;
+      position: relative;
+  }
+
+  .timeline .event:last-of-type {
+      padding-bottom: 0;
+      margin-bottom: 0;
+      border: none;
+  }
+
+  .timeline .event:before,
+  .timeline .event:after {
+      position: absolute;
+      display: block;
+      top: 0;
+  }
+
+  .timeline .event:before {
+      left: -207px;
+      content: attr(data-date);
+      text-align: right;
+      font-weight: 100;
+      font-size: 0.9em;
+      min-width: 120px;
+  }
+
+  .timeline .event:after {
+      -webkit-box-shadow: 0 0 0 3px #004A23;
+      box-shadow: 0 0 0 3px #004A23;
+      left: -55.8px;
+      background: #fff;
+      border-radius: 50%;
+      height: 9px;
+      width: 9px;
+      content: "";
+      top: 5px;
   }
 </style>
