@@ -80,6 +80,7 @@ export default {
     return {
       Heading: " ",
       testCollection: [],
+      newApplicants:[],
     }
   },
   
