@@ -64,6 +64,7 @@ export default {
           items: JSON.stringify(this.testCollection[key]),
         },
       })
+      console.log(key)
       console.log(this.testCollection[key])
   }
   },
