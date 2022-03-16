@@ -153,6 +153,7 @@ export default {
       var g = this.selected;
       var h = document.getElementById("projectDescription").value;
       var i = this.tasks;
+      var j = [];
 
       alert("Saving your data for Project: " + a);
 
@@ -167,6 +168,7 @@ export default {
           Tags: g,
           Description: h,
           Tasks: i,
+          Applicants: j,
         })
 
         console.log(docRef)

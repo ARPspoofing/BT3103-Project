@@ -18,22 +18,22 @@
       <div class="carousel-inner">
         <div class="carousel-item active">
           <div class="carouContainer">
-            <div :key="item.key" v-for="(item, index) in testCollection">
-              <Card v-if="index <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description"/>
+            <div :key="item.key" v-for="(item, key) in testCollection">
+              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @click="addApplicant(key)"/>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carouContainer">
-            <div :key="item.key" v-for="(item, index) in testCollection.slice(6)">
-              <Card v-if="index <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description"/>
+            <div :key="item.key" v-for="(item, key) in testCollection.slice(6)">
+              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @click="addApplicant(key)"/>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carouContainer">
-            <div :key="item.key" v-for="(item, index) in testCollection.slice(12)">
-              <Card v-if="index <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description"/>
+            <div :key="item.key" v-for="(item, key) in testCollection.slice(12)">
+              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @click="addApplicant(key)"/>
             </div>
           </div>
         </div>
@@ -65,8 +65,9 @@ import NavBar from '../components/NavBar.vue'
 import Card from '../components/Card.vue'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
+import { getAuth } from 'firebase/auth';
 
 export default {
   name: 'StudentHomePage',
@@ -81,6 +82,36 @@ export default {
       testCollection: [],
     }
   },
+  
+  methods: {
+    async addApplicant(key) {
+      var applicants = this.testCollection[key]["applicants"]
+      var projTitle = this.testCollection[key]["projectTitle"]
+      applicants.push("random");
+
+      alert("Applying for proj: " + projTitle);
+      
+      // const auth = getAuth();
+      // this.fbuser = auth.currentUser.email;
+
+      try {
+          const docRef = await updateDoc(doc(db, "Project", projTitle), {
+              Applicants: applicants
+          })
+          
+          console.log(docRef)
+          this.$emit("updated")
+      }
+        catch(error) {
+          console.error("Error updating document: ", error);
+      }
+      console.log(applicants);
+      console.log(key)
+      console.log(this.testCollection[key])
+      // var applicants = testCollection[key]["Applicants"]
+    }
+  },
+  
   mounted() {
     const that = this;
     async function fetchProject() {
@@ -90,7 +121,8 @@ export default {
         let data = docs.data()
         testCollection.push({ 
             projectTitle: data.Project_Title, 
-            description: data.Description
+            description: data.Description,
+            applicants: data.Applicants
         });
       });
       that.testCollection = testCollection

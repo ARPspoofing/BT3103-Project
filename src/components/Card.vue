@@ -9,16 +9,25 @@
         <div class="card-content">
           <p class="card-text">{{description}}</p>
         </div>
-        <button v-show=apply href="#" class="btn-apply">Apply Now</button>
+        <button v-show=apply href="#" class="btn-apply" @click="applicantbtn">Apply Now</button>
       </div>
 </template>
 
 <script>
 export default {
+
+    data() {
+      return {
+        testCollection: [],
+      }
+    },
+
     props:{
         projectTitle: String,
         description: String,
         apply: Boolean,
+        applicantbtn: Function,
+
     }
 }
 </script>
