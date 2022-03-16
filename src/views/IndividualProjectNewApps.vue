@@ -19,15 +19,25 @@
       </span>
     </h1>
     <hr/>
+    <div>
+        <div class="appContainer">
+            <ApplicantsCard :buttons=true />
+            <ApplicantsCard :buttons=true />
+            <ApplicantsCard :buttons=true />
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
 import NavBar from '../components/NavBar.vue'
+import ApplicantsCard from '../components/ApplicantsCard.vue'
+
 export default {
   name: 'IndividualProjectNewApps',
   components: {
-    NavBar
+    NavBar,
+    ApplicantsCard
   },
   data() {
     return {
@@ -42,6 +52,19 @@ export default {
     background-color: #004A23;
   }
 
+  .mainBody {
+    background-color: #F5F5F5;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow-y: scroll;
+    padding-bottom: 550px;
+  }
+
+  .appContainer {
+    margin-left: 30px;
+  }
+
   #title {
       color: white;
       margin-left:30px;
@@ -51,13 +74,6 @@ export default {
 
   .btn {
       margin: 10px;
-  }
-
-  .mainBody {
-    background-color: #F5F5F5;
-    width: 100%;
-    height: 100%;
-    position: fixed;
   }
 
   #interest {

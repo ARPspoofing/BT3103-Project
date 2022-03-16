@@ -19,21 +19,21 @@
         <div class="carousel-item active">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, index) in testCollection">
-              <Card v-if="index <= 5" :projectTitle = "item.projectTitle" :description="item.description"/>
+              <Card v-if="index <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description"/>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, index) in testCollection.slice(6)">
-              <Card v-if="index <= 5" :projectTitle = "item.projectTitle" :description="item.description"/>
+              <Card v-if="index <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description"/>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, index) in testCollection.slice(12)">
-              <Card v-if="index <= 5" :projectTitle = "item.projectTitle" :description="item.description"/>
+              <Card v-if="index <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description"/>
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@
     <hr/>
     <div class="carouContainer">
       <div :key="item.key" v-for="(item, index) in testCollection">
-        <Card v-if="index <= 5" :projectTitle = "item.projectTitle" :description="item.description"/>
+        <Card v-if="index <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" />
       </div>
     </div>
   </div>
