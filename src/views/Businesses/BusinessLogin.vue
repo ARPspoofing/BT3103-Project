@@ -1,9 +1,14 @@
 <template>
+<div id="nav">
+<router-link :to="{name:'Home'}">Home</router-link>
+<router-link :to="{name:'BusinessLogin'}">Login</router-link>
+<router-link :to="{name:'BusinessSignup'}">Signup</router-link>
+</div>
 <div class="form-wrap">
         <form class="login">
             <div class="inputs">
                 <div class="input">
-                    <h1>Welcome Back!</h1>
+                    <h1>Welcome Back Business!</h1>
                 </div>
                 <div class="input">
                     <h4>Login with your details</h4>
@@ -66,6 +71,18 @@ const login = async () => {
 </script>
 
 <style scoped>
+
+    a {
+        font-weight: bold;
+        color: #2c3e50;
+        text-decoration: none;
+    }
+
+    a.router-link-exact-active {
+        color: #42b983;
+        font-weight:700px;
+    }
+
     .form-wrap {
         overflow:hidden;
         display:flex;

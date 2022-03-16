@@ -1,13 +1,20 @@
 <template>
-
+<div id="nav">
+<router-link :to="{name:'Home'}">Home</router-link>
+<router-link :to="{name:'StudentLogin'}">Login</router-link>
+<router-link :to="{name:'StudentSignup'}">Signup</router-link>
+</div>
 <div class="form-wrap">
+    <ResetPassword @close="close" v-if="forgetPassword"/>
         <form class="login">
             <div class="inputs">
                 <div class="input">
-                    <h1>Welcome Back!</h1>
+                    <h1>Welcome Back Student!</h1>
                 </div>
                 <div class="input">
-                    <h4>Login with your details</h4>
+                    <h4>Dont't have an account?&nbsp;</h4>
+                    <router-link class="link" :to="{name:'StudentSignup'}">Signup</router-link>
+                    <router-view/>
                 </div>
                 <div class="input">
                     <h4>Email</h4>
@@ -23,6 +30,10 @@
                     <input type="password" v-model="password">
                     <img class="icon" src="../../assets/lock.png">
                 </div>
+                <div @click="forgot" class="forgot">
+                    <h4>Forgot Password</h4>
+                </div>
+                
                 <div class="input">
                     <button @click="login"><b>Log In</b></button>
                 </div>
@@ -32,13 +43,14 @@
     <span>{{this.errorMessage}}</span>
 </template>
 
-<script setup>
+<script>
 import {ref} from "vue"
 import {getAuth,signInWithEmailAndPassword} from "firebase/auth"
 import {useRouter} from "vue-router"
 import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../../firebase.js"
 import {getDoc, collection, doc} from "firebase/firestore"
+import ResetPassword from '../../components/ResetPassword.vue'
 
 const email = ref("")
 const password = ref("")
@@ -70,10 +82,44 @@ const login = async () => {
     }
 }
 
-
+export default {
+    name:'StudentLogin',
+    data() {
+        return {
+            forgetPassword: false
+        }
+    },
+    components: {
+        ResetPassword,
+    },
+    methods: {
+        forgot() {
+            this.forgetPassword = true
+        },
+        close(e) {
+            this.forgetPassword = false
+        }
+    }
+}
 </script>
 
 <style scoped>
+    a {
+        font-weight: bold;
+        color: #2c3e50;
+        text-decoration: none;
+    }
+
+    a.router-link-exact-active {
+        color: #42b983;
+        font-weight:700px;
+    }
+
+    .link {
+        font-weight: bold;
+        color: blue;
+    }
+
     .form-wrap {
         overflow:hidden;
         display:flex;
@@ -124,6 +170,12 @@ const login = async () => {
 
     input:focus {
         outline: none;
+    }
+
+    .forgot {
+        font-size: 12px;
+        color:darkgreen;
+        cursor: pointer;
     }
 
     .icon {

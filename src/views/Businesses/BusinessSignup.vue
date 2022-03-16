@@ -1,10 +1,15 @@
 <template>
+<div id="nav">
+<router-link :to="{name:'Home'}">Home</router-link>
+<router-link :to="{name:'BusinessLogin'}">Login</router-link>
+<router-link :to="{name:'BusinessSignup'}">Signup</router-link>
+</div>
         <Loading v-if="loading"/>
     <div class="form-wrap">
         <form class="signup">
             <div class="inputs">
                 <div class="input">
-                    <h1>Welcome!</h1>
+                    <h1>Welcome Business!</h1>
                 </div>
                 <div class="input">
                     <h4>Signup with your Organization email</h4>
@@ -16,6 +21,7 @@
                     <input :class="{shake:emailErrorPresent,'input-error':emailErrorPresent}" type="text" v-model="email" placeholder="user@organization.com" >
                     <img class="icon" src="../../assets/envelope.png">
                 </div>
+                <div class="errorMsg" v-if="emailErrorPresent">{{this.errorMessage}}</div>
                 <div class="input">
                     <h4>Password</h4>
                 </div>
@@ -23,20 +29,23 @@
                     <input :class="{shake:passwordErrorPresent,'input-error':passwordErrorPresent}" type="password" v-model="password">
                     <img class="icon" src="../../assets/lock.png">
                 </div>
+                 <div class="errorMsg" v-if="passwordErrorPresent">{{this.errorMessage}}</div>
                 <div class="input">
                     <h4>Confirm Password</h4>
                 </div>
+               
                 <div class="input">
                     <input type="password" v-model="confirmPassword">
                     <img class="icon" src="../../assets/lock.png">
                 </div>
+                <div class="errorMsg" v-if="confirmPasswordErrorPresent">{{this.errorMessage}}</div>
                 <div class="input">
                     <button @click="register"><b>Sign Up</b></button>
                 </div>
             </div>
         </form>
     </div>
-    <span>{{this.errorMessage}}</span>
+  
 </template>
 
 <script>
@@ -71,8 +80,37 @@ export default {
     },
     methods: {
          register() { 
-                this.loading = true      
-                if(this.password == this.confirmPassword) {         
+                this.loading = true
+                if (this.email == '') {
+                    this.emailErrorPresent = true
+                    this.loading = false
+                    this.errorMessage = "Please enter a valid email address"
+                    setTimeout(() => {
+                        this.emailErrorPresent = false
+                    }, 1500)
+                } else if (this.password == '') {
+                    this.passwordErrorPresent = true
+                    this.loading = false
+                    this.errorMessage = "Please enter a password"
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500)
+
+                }else if(this.confirmPassword == '') {
+                    this.confirmPasswordErrorPresent = true
+                    this.loading = false
+                    this.errorMessage = "Please confirm your password above"
+                    setTimeout(() => {
+                        this.confirmPasswordErrorPresent = false
+                    }, 1500)
+                } else if (this.confirmPassword != this.password) {
+                    this.confirmPasswordErrorPresent = true
+                    this.loading = false
+                    this.errorMessage = "Please ensure that your password and confirm password match"
+                    setTimeout(() => {
+                        this.confirmPasswordErrorPresent = false
+                    }, 1500)
+                } else if(this.password == this.confirmPassword) {         
                 createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                 .then((data) => {
                     console.log("in method")
@@ -90,8 +128,9 @@ export default {
                     this.loading = false
                 }).catch((err) => {
                     this.error = err.code
-                    if (this.error === "auth/invalid-email") {
+                    if (this.error === "auth/invalid-email" || this.email == '') {
                         this.errorMessage = 'Invalid email'
+                        this.loading = false
                         this.emailErrorPresent = true
                         setTimeout(() => {
                             this.emailErrorPresent = false
@@ -99,11 +138,13 @@ export default {
                     } else if (this.error === "auth/email-already-in-use") {
                         this.errorMessage = 'Email already registered. Please login'
                         this.emailErrorPresent = true
+                        this.loading = false
                         setTimeout(() => {
                             this.emailErrorPresent = false
                         }, 1500)
-                    } else if (this.error === "auth/weak-password") {
+                    } else if (this.error === "auth/weak-password" || this.password == '') {
                         this.errorMessage = 'Weak password'
+                        this.loading = false
                         this.passwordErrorPresent = true
                         setTimeout(() => {
                             this.passwordErrorPresent = false
@@ -118,6 +159,18 @@ export default {
 </script>
 
 <style scoped>
+
+    a {
+        font-weight: bold;
+        color: #2c3e50;
+        text-decoration: none;
+    }
+
+    a.router-link-exact-active {
+        color: #42b983;
+        font-weight:700px;
+    }
+
     .form-wrap {
         overflow:hidden;
         display:flex;
@@ -191,6 +244,10 @@ export default {
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
         color: white;
+    }
+    .errorMsg {
+        color: red;
+        margin-top:10px;
     }
 
     .shake {

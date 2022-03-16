@@ -1,11 +1,16 @@
 <template>
- 
+<div id="nav">
+<router-link :to="{name:'Home'}">Home</router-link>
+<router-link :to="{name:'StudentLogin'}">Login</router-link>
+<router-link :to="{name:'StudentSignup'}">Signup</router-link>
+</div>
         <Loading v-if="loading"/>
+        <router-view/>
     <div class="form-wrap">
         <form class="signup">
             <div class="inputs">
                 <div class="input">
-                    <h1>Welcome!</h1>
+                    <h1>Welcome Student!</h1>
                 </div>
                 <div class="input">
                     <h4>Signup with your NUS email</h4>
@@ -17,6 +22,7 @@
                     <input :class="{shake:emailErrorPresent,'input-error':emailErrorPresent}" type="text" v-model="email" placeholder="e1234567@u.nus.edu" >
                     <img class="icon" src="../../assets/envelope.png">
                 </div>
+                <div class="errorMsg" v-if="emailErrorPresent">{{this.errorMessage}}</div>
                 <div class="input">
                     <h4>Password</h4>
                 </div>
@@ -24,20 +30,21 @@
                     <input :class="{shake:passwordErrorPresent,'input-error':passwordErrorPresent}" type="password" v-model="password">
                     <img class="icon" src="../../assets/lock.png">
                 </div>
+                <div class="errorMsg" v-if="passwordErrorPresent">{{this.errorMessage}}</div>
                 <div class="input">
                     <h4>Confirm Password</h4>
                 </div>
                 <div class="input">
-                    <input type="password" v-model="confirmPassword">
+                    <input :class="{shake:confirmPasswordErrorPresent,'input-error':confirmPasswordErrorPresent}" type="password" v-model="confirmPassword">
                     <img class="icon" src="../../assets/lock.png">
                 </div>
+                <div class="errorMsg" v-if="confirmPasswordErrorPresent">{{this.errorMessage}}</div>
                 <div class="input">
                     <button @click="register"><b>Sign Up</b></button>
                 </div>
             </div>
         </form>
     </div>
-    <span>{{this.errorMessage}}</span>
 </template>
 
 <script>
@@ -53,6 +60,7 @@ import Loading from '../../components/Loading.vue'
 
 const db = getFirestore(firebaseApp)
 const router = useRouter()
+var validEmails = []
 export default {
     data() {
         return {
@@ -67,16 +75,111 @@ export default {
             loading: null,
         }
     },
+    created() {
+      async function getValidEmail() {
+          var validEmail = []
+          let database = await getDocs(collection(db,"nusEmails"))
+          database.forEach((doc) => {
+              var data = doc.data()
+              validEmail.push(data.email)
+              console.log(validEmail)
+              })
+      validEmails = validEmail
+      }
+      getValidEmail()
+    },
     components: {
         Loading,
     },
     methods: {
-       async register() { 
-                this.loading = true               
-                await createUserWithEmailAndPassword(getAuth(),this.email,this.password)
-                .then((data) => {
-                    
-                    setDoc(doc(db,"students",this.email),{
+      
+        register() { 
+                if(this.email == '') {
+                    this.errorMessage = 'email field is empty'
+                    this.emailErrorPresent = true
+                    setTimeout(() => {
+                        this.emailErrorPresent = false
+                    }, 1500)
+                } else if(this.password == '') {
+                    this.errorMessage = 'password field is empty'
+                    this.passwordErrorPresent = true
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500)
+                } else if (this.confirmPassword == '') {
+                    this.errorMessage = 'confirm password field is empty'
+                    this.confirmPasswordErrorPresent = true
+                    setTimeout(() => {
+                        this.confirmPasswordErrorPresent = false
+                    }, 1500)
+                } else if(this.confirmPassword != this.password) {
+                    this.errorMessage = 'Password and confirm password do not match'
+                    this.passwordErrorPresent = true
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500) 
+                    /*
+                } else if (this.email == '' && this.password == '') {
+                    this.errorMessage = 'email field is empty'
+                    this.emailErrorPresent = true
+                    setTimeout(() => {
+                        this.emailErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'password field is empty'
+                    this.passwordErrorPresent = true
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500)
+                }else if(this.email == '' && this.confirmPassword == '') {
+                    this.errorMessage = 'email field is empty'
+                    this.emailErrorPresent = true
+                    setTimeout(() => {
+                        this.emailErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'Confirm password field is empty'
+                    this.confirmPasswordErrorPresent = true
+                    setTimeout(() => {
+                        this.confirmPasswordErrorPresent = false
+                    }, 1500)
+                } else if (this.password == '' && this.confirmPassword == '') {
+                    this.errorMessage = 'Confirm password field is empty'
+                    this.confirmPasswordErrorPresent = true
+                    setTimeout(() => {
+                        this.confirmPasswordErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'password field is empty'
+                    this.passwordErrorPresent = true
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500)
+                } else if(this.email == '' && this.password == '' && this.confirmPassword == '') {
+                    this.errorMessage = 'email field is empty'
+                    this.emailErrorPresent = true
+                    setTimeout(() => {
+                        this.emailErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'Confirm password field is empty'
+                    this.confirmPasswordErrorPresent = true
+                    setTimeout(() => {
+                        this.confirmPasswordErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'password field is empty'
+                    this.passwordErrorPresent = true
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500)
+                    */
+                }else if (!validEmails.includes(this.email)) {
+                    this.errorMessage = 'Unregistered NUS email'
+                    this.emailErrorPresent = true
+                    setTimeout(() => {
+                        this.emailErrorPresent = false
+                    }, 1500)
+                } else {
+                    this.loading = true               
+                    createUserWithEmailAndPassword(getAuth(),this.email,this.password)
+                    .then((data) => {
+                         setDoc(doc(db,"students",this.email),{
                             email:this.email,
                             password:this.password,
                             //when a user logs in when this attribute is false, he/she will be directed to the 
@@ -86,35 +189,49 @@ export default {
                 })
                     this.$router.push({name:'StudentProfileForm'})
                     this.loading = false
-                }).catch((err) => {
-                    this.error = err.code
-                    if (this.error === "auth/invalid-email") {
-                        this.errorMessage = 'Invalid email'
-                        this.emailErrorPresent = true
-                        setTimeout(() => {
-                            this.emailErrorPresent = false
-                        }, 1500)
-                    } else if (this.error === "auth/email-already-in-use") {
-                        this.errorMessage = 'Email already registered. Please login'
-                        this.emailErrorPresent = true
-                        setTimeout(() => {
-                            this.emailErrorPresent = false
-                        }, 1500)
-                    } else if (this.error === "auth/weak-password") {
-                        this.errorMessage = 'Weak password'
-                        this.passwordErrorPresent = true
-                        setTimeout(() => {
-                            this.passwordErrorPresent = false
-                        }, 1500)
-                    }
-                    console.log(this.error)
-                })
+                    }).catch((err) => {
+                        this.error = err.code
+                        if (this.error === "auth/invalid-email") {
+                            this.errorMessage = 'Invalid email'
+                            this.emailErrorPresent = true
+                            setTimeout(() => {
+                                this.emailErrorPresent = false
+                            }, 1500)
+                        } else if (this.error === "auth/email-already-in-use") {
+                            this.errorMessage = 'Email already registered. Please login'
+                            this.emailErrorPresent = true
+                            setTimeout(() => {
+                                this.emailErrorPresent = false
+                            }, 1500)
+                        } else if (this.error === "auth/weak-password") {
+                            this.errorMessage = 'Weak password'
+                            this.passwordErrorPresent = true
+                            setTimeout(() => {
+                                this.passwordErrorPresent = false
+                            }, 1500)
+                        }
+                        console.log(this.error)
+                        this.loading = false
+                    })
+                }
         }    
     },
 }
 </script>
 
 <style scoped>
+
+     a {
+        font-weight: bold;
+        color: #2c3e50;
+        text-decoration: none;
+    }
+
+    a.router-link-exact-active {
+        color: #42b983;
+        font-weight:700px;
+    }
+
     .form-wrap {
         overflow:hidden;
         display:flex;
@@ -149,6 +266,11 @@ export default {
         justify-content: left;
         align-items: center;
         margin-bottom:-10px;
+    }
+
+    .errorMsg {
+        color: red;
+        margin-top:10px;
     }
 
     input {
