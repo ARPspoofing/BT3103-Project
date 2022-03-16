@@ -37,8 +37,13 @@ const routes = [
   {
     path: "/student/profileForm",
     name: "StudentProfileForm",
-    component: () =>
-      import("../views/Students/StudentProfileForm.vue"),
+    component: () => import("../views/Students/StudentProfileForm.vue"),
+  },
+
+  {
+    path: "/student/landingpage",
+    name: "StudentLandingPage",
+    component: () => import("../views/Students/StudentLandingPage.vue"),
   },
 
   //Business routes
@@ -65,6 +70,12 @@ const routes = [
     path: "/business/profileForm",
     name: "BusinessProfileForm",
     component: () => import("../views/Businesses/BusinessProfileForm.vue"),
+  },
+
+  {
+    path: "/business/landingpage",
+    name: "BusinessLandingPage",
+    component: () => import("../views/Businesses/BusinessLandingPage.vue"),
   },
 ];
 

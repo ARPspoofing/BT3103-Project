@@ -7,13 +7,13 @@
                     <h1>Welcome!</h1>
                 </div>
                 <div class="input">
-                    <h4>Signup with your NUS email</h4>
+                    <h4>Signup with your Organization email</h4>
                 </div>
                 <div class="input">
                     <h4>Email</h4>
                 </div>
                 <div class="input">
-                    <input :class="{shake:emailErrorPresent,'input-error':emailErrorPresent}" type="text" v-model="email" placeholder="e1234567@u.nus.edu" >
+                    <input :class="{shake:emailErrorPresent,'input-error':emailErrorPresent}" type="text" v-model="email" placeholder="user@organization.com" >
                     <img class="icon" src="../../assets/envelope.png">
                 </div>
                 <div class="input">
@@ -70,18 +70,23 @@ export default {
         Loading,
     },
     methods: {
-        register() { 
-                this.loading = true               
+         register() { 
+                this.loading = true      
+                if(this.password == this.confirmPassword) {         
                 createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                 .then((data) => {
-                    this.$router.push({name:'BusinessProfileForm'})
-                    setDoc(doc(db,"businesses",this.email),{
-                            email:this.email,
+                    console.log("in method")
+                    
+                    setDoc(doc(db,"businesses",String(this.email)),{
+                            
                             //when a user logs in when this attribute is false, he/she will be directed to the 
                             //profile page otherwise will be directed to the landing page
-                            profilePageCreated:false,
+                            profileFormCreated:false,
+                            
 
                 })
+                console.log('uploaded to firebase')
+                    this.$router.push({name:'BusinessProfileForm'})
                     this.loading = false
                 }).catch((err) => {
                     this.error = err.code
@@ -106,6 +111,7 @@ export default {
                     }
                     console.log(this.error)
                 })
+                }
         }    
     },
 }

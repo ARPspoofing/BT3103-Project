@@ -35,17 +35,31 @@
 import {ref} from "vue"
 import {getAuth,signInWithEmailAndPassword} from "firebase/auth"
 import {useRouter} from "vue-router"
+import {getFirestore} from "firebase/firestore"
+import firebaseApp from "../../firebase.js"
+import {getDoc, collection, doc} from "firebase/firestore"
 
 const email = ref("")
 const password = ref("")
 const router = useRouter()
-const login = () => {
+const db = getFirestore(firebaseApp)
+
+const login = async () => {
+    if(email != '' && password != '') {
+    const docRef = doc(db,"businesses",String(email.value))
+    const docs = await getDoc(docRef)
+    const formFilled = docs.data().profileFormCreated
     signInWithEmailAndPassword(getAuth(), email.value,password.value)
     .then((data) => {
-        router.push({name:'BusinessProfilePage'})
+        if(formFilled) {        
+            router.push({name:'BusinessLandingPage'})
+        } else {
+            router.push({name:'BusinessProfileForm'})
+        }
     } ).catch((error) => {
         console.log(error)
     })
+}
 }
 
 

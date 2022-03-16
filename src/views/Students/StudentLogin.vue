@@ -1,4 +1,5 @@
 <template>
+
 <div class="form-wrap">
         <form class="login">
             <div class="inputs">
@@ -35,17 +36,38 @@
 import {ref} from "vue"
 import {getAuth,signInWithEmailAndPassword} from "firebase/auth"
 import {useRouter} from "vue-router"
+import {getFirestore} from "firebase/firestore"
+import firebaseApp from "../../firebase.js"
+import {getDoc, collection, doc} from "firebase/firestore"
 
 const email = ref("")
 const password = ref("")
 const router = useRouter()
-const login = () => {
-    signInWithEmailAndPassword(getAuth(), email.value,password.value)
+const auth = getAuth()
+const db = getFirestore(firebaseApp)
+
+const login = async () => {
+
+    if(email != '' && password != '') {
+        
+        console.log(email.value)
+    const docRef = doc(db,"students",String(email.value))
+    const docs = await getDoc(docRef)
+    const formFilled = docs.data().profileFormCreated
+    console.log(formFilled)
+    signInWithEmailAndPassword(auth, email.value,password.value)
     .then((data) => {
-        router.push({name:'BusinessProfilePage'})
+        if(!formFilled) {
+            router.push({name:'StudentProfileForm'})
+        } else {
+            router.push({name:'StudentLandingPage'})
+
+        }
     } ).catch((error) => {
         console.log(error)
     })
+
+    }
 }
 
 

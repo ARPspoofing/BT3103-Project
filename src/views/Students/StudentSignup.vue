@@ -1,4 +1,5 @@
 <template>
+ 
         <Loading v-if="loading"/>
     <div class="form-wrap">
         <form class="signup">
@@ -70,18 +71,20 @@ export default {
         Loading,
     },
     methods: {
-        register() { 
+       async register() { 
                 this.loading = true               
-                createUserWithEmailAndPassword(getAuth(),this.email,this.password)
+                await createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                 .then((data) => {
-                    this.$router.push({name:'StudentProfileForm'})
-                    setDoc(doc(db,"businesses",this.email),{
+                    
+                    setDoc(doc(db,"students",this.email),{
                             email:this.email,
+                            password:this.password,
                             //when a user logs in when this attribute is false, he/she will be directed to the 
                             //profile page otherwise will be directed to the landing page
-                            profilePageCreated:false,
+                            profileFormCreated:false,
 
                 })
+                    this.$router.push({name:'StudentProfileForm'})
                     this.loading = false
                 }).catch((err) => {
                     this.error = err.code
