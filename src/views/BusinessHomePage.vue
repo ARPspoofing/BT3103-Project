@@ -51,18 +51,20 @@ export default {
       this.$router.push({
         name:'IndividualProjectInfo', 
         params: {
+          /*
           projectTitle: this.testCollection[key].projectTitle,
           description:this.testCollection[key].description,
-          vancancies: this.testCollection[key].vancancies,
+          vacancies: this.testCollection[key].vacancies,
           allowance: this.testCollection[key].allowance,
           position: this.testCollection[key].position,
           projectStart: this.testCollection[key].projectStart,
           projectEnd: this.testCollection[key].projectEnd,
           tasks: JSON.stringify(this.testCollection[key].tasks),
-          tags: JSON.stringify(this.testCollection[key].tags),
+          tags: JSON.stringify(this.testCollection[key].tags),*/
+          items: JSON.stringify(this.testCollection[key]),
         },
       })
-      console.log(this.testCollection[key].tags)
+      console.log(this.testCollection[key])
   }
   },
 
@@ -76,7 +78,7 @@ export default {
         testCollection.push({ 
             projectTitle: data.Project_Title, 
             description: data.Description, 
-            vancancies: data.Num_Of_Vacancies,
+            vacancies: data.Num_Of_Vacancies,
             allowance: data.Allowance,
             position: data.Position,
             projectStart: data.Project_Start,
