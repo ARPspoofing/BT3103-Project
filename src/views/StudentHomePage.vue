@@ -23,7 +23,7 @@
   </nav>-->
   <NavBar :search=true :header=false />
   <div class="mainBody">
-    <h1 id="interest">Projects you may like</h1>
+    <h1 id="interest">Projects You May Like</h1>
     <!--
     <div v-if="isLoading">
       Loading...
@@ -139,7 +139,7 @@
 
     <br><br><br>
   
-    <h1 id="latest">Latest projects</h1>
+    <h1 id="latest">Latest Projects</h1>
     <hr/>
     <div class="card-text">
       <div class="card-body">
