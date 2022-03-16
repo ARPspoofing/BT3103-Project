@@ -63,30 +63,6 @@
               <label for="duedate">Due Date*</label>
               <input type="date" v-model.lazy="task.taskDueDate" required>
             </div>
-             <!----->
-
-            <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" 
-              data-bs-backdrop="false" style="background: rgba(0, 0, 0, 0.5);">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Deliverable</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <div id="deliverableInput">
-                      <label for="taskName">Task Name*</label>
-                      <input type="text" id="taskName" required="" placeholder="Task Name"> <br><br>
-                      <label for="taskDescription">Description</label>
-                      <textarea id="taskDescription" name="taskDescription" rows="4" cols="37" placeholder="Task Description"></textarea> <br><br>
-                      <label for="taskDueDate">Due Date*</label>
-                      <input type="date" id="taskDueDate" required="" placeholder="Choose Due Date">
-                    </div>
-                  </div>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="addDeliverableBtn">Add Deliverable</button>
-                </div>
-              </div>
-             </div> -->
             </div>
         <button id="saveButton" type="button" v-on:click="saveProject()">Save</button>
     </form>
@@ -150,7 +126,14 @@ export default {
       var e = document.getElementById("projectPeriodEnd").value;
       var f = document.getElementById("projectAllowance").value;
       //var g = document.getElementById("tagSelect").value;
-      var g = this.selected;
+      if (typeof(this.selected) == String) {
+        const tagArray = new Array();
+        tagArray.push(this.selected);
+        var g = tagArray;
+      } else {
+        var g = this.selected;
+      }
+      console.log(g);
       var h = document.getElementById("projectDescription").value;
       var i = this.tasks;
 

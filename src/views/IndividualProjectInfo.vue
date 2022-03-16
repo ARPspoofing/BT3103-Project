@@ -72,16 +72,6 @@
         </div>
         <div class="projDescContent">
           {{this.items.description}}    
-          <!--
-          We are looking for a Software Engineering Intern who preferably 
-          has experience working with video analytics algorithms. Lorem Ipsum is simply dummy text 
-          of the printing and typesetting industry. Lorem Ipsum has been the industry's standard 
-          dummy text ever since the 1500s, when an unknown printer took a galley of type and 
-          scrambled it to make a type specimen book. It has survived not only five centuries, 
-          but also the leap into electronic typesetting, remaining essentially unchanged. It was 
-          popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum 
-          passages, and more recently with desktop publishing software like Aldus PageMaker including 
-          versions of Lorem Ipsum.-->
         </div>
       </span>
     </div>
@@ -100,27 +90,6 @@
                         <div id="delicontent">
                             <ul class="timeline" :key="item.key" v-for="(item, index) in tasks">
                                 <Deliverable :data-date="formatDate(item.taskDueDate)" :description="item.taskDescription" :title="item.taskName"/>
-                                <!--<Deliverable />
-                                <Deliverable />
-                                <Deliverable />
-                                <li class="event" data-date="1 January 2022">
-                                    <h3>Registration</h3>
-                                    <p>Get here on time, it's first come first serve. Be late, get turned away.</p>
-                                </li>
-                                
-                                <li class="event" data-date="22 February 2022">
-                                    <h3>Opening Ceremony</h3>
-                                    <p>Get ready for an exciting event, this will kick off in amazing fashion with MOP &amp; Busta Rhymes as an opening show.</p>
-                                </li>
-                                <li class="event" data-date="7 March 2022">
-                                    <h3>Main Event</h3>
-                                    <p>This is where it all goes down. You will compete head to head with your friends and rivals. Get ready!</p>
-                                </li>
-                                <li class="event" data-date="21 April 2022">
-                                    <h3>Closing Ceremony</h3>
-                                    <p>See how is the victor and who are the losers. The big stage is where the winners bask in their own glory.</p>
-                                </li>
-                                -->
                             </ul>
                         </div>
                     </div>
@@ -195,7 +164,7 @@ export default {
     padding-bottom: 150px;
   }
   #tagsbox {
-    width: 550px;
+    width: 450px;
     word-wrap: break-word; 
   }
 
@@ -273,7 +242,7 @@ export default {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    margin-left: 220px;
+    margin-left: 170px;
     margin-right: 10px;
     float: left;
   }
@@ -320,7 +289,7 @@ export default {
   .projButtons {
     width: max-content;
     float: right;
-    margin-right: 220px;
+    margin-right: 200px;
   }
 
   .projInfo {
