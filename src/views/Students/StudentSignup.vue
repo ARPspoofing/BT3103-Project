@@ -59,7 +59,7 @@ import Loading from '../../components/Loading.vue'
 
 const db = getFirestore(firebaseApp)
 const router = useRouter()
-var validEmails = []
+var validEmail = []
 export default {
     data() {
         return {
@@ -75,22 +75,21 @@ export default {
         }
     },
     created() {
-      async function getValidEmail() {
-          var validEmail = []
-          let database = await getDocs(collection(db,"nusEmails"))
-          database.forEach((doc) => {
-              var data = doc.data()
-              validEmail.push(data.email)
-              console.log(validEmail)
-              })
-      validEmails = validEmail
-      }
-      getValidEmail()
+      this.getValidEmail()
+      console.log("validEmail",validEmail)
     },
     components: {
         Loading,
     },
     methods: {
+        async getValidEmail() {
+          let database = await getDocs(collection(db,"nusEmails"))
+          database.forEach((doc) => {
+              var data = doc.data()
+              validEmail.push(data.email)
+              //console.log(validEmail)
+              })
+      },
         register() { 
                 if(this.email == '') {
                     this.errorMessage = 'email field is empty'

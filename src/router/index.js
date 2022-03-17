@@ -40,6 +40,16 @@ const routes = [
     component: () =>
       import("../views/Students/StudentProfileForm.vue"),
   },
+  {
+    path: "/student/management",
+    name: "StudentManagement",
+    component: () => import("../views/Students/StudentManagement.vue")
+  },
+  {
+    path: "/student/management/:taskId",
+    name: "TaskDetails",
+    component: () => import("../views/Students/TaskView.vue")
+  },
 
   //Business routes
 
