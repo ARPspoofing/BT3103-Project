@@ -115,7 +115,7 @@ export default {
     },
     indivproj(key) {
       this.$router.push({
-        name:'IndividualProjectInfo', 
+        name:'BusinessInProgress', 
         params: {
           items: JSON.stringify(this.testCollection[key]),
         },
@@ -188,7 +188,7 @@ export default {
   }
 
   .carousel-item {
-    height: 450px; 
+    height: 500px; 
   }
 
   .carousel-control-next,

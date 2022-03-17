@@ -64,6 +64,15 @@ export default {
   }
   
   .card-title {
+    width: 60%;
+    height: 30px;
+    margin: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* number of lines to show */
+            line-clamp: 1; 
+    -webkit-box-orient: vertical;
     display: inline-block;
   }
 
@@ -85,7 +94,7 @@ export default {
     border-radius: 8px;
     border-width: 0px;
     height: 30px;
-    margin-top: 10px;
+    margin-top: 0px;
   }
   
   .logo {

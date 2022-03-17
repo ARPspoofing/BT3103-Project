@@ -4,22 +4,6 @@
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
-    <h1 id="interest">
-      <!-- i think we can toggle this on or off depending on if the user is a student or business using v-if?   -->
-      <span class="options">
-        <b>PROJECT INFO</b>
-      </span>
-      <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectNewApps', params:{items: JSON.stringify(this.items)}}" ><b>NEW APPLICANTS</b></router-link>
-      </span>
-      <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectAccApps', params:{items: JSON.stringify(this.items)}}" ><b>ACCEPTED APPLICANTS</b></router-link>
-      </span>
-      <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectRejApps', params:{items: JSON.stringify(this.items)}}" ><b>REJECTED APPLICANTS</b></router-link>
-      </span>
-    </h1>
-    <hr/>
     <div>
       <div class = "clogo">
         <img src="../assets/google-logo.png" alt="Logo" class = "logo">
@@ -109,7 +93,7 @@ import Deliverable from '../components/Deliverable.vue'
 import * as moment from 'moment'
 
 export default {
-  name: 'IndividualProjectInfo',
+  name: 'StudentViewProjectInfo',
   props: ['items'],
   components: {
     NavBar, 
