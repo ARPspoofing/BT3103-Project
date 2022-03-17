@@ -5,7 +5,6 @@
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
     <h1 id="interest">
-      <!-- i think we can toggle this on or off depending on if the user is a student or business using v-if?   -->
       <span class="options">
         <b>PROJECT INFO</b>
       </span>
@@ -38,7 +37,9 @@
         </span>
         <span>
           <div class="projButtons" >
-            <button href="#" class="edit-proj">EDIT PROJECT DETAILS</button> <br>
+            <router-link :to="{name:'BusinessEditProject'}">
+              <button class="edit-proj">EDIT PROJECT DETAILS</button>
+            </router-link><br>
             <button href="#" class="close-proj">CLOSE PROJECT</button> <br>
             <button href="#" class="del-proj">DELETE PROJECT</button>
           </div> 
@@ -131,12 +132,16 @@ export default {
     this.items = JSON.parse(this.$route.params.items)
     /*console.log(JSON.parse(this.$route.params.tasks))*/
     console.log(this.tags);
+    console.log(this.items)
   },
   methods: {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
-  }
+  },
+  params: {
+    items: this.items,
+  },
 }
 </script>
 

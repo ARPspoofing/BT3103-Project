@@ -34,6 +34,11 @@ const routes = [
     component: () => import('../views/BusinessAddProject.vue')
   },
   {
+    path: '/project/edit_project',
+    name: 'BusinessEditProject',
+    component: () => import('../views/BusinessEditProject.vue')
+  },
+  {
     path: '/project',
     name: 'IndividualProjectInfo',
     component: () => import('../views/IndividualProjectInfo.vue')
