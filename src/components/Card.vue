@@ -1,5 +1,5 @@
 <template>
-        <div class="card-body">
+        <div class="card-body" @click="clickCard">
         <div class = "clogo">
           <img src="../assets/google-logo.png" alt="Logo" class = "logo">
           <span class="card-title">
@@ -31,6 +31,9 @@ export default {
     methods: {
       applicantbtn() {
         this.$emit('applicantbtn')
+    }, 
+    clickCard() {
+      this.$emit('clickCard')
     }
   }
 }
