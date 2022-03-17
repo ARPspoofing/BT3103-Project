@@ -115,7 +115,7 @@ export default {
     },
     indivproj(key) {
       this.$router.push({
-        name:'BusinessInProgress', 
+        name:'StudentViewProjectInfo', 
         params: {
           items: JSON.stringify(this.testCollection[key]),
         },

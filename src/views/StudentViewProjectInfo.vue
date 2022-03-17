@@ -22,9 +22,7 @@
         </span>
         <span>
           <div class="projButtons" >
-            <button href="#" class="edit-proj">EDIT PROJECT DETAILS</button> <br>
-            <button href="#" class="close-proj">CLOSE PROJECT</button> <br>
-            <button href="#" class="del-proj">DELETE PROJECT</button>
+            <button class="applyProj" @click="addApplicant()">APPLY NOW</button> <br>
           </div> 
         </span>
       </div>
@@ -91,12 +89,17 @@
 import NavBar from '../components/NavBar.vue'
 import Deliverable from '../components/Deliverable.vue'
 import * as moment from 'moment'
+import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
+const db = getFirestore(firebaseApp);
+import { getAuth } from 'firebase/auth';
 
 export default {
   name: 'StudentViewProjectInfo',
   props: ['items'],
   components: {
-    NavBar, 
+    NavBar,
     Deliverable
   },
   data() {
@@ -112,15 +115,44 @@ export default {
   mounted() {
     this.tasks = JSON.parse(this.$route.params.items).tasks
     this.tags = JSON.parse(this.$route.params.items).tags
+    this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
+    this.projTitle = JSON.parse(this.$route.params.items).projectTitle
     this.items = JSON.parse(this.$route.params.items)
     /*console.log(JSON.parse(this.$route.params.tasks))*/
+    console.log(this.projTitle)
     console.log(this.tags);
+    console.log(this.newApplicants);
   },
   methods: {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
-  }
+    async addApplicant() {
+        var newApplicants = this.newApplicants
+        console.log(newApplicants)
+        var projTitle = this.projTitle
+        newApplicants.push("random");
+
+        alert("Applying for proj: " + projTitle);
+        
+        // const auth = getAuth();
+        // this.fbuser = auth.currentUser.email;
+
+        try {
+            const docRef = await updateDoc(doc(db, "Project", projTitle), {
+                New_Applicants: newApplicants
+            })
+            
+            console.log(docRef)
+            this.$emit("updated")
+        }
+        catch(error) {
+            console.error("Error updating document: ", error);
+        }
+        console.log(newApplicants);
+        // var applicants = testCollection[key]["Applicants"]
+    },
+}
 }
 </script>
 
@@ -244,26 +276,8 @@ export default {
     margin-left: 20px;
   }
 
-  .edit-proj {
+  .applyProj {
     background-color: #0E8044;
-    color: white;
-    border-radius: 15px;
-    width: 250px;
-    border-width: 0px;
-    font-size: 18px;
-  }
-
-  .close-proj {
-    background-color: #E58686;
-    color: white;
-    border-radius: 15px;
-    width: 250px;
-    border-width: 0px;
-    font-size: 18px;
-  }
-
-  .del-proj {
-    background-color: #D23333;
     color: white;
     border-radius: 15px;
     width: 250px;
@@ -275,6 +289,7 @@ export default {
     width: max-content;
     float: right;
     margin-right: 200px;
+    margin-top: 50px;
   }
 
   .projInfo {
