@@ -1,84 +1,46 @@
 <template>
     <div class="task">
-        <div class="content">
-            <router-link class="task flex" :to="{name:'TaskDetails', params: {taskId: task['id']}}">
-                <!--
-                <div class="left flex">    
-                </div>
-                -->
-                <span class="title">{{task['taskname']}}</span>
-                <span class="duedate">{{task['duedate']}}</span>
-                <span class="short">{{task['shortdescription']}}</span>
+            <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoTaskDetails', params: {taskId: task['id']}}">
                 <div class="status-button flex" :class="{todo:task['todo'],inprogress:task['inprogress'],pendingreview:task['pendingreview'],completed:task['completed']}">
                     <span v-if="task['todo']">ToDo</span>
                     <span v-if="task['inprogress']">In-Progress</span>
                     <span v-if="task['pendingreview']">Pending Review</span>
                     <span v-if="task['completed']">Completed </span>
                 </div>
-                <!--
-                <div class="right flex">
-                </div>
-                -->
-            </router-link>
-        </div>
+                <span class="title">{{task['taskname']}}</span>
+                <span class="duedate">{{task['duedate']}}</span>
+                <span class="short">{{task['shortdescription']}}</span>
+            </router-link>        
     </div>  
+
     
 </template>
 
 <script>
     export default {
-        name: 'Task',
+        name: 'ToDo',
         props: ['task']
     }
 </script>
 
 <style scoped>
 
-
     .task {
-        z-index:100;
-        position:fixed;
-        display:flex;
-        flex-direction:column;
-        justify-content:left;
         align-items:center;
-    }
-
-    .content {
-        position: absolute;
-        display:flex;
-        flex-direction: column;
+        background-color: aquamarine;
         border-radius: 20px;
         padding: 40px 20px;
         background-color: aquamarine;
         width: 15vw;
         height: 10vh;
-    }
-
-    p {
-        text-align:center;
-    }
-
-    /*
-    .task {
+        margin-bottom: 4px;
         text-decoration: none;
-        cursor: pointer;
-        gap: 16px;
-        margin-bottom: 16px;
-        color: #fff;
-        border-radius: 20px;
-        padding: 28px 32px;
-        background-color: pink;
     }
-    */
-
-
 
     .status-button {
         width: 4px;
         height: 10px;
         font-size: 12px;
-        margin-right: 30px;
         align-items: center;
         justify-content: center;
         padding: 8px 30px;
@@ -89,8 +51,12 @@
         display: flex;
     }
 
-    span {
-        align-items: center;
+    a {
+        width:15vw;
+    }
+
+    .duedate {
+        width:15vw;
     }
 
     .todo::before {

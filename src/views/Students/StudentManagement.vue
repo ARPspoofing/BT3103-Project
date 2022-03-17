@@ -1,11 +1,24 @@
 <template>
-    <div>
-     <Task v-if="finalTask" v-for="(task,index) in finalTask" :task="task" :key="index"/>
+<div v-if="finalTask.length > 0" class="wrapper-outer">
+    <div class="wrapper">
+        <ToDo v-if="finalTask" v-for="(task,index) in finalTask" :task="task" :key="index"/>
+    </div>
+    <div class="wrapper">
+        <ToDo v-if="finalTask" v-for="(task,index) in finalTask" :task="task" :key="index"/>
+    </div>
+    <div class="wrapper">
+        <ToDo v-if="finalTask" v-for="(task,index) in finalTask" :task="task" :key="index"/>
+    </div>
+</div>
+    <div v-else class="empty flex flex-column">
+        <img src="../../assets/empty.png">   
+        <h3>You do not have any tasks yet</h3>
+        <p>Tasks will only show up once you have accepted an offered project</p>
     </div>
 </template>
 
 <script>
-import Task from '../../components/Task.vue'
+import ToDo from '../../components/ToDo.vue'
 import firebaseApp from '../../firebase.js';
 import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
@@ -56,12 +69,35 @@ export default {
       getTasks()
     },
     components: {
-        Task,
+        ToDo,
     },
 
 }
 </script>
 
 <style scoped>
+    .wrapper-outer {
+        display:grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
     
+    .wrapper {
+        display:grid;
+    }
+
+    .empty {
+        align-items: center;
+    }   
+
+    h3 {
+        margin-top:-100px;
+        font-size: 20px;  
+    }
+
+    p {
+        text-align: center;
+        font-size:12px;
+        font-weight:300;
+    }
+
 </style>

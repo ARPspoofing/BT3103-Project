@@ -166,7 +166,7 @@
               <div class="input flex flex-column">
                     <label for="description">Description</label>
                     <textarea required type="text" id="schoolEmail" rows="4" cols="50" maxlength="500" v-model="description"></textarea> 
-                </div>
+            </div>
             </div>
 
             <!--Save Exit-->
