@@ -283,6 +283,7 @@ export default {
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
+        margin:10px;
     }
 
     input:focus {
