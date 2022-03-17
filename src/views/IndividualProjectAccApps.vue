@@ -21,9 +21,9 @@
     <hr/>
     <div>
         <div class="appContainer">
-            <ApplicantsCard :buttons=false />
-            <ApplicantsCard :buttons=false />
-            <ApplicantsCard :buttons=false />
+          <div :key="item.key" v-for="item in accApplicants">
+            <ApplicantsCard :buttons=false :applicantName="item" @click=""/>
+          </div>
         </div>
     </div>
   </div>
@@ -43,11 +43,13 @@ export default {
     return {
       Heading: "ACCEPTED APPLICANTS",
       items: [],
+      accApplicants: [],
     }
   },
   mounted() {
     this.items = JSON.parse(this.$route.params.items)
-    console.log(this.items)
+    this.accApplicants = JSON.parse(this.$route.params.items).accApplicants
+    console.log(this.accApplicants)
   }
 }
 </script>

@@ -21,9 +21,9 @@
     <hr/>
     <div>
         <div class="appContainer">
-        <div :key="item.key" v-for="item in newApplicants">
-          <ApplicantsCard :buttons=true :applicantName="item" @click=""/>
-        </div>
+          <div :key="item.key" v-for="item in newApplicants">
+            <ApplicantsCard :buttons=true :applicantName="item" @click=""/>
+          </div>
       </div>
     </div>
   </div>

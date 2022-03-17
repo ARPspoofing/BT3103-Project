@@ -27,7 +27,6 @@ export default {
         description: String,
         apply: Boolean,
         applicantbtn: Function,
-
     }
 }
 </script>
