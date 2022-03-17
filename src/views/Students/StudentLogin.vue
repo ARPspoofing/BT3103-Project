@@ -11,18 +11,27 @@
                 <div class="input">
                     <h1>Welcome Back Student!</h1>
                 </div>
-               
+                <div class="input">
+                    <h4>Dont't have an account?&nbsp;</h4>
+                    <router-link class="link" :to="{name:'StudentSignup'}">Signup</router-link>
+                    <router-view/>
+                </div>
+                <div class="input">
                     <h4>Email</h4>
                 </div>
                 <div class="input">
                     <input type="text" v-model="email">
                     <img class="icon" src="../../assets/envelope.png">
                 </div>
-                
+                <div class="errorMsg" v-if="emailError">{{this.errorMessage}}</div>
+                <div class="input">
+                    <h4>Password</h4>
+                </div>
                 <div class="input">
                     <input type="password" v-model="password">
                     <img class="icon" src="../../assets/lock.png">
                 </div>
+                <div class="errorMsg" v-if="passwordError">{{this.errorMessage}}</div>
                 <div @click="forgot" class="forgot">
                     <h4>Forgot Password</h4>
                 </div>
@@ -33,7 +42,7 @@
             </div>
         </form>
     </div>
-    <span>{{this.errorMessage}}</span>
+    
 </template>
 
 <script>
@@ -45,41 +54,23 @@ import firebaseApp from "../../firebase.js"
 import {getDoc, collection, doc} from "firebase/firestore"
 import ResetPassword from '../../components/ResetPassword.vue'
 
-const email = ref("")
-const password = ref("")
+
+
 const router = useRouter()
 const auth = getAuth()
-const db = getFirestore(firebaseApp)
+const db = getFirestore(firebaseApp)   
 
-const login = async () => {
-
-    if(email != '' && password != '') {
-        
-        console.log(email.value)
-    const docRef = doc(db,"students",String(email.value))
-    const docs = await getDoc(docRef)
-    const formFilled = docs.data().profileFormCreated
-    console.log(formFilled)
-    signInWithEmailAndPassword(auth, email.value,password.value)
-    .then((data) => {
-        if(!formFilled) {
-            router.push({name:'StudentProfileForm'})
-        } else {
-            router.push({name:'StudentHomePage'})
-
-        }
-    } ).catch((error) => {
-        console.log(error)
-    })
-
-    }
-}
 
 export default {
     name:'StudentLogin',
     data() {
         return {
-            forgetPassword: false
+            email:'',
+            password:'',            
+            forgetPassword: false,
+            errorMessage:'',
+            emailError: false,
+            passwordError:false
         }
     },
     components: {
@@ -91,8 +82,50 @@ export default {
         },
         close(e) {
             this.forgetPassword = false
-        }
+        }, 
+        
+    
+    async login() {   
+    console.log(this.email)
+    const docRef = doc(db,"students",String(this.email))
+    const docs = await getDoc(docRef)
+    if(!docs.exists()) {
+        this.emailError = true
+        this.errorMessage = "Email not registered please sign up first"
+        setTimeout(() =>{
+            this.emailError = false
+        }, 1500)
     }
+    else {
+    const formFilled = docs.data().profileFormCreated
+    console.log(formFilled)
+    await signInWithEmailAndPassword(auth, this.email,this.password)
+    .then((data) => {
+        if(!formFilled) {
+            this.$router.push({name:'StudentProfileForm'})
+        } else {
+            this.$router.push({name:'StudentHomePage'})
+
+        }
+    } ).catch((error) => {
+            if(error.code === "auth/wrong-password") {
+                this.passwordError = true;
+                this.errorMessage = "You have entered an incorrect password"
+                setTimeout(() => {
+                    this.passwordError = false
+                }, 1500)
+            } else if (error.code === "auth/user-not-found") {
+                this.emailError = true  
+                this.errorMessage = "The email does not exist please sign up first"
+                 setTimeout(() => {
+                    this.emailError = false
+                }, 1500)
+            }
+       
+    })
+    }
+    },
+  }
 }
 </script>
 
@@ -147,6 +180,11 @@ export default {
         justify-content: left;
         align-items: center;
         margin-bottom:-10px;
+        
+    }
+    .errorMsg {
+        color: red;
+        font-size: 15px;
     }
 
     input {
@@ -159,6 +197,7 @@ export default {
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
+        margin:10px
     }
 
     input:focus {

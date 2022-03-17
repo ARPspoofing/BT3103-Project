@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import NavBar from '../components/NavBar.vue'
+import NavBar from '../components/BusinessNavBar.vue'
 import ApplicantsCard from '../components/ApplicantsCard.vue'
 
 

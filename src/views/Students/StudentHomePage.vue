@@ -1,5 +1,5 @@
 <template>
-  <NavBar :search=true :header=false />
+  <StudentNavBar :search=true :header=false />
   <div class="mainBody">
     <h1 id="interest">Projects You May Like</h1>
     <!--
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import NavBar from '../../components/NavBar.vue'
+import StudentNavBar from '../../components/StudentNavBar.vue'
 import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
@@ -72,7 +72,7 @@ import { getAuth } from 'firebase/auth';
 export default {
   name: 'StudentHomePage',
   components: {
-    NavBar, 
+    StudentNavBar, 
     Card
   },
 

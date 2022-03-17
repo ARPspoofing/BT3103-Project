@@ -10,24 +10,23 @@ const routes = [
     component: Home,
   },
 
-  {
-    path: "/",
-    name: "StudentHomePage",
-    component: StudentHomePage,
-  },
-
-  {
-    path: "/about",
-    name: "About",
-    component: About,
-  },
-
   //Student routes
 
   {
-    path: "/student",
-    name: "StudentHome",
-    component: () => import("../views/Students/StudentHome.vue"),
+    path: "/student/home",
+    name: "StudentHomePage",
+    component: () => import("../views/Students/StudentHomePage.vue"),
+  },
+
+  {
+    path: "/student/about",
+    name: "StudentAbout",
+    component: () => import("../views/Students/StudentAbout.vue"),
+  },
+  {
+    path: "/student/signup",
+    name: "StudentSignup",
+    component: () => import("../views/Students/StudentSignup.vue"),
   },
 
   {
@@ -76,13 +75,13 @@ const routes = [
   },
 
   {
-    path: "/student/signup",
-    name: "StudentSignup",
-    component: () => import("../views/Students/StudentSignup.vue"),
+    path: "/business/about",
+    name: "BusinessAbout",
+    component: () => import("../views/Businesses/BusinessAbout.vue"),
   },
 
   {
-    path: "/business",
+    path: "/business/home",
     name: "BusinessHomePage",
     component: () => import("../views/Businesses/BusinessHomePage.vue"),
   },
@@ -96,12 +95,6 @@ const routes = [
     path: "/business/add_project",
     name: "BusinessAddProject",
     component: () => import("../views/Businesses/BusinessAddProject.vue"),
-  },
-
-  {
-    path: "/business/home",
-    name: "BusinessHome",
-    component: () => import("../views/Businesses/BusinessHome.vue"),
   },
 
   {

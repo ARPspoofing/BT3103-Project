@@ -204,7 +204,7 @@ export default {
         display: flex;
         justify-content: left;
         align-items: center;
-        margin-bottom:-10px;
+        margin:5px
     }
 
     input {

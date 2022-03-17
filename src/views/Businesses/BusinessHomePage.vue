@@ -1,5 +1,5 @@
 <template>
-  <NavBar :Heading="Heading" :header=true />
+  <BusinessNavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
@@ -25,17 +25,18 @@
 </template>
 
 <script>
-import NavBar from '../../components/NavBar.vue'
+import BusinessNavBar from '../../components/BusinessNavBar.vue'
 import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
+import {signOut} from "firebase/auth"
 const db = getFirestore(firebaseApp);
 
 export default {
   name: 'BusinessHomePage',
   components: {
-    NavBar,
+    BusinessNavBar,
     Card
   },
 

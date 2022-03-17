@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import NavBar from '../../components/NavBar.vue'
+import NavBar from '../../components/BusinessNavBar.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { doc, setDoc } from "firebase/firestore"

@@ -19,9 +19,10 @@
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" >Home</router-link>
             <div class="dropdown-divider"></div>
-            <router-link class="nav-item nav-link active" :to="{name:'About'}">About</router-link>
+            <router-link class="nav-item nav-link active" :to="{name:'StudentAbout'}">About</router-link>
             <div class="dropdown-divider"></div>
-            <router-link class="nav-item nav-link active" :to="{name:'BusinessHomePage'}">Business Home</router-link>
+            <router-link class="nav-item nav-link active" :to="{name:'StudentLogin'}"><span @click="logOut">Log Out</span></router-link>
+            
         </div>
         </div>
     </ul>
@@ -29,12 +30,25 @@
 </template>
 
 <script>
+import {signOut, getAuth} from "firebase/auth"
 export default {
+
     props:{
         Heading: String,
         search: Boolean,
         header: Boolean,
     },
+
+    methods:  {   
+    
+    async logOut() {
+        const auth = getAuth()
+        await signOut(auth) 
+        this.$router.push({"name":"StudentLogin"})
+
+      },
+
+    }
 }
 </script>
 

@@ -46,7 +46,7 @@
                             <li v-for="(item,index) in interests" style="width: 20%;display: inline" >
                                 <div class="interest-flex">
                                     <label class = "labelTag" for="interest">Interest</label>                            
-                                    <select class="inputTag" required type="text" id="interest" v-model="item.value" >   
+                                    <select class="inputTag" type="text" id="interest" v-model="item.value" >   
                                         <option value="Artificial Intelligence">Artificial Intelligence</option>
                                         <option value="Scientific Computing">Scientific Computing</option>
                                         <option value="Data Structures">Data Structures</option>
@@ -100,12 +100,12 @@
                 <div class="errorMsg" v-if="schoolEmailErrorPresent">{{this.errorMessage}}</div>
                 <div class="input flex flex-column">
                     <label for="personalEmail">Personal Email</label>
-                    <input required type="text" id="personalEmail" v-model="personalEmail">
+                    <input type="text" id="personalEmail" v-model="personalEmail">
                 </div>
                 <div class="errorMsg" v-if="personalEmailErrorPresent">{{this.errorMessage}}</div>
                 <div class="input flex flex-column">
                     <label for="contactNo">Contact Number</label>
-                    <input required type="text" id="contactNo" v-model="contactNo">
+                    <input type="text" id="contactNo" v-model="contactNo">
                 </div>
                 <div class="errorMsg" v-if="contactNumberErrorPresent">{{this.errorMessage}}</div>
             </div>
@@ -428,7 +428,7 @@ export default {
                 transcriptDownloadLink: this.transcriptLink
             })
 
-            this.$router.push({name:'StudentLandingPage'})
+            this.$router.push({name:'StudentHomePage'})
             }
 
          },

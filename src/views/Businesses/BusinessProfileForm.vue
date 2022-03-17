@@ -129,7 +129,7 @@ export default {
                      profileFormCreated: true
                  })
 
-                 this.$router.push({name:"BusinessLandingPage"})
+                 this.$router.push({name:"BusinessHomePage"})
 
              }
          }
