@@ -49,7 +49,16 @@ const routes = [
     name: "IndividualProjectRejApps",
     component: () => import("../views/IndividualProjectRejApps.vue"),
   },
-
+  {
+    path: "/project/student_projectinfo",
+    name: "StudentViewProjectInfo",
+    component: () => import("../views/StudentViewProjectInfo.vue")
+  },
+  {
+    path: "/project/business_editproj",
+    name: "BusinessEditProject",
+    component: () => import("../views/BusinessEditProject.vue")
+  },
   {
     path: "/student/login",
     name: "StudentLogin",

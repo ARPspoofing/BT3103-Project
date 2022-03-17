@@ -1,5 +1,5 @@
 <template>
-  <NavBar :search=true :header=false />
+  <BusinessNavBar :search=true :header=false />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
@@ -21,7 +21,7 @@
     <hr/>
     <div>
       <div class = "clogo">
-        <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+        <!-- <img src="../assets/google-logo.png" alt="Logo" class = "logo"> -->
         <span>
           <div class="projTitle">
             {{items.projectTitle}}  <br>
@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import NavBar from '../components/BusinessNavBar.vue'
+import BusinessNavBar from '../components/BusinessNavBar.vue'
 import Deliverable from '../components/Deliverable.vue'
 import * as moment from 'moment'
 import firebaseApp from '../firebase.js';
@@ -117,7 +117,7 @@ export default {
   name: 'IndividualProjectInfo',
   props: ['items'],
   components: {
-    NavBar, 
+    BusinessNavBar, 
     Deliverable
   },
   data() {

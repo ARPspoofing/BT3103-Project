@@ -1,12 +1,12 @@
 <template>
-  <NavBar :search=true :header=false />
+  <StudentNavBar :search=true :header=false />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
     <div>
       <div class = "clogo">
-        <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+        <!-- <img src="../assets/google-logo.png" alt="Logo" class = "logo"> -->
         <span>
           <div class="projTitle">
             {{items.projectTitle}}  <br>
@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import NavBar from '../components/NavBar.vue'
+import StudentNavBar from '../components/StudentNavBar.vue'
 import Deliverable from '../components/Deliverable.vue'
 import * as moment from 'moment'
 import firebaseApp from '../firebase.js';
@@ -99,7 +99,7 @@ export default {
   name: 'StudentViewProjectInfo',
   props: ['items'],
   components: {
-    NavBar,
+    StudentNavBar,
     Deliverable
   },
   data() {

@@ -1,17 +1,17 @@
 <template>
-    <NavBar :search=false :Heading="Heading" :header=true />
+    <BusinessNavBar :search=false :Heading="Heading" :header=true />
   <h1>{{items.projTitle}}</h1>
 </template>
 
 <script>
-import NavBar from '../components/NavBar.vue'
+import BusinessNavBar from '../components/BusinessNavBar.vue'
 import * as moment from 'moment'
 
 export default {
     name: 'BusinessEditProject',
     props: ['items'],
     components: {
-        NavBar,
+        BusinessNavBar,
     },
     data() {
         return {

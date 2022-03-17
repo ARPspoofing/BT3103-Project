@@ -1,5 +1,5 @@
 <template>
-  <NavBar :Heading="Heading" :header=true />
+  <BusinessNavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import NavBar from '../components/BusinessNavBar.vue'
+import BusinessNavBar from '../components/BusinessNavBar.vue'
 import ApplicantsCard from '../components/ApplicantsCard.vue'
 /*import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
@@ -41,7 +41,7 @@ import { getAuth } from 'firebase/auth';*/
 export default {
   name: 'IndividualProjectAccApps',
   components: {
-    NavBar,
+    BusinessNavBar,
     ApplicantsCard
   },
   data() {

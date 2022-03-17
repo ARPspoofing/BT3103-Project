@@ -1,5 +1,5 @@
 <template>
-  <NavBar :Heading="Heading" :header=true />
+  <BusinessNavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
@@ -28,17 +28,17 @@
         <ApplicantsCard :buttons=false />
         <ApplicantsCard :buttons=false />-->
     </div>
-  </div>
-</template>
+  </div>../../components/NavBar.vue
+</template>../../components/ApplicantsCard.vue
 
 <script>
-import NavBar from '../components/BusinessNavBar.vue'
+import BusinessNavBar from '../components/BusinessNavBar.vue'
 import ApplicantsCard from '../components/ApplicantsCard.vue'
 
 export default {
   name: 'IndividualProjectRejApps',
   components: {
-    NavBar,
+    BusinessNavBar,
     ApplicantsCard
   },
   data() {
