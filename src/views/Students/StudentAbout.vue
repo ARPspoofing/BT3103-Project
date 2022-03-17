@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import StudentNavBar from '../components/StudentNavBar.vue'
+import StudentNavBar from '../../components/StudentNavBar.vue'
 export default {
-  name: 'About',
+  name: 'StudentAbout',
   components: {
     StudentNavBar
   },

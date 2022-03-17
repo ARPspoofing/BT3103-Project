@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import NavBar from '../components/NavBar.vue'
+import NavBar from '../components/BusinessNavBar.vue'
 import Deliverable from '../components/Deliverable.vue'
 import * as moment from 'moment'
 import firebaseApp from '../firebase.js';

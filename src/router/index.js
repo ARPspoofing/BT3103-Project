@@ -1,88 +1,146 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import StudentHomePage from '@/views/StudentHomePage.vue'
-import About from '@/views/About.vue'
+import { createRouter, createWebHashHistory } from "vue-router";
+import Home from "../views/Home.vue";
+import About from "../views/About.vue";
+import StudentHomePage from "@/views/Students/StudentHomePage.vue";
 
 const routes = [
   {
-    path: '/',
-    name: 'StudentHomePage',
-    component: StudentHomePage
+    path: "/",
+    name: "Home",
+    component: Home,
+  },
+
+  //Student routes
+
+  {
+    path: "/student/home",
+    name: "StudentHomePage",
+    component: () => import("../views/Students/StudentHomePage.vue"),
+  },
+
+  {
+    path: "/student/about",
+    name: "StudentAbout",
+    component: () => import("../views/Students/StudentAbout.vue"),
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import('../views/About.vue')
+    path: "/student/signup",
+    name: "StudentSignup",
+    component: () => import("../views/Students/StudentSignup.vue"),
+  },
+
+  {
+    path: "/project",
+    name: "IndividualProjectInfo",
+    component: () => import("../views/IndividualProjectInfo.vue"),
   },
   {
-    path: '/business',
-    name: 'BusinessHomePage',
-    component: () => import('../views/BusinessHomePage.vue')
+    path: "/project/new_apps",
+    name: "IndividualProjectNewApps",
+    component: () => import("../views/IndividualProjectNewApps.vue"),
   },
   {
-    path: '/business/inprogress',
-    name: 'BusinessInProgress',
-    component: () => import('../views/BusinessInProgress.vue')
+    path: "/project/acc_apps",
+    name: "IndividualProjectAccApps",
+    component: () => import("../views/IndividualProjectAccApps.vue"),
   },
   {
-    path: '/business/completed',
-    name: 'BusinessCompleted',
-    component: () => import('../views/BusinessCompleted.vue')
+    path: "/project/rej_apps",
+    name: "IndividualProjectRejApps",
+    component: () => import("../views/IndividualProjectRejApps.vue"),
+  },
+
+  {
+    path: "/student/login",
+    name: "StudentLogin",
+    component: () => import("../views/Students/StudentLogin.vue"),
   },
   {
-    path: '/business/add_project',
-    name: 'BusinessAddProject',
-    component: () => import('../views/BusinessAddProject.vue')
+    path: "/student/profileForm",
+    name: "StudentProfileForm",
+    component: () => import("../views/Students/StudentProfileForm.vue"),
+  },
+
+  {
+    path: "/student/landingpage",
+    name: "StudentLandingPage",
+    component: () => import("../views/Students/StudentLandingPage.vue"),
   },
   {
-    path: '/project/edit_project',
-    name: 'BusinessEditProject',
-    component: () => import('../views/BusinessEditProject.vue')
+    path: "/student/management",
+    name: "StudentManagement",
+    component: () => import("../views/Students/StudentManagement.vue")
   },
   {
-    path: '/project',
-    name: 'IndividualProjectInfo',
-    component: () => import('../views/IndividualProjectInfo.vue')
+    path: "/student/management/ToDo:taskId",
+    name: "ToDoTaskDetails",
+    component: () => import("../views/Students/ToDoView.vue")
+  },
+
+  //Business routes
+  {
+    path: "/business/inprogress",
+    name: "BusinessInProgress",
+    component: () => import("../views/Businesses/BusinessInProgress.vue"),
+  },
+
+  {
+    path: "/business/about",
+    name: "BusinessAbout",
+    component: () => import("../views/Businesses/BusinessAbout.vue"),
+  },
+
+  {
+    path: "/business/home",
+    name: "BusinessHomePage",
+    component: () => import("../views/Businesses/BusinessHomePage.vue"),
   },
   {
-    path: '/project/new_apps',
-    name: 'IndividualProjectNewApps',
-    component: () => import('../views/IndividualProjectNewApps.vue')
+    path: "/business/completed",
+    name: "BusinessCompleted",
+    component: () => import("../views/Businesses/BusinessCompleted.vue"),
   },
+
   {
-    path: '/project/acc_apps',
-    name: 'IndividualProjectAccApps',
-    component: () => import('../views/IndividualProjectAccApps.vue')
+    path: "/business/add_project",
+    name: "BusinessAddProject",
+    component: () => import("../views/Businesses/BusinessAddProject.vue"),
   },
+
   {
-    path: '/project/rej_apps',
-    name: 'IndividualProjectRejApps',
-    component: () => import('../views/IndividualProjectRejApps.vue')
+    path: "/business/signup",
+    name: "BusinessSignup",
+    component: () => import("../views/Businesses/BusinessSignup.vue"),
   },
+
   {
-    path: '/student/view_proj_info',
-    name: 'StudentViewProjectInfo',
-    component: () => import('../views/StudentViewProjectInfo.vue')
+    path: "/business/login",
+    name: "BusinessLogin",
+    component: () => import("../views/Businesses/BusinessLogin.vue"),
   },
+
   {
-    path: '/signup',
-    name: 'Signup',
-    component: () => import('../views/Signup.vue')
+    path: "/business/profileForm",
+    name: "BusinessProfileForm",
+    component: () => import("../views/Businesses/BusinessProfileForm.vue"),
   },
+
   {
-    path: '/login',
-    name:'Login',
-    component: () => import('../views/Login.vue')
+    path: "/business/landingpage",
+    name: "BusinessLandingPage",
+    component: () => import("../views/Businesses/BusinessLandingPage.vue"),
   },
+
   {
-    path: '/:catchall(.*)',
-    name:'NotFound',
-    component: () => import('../views/NotFound.vue')
-  }
-]
+    path: "/:catchall(.*)",
+    name: "NotFound",
+    component: () => import("../views/NotFound.vue"),
+  },
+];
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

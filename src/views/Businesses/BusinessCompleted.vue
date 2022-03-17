@@ -21,7 +21,7 @@
 
 <script>
 import Multiselect from '@vueform/multiselect'
-import NavBar from '../components/NavBar.vue'
+import NavBar from '../../components/BusinessNavBar.vue'
 export default {
   name: 'BusinessCompleted',
   components: {

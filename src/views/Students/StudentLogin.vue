@@ -1,0 +1,235 @@
+<template>
+<div id="nav">
+<router-link :to="{name:'Home'}">Home</router-link>
+<router-link :to="{name:'StudentLogin'}">Login</router-link>
+<router-link :to="{name:'StudentSignup'}">Signup</router-link>
+</div>
+<div class="form-wrap">
+    <ResetPassword @close="close" v-if="forgetPassword"/>
+        <form class="login">
+            <div class="inputs">
+                <div class="input">
+                    <h1>Welcome Back Student!</h1>
+                </div>
+                <div class="input">
+                    <h4>Dont't have an account?&nbsp;</h4>
+                    <router-link class="link" :to="{name:'StudentSignup'}">Signup</router-link>
+                    <router-view/>
+                </div>
+                <div class="input">
+                    <h4>Email</h4>
+                </div>
+                <div class="input">
+                    <input type="text" v-model="email">
+                    <img class="icon" src="../../assets/envelope.png">
+                </div>
+                <div class="errorMsg" v-if="emailError">{{this.errorMessage}}</div>
+                <div class="input">
+                    <h4>Password</h4>
+                </div>
+                <div class="input">
+                    <input type="password" v-model="password">
+                    <img class="icon" src="../../assets/lock.png">
+                </div>
+                <div class="errorMsg" v-if="passwordError">{{this.errorMessage}}</div>
+                <div @click="forgot" class="forgot">
+                    <h4>Forgot Password</h4>
+                </div>
+                
+                <div class="input">
+                    <button @click="login"><b>Log In</b></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+</template>
+
+<script>
+import {ref} from "vue"
+import {getAuth,signInWithEmailAndPassword} from "firebase/auth"
+import {useRouter} from "vue-router"
+import {getFirestore} from "firebase/firestore"
+import firebaseApp from "../../firebase.js"
+import {getDoc, collection, doc} from "firebase/firestore"
+import ResetPassword from '../../components/ResetPassword.vue'
+
+
+
+const router = useRouter()
+const auth = getAuth()
+const db = getFirestore(firebaseApp)   
+
+
+export default {
+    name:'StudentLogin',
+    data() {
+        return {
+            email:'',
+            password:'',            
+            forgetPassword: false,
+            errorMessage:'',
+            emailError: false,
+            passwordError:false
+        }
+    },
+    components: {
+        ResetPassword,
+    },
+    methods: {
+        forgot() {
+            this.forgetPassword = true
+        },
+        close(e) {
+            this.forgetPassword = false
+        }, 
+        
+    
+    async login() {   
+    console.log(this.email)
+    const docRef = doc(db,"students",String(this.email))
+    const docs = await getDoc(docRef)
+    if(!docs.exists()) {
+        this.emailError = true
+        this.errorMessage = "Email not registered please sign up first"
+        setTimeout(() =>{
+            this.emailError = false
+        }, 1500)
+    }
+    else {
+    const formFilled = docs.data().profileFormCreated
+    console.log(formFilled)
+    await signInWithEmailAndPassword(auth, this.email,this.password)
+    .then((data) => {
+        if(!formFilled) {
+            this.$router.push({name:'StudentProfileForm'})
+        } else {
+            this.$router.push({name:'StudentHomePage'})
+
+        }
+    } ).catch((error) => {
+            if(error.code === "auth/wrong-password") {
+                this.passwordError = true;
+                this.errorMessage = "You have entered an incorrect password"
+                setTimeout(() => {
+                    this.passwordError = false
+                }, 1500)
+            } else if (error.code === "auth/user-not-found") {
+                this.emailError = true  
+                this.errorMessage = "The email does not exist please sign up first"
+                 setTimeout(() => {
+                    this.emailError = false
+                }, 1500)
+            }
+       
+    })
+    }
+    },
+  }
+}
+</script>
+
+<style scoped>
+    a {
+        font-weight: bold;
+        color: #2c3e50;
+        text-decoration: none;
+    }
+
+    a.router-link-exact-active {
+        color: #42b983;
+        font-weight:700px;
+    }
+
+    .link {
+        font-weight: bold;
+        color: blue;
+    }
+
+    .form-wrap {
+        overflow:hidden;
+        display:flex;
+        height:80vh;
+        justify-content: center;
+        align-self: center;
+        margin: 0 auto;
+        width:90%;
+        background-image:url("../../assets/signupBG.png");
+        background-repeat: no-repeat;
+    }
+
+    form {
+        padding: 0 10px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: top;
+        align-items: left;
+        flex: 1;
+        margin-left:12vw;
+
+    }
+
+    .inputs {
+        width:30%;
+    }
+
+    .input {
+        position: relative;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        margin-bottom:-10px;
+        
+    }
+    .errorMsg {
+        color: red;
+        font-size: 15px;
+    }
+
+    input {
+        width: 100%;
+        border: none;
+        background-color: aquamarine;
+        padding: 4px 4px 4px 30px;
+        height: 25px;
+        border-top-left-radius: 25px;
+        border-bottom-left-radius: 25px;
+        border-top-right-radius: 25px;
+        border-bottom-right-radius: 25px;
+        margin:10px
+    }
+
+    input:focus {
+        outline: none;
+    }
+
+    .forgot {
+        font-size: 12px;
+        color:darkgreen;
+        cursor: pointer;
+    }
+
+    .icon {
+        width:12px;
+        position:absolute;
+        margin-left:5px;
+    }
+
+    button {
+        margin-top:5vh;
+        width: 100%;
+        border: none;
+        display:flex;
+        align-items: center;
+        align-items: center;
+        justify-content: center;
+        background-color: green;
+        height: 30px;
+        border-top-left-radius: 25px;
+        border-bottom-left-radius: 25px;
+        border-top-right-radius: 25px;
+        border-bottom-right-radius: 25px;
+        color: white;
+    }
+</style>
