@@ -19,21 +19,21 @@
         <div class="carousel-item active">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, key) in testCollection">
-              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @click="addApplicant(key)"/>
+              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" :applicantbtn="addApplicant(key)"/>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, key) in testCollection.slice(6)">
-              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @click="addApplicant(key + 6)"/>
+              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" :applicantbtn="addApplicant(key + 6)"/>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, key) in testCollection.slice(12)">
-              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @click="addApplicant(key + 2*6)"/>
+              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" :applicantbtn="addApplicant(key + 2*6)"/>
             </div>
           </div>
         </div>
