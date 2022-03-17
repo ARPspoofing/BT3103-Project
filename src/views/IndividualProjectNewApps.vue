@@ -21,9 +21,9 @@
     <hr/>
     <div>
         <div class="appContainer">
-        <div :key="item.key" v-for="item in newApplicants">
-          <ApplicantsCard :buttons=true :applicantName="item" @click=""/>
-        </div>
+          <div :key="item.key" v-for="(item, key) in newApplicants">
+            <ApplicantsCard :buttons=true :applicantName="item" @acceptbtn="accApplicant(key)" @rejectbtn="rejApplicant(key)"/>
+          </div>
       </div>
     </div>
   </div>
@@ -32,7 +32,11 @@
 <script>
 import NavBar from '../components/NavBar.vue'
 import ApplicantsCard from '../components/ApplicantsCard.vue'
-
+import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
+const db = getFirestore(firebaseApp);
+import { getAuth } from 'firebase/auth';
 
 export default {
   name: 'IndividualProjectNewApps',
@@ -40,17 +44,84 @@ export default {
     NavBar,
     ApplicantsCard
   },
+
   data() {
     return {
       Heading: "NEW APPLICANTS",
       items: [],
       newApplicants: [],
+      accApplicants: [],
+      rejApplicants: [],
     }
   },
+
+  methods: {
+    async accApplicant(key) {
+      var accApplicant = this.newApplicants[key]
+      console.log(accApplicant)
+      var projTitle = this.items["projectTitle"]
+      this.accApplicants.push(accApplicant);
+      
+      delete this.newApplicants[accApplicant]
+
+      alert("Accepting applicant: " + accApplicant);
+      
+      // const auth = getAuth();
+      // this.fbuser = auth.currentUser.email;
+
+      try {
+          const docRef = await updateDoc(doc(db, "Project", projTitle), {
+              Acc_Applicants: this.accApplicants,
+              New_Applicants: this.newApplicants
+          })
+          
+          console.log(docRef)
+          this.$emit("updated")
+      }
+        catch(error) {
+          console.error("Error updating document: ", error);
+      }
+      console.log(this.accApplicants);
+      console.log(key)
+    },
+
+    async rejApplicant(key) {
+      console.log(key)
+      var rejApplicant = this.rejApplicants[key]
+      console.log(rejApplicant)
+      var projTitle = this.items["projectTitle"]
+      rejApplicants.push(rejApplicant);
+
+      alert("Applying for proj: " + projTitle);
+      
+      // const auth = getAuth();
+      // this.fbuser = auth.currentUser.email;
+
+      try {
+          const docRef = await updateDoc(doc(db, "Project", projTitle), {
+              Rej_Applicants: this.rejApplicants
+          })
+          
+          console.log(docRef)
+          this.$emit("updated")
+      }
+        catch(error) {
+          console.error("Error updating document: ", error);
+      }
+      console.log(this.rejApplicants);
+      console.log(key)
+    }
+  },
+
   mounted() {
     this.items = JSON.parse(this.$route.params.items)
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
+    this.accApplicants = JSON.parse(this.$route.params.items).accApplicants
+    this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants
     console.log(this.newApplicants)
+    console.log(this.accApplicants)
+    console.log(this.rejApplicants)
+    console.log(this.items)
   }
 }
 </script>

@@ -32,6 +32,7 @@ export default {
       applicantbtn() {
         this.$emit('applicantbtn')
     }, 
+    
     clickCard() {
       this.$emit('clickCard')
     }
