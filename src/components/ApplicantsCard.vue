@@ -11,8 +11,8 @@
         </div>
         <span v-show=buttons>
           <div class="appButtons" >
-            <button href="#" class="accept">Accept</button> <br>
-            <button href="#" class="reject">Reject</button> <br>
+            <button href="#" class="accept" @click="acceptbtn">Accept</button> <br>
+            <button href="#" class="reject" @click="rejectbtn">Reject</button> <br>
           </div> 
         </span>
     </div>
@@ -20,10 +20,26 @@
 
 <script>
 export default {
+    data() {
+      return {
+        testCollection: [],
+      }
+    },
+    
     props:{
         buttons: Boolean,
         applicantName: String,
+    },
+
+    methods: {
+      acceptbtn() {
+        this.$emit('acceptbtn')
+    }, 
+    
+    rejectbtn() {
+      this.$emit('rejectbtn')
     }
+  }
 }
 </script>
 

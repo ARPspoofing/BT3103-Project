@@ -113,6 +113,7 @@ export default {
       console.log(this.testCollection[key])
       // var applicants = testCollection[key]["Applicants"]
     },
+    
     indivproj(key) {
       this.$router.push({
         name:'IndividualProjectInfo', 

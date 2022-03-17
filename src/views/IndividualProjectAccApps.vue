@@ -22,7 +22,7 @@
     <div>
         <div class="appContainer">
           <div :key="item.key" v-for="item in accApplicants">
-            <ApplicantsCard :buttons=false :applicantName="item" @click=""/>
+            <ApplicantsCard :buttons=false :applicantName="item"/>
           </div>
         </div>
     </div>
@@ -46,6 +46,7 @@ export default {
       accApplicants: [],
     }
   },
+
   mounted() {
     this.items = JSON.parse(this.$route.params.items)
     this.accApplicants = JSON.parse(this.$route.params.items).accApplicants
