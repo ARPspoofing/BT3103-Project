@@ -15,7 +15,6 @@
 
 <script>
 export default {
-
     data() {
       return {
         testCollection: [],
@@ -26,9 +25,14 @@ export default {
         projectTitle: String,
         description: String,
         apply: Boolean,
-        applicantbtn: Function,
+        //applicantbtn: Function,
 
+    },
+    methods: {
+      applicantbtn() {
+        this.$emit('applicantbtn')
     }
+  }
 }
 </script>
 
