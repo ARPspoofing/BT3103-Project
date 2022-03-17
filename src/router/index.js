@@ -66,6 +66,16 @@ const routes = [
     name: "StudentLandingPage",
     component: () => import("../views/Students/StudentLandingPage.vue"),
   },
+  {
+    path: "/student/management",
+    name: "StudentManagement",
+    component: () => import("../views/Students/StudentManagement.vue")
+  },
+  {
+    path: "/student/management/ToDo:taskId",
+    name: "ToDoTaskDetails",
+    component: () => import("../views/Students/ToDoView.vue")
+  },
 
   //Business routes
   {

@@ -5,7 +5,6 @@
         <h4>Find and work for projects which you are interested in</h4>
       </div>
     </div>
-    
 </template>
 
 <script>
@@ -13,6 +12,8 @@ import {useRouter} from "vue-router"
 const router = useRouter()
 export default {
   name: 'Home',
+  components: {
+  },
   
 }
 </script>
