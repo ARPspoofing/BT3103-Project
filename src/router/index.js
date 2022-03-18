@@ -10,6 +10,12 @@ const routes = [
     component: Home,
   },
 
+  {
+    path: "/",
+    name: "About",
+    component: About,
+  },
+
   //Student routes
 
   {

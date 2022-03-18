@@ -6,7 +6,7 @@
     </router-link>
     <div>
       <div class = "clogo">
-        <!-- <img src="../assets/google-logo.png" alt="Logo" class = "logo"> -->
+        <img src="../assets/google-logo.png" alt="Logo" class = "logo">
         <span>
           <div class="projTitle">
             {{items.projectTitle}}  <br>
@@ -93,7 +93,7 @@ import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default {
   name: 'StudentViewProjectInfo',
@@ -110,9 +110,19 @@ export default {
       tags: [],
       tasks: [],
       items: [],
+      user: false, 
+      userEmail: ""
     }
   },
   mounted() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if(user) {
+        this.user = user;
+      }
+    })
+    this.userEmail = auth.currentUser.email;
+    console.log(this.userEmail)
     this.tasks = JSON.parse(this.$route.params.items).tasks
     this.tags = JSON.parse(this.$route.params.items).tags
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
@@ -131,7 +141,7 @@ export default {
         var newApplicants = this.newApplicants
         console.log(newApplicants)
         var projTitle = this.projTitle
-        newApplicants.push("random");
+        newApplicants.push(this.userEmail);
 
         alert("Applying for proj: " + projTitle);
         

@@ -34,7 +34,7 @@ import BusinessNavBar from '../components/BusinessNavBar.vue'
 import ApplicantsCard from '../components/ApplicantsCard.vue'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 import { getAuth } from 'firebase/auth';
 
@@ -52,10 +52,27 @@ export default {
       newApplicants: [],
       accApplicants: [],
       rejApplicants: [],
+      applicant: [],
     }
   },
 
   methods: {
+    /*async getApplicantName(app) {
+      const ref = doc(db, "students", app);
+      const docSnap = await getDoc(ref);
+      const data = await docSnap.data().name;
+      return data
+    },
+
+    async getApplicantCourse(app) {
+      const ref = doc(db, "students", app);
+      const docSnap = await getDoc(ref);
+      const data = await docSnap.data();
+      return data.course
+    },*/
+
+    
+
     async accApplicant(key) {
       var accApplicant = this.newApplicants[key]
       console.log(accApplicant)
@@ -71,8 +88,8 @@ export default {
       //this.newApplicants[accApplicant].remove();
       this.newApplicants.splice(key,1);
 
-      console.log(this.accApplicants);
-      console.log(this.newApplicants);
+      //console.log(this.accApplicants);
+      //console.log(this.newApplicants);
 
       alert("Accepting applicant: " + accApplicant);
       // const auth = getAuth();
@@ -137,6 +154,12 @@ export default {
     console.log(this.items);
     if (this.$route.params.newApplicants) {
       this.newApplicants = JSON.parse(this.$route.params.newApplicants)
+      for(var i = 0; i < this.newApplicants.length; i++) {
+        this.applicant.push({
+          name: getApplicantName(this.newApplicants[i]), 
+          course: getApplicantCourse(this.newApplicants[i])
+        })
+      }
     }
     if (this.$route.params.accApplicants) {
       this.accApplicants = JSON.parse(this.$route.params.accApplicants)
@@ -144,6 +167,21 @@ export default {
     if (this.$route.params.rejApplicants) {
       this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
     }
+    
+    async function getApplicantName(app) {
+      const ref = doc(db, "students", app);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      return data.name
+    }
+
+    async function getApplicantCourse(app) {
+      const ref = doc(db, "students", app);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      return data.course
+    }
+    console.log(this.applicant)
   }
 }
 </script>
