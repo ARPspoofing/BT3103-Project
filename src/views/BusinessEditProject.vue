@@ -1,72 +1,70 @@
 <template>
     <BusinessNavBar :search=false :Heading="Heading" :header=true />
-  <div class="mainBody">
-    <form id="projectForm">
-        <div class="inputs">
-            <label for="projectTitle">Project Title*</label>
-            <input type="text" id="projectTitle" required="" placeholder="Project Title"> <br><br>
+    <div class="mainBody">
+        <!-- <div>{{this.item.projectTitle}}</div> -->
+        <form id="projectForm">
+            <div class="inputs">
+                <label for="projectTitle">Project Title*</label>
+                <input type="text" id="projectTitle" required="" placeholder="Project Title" v-model="item.projectTitle"> <br><br>
 
-            <label for="position">Position*</label>
-            <input type="text" id="position" required="" placeholder="Position"> <br><br>
+                <label for="position">Position*</label>
+                <input type="text" id="position" required="" placeholder="Position" v-model="item.position"> <br><br>
 
-            <label for="noOfVacancies">Number of Vacancies*</label>
-            <input type="number" id="noOfVacancies" required="" placeholder="Number of Vacancies"> <br><br>
+                <label for="noOfVacancies">Number of Vacancies*</label>
+                <input type="number" id="noOfVacancies" required="" placeholder="Number of Vacancies" v-model="item.vacancies"> <br><br>
 
-            <label for="projectPeriodStart, projectPeriodEnd">Project Period*</label>
-            <input type="date" id="projectPeriodStart" required="" placeholder="Choose Start Date"
-              style="width: 228px; margin-right: 15px; ">
-            <p>to</p>
-            <input type="date" id="projectPeriodEnd" required="" placeholder="Choose End Date"
-              style="width: 228px; margin-left: 15px;"> <br><br>
+                <label for="projectPeriodStart, projectPeriodEnd">Project Period*</label>
+                <input type="date" id="projectPeriodStart" required="" placeholder="Choose Start Date"
+                style="width: 228px; margin-right: 15px; " v-model="item.projectStart">
+                <p>to</p>
+                <input type="date" id="projectPeriodEnd" required="" placeholder="Choose End Date"
+                style="width: 228px; margin-left: 15px;" v-model="item.projectEnd"> <br><br>
 
-            <label for="projectAllowance">Allowance (in SGD)*</label>
-            <input type="number" id="projectAllowance" required="" placeholder="Allowance"> <br><br>
+                <label for="projectAllowance">Allowance (in SGD)*</label>
+                <input type="number" id="projectAllowance" required="" placeholder="Allowance" v-model="item.allowance"> <br><br>
 
-            <label for="projectTags">Tags*</label>
-            <select v-model="selected" name="tagSelect" multiple size="5" id="tagSelect" required="">
-              <option value="Artificial Intelligence">Artificial Intelligence</option>
-              <option value="Scientific Computing Applications">Scientific Computing Applications</option>
-              <option value="Data Structures Algorithms">Data Structures and Algorithms</option>
-              <option value="Computer Architecture">Computer Architecture</option>
-              <option value="Computer Networks">Computer Networks</option>
-              <option value="Computer Database">Computer Database</option>
-              <option value="Database Mining">Database Mining</option>
-              <option value="Data Analytics">Data Analytics</option>
-              <option value="Computer Graphics Visualisation">Computer Graphics and Visualisation</option>
-              <option value="Image Sound Processing">Image and Sound Processing</option>
-              <option value="Distributed Computing">Distributed Computing</option>
-              <option value="Human Computer Interaction">Human-Computer Interaction</option>
-              <option value="Software Engineering">Software Engineering</option>
-              <option value="Information Coding Theory">Information and Coding Theory</option>
-            </select> <br><br>
+                <label for="projectTags">Tags*</label>
+                <select v-model="item.tags" name="tagSelect" multiple size="5" id="tagSelect" required="">
+                <option value="Artificial Intelligence">Artificial Intelligence</option>
+                <option value="Scientific Computing Applications">Scientific Computing Applications</option>
+                <option value="Data Structures Algorithms">Data Structures and Algorithms</option>
+                <option value="Computer Architecture">Computer Architecture</option>
+                <option value="Computer Networks">Computer Networks</option>
+                <option value="Computer Database">Computer Database</option>
+                <option value="Database Mining">Database Mining</option>
+                <option value="Data Analytics">Data Analytics</option>
+                <option value="Computer Graphics Visualisation">Computer Graphics and Visualisation</option>
+                <option value="Image Sound Processing">Image and Sound Processing</option>
+                <option value="Distributed Computing">Distributed Computing</option>
+                <option value="Human Computer Interaction">Human-Computer Interaction</option>
+                <option value="Software Engineering">Software Engineering</option>
+                <option value="Information Coding Theory">Information and Coding Theory</option>
+                </select> <br><br>
 
-            <label for="projectDescription">Description</label>
-            <textarea id="projectDescription" name="projectDescription" rows="4" cols="60" placeholder="Project Description"></textarea> <br><br>
+                <label for="projectDescription">Description</label>
+                <textarea id="projectDescription" name="projectDescription" rows="4" cols="65" placeholder="Project Description" v-model="item.description"></textarea> <br><br>
 
-            <label for="projectDeliverables">Deliverables</label>
-            <button id="addDeliverableButton" @click="addTask">
-              <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
-              <p> Add deliverables</p>
-            </button>
-            <br>
-            <br>
-            <div class="previous"
-            v-for="(task, counter) in tasks"
-            v-bind:key="counter">
-              <button id="deleteDeliverable" @click="deleteTask(counter)"> 
-                <i class="fa fa-times" id="crossIcon"></i>
-              </button> <br>
-              <label for="duration">Task Name*</label>
-              <input type="text" v-model.lazy="task.taskName" required> <br><br>
-              <label for="description">Description</label>
-              <input type="text" v-model.lazy="task.taskDescription" required> <br><br>
-              <label for="duedate">Due Date*</label>
-              <input type="date" v-model.lazy="task.taskDueDate" required>
-            </div>
-            </div>
-        <button id="saveButton" type="button" v-on:click="saveProject()">Save</button>
-    </form>
-  </div>    
+                <label for="projectDeliverables">Deliverables</label>
+                <button id="addDeliverableButton" @click="addTaskEdit()">
+                    <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
+                    <p> Add deliverables</p>
+                </button>
+                <div class="previous" v-for="(task, counter) in item.tasks"
+                    v-bind:key="counter">
+                    <button id="deleteDeliverable" @click="deleteTaskEdit(counter)"> 
+                        <i class="fa fa-times" id="crossIcon"></i>
+                    </button> <br>
+                    <label for="duration">Task Name*</label>
+                    <input type="text" v-model.lazy="task.taskName" required> <br><br>
+                    <label for="description">Description</label>
+                    <input type="text" v-model.lazy="task.taskDescription" required> <br><br>
+                    <label for="duedate">Due Date*</label>
+                    <input type="date" v-model.lazy="task.taskDueDate" required>
+                </div>
+                </div>
+            <button id="saveButton" type="button" v-on:click="updateProject()">Save</button>
+        </form>
+    </div>    
 
 </template>
 
@@ -88,24 +86,86 @@ export default {
     data() {
         return {
             Heading: "EDIT PROJECT",
-            props: [],
+            props: ['items'],
+            item: {
+                projectTitle: '',
+                description: '',
+                position: '', 
+                vacancies: 0,
+                allowance: 0,
+                projectStart: '',
+                projectEnd: '',
+                tags: [],
+                tasks: [],
+            },
+            previousTitle: '',
         }
     },
     mounted() {
-        this.items = JSON.parse(this.$route.params.items)
-        console.log(this.items)
+        //this.items = JSON.parse(this.$route.params.items)
+        this.item = JSON.parse(this.$route.params.items)
+        var prevTitle = JSON.parse(this.$route.params.items).projectTitle
+        this.previousTitle = prevTitle
+        console.log(this.item)
+        // console.log(this.item.tasks.push({
+        //         taskName:'hi',
+        //         taskDescription: 'hi', 
+        //         taskDueDate: ''
+        //     }))
     },
     methods: {
-        addTask(){
-        this.tasks.push({
-            taskName:'',
-            taskDescription: '', 
-            taskDueDate: ''
-        })
+        addTaskEdit(){
+            this.item.tasks.push({
+                taskName:'',
+                taskDescription: '', 
+                taskDueDate: ''
+            })
         },
-        deleteTask(counter){
-            this.tasks.splice(counter,1);
+        deleteTaskEdit(counter){
+            this.item.tasks.splice(counter,1);
         },
+        async updateProject() {
+            var a = document.getElementById("projectTitle").value;
+            var b = document.getElementById("position").value;
+            var c = document.getElementById("noOfVacancies").value;
+            var d = document.getElementById("projectPeriodStart").value;
+            var e = document.getElementById("projectPeriodEnd").value;
+            var f = document.getElementById("projectAllowance").value;
+            //var g = document.getElementById("tagSelect").value;
+            if (typeof(this.selected) == String) {
+                const tagArray = new Array();
+                tagArray.push(this.item.tags);
+                var g = tagArray;
+            } else {
+                var g = this.item.tags;
+            }
+            console.log(g);
+            var h = document.getElementById("projectDescription").value;
+            var i = this.item.tasks;
+
+            alert("Updating your data for Project: " + a);
+
+            try {
+                const docRef = await updateDoc(doc(db, "Project", this.previousTitle), {
+                Project_Title: a,
+                Position: b,
+                Num_Of_Vacancies: c,
+                Project_Start: d,
+                Project_End: e,
+                Allowance: f,
+                Tags: g,
+                Description: h,
+                Tasks: i,
+                })
+
+                console.log(docRef)
+                document.getElementById("projectForm")
+                this.$emit("updated")
+            }
+            catch(error) {
+                console.error("Error adding document: ", error);
+            }
+            }
     }
 }
 </script>
@@ -189,14 +249,14 @@ export default {
 
   #projectForm .previous {
     background-color: #BBDFCC;
-    width: max-content;
+    width: 500px;
     text-align: right;
-    margin: 0px 0px 20px auto;
+    margin: 20px 0px 0px auto;
     padding: 10px 10px 15px 10px;
   }
 
   #projectForm .previous input {
-    width: 364px;
+    width: 354px;
     background-color: white;
   }
 
