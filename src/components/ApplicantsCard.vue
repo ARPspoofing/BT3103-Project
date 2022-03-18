@@ -28,7 +28,7 @@ export default {
     
     props:{
         buttons: Boolean,
-        applicantName: String,
+        applicantName: Function,
     },
 
     methods: {

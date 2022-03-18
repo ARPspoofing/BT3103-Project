@@ -67,7 +67,7 @@ import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default {
   name: 'StudentHomePage',
@@ -81,6 +81,8 @@ export default {
       Heading: " ",
       testCollection: [],
       newApplicants:[],
+      user: false, 
+      userEmail: ""
     }
   },
   
@@ -90,7 +92,7 @@ export default {
       var newApplicants = this.testCollection[key]["newApplicants"]
       console.log(newApplicants)
       var projTitle = this.testCollection[key]["projectTitle"]
-      newApplicants.push("random");
+      newApplicants.push(this.userEmail);
 
       alert("Applying for proj: " + projTitle);
       
@@ -127,6 +129,17 @@ export default {
   },
   
   mounted() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if(user) {
+        this.user = user;
+      }
+    })
+    this.userEmail = auth.currentUser.email;
+    console.log(this.userEmail)
+    //this.userEmail = auth.currentUser;
+    //console.log(this.userEmail)
+
     const that = this;
     async function fetchProject() {
       let snapshot = await getDocs(collection(db, "Project"))

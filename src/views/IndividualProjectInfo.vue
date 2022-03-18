@@ -99,6 +99,7 @@
             </div>
         </div>
     </div>
+    <button @click="editProject()">EDIT PROJECT DETAILS</button>
     </div>
     <br><br>
   </div>
@@ -115,7 +116,7 @@ const db = getFirestore(firebaseApp);
 
 export default {
   name: 'IndividualProjectInfo',
-  props: ['items'],
+  //props: ['items'],
   components: {
     BusinessNavBar, 
     Deliverable
@@ -155,6 +156,14 @@ export default {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
+    editProject() {
+      this.$router.push({
+        name:'About', 
+        params: {
+          items: JSON.stringify(this.items),
+        },
+      })
+    }
   },
   /*params: {
     items: this.items,
