@@ -1,9 +1,6 @@
 <template>
   <StudentNavBar :search=true :header=false />
   <div class="mainBody">
-    <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
-      <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
-    </router-link>
     <div>
       <div class = "clogo">
         <img src="../assets/google-logo.png" alt="Logo" class = "logo">
