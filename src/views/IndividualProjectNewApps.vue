@@ -1,56 +1,149 @@
 <template>
-  <NavBar :Heading="Heading" :header=true />
+  <BusinessNavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
     <h1 id="interest">
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectInfo', params:{items: JSON.stringify(this.items)}}" ><b>PROJECT INFO</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectInfo', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>PROJECT INFO</b></router-link>
       </span>
       <span class="options">
         <b>NEW APPLICANTS</b>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectAccApps', params:{items: JSON.stringify(this.items)}}" ><b>ACCEPTED APPLICANTS</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectAccApps', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>ACCEPTED APPLICANTS</b></router-link>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectRejApps', params:{items: JSON.stringify(this.items)}}" ><b>REJECTED APPLICANTS</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectRejApps', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>REJECTED APPLICANTS</b></router-link>
       </span>
     </h1>
     <hr/>
     <div>
         <div class="appContainer">
-        <div :key="item.key" v-for="item in newApplicants">
-          <ApplicantsCard :buttons=true :applicantName="item" @click=""/>
-        </div>
+          <div :key="item.key" v-for="(item, key) in newApplicants">
+            <ApplicantsCard :buttons=true :applicantName="item" @acceptbtn="accApplicant(key)" @rejectbtn="rejApplicant(key)"/>
+          </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import NavBar from '../components/BusinessNavBar.vue'
+import BusinessNavBar from '../components/BusinessNavBar.vue'
 import ApplicantsCard from '../components/ApplicantsCard.vue'
-
+import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
+const db = getFirestore(firebaseApp);
+import { getAuth } from 'firebase/auth';
 
 export default {
   name: 'IndividualProjectNewApps',
   components: {
-    NavBar,
+    BusinessNavBar,
     ApplicantsCard
   },
+
   data() {
     return {
       Heading: "NEW APPLICANTS",
       items: [],
       newApplicants: [],
+      accApplicants: [],
+      rejApplicants: [],
     }
   },
+
+  methods: {
+    async accApplicant(key) {
+      var accApplicant = this.newApplicants[key]
+      console.log(accApplicant)
+      var projTitle = this.items["projectTitle"]
+      
+      if (!this.accApplicants) {
+        var accApplicants = [];
+        accApplicants.push(accApplicant);
+        this.accApplicants = accApplicants;
+      } else {
+        this.accApplicants.push(accApplicant);
+      }
+      //this.newApplicants[accApplicant].remove();
+      this.newApplicants.splice(key,1);
+
+      console.log(this.accApplicants);
+      console.log(this.newApplicants);
+
+      alert("Accepting applicant: " + accApplicant);
+      // const auth = getAuth();
+      // this.fbuser = auth.currentUser.email
+      try {
+          const docRef = await updateDoc(doc(db, "Project", projTitle), {
+              Acc_Applicants: this.accApplicants,
+              New_Applicants: this.newApplicants
+          })
+          console.log(docRef)
+          this.$emit("updated")
+      }
+        catch(error) {
+          console.error("Error updating document: ", error);
+      }
+      /*console.log(this.accApplicants);
+      console.log(key)*/
+    },
+
+    async rejApplicant(key) {
+      var rejApplicant = this.newApplicants[key]
+      console.log(rejApplicant)
+      var projTitle = this.items["projectTitle"]
+      //rejApplicants.push(rejApplicant);
+
+      if (!this.rejApplicants) {
+        var rejApplicants = [];
+        rejApplicants.push(rejApplicant);
+        this.rejApplicants = rejApplicant;
+      } else {
+        this.rejApplicants.push(rejApplicant);
+      }
+      this.newApplicants.splice(key,1);
+
+      alert("Rejecting applicant: " + projTitle);
+
+      try {
+          const docRef = await updateDoc(doc(db, "Project", projTitle), {
+              Rej_Applicants: this.rejApplicants, 
+              New_Applicants: this.newApplicants
+          })
+          
+          console.log(docRef)
+          this.$emit("updated")
+      }
+        catch(error) {
+          console.error("Error updating document: ", error);
+      }
+      console.log(this.rejApplicants);
+      console.log(key)
+    }
+  },
+
   mounted() {
     this.items = JSON.parse(this.$route.params.items)
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
+    this.accApplicants = JSON.parse(this.$route.params.items).accApplicants
+    this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants
     console.log(this.newApplicants)
+    console.log(this.accApplicants)
+    console.log(this.rejApplicants)
+    console.log(this.items);
+    if (this.$route.params.newApplicants) {
+      this.newApplicants = JSON.parse(this.$route.params.newApplicants)
+    }
+    if (this.$route.params.accApplicants) {
+      this.accApplicants = JSON.parse(this.$route.params.accApplicants)
+    }
+    if (this.$route.params.rejApplicants) {
+      this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
+    }
   }
 }
 </script>

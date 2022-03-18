@@ -1,53 +1,97 @@
 <template>
-  <NavBar :Heading="Heading" :header=true />
+  <BusinessNavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
     <h1 id="interest">
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectInfo', params:{items: JSON.stringify(this.items)}}" ><b>PROJECT INFO</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectInfo', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>PROJECT INFO</b></router-link>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectNewApps', params:{items: JSON.stringify(this.items)}}" ><b>NEW APPLICANTS</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectNewApps', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>NEW APPLICANTS</b></router-link>
       </span>
       <span class="options">
         <b>ACCEPTED APPLICANTS</b>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectRejApps', params:{items: JSON.stringify(this.items)}}" ><b>REJECTED APPLICANTS</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectRejApps', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>REJECTED APPLICANTS</b></router-link>
       </span>
     </h1>
     <hr/>
     <div>
         <div class="appContainer">
-            <ApplicantsCard :buttons=false />
-            <ApplicantsCard :buttons=false />
-            <ApplicantsCard :buttons=false />
+          <div :key="item.key" v-for="item in accApplicants">
+            <ApplicantsCard :buttons=false :applicantName="item"/>
+          </div>
         </div>
     </div>
   </div>
 </template>
 
 <script>
-import NavBar from '../components/BusinessNavBar.vue'
+import BusinessNavBar from '../components/BusinessNavBar.vue'
 import ApplicantsCard from '../components/ApplicantsCard.vue'
+/*import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
+const db = getFirestore(firebaseApp);
+import { getAuth } from 'firebase/auth';*/
 
 export default {
   name: 'IndividualProjectAccApps',
   components: {
-    NavBar,
+    BusinessNavBar,
     ApplicantsCard
   },
   data() {
     return {
       Heading: "ACCEPTED APPLICANTS",
       items: [],
+      newApplicants: [],
+      accApplicants: [],
+      rejApplicants: [],
     }
   },
+
   mounted() {
     this.items = JSON.parse(this.$route.params.items)
-    console.log(this.items)
+    /* 
+    const that = this;
+    async function fetchProject() {
+      let snapshot = await getDocs(collection(db, "Project"))
+      const newApplicants = [];
+      const accApplicants = [];
+      const rejApplicants = [];
+      snapshot.forEach((docs) => {
+        let data = docs.data()
+        testCollection.push({ 
+            newApplicants: data.New_Applicants, 
+            accApplicants: data.Acc_Applicants, 
+            rejApplicants: data.Rej_Applicants,
+        });
+      });
+      that.newApplicants = newApplicants;
+      that.accApplicants = accApplicants;
+      that.rejApplicants = rejApplicants;
+      console.log(newApplicants)
+      console.log(accApplicants)
+    }
+    fetchProject();*/
+    console.log(this.$route.params.newApplicants);
+    console.log(this.$route.params.accApplicants);
+    //console.log(this.$route.params.rejApplicants);
+    if (this.$route.params.newApplicants) {
+      this.newApplicants = JSON.parse(this.$route.params.newApplicants)
+    }
+    if (this.$route.params.accApplicants) {
+      this.accApplicants = JSON.parse(this.$route.params.accApplicants)
+    }
+    if (this.$route.params.rejApplicants) {
+      this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
+    }
+    console.log(this.accApplicants);
+    console.log(this.newApplicants);
   }
 }
 </script>

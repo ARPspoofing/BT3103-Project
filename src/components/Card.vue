@@ -1,5 +1,5 @@
 <template>
-        <div class="card-body">
+        <div class="card-body" @click="clickCard">
         <div class = "clogo">
           <img src="../assets/google-logo.png" alt="Logo" class = "logo">
           <span class="card-title">
@@ -15,7 +15,6 @@
 
 <script>
 export default {
-
     data() {
       return {
         testCollection: [],
@@ -26,9 +25,18 @@ export default {
         projectTitle: String,
         description: String,
         apply: Boolean,
-        applicantbtn: Function,
+        //applicantbtn: Function,
 
+    },
+    methods: {
+      applicantbtn() {
+        this.$emit('applicantbtn')
+    }, 
+    
+    clickCard() {
+      this.$emit('clickCard')
     }
+  }
 }
 </script>
 
@@ -57,6 +65,15 @@ export default {
   }
   
   .card-title {
+    width: 60%;
+    height: 30px;
+    margin: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* number of lines to show */
+            line-clamp: 1; 
+    -webkit-box-orient: vertical;
     display: inline-block;
   }
 
@@ -78,7 +95,7 @@ export default {
     border-radius: 8px;
     border-width: 0px;
     height: 30px;
-    margin-top: 10px;
+    margin-top: 0px;
   }
   
   .logo {

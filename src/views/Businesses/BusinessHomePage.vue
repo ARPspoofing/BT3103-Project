@@ -18,7 +18,7 @@
     <hr/>
       <div class="projectContainer">
         <div :key="item.key" v-for="(item, key) in testCollection">
-          <Card :apply=false :projectTitle = "item.projectTitle" :description="item.description" @click="indivproj(key)"/>
+          <Card :apply=false :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivproj(key)"/>
         </div>
       </div>
   </div>

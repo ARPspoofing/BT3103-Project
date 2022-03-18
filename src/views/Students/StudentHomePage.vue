@@ -19,21 +19,21 @@
         <div class="carousel-item active">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, key) in testCollection">
-              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @click="addApplicant(key)"/>
+              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @applicantbtn="addApplicant(key)" @clickCard="indivproj(key)"/>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, key) in testCollection.slice(6)">
-              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @click="addApplicant(key + 6)"/>
+              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @applicantbtn="addApplicant(key + 6)" @clickCard="indivproj(key + 6)"/>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, key) in testCollection.slice(12)">
-              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @click="addApplicant(key + 2*6)"/>
+              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @applicantbtn="addApplicant(key + 2*6)" @clickCard="indivproj(key + 2*6)"/>
             </div>
           </div>
         </div>
@@ -112,7 +112,18 @@ export default {
       console.log(key)
       console.log(this.testCollection[key])
       // var applicants = testCollection[key]["Applicants"]
-    }
+    },
+    
+    indivproj(key) {
+      this.$router.push({
+        name:'StudentViewProjectInfo', 
+        params: {
+          items: JSON.stringify(this.testCollection[key]),
+        },
+      })
+      console.log(key)
+      console.log(this.testCollection[key])
+  }
   },
   
   mounted() {
@@ -123,9 +134,21 @@ export default {
       snapshot.forEach((docs) => {
         let data = docs.data()
         testCollection.push({ 
-            projectTitle: data.Project_Title, 
+            /*projectTitle: data.Project_Title, 
             description: data.Description,
-            newApplicants: data.New_Applicants
+            newApplicants: data.New_Applicants*/
+            projectTitle: data.Project_Title, 
+            description: data.Description, 
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
         });
       });
       that.testCollection = testCollection
@@ -166,7 +189,7 @@ export default {
   }
 
   .carousel-item {
-    height: 450px; 
+    height: 500px; 
   }
 
   .carousel-control-next,

@@ -1,18 +1,18 @@
 <template>
-  <NavBar :Heading="Heading" :header=true />
+  <BusinessNavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
     <h1 id="interest">
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectInfo', params:{items: JSON.stringify(this.items)}}" ><b>PROJECT INFO</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectInfo', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>PROJECT INFO</b></router-link>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectNewApps', params:{items: JSON.stringify(this.items)}}" ><b>NEW APPLICANTS</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectNewApps', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>NEW APPLICANTS</b></router-link>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectAccApps', params:{items: JSON.stringify(this.items)}}" ><b>ACCEPTED APPLICANTS</b></router-link>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectAccApps', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>ACCEPTED APPLICANTS</b></router-link>
       </span>
       <span class="options">
         <b>REJECTED APPLICANTS</b>
@@ -20,32 +20,51 @@
     </h1>
     <hr/>
     <div class="appContainer">
+      <div :key="item.key" v-for="item in rejApplicants">
+            <ApplicantsCard :buttons=false :applicantName="item"/>
+      </div>
+      <!--
         <ApplicantsCard :buttons=false />
         <ApplicantsCard :buttons=false />
-        <ApplicantsCard :buttons=false />
+        <ApplicantsCard :buttons=false />-->
     </div>
-  </div>
-</template>
+  </div>../../components/NavBar.vue
+</template>../../components/ApplicantsCard.vue
 
 <script>
-import NavBar from '../components/BusinessNavBar.vue'
+import BusinessNavBar from '../components/BusinessNavBar.vue'
 import ApplicantsCard from '../components/ApplicantsCard.vue'
 
 export default {
   name: 'IndividualProjectRejApps',
   components: {
-    NavBar,
+    BusinessNavBar,
     ApplicantsCard
   },
   data() {
     return {
       Heading: "REJECTED APPLICANTS",
       items: [],
+      newApplicants: [],
+      accApplicants: [],
+      rejApplicants:[]
     }
   },
   mounted() {
     this.items = JSON.parse(this.$route.params.items)
     console.log(this.items)
+    if (this.$route.params.newApplicants) {
+      this.newApplicants = JSON.parse(this.$route.params.newApplicants)
+    }
+    if (this.$route.params.accApplicants) {
+      this.accApplicants = JSON.parse(this.$route.params.accApplicants)
+    }
+    if (this.$route.params.rejApplicants) {
+      this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
+    }
+    console.log(this.newApplicants)
+    console.log(this.accApplicants)
+    console.log(this.rejApplicants)
   }
 }
 </script>
