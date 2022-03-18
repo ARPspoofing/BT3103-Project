@@ -4,6 +4,7 @@
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
+    <h3>{{items}}</h3>
     <h1 id="interest">
       <span class="options">
         <b>PROJECT INFO</b>
@@ -37,13 +38,12 @@
         </span>
         <span>
           <div class="projButtons" >
-            <router-link :to="{name:'BusinessEditProject'}">
-              <button class="edit-proj">EDIT PROJECT DETAILS</button>
-            </router-link><br>
+            <button class="edit-proj" @click="editProject()">EDIT PROJECT DETAILS</button> <br>
             <button href="#" class="close-proj">CLOSE PROJECT</button> <br>
             <button href="#" class="del-proj">DELETE PROJECT</button>
           </div> 
         </span>
+
       </div>
     </div>
     <br>
@@ -150,15 +150,21 @@ export default {
     if (this.$route.params.rejApplicants) {
       this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
     }
+    
   },
   methods: {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
+    editProject() {
+      this.$router.push({
+        name:"BusinessEditProject",
+        params: {
+          items: JSON.stringify(this.items),
+        },
+      })
+    }
   },
-  /*params: {
-    items: this.items,
-  },*/
 }
 </script>
 
