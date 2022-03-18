@@ -21,7 +21,7 @@
     <hr/>
     <div>
       <div class = "clogo">
-        <!-- <img src="../assets/google-logo.png" alt="Logo" class = "logo"> -->
+        <img src="../assets/google-logo.png" alt="Logo" class = "logo">
         <span>
           <div class="projTitle">
             {{items.projectTitle}}  <br>
