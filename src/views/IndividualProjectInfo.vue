@@ -158,7 +158,7 @@ export default {
     },
     editProject() {
       this.$router.push({
-        name:'About', 
+        name:'BusinessEditProject', 
         params: {
           items: JSON.stringify(this.items),
         },

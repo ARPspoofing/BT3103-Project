@@ -1,6 +1,6 @@
 <template>
     <BusinessNavBar :search=false :Heading="Heading" :header=true />
-  <h1>{{items.projTitle}}</h1>
+  <h1>{{items.projectTitle}}</h1>
 </template>
 
 <script>
@@ -20,11 +20,9 @@ export default {
         }
     },
     mounted() {
-        this.projTitle = JSON.parse(this.$route.params.items).projectTitle
-        this.items = JSON.parse(this.$route.params.items)
-        /*console.log(JSON.parse(this.$route.params.tasks))*/
-        console.log(this.projTitle);
-    },
+    this.items = JSON.parse(this.$route.params.items)
+    console.log(this.items)
+  }
 }
 </script>
 
