@@ -21,8 +21,8 @@
     <hr/>
     <div>
         <div class="appContainer">
-          <div :key="item.key" v-for="item in accApplicants">
-            <ApplicantsCard :buttons=false :applicantName="item"/>
+          <div :key="item.key" v-for="(item, key) in applicant">
+            <ApplicantsCard :buttons=false :applicantName="item.name" :applicantCourse="item.course"/>
           </div>
         </div>
     </div>
@@ -32,11 +32,11 @@
 <script>
 import BusinessNavBar from '../components/BusinessNavBar.vue'
 import ApplicantsCard from '../components/ApplicantsCard.vue'
-/*import firebaseApp from '../firebase.js';
+import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
-import { getAuth } from 'firebase/auth';*/
+import { getAuth } from 'firebase/auth';
 
 export default {
   name: 'IndividualProjectAccApps',
@@ -51,47 +51,37 @@ export default {
       newApplicants: [],
       accApplicants: [],
       rejApplicants: [],
+      applicant: [],
     }
   },
 
   mounted() {
     this.items = JSON.parse(this.$route.params.items)
-    /* 
-    const that = this;
-    async function fetchProject() {
-      let snapshot = await getDocs(collection(db, "Project"))
-      const newApplicants = [];
-      const accApplicants = [];
-      const rejApplicants = [];
-      snapshot.forEach((docs) => {
-        let data = docs.data()
-        testCollection.push({ 
-            newApplicants: data.New_Applicants, 
-            accApplicants: data.Acc_Applicants, 
-            rejApplicants: data.Rej_Applicants,
-        });
-      });
-      that.newApplicants = newApplicants;
-      that.accApplicants = accApplicants;
-      that.rejApplicants = rejApplicants;
-      console.log(newApplicants)
-      console.log(accApplicants)
-    }
-    fetchProject();*/
     console.log(this.$route.params.newApplicants);
     console.log(this.$route.params.accApplicants);
-    //console.log(this.$route.params.rejApplicants);
     if (this.$route.params.newApplicants) {
       this.newApplicants = JSON.parse(this.$route.params.newApplicants)
     }
     if (this.$route.params.accApplicants) {
       this.accApplicants = JSON.parse(this.$route.params.accApplicants)
+      for(var i = 0; i < this.accApplicants.length; i++) {
+        getApplicant(this.accApplicants[i]).then((res)=>{this.applicant.push(res)})
+      }
     }
     if (this.$route.params.rejApplicants) {
       this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
     }
-    console.log(this.accApplicants);
-    console.log(this.newApplicants);
+    //console.log(this.accApplicants);
+    //console.log(this.newApplicants);
+
+    async function getApplicant(app) {
+      const ref = doc(db, "students", app);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      //let result = await data.name
+      return {name: data.name, course: data.course};
+    }
+    console.log(this.applicant);
   }
 }
 </script>

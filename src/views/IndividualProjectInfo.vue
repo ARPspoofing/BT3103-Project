@@ -99,7 +99,6 @@
             </div>
         </div>
     </div>
-    <button @click="editProject()">EDIT PROJECT DETAILS</button>
     </div>
     <br><br>
   </div>
@@ -111,7 +110,7 @@ import Deliverable from '../components/Deliverable.vue'
 import * as moment from 'moment'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -158,14 +157,9 @@ export default {
       return moment(date).format("DD MMMM YYYY");
     },
     editProject() {
-<<<<<<< HEAD
-      this.$router.push({
-        name:'About', 
-=======
       console.log(this.items)
       this.$router.push({
         name:'BusinessEditProject', 
->>>>>>> emily
         params: {
           items: JSON.stringify(this.items),
         },

@@ -21,8 +21,8 @@
     <hr/>
     <div>
         <div class="appContainer">
-          <div :key="item.key" v-for="(item, key) in newApplicants">
-            <ApplicantsCard :buttons=true :applicantName="item" @acceptbtn="accApplicant(key)" @rejectbtn="rejApplicant(key)"/>
+          <div :key="item.key" v-for="(item, key) in applicant">
+            <ApplicantsCard :buttons=true :applicantName="item.name" :applicantCourse="item.course" @acceptbtn="accApplicant(key)" @rejectbtn="rejApplicant(key)"/>
           </div>
       </div>
     </div>
@@ -57,24 +57,9 @@ export default {
   },
 
   methods: {
-    /*async getApplicantName(app) {
-      const ref = doc(db, "students", app);
-      const docSnap = await getDoc(ref);
-      const data = await docSnap.data().name;
-      return data
-    },
-
-    async getApplicantCourse(app) {
-      const ref = doc(db, "students", app);
-      const docSnap = await getDoc(ref);
-      const data = await docSnap.data();
-      return data.course
-    },*/
-
-    
-
     async accApplicant(key) {
       var accApplicant = this.newApplicants[key]
+      var name = this.applicant[key].name
       console.log(accApplicant)
       var projTitle = this.items["projectTitle"]
       
@@ -85,15 +70,11 @@ export default {
       } else {
         this.accApplicants.push(accApplicant);
       }
-      //this.newApplicants[accApplicant].remove();
+
       this.newApplicants.splice(key,1);
+      this.applicant.splice(key,1);
 
-      //console.log(this.accApplicants);
-      //console.log(this.newApplicants);
-
-      alert("Accepting applicant: " + accApplicant);
-      // const auth = getAuth();
-      // this.fbuser = auth.currentUser.email
+      alert("Accepting applicant: " + name);
       try {
           const docRef = await updateDoc(doc(db, "Project", projTitle), {
               Acc_Applicants: this.accApplicants,
@@ -105,13 +86,12 @@ export default {
         catch(error) {
           console.error("Error updating document: ", error);
       }
-      /*console.log(this.accApplicants);
-      console.log(key)*/
     },
 
     async rejApplicant(key) {
       var rejApplicant = this.newApplicants[key]
       console.log(rejApplicant)
+      var name = this.applicant[key].name
       var projTitle = this.items["projectTitle"]
       //rejApplicants.push(rejApplicant);
 
@@ -123,8 +103,9 @@ export default {
         this.rejApplicants.push(rejApplicant);
       }
       this.newApplicants.splice(key,1);
+      this.applicant.splice(key,1);
 
-      alert("Rejecting applicant: " + projTitle);
+      alert("Rejecting applicant: " + name);
 
       try {
           const docRef = await updateDoc(doc(db, "Project", projTitle), {
@@ -148,17 +129,14 @@ export default {
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
     this.accApplicants = JSON.parse(this.$route.params.items).accApplicants
     this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants
-    console.log(this.newApplicants)
-    console.log(this.accApplicants)
-    console.log(this.rejApplicants)
-    console.log(this.items);
+    //console.log(this.newApplicants)
+    //console.log(this.accApplicants)
+    //console.log(this.rejApplicants)
+    //console.log(this.rejApplicants)
     if (this.$route.params.newApplicants) {
       this.newApplicants = JSON.parse(this.$route.params.newApplicants)
       for(var i = 0; i < this.newApplicants.length; i++) {
-        this.applicant.push({
-          name: getApplicantName(this.newApplicants[i]), 
-          course: getApplicantCourse(this.newApplicants[i])
-        })
+        getApplicant(this.newApplicants[i]).then((res)=>{this.applicant.push(res)})
       }
     }
     if (this.$route.params.accApplicants) {
@@ -168,18 +146,12 @@ export default {
       this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
     }
     
-    async function getApplicantName(app) {
+    async function getApplicant(app) {
       const ref = doc(db, "students", app);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      return data.name
-    }
-
-    async function getApplicantCourse(app) {
-      const ref = doc(db, "students", app);
-      const docSnap = await getDoc(ref);
-      const data = docSnap.data();
-      return data.course
+      //let result = await data.name
+      return {name: data.name, course: data.course};
     }
     console.log(this.applicant)
   }
