@@ -64,7 +64,23 @@
               <input type="date" v-model.lazy="task.taskDueDate" required>
             </div>
             </div>
-        <button id="saveButton" type="button" v-on:click="saveProject()">Save</button>
+        <button id="saveButton" type="button" data-bs-toggle="modal" data-bs-target="#saveModal">Save</button>
+        <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" 
+              data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <p>Add project?</p>
+                    <span>
+                      <div class = "applybtns">
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal" v-on:click="saveProject()">Yes</button>
+                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+        </div>
     </form>
   </div>
 </template>
@@ -140,7 +156,7 @@ export default {
       var k = [];
       var l = [];
 
-      alert("Saving your data for Project: " + a);
+      // alert("Saving your data for Project: " + a);
 
       try {
         const docRef = await setDoc(doc(db, "Project", a), {

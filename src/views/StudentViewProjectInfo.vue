@@ -19,8 +19,24 @@
         </span>
         <span>
           <div class="projButtons" >
-            <button class="applyProj" @click="addApplicant()">APPLY NOW</button> <br>
+            <button class="applyProj" data-bs-toggle="modal" data-bs-target="#applyModal" >APPLY NOW</button> <br>
           </div> 
+          <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true" 
+              data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <p>Apply for {{ items.projectTitle }}?</p>
+                    <span>
+                      <div class = "applybtns">
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="addApplicant()">Yes</button>
+                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
         </span>
       </div>
     </div>
@@ -76,7 +92,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
     </div>
     <br><br>
   </div>
@@ -140,7 +156,7 @@ export default {
         var projTitle = this.projTitle
         newApplicants.push(this.userEmail);
 
-        alert("Applying for proj: " + projTitle);
+        // alert("Applying for proj: " + projTitle);
         
         // const auth = getAuth();
         // this.fbuser = auth.currentUser.email;
@@ -418,4 +434,5 @@ export default {
       content: "";
       top: 5px;
   }
+
 </style>

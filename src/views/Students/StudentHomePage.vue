@@ -54,7 +54,7 @@
     <hr/>
     <div class="carouContainer">
       <div :key="item.key" v-for="(item, index) in testCollection">
-        <Card v-if="index <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" />
+        <Card v-if="index <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @applicantbtn="addApplicant(key)"/>
       </div>
     </div>
   </div>
