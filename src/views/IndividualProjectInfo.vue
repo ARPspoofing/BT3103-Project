@@ -39,11 +39,44 @@
         <span>
           <div class="projButtons" >
             <button class="edit-proj" @click="editProject()">EDIT PROJECT DETAILS</button> <br>
-            <button href="#" class="close-proj">CLOSE PROJECT</button> <br>
-            <button href="#" class="del-proj">DELETE PROJECT</button>
+            <button href="#" class="close-proj" data-bs-toggle="modal" data-bs-target="#closeModal">CLOSE PROJECT</button> <br>
+            <div class="modal fade" id="closeModal" tabindex="-1" aria-labelledby="closeModalLabel" aria-hidden="true" 
+              data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <p>Are you sure you want to close this project? <br>
+                    This action is not reversible. </p>
+                    <span>
+                      <div class = "applybtns">
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal">Yes</button>
+                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button href="#" class="del-proj" data-bs-toggle="modal" data-bs-target="#delModal">DELETE PROJECT</button>
+            <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="delModalLabel" aria-hidden="true" 
+              data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <p>Are you sure you want to delete this project? <br>
+                    This action is not reversible. </p>
+                    <span>
+                      <div class = "applybtns">
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal">Yes</button>
+                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div> 
         </span>
-
       </div>
     </div>
     <br>
@@ -156,10 +189,11 @@ export default {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
+
     editProject() {
       console.log(this.items)
       this.$router.push({
-        name:'BusinessEditProject', 
+        name:'BusinessEditProject',
         params: {
           items: JSON.stringify(this.items),
         },
