@@ -42,7 +42,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 h3 {
     font-family: verdana;
     text-align: center;

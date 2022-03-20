@@ -12,7 +12,7 @@
                     <h1>Welcome Business!</h1>
                 </div>
                 <div class="input">
-                    <h4>Signup with your Organization email</h4>
+                    <h6>Signup with your Organization email</h6>
                 </div>
                 <div class="input">
                     <h4>Email</h4>
@@ -196,7 +196,7 @@ export default {
     }
 
     .inputs {
-        width:30%;
+        width:40%;
     }
 
     .input {
@@ -204,7 +204,11 @@ export default {
         display: flex;
         justify-content: left;
         align-items: center;
-        margin:5px
+    }
+
+    .errorMsg {
+        color: red;
+        margin-top:10px;
     }
 
     input {
@@ -217,6 +221,7 @@ export default {
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
+        margin:10px;
     }
 
     input:focus {
@@ -226,7 +231,7 @@ export default {
     .icon {
         width:12px;
         position:absolute;
-        margin-left:5px;
+        margin-left:15px;
     }
 
     button {
@@ -244,10 +249,6 @@ export default {
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
         color: white;
-    }
-    .errorMsg {
-        color: red;
-        margin-top:10px;
     }
 
     .shake {
@@ -275,5 +276,17 @@ export default {
     }
     .input-error {
         order: 2px solid red;
+    }
+
+    h4 {
+        margin-left:15px;
+        font-size:18px;
+        font-weight:bolder;
+    }
+
+    h6 {
+        font-size:14px;
+        font-weight:bolder;
+        color:grey;
     }
 </style>
