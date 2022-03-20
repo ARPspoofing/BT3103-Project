@@ -65,7 +65,7 @@ import StudentNavBar from '../../components/StudentNavBar.vue'
 import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
@@ -82,7 +82,8 @@ export default {
       testCollection: [],
       newApplicants:[],
       user: false, 
-      userEmail: ""
+      userEmail: "", 
+      applied: [],
     }
   },
   
@@ -93,6 +94,9 @@ export default {
       console.log(newApplicants)
       var projTitle = this.testCollection[key]["projectTitle"]
       newApplicants.push(this.userEmail);
+      var applied = this.applied
+      console.log(applied);
+      applied.push(projTitle);
 
       alert("Applying for proj: " + projTitle);
       
@@ -104,7 +108,11 @@ export default {
               New_Applicants: newApplicants
           })
 
-          console.log(docRef)
+          const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
+                appliedProjects: applied
+            })
+
+          //console.log(docRef)
           this.$emit("updated")
       }
         catch(error) {
@@ -137,7 +145,7 @@ export default {
       }
     })
     this.userEmail = auth.currentUser.email;
-    console.log(this.userEmail)
+    //console.log(this.userEmail)
     //this.userEmail = auth.currentUser;
     //console.log(this.userEmail)
 
@@ -168,7 +176,17 @@ export default {
       that.testCollection = testCollection
       console.log(testCollection)
     }
+    
+    async function getAppliedProjects() {
+      const ref = doc(db, "students", auth.currentUser.email);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      console.log(data.appliedProjects)
+      that.applied = data.appliedProjects
+    }
     fetchProject();
+    getAppliedProjects()
+    console.log(that.applied)
   }
 }
 </script>

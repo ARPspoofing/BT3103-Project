@@ -193,17 +193,11 @@ export default {
         position: relative;
         display: flex;
         justify-content: left;
-<<<<<<< HEAD
-        align-items: center;
-        
-        margin-bottom:5px;
-=======
         align-items: center;       
     }
     .errorMsg {
         color: red;
         font-size: 15px;
->>>>>>> main
     }
 
     input {
@@ -216,11 +210,7 @@ export default {
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
-<<<<<<< HEAD
-        margin:5px;
-=======
         margin:10px
->>>>>>> main
     }
 
     input:focus {
@@ -230,11 +220,7 @@ export default {
     .icon {
         width:12px;
         position:absolute;
-<<<<<<< HEAD
-        margin-left:20px;
-=======
         margin-left:15px;
->>>>>>> main
     }
 
     button {
@@ -267,23 +253,6 @@ export default {
     90% {
         transform: translate3d(-1px, 0, 0);
     }
-<<<<<<< HEAD
-
-     h1 {
-        text-align: left;
-        margin-top: 20px;
-    }
-
-    h4 {
-        font-size: 16px;
-        margin-bottom: 0px;
-    }
-
-    .inputLabel {
-        margin-bottom: 0px;
-        text-align: left;
-    }
-=======
     20%,
     80% {
         transform: translate3d(2px, 0, 0);
@@ -302,5 +271,4 @@ export default {
         order: 2px solid red;
     }
 
->>>>>>> main
 </style>
