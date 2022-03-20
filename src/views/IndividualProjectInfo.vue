@@ -151,7 +151,7 @@ import Deliverable from '../components/Deliverable.vue'
 import * as moment from 'moment'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 
 export default {

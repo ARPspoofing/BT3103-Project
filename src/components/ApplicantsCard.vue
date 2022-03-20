@@ -5,7 +5,7 @@
           <span>
             <div class="appDetails">
                 {{applicantName}} <br>
-                Course
+                {{applicantCourse}}
             </div>
           </span>
         </div>
@@ -28,7 +28,8 @@ export default {
     
     props:{
         buttons: Boolean,
-        applicantName: Function,
+        applicantName: String,
+        applicantCourse: String,
     },
 
     methods: {
