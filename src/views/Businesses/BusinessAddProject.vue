@@ -70,7 +70,10 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-body">
+                    <div class="words">
+                    <i class="fa-solid fa-circle-plus" id="addIcon"></i>
                     <p>Add project?</p>
+                    </div>
                     <span>
                       <div class = "applybtns">
                         <button type="button" id="yesbtn" data-bs-dismiss="modal" v-on:click="saveProject()">Yes</button>
@@ -287,5 +290,60 @@ export default {
 
   #crossIcon:hover {
     color: #004A23;
+  }
+
+  #saveModal {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: #BBDFCC;
+    border: none;
+  }
+
+  .modal-body p {
+    text-align: center;
+    color: #004A23;
+    font-size: 22px;
+  }
+
+  .applybtns {
+    width: max-content;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+  }
+
+  #yesbtn, #nobtn {
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color:#89ca9a;
+    color: #3f3f3f;
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+  }
+  .words {
+    width: max-content;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    height: 40px;
+  }
+
+  #addIcon {
+    height: 33px;
+    width: 33px;
+    color: #3D9956;
+    float: left;
+  }
+
+  .modal-body p {
+    text-align: center;
+    width: 180px;
+    margin-left: 15px;
   }
 </style>

@@ -45,8 +45,12 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-body">
-                    <p>Are you sure you want to close this project? <br>
+                    <div class="words">
+                    <i class="fa-solid fa-triangle-exclamation" id="warningIcon"></i>
+                    <p>Are you sure you want to <br>
+                    <span style="color: red"> close </span> this project?<br>
                     This action is not reversible. </p>
+                    </div>
                     <span>
                       <div class = "applybtns">
                         <button type="button" id="yesbtn" data-bs-dismiss="modal">Yes</button>
@@ -63,8 +67,12 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-body">
-                    <p>Are you sure you want to delete this project? <br>
+                    <div class="words">
+                    <i class="fa-solid fa-triangle-exclamation" id="warningIcon"></i>
+                    <p>Are you sure you want to <br>
+                    <span style="color: red"> delete </span> this project?<br>
                     This action is not reversible. </p>
+                    </div>
                     <span>
                       <div class = "applybtns">
                         <button type="button" id="yesbtn" data-bs-dismiss="modal">Yes</button>
@@ -474,5 +482,53 @@ export default {
       width: 9px;
       content: "";
       top: 5px;
+  }
+
+  #closeModal, #delModal {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: #FFE9C8;
+    border: none;
+  }
+
+  .words {
+    width: max-content;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+  }
+
+  .applybtns {
+    width: max-content;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+
+  #yesbtn, #nobtn {
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: #FFC875;
+    color: #3f3f3f;
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+  }
+
+  #warningIcon {
+    height: 60px;
+    width: 60px;
+    color: #FFAB2C;
+    float: left;
+  }
+
+  .modal-body p {
+    text-align: center;
+    width: 300px;
   }
 </style>
