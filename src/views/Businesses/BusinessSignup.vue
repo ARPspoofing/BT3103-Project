@@ -12,9 +12,9 @@
                     <h1>Welcome Business!</h1>
                 </div>
                 <div class="input">
-                    <h4>Signup with your Organization email</h4>
+                    <h6>Signup with your Organization email</h6>
                 </div>
-                <div class="inputLabel">
+                <div class="input">
                     <h4>Email</h4>
                 </div>
                 <div class="input">
@@ -22,7 +22,7 @@
                     <img class="icon" src="../../assets/envelope.png">
                 </div>
                 <div class="errorMsg" v-if="emailErrorPresent">{{this.errorMessage}}</div>
-                <div class="inputLabel">
+                <div class="input">
                     <h4>Password</h4>
                 </div>
                 <div class="input">
@@ -30,7 +30,7 @@
                     <img class="icon" src="../../assets/lock.png">
                 </div>
                  <div class="errorMsg" v-if="passwordErrorPresent">{{this.errorMessage}}</div>
-                <div class="inputLabel">
+                <div class="input">
                     <h4>Confirm Password</h4>
                 </div>
                
@@ -172,11 +172,15 @@ export default {
     }
 
     .form-wrap {
-        display:flex;
-        height:105%;
-        width:100%;
-        background: url("../../assets/signupBG.png") no-repeat center center fixed;
         overflow:hidden;
+        display:flex;
+        height:80vh;
+        justify-content: center;
+        align-self: center;
+        margin: 0 auto;
+        width:90%;
+        background-image:url("../../assets/signupBG.png");
+        background-repeat: no-repeat;
     }
 
     form {
@@ -192,7 +196,7 @@ export default {
     }
 
     .inputs {
-        width:30%;
+        width:40%;
     }
 
     .input {
@@ -200,20 +204,24 @@ export default {
         display: flex;
         justify-content: left;
         align-items: center;
-        margin:5px
+    }
+
+    .errorMsg {
+        color: red;
+        margin-top:10px;
     }
 
     input {
         width: 100%;
-        border: 2px solid darkgreen;
-        background-color: white;
+        border: none;
+        background-color: aquamarine;
         padding: 4px 4px 4px 30px;
-        height: 35px;
+        height: 25px;
         border-top-left-radius: 25px;
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
-        margin:5px;
+        margin:10px;
     }
 
     input:focus {
@@ -223,7 +231,7 @@ export default {
     .icon {
         width:12px;
         position:absolute;
-        margin-left:20px;
+        margin-left:15px;
     }
 
     button {
@@ -235,13 +243,12 @@ export default {
         align-items: center;
         justify-content: center;
         background-color: green;
-        height: 35px;
-        border-radius: 25px;
+        height: 30px;
+        border-top-left-radius: 25px;
+        border-bottom-left-radius: 25px;
+        border-top-right-radius: 25px;
+        border-bottom-right-radius: 25px;
         color: white;
-    }
-    .errorMsg {
-        color: red;
-        margin-top:10px;
     }
 
     .shake {
@@ -271,18 +278,15 @@ export default {
         order: 2px solid red;
     }
 
-    h1 {
-        text-align: left;
-        margin-top: 20px;
-    }
-
     h4 {
-        font-size: 16px;
-        margin-bottom: 0px;
+        margin-left:15px;
+        font-size:18px;
+        font-weight:bolder;
     }
 
-    .inputLabel {
-        margin-bottom: 0px;
-        text-align: left;
+    h6 {
+        font-size:14px;
+        font-weight:bolder;
+        color:grey;
     }
 </style>

@@ -5,15 +5,18 @@
 <router-link :to="{name:'BusinessSignup'}">Signup</router-link>
 </div>
 <div class="form-wrap">
+    <ResetPassword @close="close" v-if="forgetPassword"/>
         <form class="login">
             <div class="inputs">
                 <div class="input">
                     <h1>Welcome Back Business!</h1>
                 </div>
                 <div class="input">
-                    <h4>Login with your details</h4>
+                    <h4>Dont't have an account?&nbsp;</h4>
+                    <router-link class="link" :to="{name:'BusinessSignup'}">Signup</router-link>
+                    <router-view/>
                 </div>
-                <div class="inputLabel">
+                <div class="input">
                     <h4>Email</h4>
                 </div>
                 <div class="input">
@@ -21,7 +24,7 @@
                     <img class="icon" src="../../assets/envelope.png">
                 </div>
                 <div class="errorMsg" v-if="emailErrorPresent">{{this.errorMessage}}</div>
-                <div class="inputLabel">
+                <div class="input">
                     <h4>Password</h4>
                 </div>
                 <div class="input">
@@ -29,6 +32,9 @@
                     <img class="icon" src="../../assets/lock.png">
                 </div>
                 <div class="errorMsg" v-if="passwordErrorPresent">{{this.errorMessage}}</div>
+                <div @click="forgot">
+                    <h4 class="forgot">Forgot Password</h4>
+                </div>
                 <div class="input">
                     <button @click="login"><b>Log In</b></button>
                 </div>
@@ -45,6 +51,7 @@ import {useRouter} from "vue-router"
 import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../../firebase.js"
 import {getDoc, collection, doc} from "firebase/firestore"
+import ResetPassword from '../../components/ResetPassword.vue'
 
 
 const router = useRouter()
@@ -58,12 +65,21 @@ export default {
             password:'',
             errorMessage:'',
             emailErrorPresent:false,
-            passwordErrorPresent:false
+            passwordErrorPresent:false,
+            forgetPassword: false,
             
         }
-    },       
-
+    },   
+    components: {
+        ResetPassword,
+    },    
     methods: {
+    forgot() {
+        this.forgetPassword = true
+    },
+    close(e) {
+        this.forgetPassword = false
+    }, 
     async login(){
         console.log("In method")
         if(this.email == '') {
@@ -136,12 +152,29 @@ export default {
         font-weight:700px;
     }
 
+    .link {
+        font-weight: bold;
+        color: blue;
+        align-self: flex-start;
+    }
+
+    h4 {
+        font-size: 18px;
+        margin-left:15px;
+        font-weight:bolder;
+
+    }
+
     .form-wrap {
-        display:flex;
-        height:105%;
-        width:100%;
-        background: url("../../assets/signupBG.png") no-repeat center center fixed;
         overflow:hidden;
+        display:flex;
+        height:80vh;
+        justify-content: center;
+        align-self: center;
+        margin: 0 auto;
+        width:90%;
+        background-image:url("../../assets/signupBG.png");
+        background-repeat: no-repeat;
     }
 
     form {
@@ -157,29 +190,31 @@ export default {
     }
 
     .inputs {
-        width:30%;
+        width:40%;
     }
 
     .input {
         position: relative;
         display: flex;
         justify-content: left;
-        align-items: center;
-        
-        margin-bottom:5px;
+        align-items: center;       
+    }
+    .errorMsg {
+        color: red;
+        font-size: 15px;
     }
 
     input {
         width: 100%;
-        border: 2px solid darkgreen;
-        background-color: white;
+        border: none;
+        background-color: aquamarine;
         padding: 4px 4px 4px 30px;
-        height: 35px;
+        height: 25px;
         border-top-left-radius: 25px;
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
-        margin:5px;
+        margin:10px
     }
 
     input:focus {
@@ -189,11 +224,11 @@ export default {
     .icon {
         width:12px;
         position:absolute;
-        margin-left:20px;
+        margin-left:15px;
     }
 
     button {
-        margin-top:3vh;
+        margin-top:5vh;
         width: 100%;
         border: none;
         display:flex;
@@ -201,28 +236,46 @@ export default {
         align-items: center;
         justify-content: center;
         background-color: green;
-        height: 35px;
-        border-radius: 25px;
+        height: 30px;
+        border-top-left-radius: 25px;
+        border-bottom-left-radius: 25px;
+        border-top-right-radius: 25px;
+        border-bottom-right-radius: 25px;
         color: white;
     }
 
-    .errorMsg {
-        color: red;
-        margin-top:5px;
+    .forgot {
+        font-size:14px;
+        color: darkgreen;
+        font-weight:bolder;
+        cursor: pointer;
     }
 
-     h1 {
-        text-align: left;
-        margin-top: 20px;
+    .shake {
+    animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    transform: translate3d(0, 0, 0);
+    }
+    @keyframes shake {
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+    }
+    .input-error {
+        order: 2px solid red;
     }
 
-    h4 {
-        font-size: 16px;
-        margin-bottom: 0px;
-    }
-
-    .inputLabel {
-        margin-bottom: 0px;
-        text-align: left;
-    }
 </style>
