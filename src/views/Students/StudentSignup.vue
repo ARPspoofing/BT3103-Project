@@ -13,7 +13,7 @@
                     <h1>Welcome Student!</h1>
                 </div>
                 <div class="input">
-                    <h4>Signup with your NUS email</h4>
+                    <h6>Signup with your NUS email</h6>
                 </div>
                 <div class="inputLabel">
                     <h4>Email</h4>
@@ -219,7 +219,7 @@ export default {
 
 <style scoped>
 
-     a {
+    a {
         font-weight: bold;
         color: #2c3e50;
         text-decoration: none;
@@ -260,7 +260,7 @@ export default {
     }
 
     .inputs {
-        width:30%;
+        width:40%;
     }
 
     .input {
@@ -268,7 +268,6 @@ export default {
         display: flex;
         justify-content: left;
         align-items: center;
-        margin-bottom:5px;
     }
 
     .errorMsg {
@@ -296,7 +295,7 @@ export default {
     .icon {
         width:12px;
         position:absolute;
-        margin-left:20px;
+        margin-left:15px;
     }
     button {
         margin-top:5vh;
@@ -339,18 +338,15 @@ export default {
         order: 2px solid red;
     }
 
-    h1 {
-        text-align: left;
-        margin-top: 20px;
-    }
-
     h4 {
-        font-size: 16px;
-        margin-bottom: 0px;
+        margin-left:15px;
+        font-size:18px;
+        font-weight:bolder;
     }
 
-    .inputLabel {
-        margin-bottom: 0px;
-        text-align: left;
+    h6 {
+        font-size:14px;
+        font-weight:bolder;
+        color:grey;
     }
 </style>
