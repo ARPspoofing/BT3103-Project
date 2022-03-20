@@ -13,8 +13,9 @@
         <p id="appstatus" class="pending" v-else-if="stat == 'pending'">Pending</p>
         <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">Rejected</p>
         
-        <button v-show=apply class="btn-apply" @click="applicantbtn">Apply Now</button>
-        <button v-show=offered class="btn-apply">Accept</button>
+        <button id="applybtns" v-show=apply v-if="appstat == 'apply'" class="btn-apply" @click="applicantbtn">Apply Now</button>
+        <button id="applybtns" v-show=apply v-else="appstat == 'applied'" class="btn-applied">Applied</button>
+        <button id="applybtns" v-show=offered class="btn-apply">Accept</button>
       </div>
 </template>
 
@@ -24,6 +25,7 @@ export default {
       return {
         testCollection: [],
         stat: "", 
+        appstat: "",
       }
     },
 
@@ -32,6 +34,7 @@ export default {
         description: String,
         apply: Boolean,
         stat: String, 
+        appstat: String,
         offered: Boolean,
         //applicantbtn: Function,
 
@@ -96,14 +99,24 @@ export default {
     font-size: 22px;
   }
   
-  .btn-apply {
-    background-color: #0E8044;
+  #applybtns {
+    /* background-color: #0E8044; */
     color: white;
-    width: 40%;
     border-radius: 8px;
     border-width: 0px;
     height: 30px;
+  }
+
+  .btn-apply {
+    background-color: #0E8044;
     margin-top: 0px;
+    width: 40%;
+  }
+
+  .btn-applied {
+    background-color: #888888;
+    margin-top: 0px;
+    width: 40%;
   }
 
   .btn-accept {
@@ -111,9 +124,9 @@ export default {
     color: white;
     display: inline;
     width: 25%;
-    border-radius: 8px;
+    /* border-radius: 8px;
     border-width: 0px;
-    height: 30px;   
+    height: 30px;    */
     margin-left: 205px; 
   }
   

@@ -19,11 +19,11 @@
     <hr />
     <div class="projectContainer" :key="item.key" v-for="(item, index) in projects">
       <Card
-        :apply="false"
+        :apply=false
         :projectTitle="item.projectTitle"
         :description="item.description"
         :stat="stat"
-        offered
+        :offered=true
       />
     </div>
   </div>
