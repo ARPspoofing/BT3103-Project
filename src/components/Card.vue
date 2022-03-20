@@ -9,7 +9,12 @@
         <div class="card-content">
           <p class="card-text">{{description}}</p>
         </div>
+        <p id="appstatus" class="offered" v-if="stat == 'offered'">Offered</p>
+        <p id="appstatus" class="pending" v-else-if="stat == 'pending'">Pending</p>
+        <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">Rejected</p>
+        
         <button v-show=apply class="btn-apply" @click="applicantbtn">Apply Now</button>
+        <button v-show=offered class="btn-apply">Accept</button>
       </div>
 </template>
 
@@ -18,6 +23,7 @@ export default {
     data() {
       return {
         testCollection: [],
+        stat: "", 
       }
     },
 
@@ -25,6 +31,8 @@ export default {
         projectTitle: String,
         description: String,
         apply: Boolean,
+        stat: String, 
+        offered: Boolean,
         //applicantbtn: Function,
 
     },
@@ -68,7 +76,7 @@ export default {
     width: 60%;
     height: 30px;
     margin: 15px;
-    overflow: hidden;
+    overflow: wrap;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 1; /* number of lines to show */
@@ -97,6 +105,17 @@ export default {
     height: 30px;
     margin-top: 0px;
   }
+
+  .btn-accept {
+    background-color: #0E8044;
+    color: white;
+    display: inline;
+    width: 25%;
+    border-radius: 8px;
+    border-width: 0px;
+    height: 30px;   
+    margin-left: 205px; 
+  }
   
   .logo {
     vertical-align: left;
@@ -105,5 +124,25 @@ export default {
     border-radius: 50%;
     margin-left: 10px;
     margin-right: 10px;
+  }
+
+  #appstatus { 
+    text-align: left;
+    display: inline;
+    margin-left: 10px;
+    font-size: 18px;
+    font-weight:bold;
+  }
+
+  .offered {
+    color: #0E8044;
+  }
+
+  .pending {
+    color: #E99141;
+  }
+
+  .rejected {
+    color: #EC5C5C;
   }
 </style>
