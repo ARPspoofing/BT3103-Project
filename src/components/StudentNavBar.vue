@@ -21,8 +21,9 @@
             <div class="dropdown-divider"></div>
             <router-link class="nav-item nav-link active" :to="{name:'StudentAbout'}">About</router-link>
             <div class="dropdown-divider"></div>
+            <router-link class="nav-item nav-link active" :to="{name:'OfferedApplications'}">My Applications</router-link>
+            <div class="dropdown-divider"></div>
             <router-link class="nav-item nav-link active" :to="{name:'StudentLogin'}"><span @click="logOut">Log Out</span></router-link>
-            
         </div>
         </div>
     </ul>

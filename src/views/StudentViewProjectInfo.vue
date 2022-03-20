@@ -104,13 +104,13 @@ import Deliverable from '../components/Deliverable.vue'
 import * as moment from 'moment'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default {
   name: 'StudentViewProjectInfo',
-  props: ['items'],
+  //props: ['items'],
   components: {
     StudentNavBar,
     Deliverable
@@ -119,12 +119,13 @@ export default {
     return {
       Heading: "MY PROJECTS",
       testCollection: [],
-      props: ['items'],
+      //props: ['items'],
       tags: [],
       tasks: [],
       items: [],
       user: false, 
-      userEmail: ""
+      userEmail: "", 
+      applied: [],
     }
   },
   mounted() {
@@ -141,10 +142,21 @@ export default {
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
     this.projTitle = JSON.parse(this.$route.params.items).projectTitle
     this.items = JSON.parse(this.$route.params.items)
+
+    const that = this
+    async function getAppliedProjects() {
+      const ref = doc(db, "students", auth.currentUser.email);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      //console.log(data.id)
+      that.applied = data.appliedProjects
+    }
+    getAppliedProjects()
+
     /*console.log(JSON.parse(this.$route.params.tasks))*/
-    console.log(this.projTitle)
-    console.log(this.tags);
-    console.log(this.newApplicants);
+    //console.log(this.projTitle)
+    //console.log(this.tags);
+    //console.log(this.newApplicants);
   },
   methods: {
     formatDate(date) {
@@ -155,15 +167,18 @@ export default {
         console.log(newApplicants)
         var projTitle = this.projTitle
         newApplicants.push(this.userEmail);
-
-        // alert("Applying for proj: " + projTitle);
-        
-        // const auth = getAuth();
-        // this.fbuser = auth.currentUser.email;
+        var projTitle = this.projTitle
+        newApplicants.push(this.userEmail);
+        var applied = this.applied
+        applied.push(projTitle);
 
         try {
             const docRef = await updateDoc(doc(db, "Project", projTitle), {
                 New_Applicants: newApplicants
+            })
+
+            const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
+                appliedProjects: applied
             })
             
             console.log(docRef)
