@@ -217,11 +217,7 @@ export default {
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
-<<<<<<< HEAD
-        margin:5px;
-=======
         margin:10px;
->>>>>>> main
     }
 
     input:focus {
@@ -231,11 +227,7 @@ export default {
     .icon {
         width:12px;
         position:absolute;
-<<<<<<< HEAD
-        margin-left:20px;
-=======
         margin-left:15px;
->>>>>>> main
     }
 
     button {
@@ -279,21 +271,6 @@ export default {
         order: 2px solid red;
     }
 
-<<<<<<< HEAD
-    h1 {
-        text-align: left;
-        margin-top: 20px;
-    }
-
-    h4 {
-        font-size: 16px;
-        margin-bottom: 0px;
-    }
-
-    .inputLabel {
-        margin-bottom: 0px;
-        text-align: left;
-=======
     h4 {
         margin-left:15px;
         font-size:18px;
@@ -304,6 +281,5 @@ export default {
         font-size:14px;
         font-weight:bolder;
         color:grey;
->>>>>>> main
     }
 </style>
