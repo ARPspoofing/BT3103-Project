@@ -35,13 +35,12 @@ export default {
       font-family: 'Poppins', sans-serif;
       font-size: 50px;
       text-align: left;
-      margin: 20px 0px 0px 40px;
+      margin: 20px 0px 0px 80px;
     }
-
     h4 {
       font-family: 'Poppins', sans-serif;
       text-align: left;
-      margin: 10px 0px 0px 48px;
+      margin: 10px 0px 0px 88px;
       line-height: 40px;
     }
 
