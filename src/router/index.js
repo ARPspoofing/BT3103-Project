@@ -75,11 +75,25 @@ const routes = [
     name: "StudentProfileForm",
     component: () => import("../views/Students/StudentProfileForm.vue"),
   },
-
   {
     path: "/student/landingpage",
     name: "StudentLandingPage",
     component: () => import("../views/Students/StudentLandingPage.vue"),
+  },
+  {
+    path: "/student/offeredapplications",
+    name: "OfferedApplications",
+    component: () => import("../views/Students/OfferedApplications.vue"),
+  },
+  {
+    path: "/student/pendingapplications",
+    name: "PendingApplications",
+    component: () => import("../views/Students/PendingApplications.vue"),
+  },
+  {
+    path: "/student/rejectedapplications",
+    name: "RejectedApplications",
+    component: () => import("../views/Students/RejectedApplications.vue"),
   },
   {
     path: "/student/management",

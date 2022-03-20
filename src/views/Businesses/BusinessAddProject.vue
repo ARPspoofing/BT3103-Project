@@ -1,5 +1,5 @@
 <template>
-  <NavBar :Heading="Heading" :header=true />
+  <BusinessNavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <form id="projectForm">
         <div class="inputs">
@@ -64,17 +64,37 @@
               <input type="date" v-model.lazy="task.taskDueDate" required>
             </div>
             </div>
-        <button id="saveButton" type="button" v-on:click="saveProject()">Save</button>
+        <button id="saveButton" type="button" data-bs-toggle="modal" data-bs-target="#saveModal">Save</button>
+        <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" 
+              data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <p>Add project?</p>
+                    <span>
+                      <div class = "applybtns">
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal" v-on:click="saveProject()">Yes</button>
+                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+        </div>
     </form>
   </div>
 </template>
 
 <script>
-import NavBar from '../../components/BusinessNavBar.vue'
+import BusinessNavBar from '../../components/BusinessNavBar.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { doc, setDoc } from "firebase/firestore"
+import {getAuth} from "firebase/auth"
 const db = getFirestore(firebaseApp);
+const auth = getAuth();
+console.log(auth.currentUser)
+const email = auth.currentUser.email;
 
 export default {
   data() {
@@ -92,7 +112,8 @@ export default {
        {
         taskName: '',
         taskDescription:'',
-        taskDueDate: ''
+        taskDueDate: '',
+        taskStatus:'To do'
        }
      ]
     }
@@ -109,10 +130,12 @@ export default {
       this.tasks.splice(counter,1);
     },*/
     addTask(){
+      
       this.tasks.push({
         taskName:'',
         taskDescription: '', 
-        taskDueDate: ''
+        taskDueDate: '',
+        taskStatus:'To do',
       })
     },
     deleteTask(counter){
@@ -140,10 +163,11 @@ export default {
       var k = [];
       var l = [];
 
-      alert("Saving your data for Project: " + a);
+      // alert("Saving your data for Project: " + a);
 
       try {
         const docRef = await setDoc(doc(db, "Project", a), {
+          poster_id:email,
           Project_Title: a,
           Position: b,
           Num_Of_Vacancies: c,
@@ -161,6 +185,7 @@ export default {
         console.log(docRef)
         document.getElementById("projectForm").reset();
         this.$emit("added")
+        this.$router.push({name:"BusinessHomePage"})
       }
       catch(error) {
         console.error("Error adding document: ", error);
@@ -168,7 +193,7 @@ export default {
     }
   },
   components: {
-    NavBar
+    BusinessNavBar
   },
 }
 </script>

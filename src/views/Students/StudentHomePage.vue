@@ -54,7 +54,7 @@
     <hr/>
     <div class="carouContainer">
       <div :key="item.key" v-for="(item, index) in testCollection">
-        <Card v-if="index <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" />
+        <Card v-if="index <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @applicantbtn="addApplicant(key)"/>
       </div>
     </div>
   </div>
@@ -88,7 +88,7 @@ export default {
   
   methods: {
     async addApplicant(key) {
-      console.log(key)
+      console.log(this.testCollection[key])
       var newApplicants = this.testCollection[key]["newApplicants"]
       console.log(newApplicants)
       var projTitle = this.testCollection[key]["projectTitle"]
@@ -96,23 +96,24 @@ export default {
 
       alert("Applying for proj: " + projTitle);
       
-      // const auth = getAuth();
-      // this.fbuser = auth.currentUser.email;
+      //const auth = getAuth();
+      //this.fbuser = auth.currentUser.email;
 
       try {
           const docRef = await updateDoc(doc(db, "Project", projTitle), {
               New_Applicants: newApplicants
           })
-          
+
           console.log(docRef)
           this.$emit("updated")
       }
         catch(error) {
           console.error("Error updating document: ", error);
       }
-      console.log(newApplicants);
-      console.log(key)
-      console.log(this.testCollection[key])
+      //console.log(newApplicants);
+      //console.log(key)
+      //console.log(this.testCollection[key])
+      console.log(appliedProjects)
       // var applicants = testCollection[key]["Applicants"]
     },
     

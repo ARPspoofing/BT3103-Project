@@ -1,9 +1,6 @@
 <template>
   <StudentNavBar :search=true :header=false />
   <div class="mainBody">
-    <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
-      <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
-    </router-link>
     <div>
       <div class = "clogo">
         <img src="../assets/google-logo.png" alt="Logo" class = "logo">
@@ -22,8 +19,24 @@
         </span>
         <span>
           <div class="projButtons" >
-            <button class="applyProj" @click="addApplicant()">APPLY NOW</button> <br>
+            <button class="applyProj" data-bs-toggle="modal" data-bs-target="#applyModal" >APPLY NOW</button> <br>
           </div> 
+          <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true" 
+              data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <p>Apply for {{ items.projectTitle }}?</p>
+                    <span>
+                      <div class = "applybtns">
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="addApplicant()">Yes</button>
+                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
         </span>
       </div>
     </div>
@@ -79,7 +92,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
     </div>
     <br><br>
   </div>
@@ -91,13 +104,13 @@ import Deliverable from '../components/Deliverable.vue'
 import * as moment from 'moment'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default {
   name: 'StudentViewProjectInfo',
-  props: ['items'],
+  //props: ['items'],
   components: {
     StudentNavBar,
     Deliverable
@@ -106,12 +119,13 @@ export default {
     return {
       Heading: "MY PROJECTS",
       testCollection: [],
-      props: ['items'],
+      //props: ['items'],
       tags: [],
       tasks: [],
       items: [],
       user: false, 
-      userEmail: ""
+      userEmail: "", 
+      applied: [],
     }
   },
   mounted() {
@@ -128,10 +142,21 @@ export default {
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
     this.projTitle = JSON.parse(this.$route.params.items).projectTitle
     this.items = JSON.parse(this.$route.params.items)
+
+    const that = this
+    async function getAppliedProjects() {
+      const ref = doc(db, "students", auth.currentUser.email);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      //console.log(data.id)
+      that.applied = data.appliedProjects
+    }
+    getAppliedProjects()
+
     /*console.log(JSON.parse(this.$route.params.tasks))*/
-    console.log(this.projTitle)
-    console.log(this.tags);
-    console.log(this.newApplicants);
+    //console.log(this.projTitle)
+    //console.log(this.tags);
+    //console.log(this.newApplicants);
   },
   methods: {
     formatDate(date) {
@@ -142,15 +167,18 @@ export default {
         console.log(newApplicants)
         var projTitle = this.projTitle
         newApplicants.push(this.userEmail);
-
-        alert("Applying for proj: " + projTitle);
-        
-        // const auth = getAuth();
-        // this.fbuser = auth.currentUser.email;
+        var projTitle = this.projTitle
+        newApplicants.push(this.userEmail);
+        var applied = this.applied
+        applied.push(projTitle);
 
         try {
             const docRef = await updateDoc(doc(db, "Project", projTitle), {
                 New_Applicants: newApplicants
+            })
+
+            const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
+                appliedProjects: applied
             })
             
             console.log(docRef)
@@ -421,4 +449,5 @@ export default {
       content: "";
       top: 5px;
   }
+
 </style>

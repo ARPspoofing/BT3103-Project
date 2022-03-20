@@ -7,7 +7,7 @@
             </div>
             <div class="profile-icon">
                 <input style="display:none" ref="profileUpload" type="file" @change="onFileSelected">
-                <h4 @click="$refs.profileUpload.click()">Pick Profile</h4>
+                <h6 @click="$refs.profileUpload.click()">Pick Profile</h6>
             </div>
 
             
@@ -256,7 +256,11 @@ export default {
             finalProfile: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",
             errorMessage:"",
             resumeLink:'',
-            transcriptLink:''
+            transcriptLink:'',
+            appliedProjects:[],
+            offeredProjects:[],
+            rejectedProjects:[],
+
         }
     },
     //Change to remove from firebase later
@@ -425,7 +429,11 @@ export default {
                 finalProfile:this.finalProfile,
                 profileFormCreated:true,
                 resumeDownloadLink: this.resumeLink,
-                transcriptDownloadLink: this.transcriptLink
+                transcriptDownloadLink: this.transcriptLink,
+                appliedProjects: this.appliedProjects,
+                offeredProjects: this.offeredProjects,
+                rejectedProjects: this.rejectedProjects
+
             })
 
             this.$router.push({name:'StudentHomePage'})
@@ -465,11 +473,13 @@ export default {
     input,
     select,
     textarea {
-        width:100%;
-        background-color: #33d69f;
+        width:70%;
+        background-color: white;
         border: none;
         outline:none;
         font-family: 'Poppins', sans-serif;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     textarea {
@@ -479,6 +489,14 @@ export default {
     .labelTag,
     .inputTag {
         border-radius:20px;
+    }
+
+    label {
+        text-align: left;
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 3px;
     }
 
     .addBtn {
@@ -495,9 +513,9 @@ export default {
     .content {
       position:relative;
       padding:50px;
-      width:90%;
-      background-color: green;
-      color:aliceblue;
+      width: 100%;
+      background-color: #BBDFCC;
+      color: #606060;
     }
 
     img {
@@ -515,16 +533,16 @@ export default {
     }
 
     .delete {
-        margin-top:-42px;
-        margin-right:-15px;
+        margin-top:-45px;
+        margin-left:35px;
         color:red;
     }
 
     .profile-pic {
         border-radius: 50%;
-        margin-top:10px;
-        width:10%;
-        height:10%;
+        margin:10px 0px;
+        width:120px;
+        height: 120px;
 
     }
 
@@ -537,12 +555,12 @@ export default {
     button,
     .button {
     cursor: pointer;
-    padding: 16px 24px;
-    border-radius: 30px;
-    borer: none;
-    font-size: 12px;
+    padding: 10px 24px;
+    border-radius: 25px;
+    border: none;
+    font-size: 16px;
     margin-right: 8px;
-    color: #fff;
+    color: white;
     img {
             margin-right: 4px;
           }
@@ -568,7 +586,7 @@ export default {
     background-color: #7c5dfa;
     }
     .green {
-    background-color: #33d69f;
+    background-color: #0E8044;
     }
     .orange {
     background-color: #ff8f00;
@@ -581,7 +599,11 @@ export default {
     }
 
     .flex-row {
-    flex-direction: row;
+        flex-direction: row;
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 0px;
     }
 
     .container {
@@ -602,6 +624,10 @@ export default {
         cursor: pointer;
     }
 
+    ul {
+        padding-left: 0px;
+    }
+
     .uploadIcon {
         border-radius: 10%;
         background-color:green;
@@ -616,5 +642,4 @@ export default {
         cursor:pointer;
         color:blue;
     }    
-
 </style>

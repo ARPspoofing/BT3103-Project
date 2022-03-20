@@ -4,6 +4,7 @@
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
+    <!-- <h3>{{items}}</h3> -->
     <h1 id="interest">
       <span class="options">
         <b>PROJECT INFO</b>
@@ -37,11 +38,43 @@
         </span>
         <span>
           <div class="projButtons" >
-            <router-link :to="{name:'BusinessEditProject'}">
-              <button class="edit-proj">EDIT PROJECT DETAILS</button>
-            </router-link><br>
-            <button href="#" class="close-proj">CLOSE PROJECT</button> <br>
-            <button href="#" class="del-proj">DELETE PROJECT</button>
+            <button class="edit-proj" @click="editProject()">EDIT PROJECT DETAILS</button> <br>
+            <button href="#" class="close-proj" data-bs-toggle="modal" data-bs-target="#closeModal">CLOSE PROJECT</button> <br>
+            <div class="modal fade" id="closeModal" tabindex="-1" aria-labelledby="closeModalLabel" aria-hidden="true" 
+              data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <p>Are you sure you want to close this project? <br>
+                    This action is not reversible. </p>
+                    <span>
+                      <div class = "applybtns">
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal">Yes</button>
+                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button href="#" class="del-proj" data-bs-toggle="modal" data-bs-target="#delModal">DELETE PROJECT</button>
+            <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="delModalLabel" aria-hidden="true" 
+              data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <p>Are you sure you want to delete this project? <br>
+                    This action is not reversible. </p>
+                    <span>
+                      <div class = "applybtns">
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal">Yes</button>
+                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div> 
         </span>
       </div>
@@ -99,7 +132,6 @@
             </div>
         </div>
     </div>
-    <button @click="editProject()">EDIT PROJECT DETAILS</button>
     </div>
     <br><br>
   </div>
@@ -111,7 +143,7 @@ import Deliverable from '../components/Deliverable.vue'
 import * as moment from 'moment'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -151,23 +183,23 @@ export default {
     if (this.$route.params.rejApplicants) {
       this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
     }
+    
   },
   methods: {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
+
     editProject() {
+      console.log(this.items)
       this.$router.push({
-        name:'BusinessEditProject', 
+        name:'BusinessEditProject',
         params: {
           items: JSON.stringify(this.items),
         },
       })
     }
   },
-  /*params: {
-    items: this.items,
-  },*/
 }
 </script>
 

@@ -16,24 +16,24 @@
                     <router-link class="link" :to="{name:'StudentSignup'}">Signup</router-link>
                     <router-view/>
                 </div>
-                <div class="input">
+                <div class="inputLabel">
                     <h4>Email</h4>
                 </div>
                 <div class="input">
-                    <input type="text" v-model="email">
+                    <input :class="{shake:emailError,'input-error':emailError}" type="text" v-model="email" placeholder="e1234567@u.nus.edu">
                     <img class="icon" src="../../assets/envelope.png">
                 </div>
                 <div class="errorMsg" v-if="emailError">{{this.errorMessage}}</div>
-                <div class="input">
+                <div class="inputLabel">
                     <h4>Password</h4>
                 </div>
                 <div class="input">
-                    <input type="password" v-model="password">
+                    <input :class="{shake:passwordError,'input-error':passwordError}" type="password" v-model="password">
                     <img class="icon" src="../../assets/lock.png">
                 </div>
                 <div class="errorMsg" v-if="passwordError">{{this.errorMessage}}</div>
-                <div @click="forgot" class="forgot">
-                    <h4>Forgot Password</h4>
+                <div @click="forgot">
+                    <h4  class="forgot">Forgot Password</h4>
                 </div>
                 
                 <div class="input">
@@ -144,18 +144,30 @@ export default {
     .link {
         font-weight: bold;
         color: blue;
+        align-self: flex-start;
+    }
+
+    h4 {
+        font-size: 18px;
+        margin-left:15px;
+        font-weight:bolder;
+
     }
 
     .form-wrap {
-        overflow:hidden;
         display:flex;
+        height:105%;
+        width:100%;
+        background: url("../../assets/signupBG.png") no-repeat center center fixed;
+        overflow:hidden;
+        /* display:flex;
         height:80vh;
         justify-content: center;
         align-self: center;
         margin: 0 auto;
         width:90%;
         background-image:url("../../assets/signupBG.png");
-        background-repeat: no-repeat;
+        background-repeat: no-repeat; */
     }
 
     form {
@@ -171,16 +183,14 @@ export default {
     }
 
     .inputs {
-        width:30%;
+        width:40%;
     }
 
     .input {
         position: relative;
         display: flex;
         justify-content: left;
-        align-items: center;
-        margin-bottom:-10px;
-        
+        align-items: center;       
     }
     .errorMsg {
         color: red;
@@ -189,35 +199,29 @@ export default {
 
     input {
         width: 100%;
-        border: none;
-        background-color: aquamarine;
+        border: 2px solid darkgreen;
+        background-color: white;
         padding: 4px 4px 4px 30px;
-        height: 25px;
+        height: 35px;
         border-top-left-radius: 25px;
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
-        margin:10px
+        margin:5px;
     }
 
     input:focus {
         outline: none;
     }
 
-    .forgot {
-        font-size: 12px;
-        color:darkgreen;
-        cursor: pointer;
-    }
-
     .icon {
         width:12px;
         position:absolute;
-        margin-left:5px;
+        margin-left:15px;
     }
 
     button {
-        margin-top:5vh;
+        margin-top:3vh;
         width: 100%;
         border: none;
         display:flex;
@@ -225,11 +229,43 @@ export default {
         align-items: center;
         justify-content: center;
         background-color: green;
-        height: 30px;
-        border-top-left-radius: 25px;
-        border-bottom-left-radius: 25px;
-        border-top-right-radius: 25px;
-        border-bottom-right-radius: 25px;
+        height: 35px;
+        border-radius: 25px;
         color: white;
     }
+
+    .forgot {
+        font-size:14px;
+        color: darkgreen;
+        font-weight:bolder;
+        cursor: pointer;
+    }
+
+    .shake {
+    animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    transform: translate3d(0, 0, 0);
+    }
+    @keyframes shake {
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+    }
+    .input-error {
+        order: 2px solid red;
+    }
+
 </style>
