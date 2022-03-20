@@ -1,5 +1,5 @@
 <template>
-  <NavBar :Heading="Heading" :header=true />
+  <BusinessNavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <form id="projectForm">
         <div class="inputs">
@@ -89,11 +89,15 @@
 </template>
 
 <script>
-import NavBar from '../../components/BusinessNavBar.vue'
+import BusinessNavBar from '../../components/BusinessNavBar.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, addDoc } from "firebase/firestore"
+import {getAuth} from "firebase/auth"
 const db = getFirestore(firebaseApp);
+const auth = getAuth();
+console.log(auth.currentUser)
+const email = auth.currentUser.email;
 
 export default {
   data() {
@@ -111,7 +115,8 @@ export default {
        {
         taskName: '',
         taskDescription:'',
-        taskDueDate: ''
+        taskDueDate: '',
+        taskStatus:'To do'
        }
      ]
     }
@@ -128,10 +133,12 @@ export default {
       this.tasks.splice(counter,1);
     },*/
     addTask(){
+      
       this.tasks.push({
         taskName:'',
         taskDescription: '', 
-        taskDueDate: ''
+        taskDueDate: '',
+        taskStatus:'To do',
       })
     },
     deleteTask(counter){
@@ -163,6 +170,7 @@ export default {
 
       try {
         const docRef = await addDoc(collection(db, "Project"), {
+          poster_id:email,
           Project_Title: a,
           Position: b,
           Num_Of_Vacancies: c,
@@ -180,6 +188,7 @@ export default {
         console.log(docRef)
         document.getElementById("projectForm").reset();
         this.$emit("added")
+        this.$router.push({name:"BusinessHomePage"})
       }
       catch(error) {
         console.error("Error adding document: ", error);
@@ -187,7 +196,7 @@ export default {
     }
   },
   components: {
-    NavBar
+    BusinessNavBar
   },
 }
 </script>

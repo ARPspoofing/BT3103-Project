@@ -197,7 +197,9 @@ export default {
         position: relative;
         display: flex;
         justify-content: left;
-        align-items: center;       
+        align-items: center;    
+        margin-bottom:5px;
+      
     }
     .errorMsg {
         color: red;
@@ -255,11 +257,29 @@ export default {
     animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     transform: translate3d(0, 0, 0);
     }
+
     @keyframes shake {
     10%,
     90% {
         transform: translate3d(-1px, 0, 0);
     }
+
+
+     h1 {
+        text-align: left;
+        margin-top: 20px;
+    }
+
+    h4 {
+        font-size: 16px;
+        margin-bottom: 0px;
+    }
+
+    .inputLabel {
+        margin-bottom: 0px;
+        text-align: left;
+    }
+
     20%,
     80% {
         transform: translate3d(2px, 0, 0);
@@ -277,5 +297,4 @@ export default {
     .input-error {
         order: 2px solid red;
     }
-
 </style>

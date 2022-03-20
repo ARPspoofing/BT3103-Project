@@ -278,6 +278,21 @@ export default {
         order: 2px solid red;
     }
 
+    h1 {
+        text-align: left;
+        margin-top: 20px;
+    }
+
+    h4 {
+        font-size: 16px;
+        margin-bottom: 0px;
+    }
+
+    .inputLabel {
+        margin-bottom: 0px;
+        text-align: left;
+    }
+
     h4 {
         margin-left:15px;
         font-size:18px;
