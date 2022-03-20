@@ -13,8 +13,27 @@
         <p id="appstatus" class="pending" v-else-if="stat == 'pending'">Pending</p>
         <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">Rejected</p>
         
-        <button id="applybtns" v-show=apply v-if="appstat == 'apply'" class="btn-apply" @click="applicantbtn">Apply Now</button>
-        <button id="applybtns" v-show=apply v-else="appstat == 'applied'" class="btn-applied">Applied</button>
+        <button id="applybtns" v-show=apply v-if="appstat == 'applied'" class="btn-applied">Applied</button>
+        <button id="applybtns" v-show=apply v-else="appstat == 'apply'" class="btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal">Apply Now</button>
+        <!-- <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true" 
+              data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <div class="words">
+                    <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+                    <p>Apply for <span style="color: #0E8044"><strong>{{ items.projectTitle }} </strong></span>?</p>
+                    </div>
+                    <span>
+                      <div class = "applybtns">
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="applicantbtn">Yes</button>
+                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div> -->
         <button id="applybtns" v-show=offered class="btn-apply">Accept</button>
       </div>
 </template>
