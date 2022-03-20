@@ -1,17 +1,36 @@
 <template>
-    <div class="task">
-            <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoTaskDetails', params: {taskId: task['id']}}">
-                <div class="status-button flex" :class="{todo:task['todo'],inprogress:task['inprogress'],pendingreview:task['pendingreview'],completed:task['completed']}">
-                    <span v-if="task['todo']">ToDo</span>
-                    <span v-if="task['inprogress']">In-Progress</span>
-                    <span v-if="task['pendingreview']">Pending Review</span>
-                    <span v-if="task['completed']">Completed </span>
+    <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoTaskDetails', params: {taskId: task['id']}}">
+    <div class="todo">
+        <div class="top flex flex-row">
+            <div class="title">{{task['taskname']}}</div>
+            <div class="status-button flex" :class="{todoButton:task['todo'],inprogressButton:task['inprogress'],pendingreviewButton:task['pendingreview'],completedButton:task['completed']}">
+                <div v-if="task['todo']">
+                    <p>Todo</p>
                 </div>
-                <span class="title">{{task['taskname']}}</span>
-                <span class="duedate">{{task['duedate']}}</span>
-                <span class="short">{{task['shortdescription']}}</span>
-            </router-link>        
+                <div v-if="task['inprogress']">
+                    <p>In-Progress</p>
+                </div>
+                <div v-if="task['pendingreview']">
+                    <p>Pending Review</p>
+                </div>
+                <div v-if="task['completed']"> 
+                    <p>Completed</p>
+                </div>
+            </div>
+        </div>
+        <div class="duedate">
+            <p>
+                 Due date: {{duedate}}
+            </p>
+        </div>
+       
+        <div class="short">
+        <p>
+            Short Description: {{task['shortdescription']}}
+        </p>
+        </div>          
     </div>  
+    </router-link>  
 
     
 </template>
@@ -19,77 +38,107 @@
 <script>
     export default {
         name: 'ToDo',
-        props: ['task']
+        props: {
+            task:Object,
+        },
+        data() {
+            return {
+                duedate: new Date(this.task['duedate']['seconds']).toLocaleDateString('en-us',{year: "numeric", month: "short", day: "numeric"}),
+                dateOptions: {year: "numeric", month: "short", day: "numeric"},
+            }
+        },
+        watch: {
+        },
     }
 </script>
 
 <style scoped>
 
-    .task {
-        align-items:center;
+    .todo {
         background-color: aquamarine;
         border-radius: 20px;
         padding: 40px 20px;
-        background-color: aquamarine;
-        width: 15vw;
-        height: 10vh;
+        margin-right:5px;
+        margin-left:5px;
         margin-bottom: 4px;
         text-decoration: none;
-    }
-
-    .status-button {
-        width: 4px;
-        height: 10px;
-        font-size: 12px;
-        align-items: center;
-        justify-content: center;
-        padding: 8px 30px;
-        border-radius: 10px;
     }
 
     .flex {
         display: flex;
     }
 
+    .flex-row {
+        flex-direction: row;
+    }
+
     a {
-        width:15vw;
+        height:200px;
     }
 
     .duedate {
         width:15vw;
     }
 
-    .todo::before {
-        background-color: green;
-    }
     .todo {
-        color: green;
-        background-color: black;
+        color: white;
+        background-color: rgb(54, 179, 110);
     }
 
-    .inprogress::before {
-        background-color: yellow;
-    }
     .inprogress {
-        color: yellow;
-        background-color: black;
+        color: white;
+        background-color: rgb(245, 116, 11);
     }
 
-    .pendingreview::before {
-        background-color: blue;
-    }
     .pendingreview {
-        color: blue;
-        background-color: black;
+        color: white;
+        background-color: rgb(102, 117, 245);
     }
 
-    .completed::before {
-        background-color: pink;
-    }
     .completed {
-        color: pink;
-        background-color: black;
+        color: white;
+        background-color: rgb(187, 111, 231);
     }
+
+     .status-button {
+        width: 4px;
+        height: 10px;
+        font-size: 12px;
+        justify-self: start;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 30px;
+        border-radius: 10px;
+        margin-left: auto;
+    }
+
+    .top {
+        margin-bottom: 15px;
+        margin-top:-15px;
+    }
+
+    
+    .todoButton {
+        background-color: rgb(230, 121, 139);
+    }
+
+    .inprogressButton {
+
+    }
+
+    .pendingreviewButton {
+
+    }
+
+    .completedButton {
+
+    }
+
+    .duedate {
+        font-size:12px;
+        margin-top:-15px;
+    }
+    
 
 
 

@@ -1,14 +1,22 @@
 <template>
 <div v-if="finalTask.length > 0" class="wrapper-outer">
     <div class="wrapper">
+        <h4>To-Do</h4>
         <ToDo v-if="finalTask" v-for="(task,index) in finalTask" :task="task" :key="index"/>
     </div>
     <div class="wrapper">
+        <h4>IN PROGRESS</h4>
         <ToDo v-if="finalTask" v-for="(task,index) in finalTask" :task="task" :key="index"/>
     </div>
     <div class="wrapper">
+        <h4>PENDING REVIEW</h4>
         <ToDo v-if="finalTask" v-for="(task,index) in finalTask" :task="task" :key="index"/>
     </div>
+    <div class="wrapper">
+        <h4>COMPLETED</h4>
+        <ToDo v-if="finalTask" v-for="(task,index) in finalTask" :task="task" :key="index"/>
+    </div>
+    
 </div>
     <div v-else class="empty flex flex-column">
         <img src="../../assets/empty.png">   
@@ -60,6 +68,7 @@ export default {
                     inprogress: data.inprogress,
                     pendingreview: data.pendingreview,
                     completed: data.completed,
+                    shortdescription: data.shortdescription,
                     
                 })
               }
@@ -77,12 +86,19 @@ export default {
 
 <style scoped>
     .wrapper-outer {
-        display:grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        display: flex;
+        flex-direction: row;
     }
     
     .wrapper {
-        display:grid;
+        background-color: rgb(195, 238, 197);
+        height:100vh;
+        flex:1;
+        align-items: center;
+        justify-content: center;
+        align-content: center;
+        justify-items: center;
+        margin-right:5px;
     }
 
     .empty {
