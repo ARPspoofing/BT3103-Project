@@ -92,7 +92,7 @@
 import NavBar from '../../components/BusinessNavBar.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { doc, setDoc } from "firebase/firestore"
+import { collection, doc, setDoc, addDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -162,7 +162,7 @@ export default {
       // alert("Saving your data for Project: " + a);
 
       try {
-        const docRef = await setDoc(doc(db, "Project", a), {
+        const docRef = await addDoc(collection(db, "Project"), {
           Project_Title: a,
           Position: b,
           Num_Of_Vacancies: c,
