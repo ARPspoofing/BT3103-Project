@@ -12,7 +12,7 @@
                     <h1>Welcome Back Business!</h1>
                 </div>
                 <div class="input">
-                    <h4>Dont't have an account?&nbsp;</h4>
+                    <h4>Don't have an account?&nbsp;</h4>
                     <router-link class="link" :to="{name:'BusinessSignup'}">Signup</router-link>
                     <router-view/>
                 </div>
@@ -156,6 +156,8 @@ export default {
         font-weight: bold;
         color: blue;
         align-self: flex-start;
+        margin-top: 5px;
+        margin-bottom: 8px;
     }
 
     h4 {
@@ -201,7 +203,7 @@ export default {
     }
 
     input {
-        width: 100%;
+        width: 80%;
         border: 2px solid darkgreen;
         background-color: white;
         padding: 4px 4px 4px 30px;
@@ -210,7 +212,8 @@ export default {
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
-        margin:10px
+        margin:5px;
+        margin-left: 10px;
     }
 
     input:focus {
@@ -220,12 +223,13 @@ export default {
     .icon {
         width:12px;
         position:absolute;
-        margin-left:15px;
+        margin-left:20px;
     }
 
     button {
         margin-top:3vh;
-        width: 100%;
+        margin-left: 10px;
+        width: 80%;
         border: none;
         display:flex;
         align-items: center;
@@ -242,6 +246,7 @@ export default {
         color: darkgreen;
         font-weight:bolder;
         cursor: pointer;
+        width: 80%;
     }
 
     .shake {
@@ -269,6 +274,21 @@ export default {
     }
     .input-error {
         order: 2px solid red;
+    }
+
+    h1 {
+        text-align: left;
+        margin-top: 20px;
+        margin-left: 15px;
+    }
+    h4 {
+        font-size: 16px;
+        margin-top: 5px;
+
+    }
+    .inputLabel {
+        margin-bottom: 0px;
+        text-align: left;
     }
 
 </style>
