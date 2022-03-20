@@ -256,7 +256,11 @@ export default {
             finalProfile: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",
             errorMessage:"",
             resumeLink:'',
-            transcriptLink:''
+            transcriptLink:'',
+            appliedProjects:[],
+            offeredProjects:[],
+            rejectedProjects:[],
+
         }
     },
     //Change to remove from firebase later
@@ -425,7 +429,11 @@ export default {
                 finalProfile:this.finalProfile,
                 profileFormCreated:true,
                 resumeDownloadLink: this.resumeLink,
-                transcriptDownloadLink: this.transcriptLink
+                transcriptDownloadLink: this.transcriptLink,
+                appliedProjects: this.appliedProjects,
+                offeredProjects: this.offeredProjects,
+                rejectedProjects: this.rejectedProjects
+
             })
 
             this.$router.push({name:'StudentHomePage'})
