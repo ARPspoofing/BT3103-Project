@@ -108,7 +108,6 @@ export default {
       user: false, 
       userEmail: "", 
       applied: [],
-  
     }
   },
   
@@ -121,15 +120,17 @@ export default {
       newApplicants.push(this.userEmail);
       var applied = this.applied
       console.log(applied);
+      var projectId = this.testCollection[key]["projectId"]
+      console.log(projectId);
       applied.push(projTitle);
 
-      //alert("Applying for proj: " + projTitle);
+      // alert("Applying for proj: " + projTitle);
       
       //const auth = getAuth();
       //this.fbuser = auth.currentUser.email;
 
       try {
-          const docRef = await updateDoc(doc(db, "Project", projTitle), {
+          const docRef = await updateDoc(doc(db, "Project", projectId), {
               New_Applicants: newApplicants
           })
 
@@ -187,13 +188,16 @@ export default {
     async function fetchProject() {
       let snapshot = await getDocs(collection(db, "Project"))
       const testCollection = [];
+      console.log(that.applied)
       snapshot.forEach((docs) => {
         let data = docs.data()
+        var id = docs.id
         if (that.applied.includes(data.Project_Title)) {
           testCollection.push({ 
             /*projectTitle: data.Project_Title, 
             description: data.Description,
             newApplicants: data.New_Applicants*/
+            projectId: id,
             projectTitle: data.Project_Title, 
             description: data.Description, 
             vacancies: data.Num_Of_Vacancies,
@@ -213,6 +217,7 @@ export default {
             /*projectTitle: data.Project_Title, 
             description: data.Description,
             newApplicants: data.New_Applicants*/
+            projectId: id,
             projectTitle: data.Project_Title, 
             description: data.Description, 
             vacancies: data.Num_Of_Vacancies,
@@ -233,8 +238,6 @@ export default {
       that.testCollection = testCollection
       console.log(testCollection)
     }
-
-    
     
     getAppliedProjects()
     fetchProject();

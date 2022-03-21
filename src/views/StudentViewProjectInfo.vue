@@ -19,7 +19,8 @@
         </span>
         <span>
           <div class="projButtons" >
-            <button class="applyProj" data-bs-toggle="modal" data-bs-target="#applyModal" >APPLY NOW</button> <br>
+            <button id="applybtns" v-if="appstat == 'applied'" class="btn-applied">APPLIED</button>
+            <button id="applybtns" v-if="appstat == 'apply'" class="btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal" >APPLY NOW</button> <br>
           </div> 
           <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true" 
               data-bs-backdrop="false">
@@ -129,6 +130,7 @@ export default {
       user: false, 
       userEmail: "", 
       applied: [],
+      appstat: "",
     }
   },
   mounted() {
@@ -145,6 +147,8 @@ export default {
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
     this.projTitle = JSON.parse(this.$route.params.items).projectTitle
     this.items = JSON.parse(this.$route.params.items)
+    this.projId = JSON.parse(this.$route.params.items).projectId
+    this.appstat = JSON.parse(this.$route.params.items).appstat
 
     const that = this
     async function getAppliedProjects() {
@@ -170,13 +174,13 @@ export default {
         console.log(newApplicants)
         var projTitle = this.projTitle
         newApplicants.push(this.userEmail);
-        var projTitle = this.projTitle
-        newApplicants.push(this.userEmail);
+        var projId = this.projId
         var applied = this.applied
         applied.push(projTitle);
+        this.appstat = "applied"
 
         try {
-            const docRef = await updateDoc(doc(db, "Project", projTitle), {
+            const docRef = await updateDoc(doc(db, "Project", projId), {
                 New_Applicants: newApplicants
             })
 
@@ -317,13 +321,20 @@ export default {
     margin-left: 20px;
   }
 
-  .applyProj {
-    background-color: #0E8044;
+  #applybtns {
     color: white;
     border-radius: 15px;
     width: 250px;
     border-width: 0px;
     font-size: 18px;
+  }
+
+  .btn-apply {
+    background-color: #0E8044;
+  }
+
+  .btn-applied {
+    background-color: #888888;
   }
 
   .projButtons {

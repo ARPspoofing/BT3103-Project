@@ -74,7 +74,7 @@ export default {
       this.newApplicants.splice(key,1);
       this.applicant.splice(key,1);
 
-      alert("Accepting applicant: " + name);
+      // alert("Accepting applicant: " + name);
       try {
           const docRef = await updateDoc(doc(db, "Project", projTitle), {
               Acc_Applicants: this.accApplicants,
