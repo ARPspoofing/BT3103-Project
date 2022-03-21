@@ -123,6 +123,7 @@ export default {
       var projectId = this.testCollection[key]["projectId"]
       console.log(projectId);
       applied.push(projTitle);
+      this.testCollection[key]["appstat"] = "applied"
 
       // alert("Applying for proj: " + projTitle);
       
