@@ -123,7 +123,7 @@ export default {
       console.log(applied);
       applied.push(projTitle);
 
-      alert("Applying for proj: " + projTitle);
+      //alert("Applying for proj: " + projTitle);
       
       //const auth = getAuth();
       //this.fbuser = auth.currentUser.email;
@@ -233,6 +233,8 @@ export default {
       that.testCollection = testCollection
       console.log(testCollection)
     }
+
+    
     
     getAppliedProjects()
     fetchProject();

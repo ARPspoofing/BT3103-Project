@@ -1,5 +1,5 @@
 <template>
-        <div class="card-body" @click="clickCard">
+        <div class="card-body" @click.self="clickCard">
         <div class = "clogo">
           <img src="../assets/google-logo.png" alt="Logo" class = "logo">
           <span class="card-title">
@@ -15,25 +15,25 @@
         
         <button id="applybtns" v-show=apply v-if="appstat == 'applied'" class="btn-applied">Applied</button>
         <button id="applybtns" v-show=apply v-else="appstat == 'apply'" class="btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal">Apply Now</button>
-        <!-- <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true" 
-              data-bs-backdrop="false">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-body">
-                    <div class="words">
-                    <i class="fa-solid fa-circle-check" id="tickIcon"></i>
-                    <p>Apply for <span style="color: #0E8044"><strong>{{ items.projectTitle }} </strong></span>?</p>
-                    </div>
-                    <span>
-                      <div class = "applybtns">
-                        <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="applicantbtn">Yes</button>
-                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
-                      </div>
-                    </span>
+        <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true" 
+            data-bs-backdrop="false">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <div class="words">
+                  <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+                  <p>Apply for <span style="color: #0E8044"><strong>{{ projectTitle }} </strong></span>?</p>
                   </div>
+                  <span>
+                    <div class = "applybtns">
+                      <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="applicantbtn">Yes</button>
+                      <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                    </div>
+                  </span>
                 </div>
               </div>
-            </div> -->
+            </div>
+          </div>
         <button id="applybtns" v-show=offered class="btn-apply">Accept</button>
       </div>
 </template>
@@ -96,15 +96,15 @@ export default {
   
   .card-title {
     width: 60%;
-    height: 30px;
+    height: 40px;
     margin: 15px;
-    overflow: wrap;
+    overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 1; /* number of lines to show */
             line-clamp: 1; 
     -webkit-box-orient: vertical;
-    display: inline-block;
+    /* display: inline-block; */
   }
 
   .card-content {
@@ -156,6 +156,7 @@ export default {
     border-radius: 50%;
     margin-left: 10px;
     margin-right: 10px;
+    float: left
   }
 
   #appstatus { 
