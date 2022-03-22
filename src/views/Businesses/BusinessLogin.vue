@@ -46,7 +46,7 @@ const router = useRouter()
 const login = () => {
     signInWithEmailAndPassword(getAuth(), email.value,password.value)
     .then((data) => {
-        router.push({name:'BusinessProfilePage'})
+        router.push({name:'BusinessProfileForm'})
     } ).catch((error) => {
         console.log(error)
     })

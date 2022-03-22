@@ -54,7 +54,7 @@ const router = useRouter()
 const login = () => {
     signInWithEmailAndPassword(getAuth(), email.value,password.value)
     .then((data) => {
-        router.push({name:'BusinessProfilePage'})
+        router.push({name:'StudentProfilePage'})
     } ).catch((error) => {
         console.log(error)
     })
@@ -64,7 +64,8 @@ export default {
     name:'StudentLogin',
     data() {
         return {
-            forgetPassword: false
+            forgetPassword: false,
+            errorMessage: '',
         }
     },
     components: {

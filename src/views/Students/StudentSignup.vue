@@ -59,7 +59,7 @@ import Loading from '../../components/Loading.vue'
 
 const db = getFirestore(firebaseApp)
 const router = useRouter()
-var validEmail = []
+//var validEmail = []
 export default {
     data() {
         return {
@@ -72,24 +72,27 @@ export default {
             confirmPasswordErrorPresent:false,
             errorMessage:'',
             loading: null,
+            validEmail: []
         }
     },
-    created() {
-      this.getValidEmail()
-      console.log("validEmail",validEmail)
-    },
-    components: {
-        Loading,
-    },
-    methods: {
-        async getValidEmail() {
+    mounted() {
+    const curr = this
+    async function getValidEmail() {
+        var validEmail = []
           let database = await getDocs(collection(db,"nusEmails"))
           database.forEach((doc) => {
               var data = doc.data()
               validEmail.push(data.email)
               //console.log(validEmail)
               })
-      },
+      curr.validEmail = validEmail
+      }
+      getValidEmail()
+    },
+    components: {
+        Loading,
+    },
+    methods: {
         register() { 
                 if(this.email == '') {
                     this.errorMessage = 'email field is empty'
@@ -115,59 +118,9 @@ export default {
                     setTimeout(() => {
                         this.passwordErrorPresent = false
                     }, 1500) 
-                    /*
-                } else if (this.email == '' && this.password == '') {
-                    this.errorMessage = 'email field is empty'
-                    this.emailErrorPresent = true
-                    setTimeout(() => {
-                        this.emailErrorPresent = false
-                    }, 1500)
-                    this.errorMessage = 'password field is empty'
-                    this.passwordErrorPresent = true
-                    setTimeout(() => {
-                        this.passwordErrorPresent = false
-                    }, 1500)
-                }else if(this.email == '' && this.confirmPassword == '') {
-                    this.errorMessage = 'email field is empty'
-                    this.emailErrorPresent = true
-                    setTimeout(() => {
-                        this.emailErrorPresent = false
-                    }, 1500)
-                    this.errorMessage = 'Confirm password field is empty'
-                    this.confirmPasswordErrorPresent = true
-                    setTimeout(() => {
-                        this.confirmPasswordErrorPresent = false
-                    }, 1500)
-                } else if (this.password == '' && this.confirmPassword == '') {
-                    this.errorMessage = 'Confirm password field is empty'
-                    this.confirmPasswordErrorPresent = true
-                    setTimeout(() => {
-                        this.confirmPasswordErrorPresent = false
-                    }, 1500)
-                    this.errorMessage = 'password field is empty'
-                    this.passwordErrorPresent = true
-                    setTimeout(() => {
-                        this.passwordErrorPresent = false
-                    }, 1500)
-                } else if(this.email == '' && this.password == '' && this.confirmPassword == '') {
-                    this.errorMessage = 'email field is empty'
-                    this.emailErrorPresent = true
-                    setTimeout(() => {
-                        this.emailErrorPresent = false
-                    }, 1500)
-                    this.errorMessage = 'Confirm password field is empty'
-                    this.confirmPasswordErrorPresent = true
-                    setTimeout(() => {
-                        this.confirmPasswordErrorPresent = false
-                    }, 1500)
-                    this.errorMessage = 'password field is empty'
-                    this.passwordErrorPresent = true
-                    setTimeout(() => {
-                        this.passwordErrorPresent = false
-                    }, 1500)
-                    */
-                }else if (!validEmails.includes(this.email)) {
+                }else if (!this.validEmail.includes(this.email)) {
                     this.errorMessage = 'Unregistered NUS email'
+                    console.log(this.validEmail)
                     this.emailErrorPresent = true
                     setTimeout(() => {
                         this.emailErrorPresent = false
@@ -177,7 +130,7 @@ export default {
                     createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                     .then((data) => {
                         this.$router.push({name:'StudentProfileForm'})
-                        setDoc(doc(db,"businesses",this.email),{
+                        setDoc(doc(db,"students",this.email),{
                                 email:this.email,
                                 //when a user logs in when this attribute is false, he/she will be directed to the 
                                 //profile page otherwise will be directed to the landing page
