@@ -1,5 +1,5 @@
 <template> 
-    <PopUp @return="close" v-if="popUp" />
+    <PopUp @return="close" v-if="true" />
     <div @click="check" ref="formWrap" class="form-wrap flex flex-column">
         <form @submit.prevent="submitForm" class="content">
             <!--Personal Details-->
@@ -49,8 +49,7 @@ const router = useRouter()
 const db = getFirestore(firebaseApp)
 export default {
     //Fetch data from Firebase afterwards
-    name: 'BusinessProfileForm',
-    
+    name: 'BusinessProfileForm', 
     data() {
         return {
             name:'',
@@ -119,8 +118,8 @@ export default {
                      description: this.description,
                      profileFormCreated: true
                  })
-
-                 this.$router.push({name:"BusinessHomePage"})
+                this.$emit('success',true)
+                this.$router.push({name:"BusinessHomePage"})
 
              }
          }

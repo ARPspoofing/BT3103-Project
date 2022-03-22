@@ -1,6 +1,6 @@
 <template>
   <BusinessNavBar :Heading="Heading" :header=true />
-  <BusinessProfileForm v-if='!profileFormCreated'/>
+  <BusinessProfileForm @success='close' v-if='!profileFormCreated'/>
   <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
@@ -54,6 +54,9 @@ export default {
   },
 
   methods: {
+    close(e) {
+      this.profileFormCreated = e
+    },
     indivproj(key) {
       this.$router.push({
         name:'IndividualProjectInfo', 
@@ -83,7 +86,7 @@ export default {
       if (user) {
         //this.profileFormCreated = currUser.email
         //console.log(this.profileFormCreated)
-        console.log(userEmail = user.email)
+        userEmail = user.email
       }
     })
 

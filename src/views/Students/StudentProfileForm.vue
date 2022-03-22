@@ -208,9 +208,11 @@ import {useRouter} from "vue-router"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const db = getFirestore(firebaseApp)
+/*
 const user = getAuth().currentUser
 const email = getAuth().currentUser.email
 console.log(user)
+*/
 const router = useRouter()
 export default {
     //Fetch data from Firebase afterwards

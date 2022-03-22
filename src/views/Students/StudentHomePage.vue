@@ -1,6 +1,7 @@
 <template>
   <StudentNavBar :search=true :header=false />
-  <div class="mainBody">
+  <StudentProfileForm/>
+  <div class="mainBody">  
     <h1 id="interest">Projects You May Like</h1>
     <!--
     <div v-if="isLoading">
@@ -67,13 +68,15 @@ import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
-import { getAuth } from 'firebase/auth';
+import { getAuth,onAuthStateChanged } from 'firebase/auth';
+import StudentProfileForm from './StudentProfileForm.vue'
 
 export default {
   name: 'StudentHomePage',
   components: {
     StudentNavBar, 
-    Card
+    Card,
+    StudentProfileForm
   },
 
   data() {

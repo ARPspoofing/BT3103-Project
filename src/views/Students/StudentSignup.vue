@@ -87,6 +87,7 @@ export default {
               //console.log(validEmail)
               })
       curr.validEmail = validEmail
+      console.log(curr.validEmail)
       }
       getValidEmail()
     },
@@ -95,6 +96,7 @@ export default {
     },
     methods: {
         register() { 
+            console.log(this.validEmail)
                 if(this.email == '') {
                     this.errorMessage = 'email field is empty'
                     this.emailErrorPresent = true
@@ -170,7 +172,7 @@ export default {
                         this.passwordErrorPresent = false
                     }, 1500)
                     */
-                }else if (!validEmail.includes(this.email)) {
+                }else if (!this.validEmail.includes(this.email)) {
                     this.errorMessage = 'Unregistered NUS email'
                     console.log(this.validEmail)
                     this.emailErrorPresent = true
