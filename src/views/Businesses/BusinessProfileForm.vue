@@ -23,7 +23,7 @@
                 <h4>Description</h4> 
                 <div>
                   
-                    <textarea name="" id="desc" cols="30" rows="10" v-model="description"></textarea>
+                    <textarea name="" id="desc" cols="107" rows="5" v-model="description"></textarea>
                 </div>
 
 
@@ -149,7 +149,7 @@ export default {
     .form-wrap {
       position:fixed;
       top:0;
-      left:5%;
+      left:0%;
       background-color: transparent;
       width:100%;
       height:100vh;
@@ -169,14 +169,26 @@ export default {
 
     input,
     select {
-        width:100%;
-        background-color: #33d69f;
+        width:70%;
+        background-color: white;
         border: none;
+        outline:none;
+        font-family: 'Poppins', sans-serif;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .labelTag,
     .inputTag {
         border-radius:20px;
+    }
+
+    label {
+        text-align: left;
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 3px;
     }
 
     .interest {
@@ -189,11 +201,11 @@ export default {
     .content {
       position:relative;
       padding:50px;
-      width:80%;
-      background-color: green;
-      color:aliceblue;
+      width: 100%;
+      height: 100%;
+      background-color: #BBDFCC;
+      color: #606060;
     }
-
     img {
         position: absolute;
         width:20px;
@@ -223,7 +235,7 @@ export default {
     cursor: pointer;
     padding: 16px 24px;
     border-radius: 30px;
-    borer: none;
+    border: none;
     font-size: 12px;
     margin-right: 8px;
     color: #fff;

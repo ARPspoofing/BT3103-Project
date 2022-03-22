@@ -555,12 +555,12 @@ export default {
     button,
     .button {
     cursor: pointer;
-    padding: 10px 24px;
-    border-radius: 25px;
+    padding: 16px 24px;
+    border-radius: 30px;
     border: none;
-    font-size: 16px;
+    font-size: 12px;
     margin-right: 8px;
-    color: white;
+    color: #fff;
     img {
             margin-right: 4px;
           }
