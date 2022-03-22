@@ -217,6 +217,7 @@ const router = useRouter()
 export default {
     //Fetch data from Firebase afterwards
     name: 'StudentProfileForm',
+    emits: ['success'],
     created() {
         this.interests.push({
             id:uuidv4(),
@@ -235,6 +236,7 @@ export default {
             schoolEmail:'',
             personalEmail:'',
             contactNo:'',
+            description: '',
             interests: [],
             popUp:false,
             menu:false,
@@ -371,8 +373,6 @@ export default {
              this.menu = !this.menu
          },
          async save() {
-
-             
              this.nameErrorPresent = false;
              this.courseErrorPresent = false;   
              this.yearErrorPresent = false;  
@@ -419,7 +419,7 @@ export default {
                 this.transcriptErrorPresent = true;   
                 this.errorMessage = "Please upload your transcript"
             } else {
-
+            this.$emit('success',true)
             setDoc(doc(db,"students",String(user.email)),{
                 email: user.email,
                 name:this.name,
@@ -455,14 +455,14 @@ export default {
         top: 0;
         left: 0;
         z-index: 101;
-        height: 200%;
         width: 100%;
         background-color: rgba(0, 0, 0, 0.5);
         position: absolute;
-        
         justify-content: center;
         align-items: center;      
-        overflow:scroll;
+        position: fixed; 
+        overflow-y: scroll;
+        top: 0; left: 0; right: 0; bottom: 0;
     }
 
     ::-webkit-scrollbar {
@@ -512,6 +512,8 @@ export default {
       background-color: #BBDFCC;
       color:black;
       border-radius:5%;
+      height:160%;
+      margin-top:500px;
     }
 
     img {

@@ -55,6 +55,7 @@ export default {
 <style scoped>
   .navbar-custom {
     background-color: #004A23;
+    
   }
 
   input[type="search"]::placeholder {  

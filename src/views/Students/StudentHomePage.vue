@@ -1,7 +1,8 @@
 <template>
   <StudentNavBar :search=true :header=false />
+  <StudentProfileForm @success='close' v-if='!profileFormCreated'/>
   <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
-    <StudentProfileForm @success='close' v-if='!profileFormCreated'/>
+    
     <h1 id="interest">Projects You May Like</h1>
     <!--
     <div v-if="isLoading">
@@ -84,10 +85,15 @@ export default {
       Heading: " ",
       testCollection: [],
       newApplicants:[],
+      foreverTrue:true,
+      profileFormCreated: false,
     }
   },
   
   methods: {
+    close(e) {
+      this.profileFormCreated = true;
+    },
     async addApplicant(key) {
       console.log(key)
       var newApplicants = this.testCollection[key]["newApplicants"]
@@ -128,7 +134,39 @@ export default {
       console.log(this.testCollection[key])
   }
   },
-  
+  created() {
+    var that = this
+    var userEmail
+    var currUser = getAuth().onAuthStateChanged(function (user) {
+      if (user) {
+        //this.profileFormCreated = currUser.email
+        //console.log(this.profileFormCreated)
+        userEmail = user.email
+      }
+    })
+
+     async function profileFormCreatedCheck() {
+      var profileFormCreated = false;
+      
+      let snapshot = await getDocs(collection(db,'students'))
+      /*
+      if (snapshot.profileFormCreated == true) {
+        profileFormCreated = true
+      }
+      that.profileFormCreated = profileFormCreated
+      */
+     snapshot.forEach((doc) => (doc.id==userEmail) ? profileFormCreated = doc.data().profileFormCreated : profileFormCreated = profileFormCreated )
+     that.profileFormCreated = profileFormCreated
+    }
+    profileFormCreatedCheck()
+
+
+    /*
+    var currUser = getAuth().currentUser
+    this.profileFormCreated = currUser.email
+    */
+
+  },
   mounted() {
     const that = this;
     async function fetchProject() {
@@ -175,6 +213,10 @@ export default {
 
   .carouContainer {
     margin-left: 30px;
+  }
+
+  .blur {
+  filter: blur(5px); 
   }
 
   #interest, #latest {
