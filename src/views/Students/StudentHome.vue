@@ -1,6 +1,7 @@
 <template>
     <div class="home">
       <div id="nav">
+        <router-link :to="{name:'StudentHome'}">Home</router-link>
         <router-link :to="{name:'StudentLogin'}">Login</router-link>
         <router-link :to="{name:'StudentSignup'}">Signup</router-link>
         <h1>Welcome Students!</h1>

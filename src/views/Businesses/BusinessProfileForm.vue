@@ -5,22 +5,25 @@
         <form @submit.prevent="submitForm" class="content">
             <!--Personal Details-->
             <div class="personal-details flex flex-column">
-                <h4>Personal Details</h4>
-                <div class="input flex flex-column">
-                    
-                    <input required type="text" id="name" v-model="name">
+                <h4>Company name</h4>
+                <div class="input flex flex-column">                    
+                    <input type="text" id="name" v-model="name">
                 </div>
+
+                <div class="errorMsg" v-if="nameErrorPresent">{{this.errorMessage}}</div>
 
                 <h4>Industry</h4>   
                 <div class="input flex flex-column">
                     
-                    <input required type="text" id="industry" v-model="industry">
+                    <input type="text" id="industry" v-model="industry">
                 </div>
+
+                <div class="errorMsg" v-if="industryErrorPresent">{{this.errorMessage}}</div>
 
                 <h4>Description</h4> 
                 <div>
                   
-                    <textarea required name="" id="desc" cols="30" rows="10" v-model="description"></textarea>
+                    <textarea name="" id="desc" cols="30" rows="10" v-model="description"></textarea>
                 </div>
 
 
@@ -47,7 +50,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import PopUp from '../../components/PopUp.vue'
 import {useRouter} from "vue-router"
+import { doc,setDoc } from 'firebase/firestore';
+import {getFirestore} from "firebase/firestore"
+import firebaseApp from "../../firebase.js"
+import {getAuth, signOut,onAuthStateChanged} from 'firebase/auth'
 const router = useRouter()
+const db = getFirestore(firebaseApp)
 export default {
     //Fetch data from Firebase afterwards
     name: 'BusinessProfileForm',
@@ -58,8 +66,21 @@ export default {
             industry:'',
             description:'',
             popUp:false,
+            industryErrorPresent:false,
+            nameErrorPresent:false,
+            user:false,
+            errorMessage:''
             
         }
+    },
+
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user ) => {
+            if(user) {
+                this.user = user;
+            }
+        })
     },
     //Change to remove from firebase later
     methods: {
@@ -75,6 +96,9 @@ export default {
              if (!leave) {
                  //TBC
                  //Need to add functionality to log out the user first
+                 const auth = getAuth()
+                 const user = auth.currentUser
+                 signOut(auth,user)
                  this.$router.push({name:'BusinessLogin'})
                  this.popUp = false
              } else {
@@ -84,6 +108,31 @@ export default {
          toggleMenu() {
              this.menu = !this.menu
          },
+
+         async save() {
+             this.nameErrorPresent = false;
+             this.industryErrorPresent = false;  
+             if (this.name == '') {
+                 this.nameErrorPresent = true;  
+                 this.errorMessage = "Please fill in your Company's name"
+             } else if (this.industry == '') {
+                 this.industryErrorPresent = true;  
+                 this.errorMessage = "Please fill in your company's industry"
+             } else {
+                 const auth = getAuth()
+                 const email = auth.currentUser.email;
+                 //accessing the current user and setting the elements
+                 await setDoc(doc(db,'businesses',String(email)), {
+                     name: this.name,
+                     industry: this.industry,
+                     description: this.description,
+                     profileFormCreated: true
+                 })
+
+                 this.$router.push({name:"BusinessHomePage"})
+
+             }
+         }
 
          //save method would go to the landing page of the business
 
@@ -230,6 +279,11 @@ export default {
 
     li {
         cursor: pointer;
+    }
+
+     .errorMsg {
+        color: red;
+        margin-top:5px;
     }
 
   

@@ -1,5 +1,6 @@
 <template>
 <div id="nav">
+<router-link :to="{name:'Home'}">Home</router-link>
 <router-link :to="{name:'StudentLogin'}">Login</router-link>
 <router-link :to="{name:'StudentSignup'}">Signup</router-link>
 </div>
@@ -12,7 +13,7 @@
                     <h1>Welcome Student!</h1>
                 </div>
                 <div class="input">
-                    <h4>Signup with your NUS email</h4>
+                    <h6>Signup with your NUS email</h6>
                 </div>
                 <div class="input">
                     <h4>Email</h4>
@@ -118,7 +119,58 @@ export default {
                     setTimeout(() => {
                         this.passwordErrorPresent = false
                     }, 1500) 
-                }else if (!this.validEmail.includes(this.email)) {
+                    /*
+                } else if (this.email == '' && this.password == '') {
+                    this.errorMessage = 'email field is empty'
+                    this.emailErrorPresent = true
+                    setTimeout(() => {
+                        this.emailErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'password field is empty'
+                    this.passwordErrorPresent = true
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500)
+                }else if(this.email == '' && this.confirmPassword == '') {
+                    this.errorMessage = 'email field is empty'
+                    this.emailErrorPresent = true
+                    setTimeout(() => {
+                        this.emailErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'Confirm password field is empty'
+                    this.confirmPasswordErrorPresent = true
+                    setTimeout(() => {
+                        this.confirmPasswordErrorPresent = false
+                    }, 1500)
+                } else if (this.password == '' && this.confirmPassword == '') {
+                    this.errorMessage = 'Confirm password field is empty'
+                    this.confirmPasswordErrorPresent = true
+                    setTimeout(() => {
+                        this.confirmPasswordErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'password field is empty'
+                    this.passwordErrorPresent = true
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500)
+                } else if(this.email == '' && this.password == '' && this.confirmPassword == '') {
+                    this.errorMessage = 'email field is empty'
+                    this.emailErrorPresent = true
+                    setTimeout(() => {
+                        this.emailErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'Confirm password field is empty'
+                    this.confirmPasswordErrorPresent = true
+                    setTimeout(() => {
+                        this.confirmPasswordErrorPresent = false
+                    }, 1500)
+                    this.errorMessage = 'password field is empty'
+                    this.passwordErrorPresent = true
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500)
+                    */
+                }else if (!validEmail.includes(this.email)) {
                     this.errorMessage = 'Unregistered NUS email'
                     console.log(this.validEmail)
                     this.emailErrorPresent = true
@@ -129,15 +181,16 @@ export default {
                     this.loading = true               
                     createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                     .then((data) => {
-                        this.$router.push({name:'StudentProfileForm'})
-                        setDoc(doc(db,"students",this.email),{
-                                email:this.email,
-                                //when a user logs in when this attribute is false, he/she will be directed to the 
-                                //profile page otherwise will be directed to the landing page
-                                profilePageCreated:false,
+                         setDoc(doc(db,"students",this.email),{
+                            email:this.email,
+                            password:this.password,
+                            //when a user logs in when this attribute is false, he/she will be directed to the 
+                            //profile page otherwise will be directed to the landing page
+                            profileFormCreated:false,
 
-                    })
-                        this.loading = false
+                })
+                    this.$router.push({name:'StudentProfileForm'})
+                    this.loading = false
                     }).catch((err) => {
                         this.error = err.code
                         if (this.error === "auth/invalid-email") {
@@ -170,7 +223,7 @@ export default {
 
 <style scoped>
 
-     a {
+    a {
         font-weight: bold;
         color: #2c3e50;
         text-decoration: none;
@@ -206,7 +259,7 @@ export default {
     }
 
     .inputs {
-        width:30%;
+        width:40%;
     }
 
     .input {
@@ -214,7 +267,6 @@ export default {
         display: flex;
         justify-content: left;
         align-items: center;
-        margin-bottom:-10px;
     }
 
     .errorMsg {
@@ -232,6 +284,7 @@ export default {
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
+        margin:10px;
     }
 
     input:focus {
@@ -241,7 +294,7 @@ export default {
     .icon {
         width:12px;
         position:absolute;
-        margin-left:5px;
+        margin-left:15px;
     }
 
     button {
@@ -286,5 +339,17 @@ export default {
     }
     .input-error {
         order: 2px solid red;
+    }
+
+    h4 {
+        margin-left:15px;
+        font-size:18px;
+        font-weight:bolder;
+    }
+
+    h6 {
+        font-size:14px;
+        font-weight:bolder;
+        color:grey;
     }
 </style>

@@ -9,37 +9,44 @@
                 <input style="display:none" ref="profileUpload" type="file" @change="onFileSelected">
                 <h4 @click="$refs.profileUpload.click()">Pick Profile</h4>
             </div>
+
+            
             <!--Personal Details-->
             <div class="personal-details flex flex-column">
                 <h4>Personal Details</h4>
                 <div class="input flex flex-column">
                     <label for="name">Name</label> 
-                    <input required type="text" id="name" v-model="name">
+                    <input type="text" id="name" v-model="name">
                 </div>
+
+                <div class="errorMsg" v-if="nameErrorPresent">{{this.errorMessage}}</div>
+
                 <div class="input flex flex-column">
                     <label for="faculty">Faculty</label>
                     <input disabled type="text" id="faculty" value="School of Computing" readonly>
                 </div>
                 <div class="input flex flex-column">
                     <label for="course">Course</label>
-                    <select required type="text" id="course" v-model="course" >                   
+                    <select type="text" id="course" v-model="course" >                   
                       <option value="Business Analytics">Business Analytics</option>
                       <option value="Computer Science">Computer Science</option>
                       <option value="Information Security">Information Security</option>
                       <option value="Information Systems">Information Systems</option>
                       </select>   
                 </div>
+                 <div class="errorMsg" v-if="courseErrorPresent">{{this.errorMessage}}</div>
                 <div class="input flex flex-column">
                     <label for="year">Year</label>
-                    <input required type="text" id="year" v-model="year">
+                    <input type="text" id="year" v-model="year">
                 </div>
+                <div class="errorMsg" v-if="yearErrorPresent">{{this.errorMessage}}</div>
                 <div class="flex flex-row">
                     <div style="margin-top: 5px;width: 100%;">
                         <ul  style="display: grid;grid-template-columns:repeat(5,1fr);">
                             <li v-for="(item,index) in interests" style="width: 20%;display: inline" >
                                 <div class="interest-flex">
                                     <label class = "labelTag" for="interest">Interest</label>                            
-                                    <select class="inputTag" required type="text" id="interest" v-model="item.value" >   
+                                    <select class="inputTag" type="text" id="interest" v-model="item.value" >   
                                         <option value="Artificial Intelligence">Artificial Intelligence</option>
                                         <option value="Scientific Computing">Scientific Computing</option>
                                         <option value="Data Structures">Data Structures</option>
@@ -60,10 +67,12 @@
                             </li>
                         </ul>     
                     </div> 
+
                     <div class="addBtn">
                     <img @click="add" src="../../assets/add.png" alt="add button">                                                                   
                     </div>
                 </div> 
+                <div class="errorMsg" v-if="interestErrorPresent">{{this.errorMessage}}</div>
                 <!--
                 <div class="interest flex">
                     <div class="input flex flex-column">
@@ -86,16 +95,19 @@
                 <h4>Contact Details</h4>
                 <div class="input flex flex-column">
                     <label for="schoolEmail">School Email</label>
-                    <input required type="text" id="schoolEmail" v-model="schoolEmail">
+                    <input type="text" id="schoolEmail" v-model="schoolEmail">
                 </div>
+                <div class="errorMsg" v-if="schoolEmailErrorPresent">{{this.errorMessage}}</div>
                 <div class="input flex flex-column">
                     <label for="personalEmail">Personal Email</label>
-                    <input required type="text" id="personalEmail" v-model="personalEmail">
+                    <input type="text" id="personalEmail" v-model="personalEmail">
                 </div>
+                <div class="errorMsg" v-if="personalEmailErrorPresent">{{this.errorMessage}}</div>
                 <div class="input flex flex-column">
                     <label for="contactNo">Contact Number</label>
-                    <input required type="text" id="contactNo" v-model="contactNo">
+                    <input type="text" id="contactNo" v-model="contactNo">
                 </div>
+                <div class="errorMsg" v-if="contactNumberErrorPresent">{{this.errorMessage}}</div>
             </div>
             <!--Work Details-->
             <div class="work flex flex-column">
@@ -104,10 +116,12 @@
                     <label for="resume">Resume</label>
                     <input type="file" multiple name="files[]" id="resume" accept=".jpeg,.pdf,.docx" v-on:change="changeResume">
                 </div>
+             <div class="errorMsg" v-if="resumeErrorPresent">{{this.errorMessage}}</div>
               <div class="input flex flex-column">
                   <label for="transcript">Transcript</label>
                   <input type="file" multiple name="files[]" id="transcript" accept=".jpeg,.pdf,.docx" v-on:change="changeTranscript">
               </div>
+            <div class="errorMsg" v-if="transcriptErrorPresent">{{this.errorMessage}}</div>
             </div>
             <!--
             <div class="interest flex" v-for="(item,index) in interests" :key="index">
@@ -165,8 +179,8 @@
                 <h4>Please limit your description to 500 characters</h4>
               <div class="input flex flex-column">
                     <label for="description">Description</label>
-                    <textarea required type="text" id="schoolEmail" rows="4" cols="50" maxlength="500" v-model="description"></textarea> 
-            </div>
+                    <textarea type="text" id="description" rows="4" cols="50" maxlength="500" v-model="description"></textarea> 
+                </div>
             </div>
 
             <!--Save Exit-->
@@ -186,29 +200,27 @@
 import firebaseApp from '../../firebase.js';
 import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
-
-import {getAuth,createUserWithEmailAndPassword} from "firebase/auth"
-
-const db = getFirestore(firebaseApp)
-
+import {getAuth,createUserWithEmailAndPassword, signOut} from "firebase/auth"
 import { v4 as uuidv4 } from 'uuid';
 import PopUp from '../../components/PopUp.vue'
 import {useRouter} from "vue-router"
 //import axios from 'axios'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
-
+const db = getFirestore(firebaseApp)
 const user = getAuth().currentUser
+const email = getAuth().currentUser.email
 console.log(user)
 const router = useRouter()
 export default {
     //Fetch data from Firebase afterwards
-    name: 'ProfileForm',
+    name: 'StudentProfileForm',
     created() {
         this.interests.push({
             id:uuidv4(),
             value: "",
         })
+        console.log(this.interests.target)
     },
     data() {
         return {
@@ -226,8 +238,25 @@ export default {
             menu:false,
             //change to default later
             profileImage: null,
+            resume:null,
+            transcript:null,
+            nameErrorPresent:false,
+            courseErrorPresent:false,
+            yearErrorPresent:false,
+            interestErrorPresent:false,
+            schoolEmailErrorPresent:false,
+            personalEmailErrorPresent:false,
+            contactNumberErrorPresent:false,
+            resumeErrorPresent:false,
+            transcriptErrorPresent:false,
+            transcriptPresent: false,
+            resumePresent: false,
+
             //change to firebase later
             finalProfile: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",
+            errorMessage:"",
+            resumeLink:'',
+            transcriptLink:''
         }
     },
     //Change to remove from firebase later
@@ -268,6 +297,37 @@ export default {
             }
             );
          },
+         changeResume(event) {
+             this.resumePresent = true;  
+             //Add code to upload the resume somewhere
+             this.resume = event.target.files[0]
+             const storage = getStorage();   
+             const resumeRef = ref(storage, email +'/' + this.resume.name )
+             const uploadTask = uploadBytesResumable(resumeRef, this.resume)
+             uploadTask.on('state_changed', (snapshot) => {}, (error)=> {
+                 console.log(error)
+             },() => {
+                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                     console.log("File available at", this.resumeLink = url)
+                 })
+             })
+         },
+
+         changeTranscript(event) {
+             this.transcriptPresent = true; 
+             //Add code to upload the transcript somewhere
+             this.transcript = event.target.files[0]
+             const storage = getStorage();   
+             const transcriptRef = ref(storage, email +'/' + this.transcript.name )
+             const uploadTask = uploadBytesResumable(transcriptRef, this.transcript)
+             uploadTask.on('state_changed', (snapshot) => {}, (error)=> {
+                 console.log(error)
+             },() => {
+                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                     console.log("File available at", this.transcriptLink = url)
+                 })
+             })
+         },
          deleteInterest(id) {
              if (this.interests.length -1 > 0) {
                  this.interests = this.interests.filter(interest => interest.id != id)
@@ -276,10 +336,24 @@ export default {
          showPopUp() {
              this.popUp = true
          },
+         allInterestsEmpty() {
+             console.log(this.interests)
+             console.log(this.interests.length)
+             for(let i = 0; i < this.interests.length; i++) {
+                 if(this.interests[i].value != "") {
+                     return false
+                 }
+             }
+
+            return true;
+
+         },
          close(leave) {
              if (leave === false) {
                  //TBC
-              
+                 const auth = getAuth()
+                 const user = auth.currentUser
+                 signOut(auth,user)              
                  this.popUp = false
                  this.$router.push({name:'StudentLogin'})
              } else {
@@ -290,9 +364,58 @@ export default {
          toggleMenu() {
              this.menu = !this.menu
          },
-         save() {
-            setDoc(doc(db,"students",this.schoolEmail),{
-                email:this.schoolEmail,
+         async save() {
+
+             
+             this.nameErrorPresent = false;
+             this.courseErrorPresent = false;   
+             this.yearErrorPresent = false;  
+             this.interestErrorPresent = false; 
+             this.schoolEmailErrorPresent = false; 
+             this.personalEmailErrorPresent = false;
+             this.contactNumberErrorPresent = false;
+             this.resumeErrorPresent = false;
+             this.transcriptErrorPresent = false;
+
+            if(this.name == "") {
+                this.nameErrorPresent = true;
+                this.errorMessage = "Please fill out your name"
+                
+            } else if(this.course == '') {
+                this.courseErrorPresent = true;
+                this.errorMessage = "Please select your course from the options provided"
+            } else if (this.year == '') {
+                this.yearErrorPresent = true;
+                this.errorMessage = "Please fill out your current year of study"
+            } else if (parseInt(this.year) > 4 || parseInt(this.year) < 1) {
+                this.yearErrorPresent = true;  
+                this.errorMessage = "Please fill out a valid year of study (Must be between 1 and 4 inclusive)";  
+                
+            } else if (this.allInterestsEmpty()) {
+                this.interestErrorPresent = true; 
+                this.errorMessage = "Please select at least one area of interest"
+            } else if (this.schoolEmail == '') {
+                this.schoolEmailErrorPresent = true;  
+                this.errorMessage = "Please enter your school email"
+            } else if (this.personalEmail == '') {
+                this.personalEmailErrorPresent = true;
+                this.errorMessage = "Please enter your personal email"
+            } else if (this.contactNo == '') {
+                this.contactNumberErrorPresent = true; 
+                this.errorMessage = "Please enter your contact number"
+            } else if (this.contactNo.length != 8) {
+                this.contactNumberErrorPresent = true;
+                this.errorMessage = "Please enter a valid contact number"
+            } else if (!this.resumePresent) {
+                this.resumeErrorPresent = true;
+                this.errorMessage = "Please upload your resume"
+            } else if (!this.transcriptPresent) {
+                this.transcriptErrorPresent = true;   
+                this.errorMessage = "Please upload your transcript"
+            } else {
+
+            setDoc(doc(db,"students",String(user.email)),{
+                email: user.email,
                 name:this.name,
                 course:this.course,
                 year:this.year,
@@ -300,7 +423,14 @@ export default {
                 personalEmail:this.personalEmail,
                 contactNo:this.contactNo,
                 finalProfile:this.finalProfile,
+                profileFormCreated:true,
+                resumeDownloadLink: this.resumeLink,
+                transcriptDownloadLink: this.transcriptLink
             })
+
+            this.$router.push({name:'StudentHomePage'})
+            }
+
          },
     },
     components: {
@@ -397,6 +527,12 @@ export default {
         height:10%;
 
     }
+
+    .errorMsg {
+        color: red;
+        margin-top:5px;
+    }
+
 
     button,
     .button {

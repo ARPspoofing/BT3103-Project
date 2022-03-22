@@ -1,5 +1,6 @@
 <template>
 <div id="nav">
+<router-link :to="{name:'Home'}">Home</router-link>
 <router-link :to="{name:'StudentLogin'}">Login</router-link>
 <router-link :to="{name:'StudentSignup'}">Signup</router-link>
 </div>
@@ -19,18 +20,20 @@
                     <h4>Email</h4>
                 </div>
                 <div class="input">
-                    <input type="text" v-model="email">
+                    <input :class="{shake:emailError,'input-error':emailError}" type="text" v-model="email" placeholder="e1234567@u.nus.edu">
                     <img class="icon" src="../../assets/envelope.png">
                 </div>
+                <div class="errorMsg" v-if="emailError">{{this.errorMessage}}</div>
                 <div class="input">
                     <h4>Password</h4>
                 </div>
                 <div class="input">
-                    <input type="password" v-model="password">
+                    <input :class="{shake:passwordError,'input-error':passwordError}" type="password" v-model="password">
                     <img class="icon" src="../../assets/lock.png">
                 </div>
-                <div @click="forgot" class="forgot">
-                    <h4>Forgot Password</h4>
+                <div class="errorMsg" v-if="passwordError">{{this.errorMessage}}</div>
+                <div @click="forgot">
+                    <h4  class="forgot">Forgot Password</h4>
                 </div>
                 
                 <div class="input">
@@ -39,33 +42,35 @@
             </div>
         </form>
     </div>
-    <span>{{this.errorMessage}}</span>
+    
 </template>
 
 <script>
 import {ref} from "vue"
 import {getAuth,signInWithEmailAndPassword} from "firebase/auth"
 import {useRouter} from "vue-router"
+import {getFirestore} from "firebase/firestore"
+import firebaseApp from "../../firebase.js"
+import {getDoc, collection, doc} from "firebase/firestore"
 import ResetPassword from '../../components/ResetPassword.vue'
 
-const email = ref("")
-const password = ref("")
+
+
 const router = useRouter()
-const login = () => {
-    signInWithEmailAndPassword(getAuth(), email.value,password.value)
-    .then((data) => {
-        router.push({name:'StudentProfilePage'})
-    } ).catch((error) => {
-        console.log(error)
-    })
-}
+const auth = getAuth()
+const db = getFirestore(firebaseApp)   
+
 
 export default {
     name:'StudentLogin',
     data() {
         return {
+            email:'',
+            password:'',            
             forgetPassword: false,
-            errorMessage: '',
+            errorMessage:'',
+            emailError: false,
+            passwordError:false
         }
     },
     components: {
@@ -77,8 +82,50 @@ export default {
         },
         close(e) {
             this.forgetPassword = false
-        }
+        }, 
+        
+    
+    async login() {   
+    console.log(this.email)
+    const docRef = doc(db,"students",String(this.email))
+    const docs = await getDoc(docRef)
+    if(!docs.exists()) {
+        this.emailError = true
+        this.errorMessage = "Email not registered please sign up first"
+        setTimeout(() =>{
+            this.emailError = false
+        }, 1500)
     }
+    else {
+    const formFilled = docs.data().profileFormCreated
+    console.log(formFilled)
+    await signInWithEmailAndPassword(auth, this.email,this.password)
+    .then((data) => {
+        if(!formFilled) {
+            this.$router.push({name:'StudentProfileForm'})
+        } else {
+            this.$router.push({name:'StudentHomePage'})
+
+        }
+    } ).catch((error) => {
+            if(error.code === "auth/wrong-password") {
+                this.passwordError = true;
+                this.errorMessage = "You have entered an incorrect password"
+                setTimeout(() => {
+                    this.passwordError = false
+                }, 1500)
+            } else if (error.code === "auth/user-not-found") {
+                this.emailError = true  
+                this.errorMessage = "The email does not exist please sign up first"
+                 setTimeout(() => {
+                    this.emailError = false
+                }, 1500)
+            }
+       
+    })
+    }
+    },
+  }
 }
 </script>
 
@@ -97,6 +144,14 @@ export default {
     .link {
         font-weight: bold;
         color: blue;
+        align-self: flex-start;
+    }
+
+    h4 {
+        font-size: 18px;
+        margin-left:15px;
+        font-weight:bolder;
+
     }
 
     .form-wrap {
@@ -124,15 +179,18 @@ export default {
     }
 
     .inputs {
-        width:30%;
+        width:40%;
     }
 
     .input {
         position: relative;
         display: flex;
         justify-content: left;
-        align-items: center;
-        margin-bottom:-10px;
+        align-items: center;       
+    }
+    .errorMsg {
+        color: red;
+        font-size: 15px;
     }
 
     input {
@@ -145,22 +203,17 @@ export default {
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
+        margin:10px
     }
 
     input:focus {
         outline: none;
     }
 
-    .forgot {
-        font-size: 12px;
-        color:darkgreen;
-        cursor: pointer;
-    }
-
     .icon {
         width:12px;
         position:absolute;
-        margin-left:5px;
+        margin-left:15px;
     }
 
     button {
@@ -179,4 +232,39 @@ export default {
         border-bottom-right-radius: 25px;
         color: white;
     }
+
+    .forgot {
+        font-size:14px;
+        color: darkgreen;
+        font-weight:bolder;
+        cursor: pointer;
+    }
+
+    .shake {
+    animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    transform: translate3d(0, 0, 0);
+    }
+    @keyframes shake {
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+    }
+    .input-error {
+        order: 2px solid red;
+    }
+
 </style>

@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import StudentNavBar from '../components/StudentNavBar.vue'
+import StudentNavBar from '../../components/StudentNavBar.vue'
 export default {
-  name: 'About',
+  name: 'StudentAbout',
   components: {
     StudentNavBar
   },
@@ -42,7 +42,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 h3 {
     font-family: verdana;
     text-align: center;
