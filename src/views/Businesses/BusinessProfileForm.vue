@@ -1,5 +1,4 @@
-<template>
-    
+<template> 
     <PopUp @return="close" v-if="popUp" />
     <div @click="check" ref="formWrap" class="form-wrap flex flex-column">
         <form @submit.prevent="submitForm" class="content">
@@ -22,17 +21,9 @@
 
                 <h4>Description</h4> 
                 <div>
-                  
                     <textarea name="" id="desc" cols="30" rows="10" v-model="description"></textarea>
                 </div>
-
-
             </div>     
-                 
-            
-            <div>
-                <img class="addBtn" @click="add" src="../../assets/add.png" alt="add button">
-            </div>
             <!--Save Exit-->
             <div class="save flex">
                 <div class="left">
@@ -147,13 +138,21 @@ export default {
 <style scoped>
     
     .form-wrap {
-      position:fixed;
-      top:0;
-      left:5%;
-      background-color: transparent;
-      width:100%;
-      height:100vh;
-      overflow:scroll;
+        top: 0;
+        left: 0;
+        z-index: 101;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;      
+        overflow:scroll;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
     }
 
     input,
@@ -168,10 +167,16 @@ export default {
     }
 
     input,
-    select {
+    select,
+    textarea {
         width:100%;
         background-color: #33d69f;
         border: none;
+        outline:none;
+    }
+
+    textarea {
+        margin-bottom: 8px;
     }
 
     .labelTag,
@@ -180,7 +185,7 @@ export default {
     }
 
     .interest {
-        gap:10px;
+        gap:5px;
         div {
             flex: 1;
         }
@@ -190,8 +195,9 @@ export default {
       position:relative;
       padding:50px;
       width:80%;
-      background-color: green;
-      color:aliceblue;
+      background-color: #BBDFCC;
+      color:black;
+      border-radius:5%;
     }
 
     img {
@@ -285,6 +291,6 @@ export default {
         color: red;
         margin-top:5px;
     }
-
-  
+    
+    
 </style>

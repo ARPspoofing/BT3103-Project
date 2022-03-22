@@ -124,7 +124,7 @@ export default {
 
                 })
                 console.log('uploaded to firebase')
-                    this.$router.push({name:'BusinessProfileForm'})
+                    this.$router.push({name:'BusinessProfileForm',params: {email}})
                     this.loading = false
                 }).catch((err) => {
                     this.error = err.code

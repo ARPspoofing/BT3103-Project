@@ -1,5 +1,6 @@
 <template>
   <BusinessNavBar :Heading="Heading" :header=true />
+  <BusinessProfileForm v-if='false'/>
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
@@ -30,20 +31,24 @@ import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
+import {getAuth, onAuthStateChanged} from "firebase/auth"
 import {signOut} from "firebase/auth"
+import BusinessProfileForm from './BusinessProfileForm.vue'
 const db = getFirestore(firebaseApp);
 
 export default {
   name: 'BusinessHomePage',
   components: {
     BusinessNavBar,
-    Card
+    Card,
+    BusinessProfileForm
   },
 
   data() {
     return {
       Heading: "MY PROJECTS",
       testCollection: [],
+      profileFormCreated: false,
     }
   },
 
@@ -70,8 +75,38 @@ export default {
   }
   },
 
+  created() {
+    var currUser = getAuth().onAuthStateChanged(function (user) {
+      if (user) {
+        //this.profileFormCreated = currUser.email
+        //console.log(this.profileFormCreated)
+        console.log(user.email)
+      }
+    })
+    /*
+    var currUser = getAuth().currentUser
+    this.profileFormCreated = currUser.email
+    */
+
+  },
   mounted() {
+    /*
+    const auth = getAuth().currentUser.email
+    console.log("curr user",auth)
+    */
+    //console.log("auth",auth)
     const that = this;
+    /*
+    async function profileFormCreatedCheck() {
+      var profileFormCreated = false;
+      
+      let snapshot = await getDocs(doc(db,'businesses',auth.currentUser.email))
+      if (snapshot.profileFormCreated == true) {
+        profileFormCreated = true
+      }
+      that.profileFormCreated = profileFormCreated
+    }
+    */
     async function fetchProject() {
       let snapshot = await getDocs(collection(db, "Project"))
       const testCollection = [];
@@ -96,6 +131,9 @@ export default {
       console.log(testCollection)
     }
     fetchProject();
+    /*
+    profileFormCreatedCheck();
+    */
   }
 }
 </script>
@@ -123,6 +161,9 @@ export default {
     position: fixed;
     overflow-y: scroll;
     padding-bottom: 550px;
+    /*
+    filter: blur(5px);
+    */
   }
 
   .projectContainer {
