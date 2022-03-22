@@ -122,7 +122,7 @@ export default {
       console.log(applied);
       var projectId = this.testCollection[key]["projectId"]
       console.log(projectId);
-      applied.psuh(projectId);
+      applied.push(projectId);
       // applied.push(projTitle);
       this.testCollection[key]["appstat"] = "applied"
 
