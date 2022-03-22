@@ -452,15 +452,161 @@ export default {
 <style scoped>
     
     .form-wrap {
-      position:fixed;
-      top:0;
-      left:0%;
-      background-color: transparent;
-      width:100%;
-      height:100vh;
-      overflow:scroll;
+        top: 0;
+        left: 0;
+        z-index: 101;
+        height: 200%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        
+        justify-content: center;
+        align-items: center;      
+        overflow:scroll;
     }
 
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    input,
+    select {
+        margin-bottom: 20px;
+        margin-left:10px;
+    }
+
+    .interest-flex {
+        width:200px;
+        margin-left:10px;
+    }
+
+    input,
+    select,
+    textarea {
+        width:100%;
+        background-color: #33d69f;
+        border: none;
+        outline:none;
+    }
+
+    textarea {
+        margin-bottom: 8px;
+    }
+
+    .labelTag,
+    .inputTag {
+        border-radius:20px;
+    }
+
+    .interest {
+        gap:5px;
+        div {
+            flex: 1;
+        }
+    }
+
+    .content {
+      position:relative;
+      padding:50px;
+      width:80%;
+      background-color: #BBDFCC;
+      color:black;
+      border-radius:5%;
+    }
+
+    img {
+        position: absolute;
+        width:20px;
+        height:20px;
+        left:10px;
+        right:0px;
+        
+    }
+
+    .addBtn {
+        margin-left:70%;
+        margin-top:-50px;
+    }
+    
+    select{
+        padding-left:0.55rem;
+    }
+
+    .delete {
+        margin-top:-42px;
+        margin-right:-15px;
+        color:red;
+    }
+
+    button,
+    .button {
+    cursor: pointer;
+    padding: 16px 24px;
+    border-radius: 30px;
+    borer: none;
+    font-size: 12px;
+    margin-right: 8px;
+    color: #fff;
+    img {
+            margin-right: 4px;
+          }
+    }
+
+    .save {
+        div {
+            flex:1;
+        }
+    }
+
+    .right {
+        margin-left:80%;
+    }
+
+    .dark-purple {
+    background-color: #252945;
+    }
+    .red {
+    background-color: #ec5757;
+    }
+    .purple {
+    background-color: #7c5dfa;
+    }
+    .green {
+    background-color: #33d69f;
+    }
+    .orange {
+    background-color: #ff8f00;
+    }
+    .flex {
+    display: flex;
+    }
+    .flex-column {
+    flex-direction: column;
+    }
+    .container {
+    width: 100%;
+    padding: 40px 10px;
+    max-width: 850px;
+    margin: 0 auto;
+    @media (min-width: 900px) {
+        padding-top: 72px;
+    }
+    }
+    .nav-link {
+    text-decoration: none;
+    color: initial;
+    }
+
+    li {
+        cursor: pointer;
+    }
+
+     .errorMsg {
+        color: red;
+        margin-top:5px;
+    }
+
+    /*
     input,
     select {
         margin-bottom: 20px;
@@ -625,6 +771,7 @@ export default {
         place-items: center;
         cursor:pointer;
         color:blue;
-    }    
+    }  
+    */  
 
 </style>

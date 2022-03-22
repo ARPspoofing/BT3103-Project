@@ -1,7 +1,7 @@
 <template>
   <StudentNavBar :search=true :header=false />
-  <StudentProfileForm/>
-  <div class="mainBody">  
+  <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
+    <StudentProfileForm @success='close' v-if='!profileFormCreated'/>
     <h1 id="interest">Projects You May Like</h1>
     <!--
     <div v-if="isLoading">
