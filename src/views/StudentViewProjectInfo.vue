@@ -176,7 +176,8 @@ export default {
         newApplicants.push(this.userEmail);
         var projId = this.projId
         var applied = this.applied
-        applied.push(projTitle);
+        applied.push(projId);
+        // applied.push(projTitle);
         this.appstat = "applied"
 
         try {
