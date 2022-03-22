@@ -116,12 +116,12 @@ hr {
   border: 0;
   border-top: 2px solid #606060;
   width: 90%;
-  margin: 5px 0px 16px 38px;
+  margin: 15px 0px 16px 38px;
 }
 
 .options {
   font-size: 15px;
-  padding: 10px 25px;
+  padding: 8px 25px;
   margin-left: 15px;
   border-radius: 30px; /* or 50% */
   background-color: #0e8044;
