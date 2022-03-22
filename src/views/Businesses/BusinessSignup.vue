@@ -35,7 +35,7 @@
                 </div>
                
                 <div class="input">
-                    <input type="password" v-model="confirmPassword">
+                    <input :class="{shake:confirmPasswordErrorPresent,'input-error':confirmPasswordErrorPresent}" type="password" v-model="confirmPassword">
                     <img class="icon" src="../../assets/lock.png">
                 </div>
                 <div class="errorMsg" v-if="confirmPasswordErrorPresent">{{this.errorMessage}}</div>
