@@ -1,7 +1,7 @@
 <template>
   <BusinessNavBar :Heading="Heading" :header=true />
-  <BusinessProfileForm v-if='false'/>
-  <div class="mainBody">
+  <BusinessProfileForm v-if='!profileFormCreated'/>
+  <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
@@ -49,6 +49,7 @@ export default {
       Heading: "MY PROJECTS",
       testCollection: [],
       profileFormCreated: false,
+      foreverTrue: true,
     }
   },
 
@@ -76,13 +77,32 @@ export default {
   },
 
   created() {
+    var that = this
+    var userEmail
     var currUser = getAuth().onAuthStateChanged(function (user) {
       if (user) {
         //this.profileFormCreated = currUser.email
         //console.log(this.profileFormCreated)
-        console.log(user.email)
+        console.log(userEmail = user.email)
       }
     })
+
+     async function profileFormCreatedCheck() {
+      var profileFormCreated = false;
+      
+      let snapshot = await getDocs(collection(db,'businesses'))
+      /*
+      if (snapshot.profileFormCreated == true) {
+        profileFormCreated = true
+      }
+      that.profileFormCreated = profileFormCreated
+      */
+     snapshot.forEach((doc) => (doc.id==userEmail) ? profileFormCreated = doc.data().profileFormCreated : profileFormCreated = profileFormCreated )
+     that.profileFormCreated = profileFormCreated
+    }
+    profileFormCreatedCheck()
+
+
     /*
     var currUser = getAuth().currentUser
     this.profileFormCreated = currUser.email
@@ -96,17 +116,7 @@ export default {
     */
     //console.log("auth",auth)
     const that = this;
-    /*
-    async function profileFormCreatedCheck() {
-      var profileFormCreated = false;
-      
-      let snapshot = await getDocs(doc(db,'businesses',auth.currentUser.email))
-      if (snapshot.profileFormCreated == true) {
-        profileFormCreated = true
-      }
-      that.profileFormCreated = profileFormCreated
-    }
-    */
+  
     async function fetchProject() {
       let snapshot = await getDocs(collection(db, "Project"))
       const testCollection = [];
@@ -152,6 +162,10 @@ export default {
 
   .btn {
       margin: 10px;
+  }
+
+  .blur {
+  filter: blur(5px); 
   }
 
   .mainBody {
