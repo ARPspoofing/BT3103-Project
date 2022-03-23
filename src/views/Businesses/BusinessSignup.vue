@@ -44,6 +44,11 @@
                 </div>
             </div>
         </form>
+        <!--
+        <button @click="googleSignIn">google</button>
+         <div id="firebaseui-auth-container"></div>
+         -->
+         
     </div>
   
 </template>
@@ -56,6 +61,11 @@ import {ref} from "vue"
 import {getAuth,createUserWithEmailAndPassword} from "firebase/auth"
 import {useRouter} from "vue-router"
 import Loading from '../../components/Loading.vue'
+
+import firebase from '../../uifire'
+import 'firebase/compat/auth'
+import * as firebaseui from 'firebaseui'
+import 'firebaseui/dist/firebaseui.css'
 
 //Style 
 
@@ -79,9 +89,25 @@ export default {
         Loading,
     },
     methods: {
+        
+        googleSignIn() {
+            var ui = firebaseui.auth.AuthUI.getInstance();
+            if (!ui) {
+                ui = new firebaseui.auth.AuthUI(firebase.auth())
+            }
+            var uiConfig = {
+                signInSuccessUrl: '//business/profileForm',
+                signInOptions: [
+                    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+                    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                ]
+            };
+            ui.start('#firebaseui-auth-container',uiConfig)
+        },
+        
          register() { 
                 this.loading = true
-                if (this.email == '') {
+                if (this.email == '' || /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email) == false) {
                     this.emailErrorPresent = true
                     this.loading = false
                     this.errorMessage = "Please enter a valid email address"
@@ -124,7 +150,7 @@ export default {
 
                 })
                 console.log('uploaded to firebase')
-                    this.$router.push({name:'BusinessProfileForm',params: {email}})
+                    this.$router.push({name:'BusinessProfileForm'/*,params: {email}*/})
                     this.loading = false
                 }).catch((err) => {
                     this.error = err.code
