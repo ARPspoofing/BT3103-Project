@@ -116,7 +116,8 @@ export default {
                      name: this.name,
                      industry: this.industry,
                      description: this.description,
-                     profileFormCreated: true
+                     profileFormCreated: true,
+                     verifyEmail:true
                  })
                 this.$emit('success',true)
                 this.$router.push({name:"BusinessHomePage"})

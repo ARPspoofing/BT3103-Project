@@ -75,7 +75,8 @@ export default {
                         console.log("formFilled")      
                         that.$router.push({name:'BusinessHomePage'})
                     } else {
-                        that.$router.push({name:'BusinessProfileForm'})
+                        that.$router.push({name:'BusinessHomePage'})
+                        //that.$router.push({name:'BusinessProfileForm'})
                     }
                 }
             }
