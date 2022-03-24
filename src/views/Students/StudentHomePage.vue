@@ -89,7 +89,7 @@ import StudentNavBar from '../../components/StudentNavBar.vue'
 import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc, query, where } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
@@ -108,6 +108,7 @@ export default {
       user: false, 
       userEmail: "", 
       applied: [],
+      studentTags: [],
     }
   },
   
@@ -125,12 +126,7 @@ export default {
       applied.push(projectId);
       // applied.push(projTitle);
       this.testCollection[key]["appstat"] = "applied"
-
       // alert("Applying for proj: " + projTitle);
-      
-      //const auth = getAuth();
-      //this.fbuser = auth.currentUser.email;
-
       try {
           const docRef = await updateDoc(doc(db, "Project", projectId), {
             New_Applicants: newApplicants
@@ -186,11 +182,41 @@ export default {
       console.log(data.appliedProjects)
       that.applied = data.appliedProjects
     }
+    
+    getTags(this.userEmail).then((res) => {this.studentTags.push(res)})
+    console.log(this.studentTags)
 
+    async function getTags(app) {
+      const ref = doc(db, "students", app);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      var array = []
+      array.push(Object.values(data.interests))
+      var returnArray = []
+      for (var i = 0; i < array[0].length; i++) {
+        returnArray.push(array[0][i]["value"])
+      }
+      console.log(returnArray)
+      return returnArray;
+    }
+    //console.log(that.studentTags)
     async function fetchProject() {
-      let snapshot = await getDocs(collection(db, "Project"))
+      const ref = doc(db, "students", that.userEmail);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      var array = []
+      array.push(Object.values(data.interests))
+      var returnArray = []
+      for (var i = 0; i < array[0].length; i++) {
+        returnArray.push(array[0][i]["value"])
+      }
+      console.log(returnArray)
+    
+      const projects = query(collection(db, "Project"), where('Tags', 'array-contains-any', returnArray));
+      //let snapshot = await getDocs(collection(db, "Project"))
+      let snapshot = await getDocs(projects)
       const testCollection = [];
-      console.log(that.applied)
+      //console.log(that.applied)
       snapshot.forEach((docs) => {
         let data = docs.data()
         var id = docs.id

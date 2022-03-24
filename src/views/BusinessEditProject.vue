@@ -1,8 +1,6 @@
 <template>
     <BusinessNavBar :search=false :Heading="Heading" :header=true />
-<<<<<<< HEAD
   <h1>{{items.projectTitle}}</h1>
-=======
     <div class="mainBody">
         <!-- <div>{{this.item.projectTitle}}</div> -->
         <form id="projectForm">
@@ -69,7 +67,6 @@
         </form>
     </div>    
 
->>>>>>> fab46fe09a4fbe0357de4622d247c865aab2cfa5
 </template>
 
 <script>

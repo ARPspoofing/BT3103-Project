@@ -91,7 +91,9 @@ export default {
       const testCollection = [];
       snapshot.forEach((docs) => {
         let data = docs.data()
+        var id = docs.id
         testCollection.push({ 
+            projectId: id,
             projectTitle: data.Project_Title, 
             description: data.Description, 
             vacancies: data.Num_Of_Vacancies,
