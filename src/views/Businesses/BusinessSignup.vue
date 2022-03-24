@@ -103,13 +103,13 @@ export default {
             confirmPasswordErrorPresent:false,
             errorMessage:'',
             loading: null,
+            verifiedEmail:false,
         }
     },
     components: {
         Loading,
         VerifyEmail
     },
-    
     methods: {
         /*
         googleSignIn() {
@@ -184,7 +184,15 @@ export default {
                     // ...
                 });
                 */
-
+                
+                createUserWithEmailAndPassword(getAuth(),this.email,this.password)
+                .then((data) => {
+                    console.log("in method")
+                    
+                    setDoc(doc(db,"businesses",String(this.email)),{
+                            profileFormCreated:false,
+                            verifyEmail:false,
+                    })
                 const auth = getAuth()
                 const actionCodeSettings = {
                 // URL you want to redirect back to. The domain (www.example.com) for this
@@ -207,6 +215,7 @@ export default {
                     // Save the email locally so you don't need to ask the user for it again
                     // if they open the link on the same device.
                     window.localStorage.setItem('emailForSignIn', this.email);
+                    
                     this.$router.push({name:'BusinessVerify'})
                     // ...
                 })
@@ -217,15 +226,6 @@ export default {
                     console.log("email",this.email)
                     // ...
                 });
-                
-                createUserWithEmailAndPassword(getAuth(),this.email,this.password)
-                .then((data) => {
-                    console.log("in method")
-                    
-                    setDoc(doc(db,"businesses",String(this.email)),{
-                            profileFormCreated:false,
-                })
-            
                 console.log('uploaded to firebase')
                     //this.$router.push({name:'BusinessProfileForm',params: {email}})
                     //this.$router.push({name:'BusinessProfileForm'})

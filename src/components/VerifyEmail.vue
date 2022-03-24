@@ -1,4 +1,5 @@
 <template>
+    <Loading v-if="loading"/>
     <div class="popup">
         <div class="content">
             <div class="input">
@@ -10,9 +11,15 @@
 
 <script>
 import firebaseApp from '../firebase.js';
-import {getFirestore} from 'firebase/firestore';
+import {getFirestore,getDoc, collection, doc,setDoc,updateDoc} from 'firebase/firestore';
 import {getAuth,sendPasswordResetEmail,sendSignInLinkToEmail,isSignInWithEmailLink} from "firebase/auth"
 import {useRouter} from "vue-router"
+import Loading from './Loading.vue'
+
+
+const db = getFirestore(firebaseApp)
+const router = useRouter()
+
 export default {
     name:'VerifyEmail',
     data() {
@@ -21,26 +28,59 @@ export default {
             notSent: true,
             msg: 'Please check your email inbox and click on the link sent by us to verify your email. You will have to verify your email to proceed.',
             notEntered: true,
+            loading: false,
         }
     },
     mounted() {
-        const auth = getAuth()
-        console.log("CHECK",isSignInWithEmailLink(auth, window.location.href))
-        if (isSignInWithEmailLink(auth, window.location.href)) {
-        // Additional state parameters can also be passed via URL.
-        // This can be used to continue the user's intended action before triggering
-        // the sign-in operation.
-        // Get the email if available. This should be available if the user completes
-        // the flow on the same device where they started it.
-        let email = window.localStorage.getItem('emailForSignIn');
-        if (!email) {
-            // User opened the link on a different device. To prevent session fixation
-            // attacks, ask the user to provide the associated email again. For example:
-            email = window.prompt('Please provide your email for confirmation');
+        const that = this
+        async function check() {
+            const auth = getAuth()
+            let email = window.localStorage.getItem('emailForSignIn');
+            const docRef = doc(db,"businesses",String(email))
+            const docs = await getDoc(docRef)
+            const formFilled = docs.data().profileFormCreated
+            const verifyEmail = docs.data().verifyEmail
+            if (verifyEmail) {
+                if(formFilled) {  
+                    console.log("formFilled")      
+                    that.$router.push({name:'BusinessHomePage'})
+                } else {
+                    that.$router.push({name:'BusinessProfileForm'})
+                }
+            }
+            console.log("CHECK",isSignInWithEmailLink(auth, window.location.href))
+            if (isSignInWithEmailLink(auth, window.location.href)) {
+            // Additional state parameters can also be passed via URL.
+            // This can be used to continue the user's intended action before triggering
+            // the sign-in operation.
+            // Get the email if available. This should be available if the user completes
+            // the flow on the same device where they started it.
+                let email = window.localStorage.getItem('emailForSignIn');
+                console.log("link email",email)
+                if (!email) {
+                    // User opened the link on a different device. To prevent session fixation
+                    // attacks, ask the user to provide the associated email again. For example:
+                    email = window.prompt('Please provide your email for confirmation');
+                }
+                // The client SDK will parse the code from the link for you.
+                else {
+                    that.loading = true
+                    const docRef = doc(db,"businesses",String(email))
+                    const docs = await getDoc(docRef)
+                    const formFilled = docs.data().profileFormCreated
+                    await updateDoc(docRef, {
+                    verifyEmail: true
+                    });
+                    if(formFilled) {  
+                        console.log("formFilled")      
+                        that.$router.push({name:'BusinessHomePage'})
+                    } else {
+                        that.$router.push({name:'BusinessProfileForm'})
+                    }
+                }
+            }
         }
-        // The client SDK will parse the code from the link for you.
-        this.$router.push({name:'BusinessProfileForm'})
-        }
+        check()
     },
     methods: {
         reset() {

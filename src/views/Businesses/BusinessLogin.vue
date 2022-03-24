@@ -72,7 +72,17 @@ export default {
     },   
     components: {
         ResetPassword,
-    },    
+    }, 
+    /*
+    mounted() {
+        async function checkVerified() {
+            const docRef = doc(db,"businesses",String(this.email))
+            const docs = await getDoc(docRef)
+            const  = docs.data().profileFormCreated
+        }
+        checkVerified()
+    },  
+    */ 
     methods: {
     forgot() {
         this.forgetPassword = true
@@ -108,14 +118,21 @@ export default {
             } else {
             console.log(docs.data())
             const formFilled = docs.data().profileFormCreated
+            const verifyEmail = docs.data().verifyEmail
         signInWithEmailAndPassword(getAuth(), this.email,this.password)
         .then((data) => {
-            if(formFilled) {  
-                console.log("formFilled")      
-                this.$router.push({name:'BusinessHomePage'})
-            } else {
-                this.$router.push({name:'BusinessProfileForm'})
+            if (!verifyEmail) {
+                this.$router.push({name:'BusinessVerify'})
             }
+            else {
+                if(formFilled) {  
+                    console.log("formFilled")      
+                    this.$router.push({name:'BusinessHomePage'})
+                } else {
+                    this.$router.push({name:'BusinessProfileForm'})
+                }
+            }
+            
         } ).catch((error) => {
             if(error.code === "auth/wrong-password") {
                 this.passwordErrorPresent = true;
