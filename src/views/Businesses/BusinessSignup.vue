@@ -58,19 +58,39 @@ import firebaseApp from '../../firebase.js';
 import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
 import {ref} from "vue"
-import {getAuth,createUserWithEmailAndPassword} from "firebase/auth"
+import {getAuth,createUserWithEmailAndPassword,sendSignInLinkToEmail,isSignInWithEmailLink, signInWithEmailLink} from "firebase/auth"
 import {useRouter} from "vue-router"
 import Loading from '../../components/Loading.vue'
-
+import VerifyEmail from '../../components/VerifyEmail.vue'
+/*
 import firebase from '../../uifire'
 import 'firebase/compat/auth'
 import * as firebaseui from 'firebaseui'
 import 'firebaseui/dist/firebaseui.css'
+*/
 
-//Style 
+const actionCodeSettings = {
+  // URL you want to redirect back to. The domain (www.example.com) for this
+  // URL must be in the authorized domains list in the Firebase Console.
+  url: 'https://www.example.com/finishSignUp?cartId=1234',
+  // This must be true.
+  handleCodeInApp: true,
+  iOS: {
+    bundleId: 'com.example.ios'
+  },
+  android: {
+    packageName: 'com.example.android',
+    installApp: true,
+    minimumVersion: '12'
+  },
+  dynamicLinkDomain: 'example.page.link'
+};
+
+
 
 const db = getFirestore(firebaseApp)
 const router = useRouter()
+
 export default {
     data() {
         return {
@@ -87,9 +107,11 @@ export default {
     },
     components: {
         Loading,
+        VerifyEmail
     },
+    
     methods: {
-        
+        /*
         googleSignIn() {
             var ui = firebaseui.auth.AuthUI.getInstance();
             if (!ui) {
@@ -104,6 +126,7 @@ export default {
             };
             ui.start('#firebaseui-auth-container',uiConfig)
         },
+        */
         
          register() { 
                 this.loading = true
@@ -136,21 +159,76 @@ export default {
                     setTimeout(() => {
                         this.confirmPasswordErrorPresent = false
                     }, 1500)
-                } else if(this.password == this.confirmPassword) {         
+                } else if(this.password == this.confirmPassword) {  
+                
+                /*
+                const actionCodeSettings = {
+                // URL you want to redirect back to. The domain (www.example.com) for this
+                // URL must be in the authorized domains list in the Firebase Console.
+                url: 'http://localhost:8080/?#/business/profileForm',
+                // This must be true.
+                handleCodeInApp: true,
+                dynamicLinkDomain: 'example.page.link'
+                };
+                const auth = getAuth()
+                sendSignInLinkToEmail(getAuth(),this.email, actionCodeSettings)
+                .then(() => {
+                    // The link was successfully sent. Inform the user.
+                    // Save the email locally so you don't need to ask the user for it again
+                    // if they open the link on the same device.
+                    window.localStorage.setItem('emailForSignIn', this.email);
+                    // ...
+                }).catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    // ...
+                });
+                */
+
+                const auth = getAuth()
+                const actionCodeSettings = {
+                // URL you want to redirect back to. The domain (www.example.com) for this
+                // URL must be in the authorized domains list in the Firebase Console.
+                url: 'http://localhost:8080/?#/business/verify',
+                // This must be true.
+                handleCodeInApp: true,
+                iOS: {
+                    bundleId: 'com.example.ios'
+                },
+                android: {
+                    packageName: 'com.example.android',
+                    installApp: true,
+                    minimumVersion: '12'
+                }
+                };
+                sendSignInLinkToEmail(auth, this.email, actionCodeSettings)
+                .then(() => {
+                    // The link was successfully sent. Inform the user.
+                    // Save the email locally so you don't need to ask the user for it again
+                    // if they open the link on the same device.
+                    window.localStorage.setItem('emailForSignIn', this.email);
+                    this.$router.push({name:'BusinessVerify'})
+                    // ...
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log(errorMessage)
+                    console.log("email",this.email)
+                    // ...
+                });
+                
                 createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                 .then((data) => {
                     console.log("in method")
                     
                     setDoc(doc(db,"businesses",String(this.email)),{
-                            
-                            //when a user logs in when this attribute is false, he/she will be directed to the 
-                            //profile page otherwise will be directed to the landing page
                             profileFormCreated:false,
-                            
-
                 })
+            
                 console.log('uploaded to firebase')
-                    this.$router.push({name:'BusinessProfileForm'/*,params: {email}*/})
+                    //this.$router.push({name:'BusinessProfileForm',params: {email}})
+                    //this.$router.push({name:'BusinessProfileForm'})
                     this.loading = false
                 }).catch((err) => {
                     this.error = err.code
@@ -178,6 +256,7 @@ export default {
                     }
                     console.log(this.error)
                 })
+                
                 }
         }    
     },

@@ -1,17 +1,8 @@
 <template>
-    <div v-if="notSent" class="popup">
+    <div class="popup">
         <div class="content">
-            <div @click="$emit('close')" class="cross">
-                <h3>x</h3>
-            </div>
             <div class="input">
                 <p><b>{{msg}}</b></p>
-            </div>
-            <div v-if="notEntered" class="input">
-                <input type="text" v-model="email">
-            </div>
-            <div v-if="notEntered" class="action">
-                <button class="green" @click="reset">Submit</button>
             </div>
         </div>
     </div>
@@ -20,16 +11,35 @@
 <script>
 import firebaseApp from '../firebase.js';
 import {getFirestore} from 'firebase/firestore';
-import {getAuth,sendPasswordResetEmail,sendSignInLinkToEmail} from "firebase/auth"
+import {getAuth,sendPasswordResetEmail,sendSignInLinkToEmail,isSignInWithEmailLink} from "firebase/auth"
 import {useRouter} from "vue-router"
 export default {
-    name:'ResetPassword',
+    name:'VerifyEmail',
     data() {
         return {
             email: '',
             notSent: true,
-            msg: 'Enter your registered email below. You will receive a reset password link',
+            msg: 'Please check your email inbox and click on the link sent by us to verify your email. You will have to verify your email to proceed.',
             notEntered: true,
+        }
+    },
+    mounted() {
+        const auth = getAuth()
+        console.log("CHECK",isSignInWithEmailLink(auth, window.location.href))
+        if (isSignInWithEmailLink(auth, window.location.href)) {
+        // Additional state parameters can also be passed via URL.
+        // This can be used to continue the user's intended action before triggering
+        // the sign-in operation.
+        // Get the email if available. This should be available if the user completes
+        // the flow on the same device where they started it.
+        let email = window.localStorage.getItem('emailForSignIn');
+        if (!email) {
+            // User opened the link on a different device. To prevent session fixation
+            // attacks, ask the user to provide the associated email again. For example:
+            email = window.prompt('Please provide your email for confirmation');
+        }
+        // The client SDK will parse the code from the link for you.
+        this.$router.push({name:'BusinessProfileForm'})
         }
     },
     methods: {

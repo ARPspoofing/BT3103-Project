@@ -129,6 +129,12 @@ const routes = [
   },
 
   {
+    path: "/business/verify",
+    name: "BusinessVerify",
+    component: () => import("../components/VerifyEmail.vue"),
+  },
+
+  {
     path: "/business/profileForm",
     name: "BusinessProfileForm",
     component: () => import("../views/Businesses/BusinessProfileForm.vue"),
