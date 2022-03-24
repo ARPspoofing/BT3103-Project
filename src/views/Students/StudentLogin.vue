@@ -102,7 +102,8 @@ export default {
     await signInWithEmailAndPassword(auth, this.email,this.password)
     .then((data) => {
         if(!formFilled) {
-            this.$router.push({name:'StudentProfileForm'})
+            this.$router.push({name:'StudentHomePage'})
+            //this.$router.push({name:'StudentProfileForm'})
         } else {
             this.$router.push({name:'StudentHomePage'})
 

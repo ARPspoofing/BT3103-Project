@@ -1,5 +1,5 @@
 <template> 
-    <PopUp @return="close" v-if="true" />
+    <PopUp @return="close" v-if="popUp" />
     <div @click="check" ref="formWrap" class="form-wrap flex flex-column">
         <form @submit.prevent="submitForm" class="content">
             <!--Personal Details-->

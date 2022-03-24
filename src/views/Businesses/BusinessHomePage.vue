@@ -43,12 +43,11 @@ export default {
     Card,
     BusinessProfileForm
   },
-
   data() {
     return {
       Heading: "MY PROJECTS",
       testCollection: [],
-      profileFormCreated: false,
+      profileFormCreated: true,
       foreverTrue: true,
     }
   },

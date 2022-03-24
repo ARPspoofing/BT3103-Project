@@ -1,6 +1,7 @@
 <template>
+
   <StudentNavBar :search=true :header=false />
-  <StudentProfileForm @success='close' v-if='!profileFormCreated'/>
+  <StudentProfileForm @cancel='cancel' @success='close' v-if='!profileFormCreated'/>
   <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
     
     <h1 id="interest">Projects You May Like</h1>
@@ -77,22 +78,28 @@ export default {
   components: {
     StudentNavBar, 
     Card,
-    StudentProfileForm
-  },
+    StudentProfileForm,
 
+  },
+  emits: ['cancel'],
   data() {
     return {
       Heading: " ",
       testCollection: [],
       newApplicants:[],
       foreverTrue:true,
-      profileFormCreated: false,
+      profileFormCreated: true,
+      cancel: false,
     }
   },
   
   methods: {
     close(e) {
       this.profileFormCreated = true;
+    },
+    cancel(e) {
+      this.cancel = e;
+      console.log("eeeeeeeeeeeeeeee")
     },
     async addApplicant(key) {
       console.log(key)

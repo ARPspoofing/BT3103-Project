@@ -23,7 +23,7 @@ export default {
 
 <style scoped>
 .popup {
-    z-index:100;
+    z-index:1000000;
     position:fixed;
     display:flex;
     justify-content:center;

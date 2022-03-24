@@ -185,13 +185,13 @@ export default {
                     .then((data) => {
                          setDoc(doc(db,"students",this.email),{
                             email:this.email,
-                            password:this.password,
+                            //password:this.password,
                             //when a user logs in when this attribute is false, he/she will be directed to the 
                             //profile page otherwise will be directed to the landing page
                             profileFormCreated:false,
 
                 })
-                    this.$router.push({name:'StudentProfileForm'})
+                    this.$router.push({name:'StudentHomePage'})
                     this.loading = false
                     }).catch((err) => {
                         this.error = err.code

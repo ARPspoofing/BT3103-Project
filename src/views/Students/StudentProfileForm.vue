@@ -1,14 +1,13 @@
 <template>    
-    <PopUp @return="close" v-if="popUp"/>
+    <PopUp @return="close" v-show="popUp"/>
     <div @click="check" ref="formWrap" class="form-wrap flex flex-column">
         <form @submit.prevent="submitForm" class="content">
-            <div class="profile-pic-outer">
-                <img class="profile-pic" :src="finalProfile"/>
-            </div>
-            <div class="profile-icon">
+            <div class="profile-icon flex flex-column">
+                <img class="profile-pic flex flex-column" :src="finalProfile"/>
                 <input style="display:none" ref="profileUpload" type="file" @change="onFileSelected">
-                <h4 @click="$refs.profileUpload.click()">Pick Profile</h4>
+                <p style="text-decoration: underline;" @click="$refs.profileUpload.click()">Pick Profile</p>
             </div>
+            
 
             
             <!--Personal Details-->
@@ -37,7 +36,7 @@
                  <div class="errorMsg" v-if="courseErrorPresent">{{this.errorMessage}}</div>
                 <div class="input flex flex-column">
                     <label for="year">Year</label>
-                    <input type="text" id="year" v-model="year">
+                    <input type="number" id="year" v-model="year">
                 </div>
                 <div class="errorMsg" v-if="yearErrorPresent">{{this.errorMessage}}</div>
                 <div class="flex flex-row">
@@ -46,7 +45,7 @@
                             <li v-for="(item,index) in interests" style="width: 20%;display: inline" >
                                 <div class="interest-flex">
                                     <label class = "labelTag" for="interest">Interest</label>                            
-                                    <select class="inputTag" type="text" id="interest" v-model="item.value" >   
+                                    <select class="inputTag" id="interest" v-model="item.value" >   
                                         <option value="Artificial Intelligence">Artificial Intelligence</option>
                                         <option value="Scientific Computing">Scientific Computing</option>
                                         <option value="Data Structures">Data Structures</option>
@@ -95,7 +94,7 @@
                 <h4>Contact Details</h4>
                 <div class="input flex flex-column">
                     <label for="schoolEmail">School Email</label>
-                    <input type="text" id="schoolEmail" v-model="schoolEmail">
+                    <input disabled type="text" id="schoolEmail" v-model="schoolEmail">
                 </div>
                 <div class="errorMsg" v-if="schoolEmailErrorPresent">{{this.errorMessage}}</div>
                 <div class="input flex flex-column">
@@ -105,7 +104,7 @@
                 <div class="errorMsg" v-if="personalEmailErrorPresent">{{this.errorMessage}}</div>
                 <div class="input flex flex-column">
                     <label for="contactNo">Contact Number</label>
-                    <input type="text" id="contactNo" v-model="contactNo">
+                    <input type="number" id="contactNo" v-model="contactNo">
                 </div>
                 <div class="errorMsg" v-if="contactNumberErrorPresent">{{this.errorMessage}}</div>
             </div>
@@ -200,7 +199,7 @@
 import firebaseApp from '../../firebase.js';
 import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
-import {getAuth,createUserWithEmailAndPassword, signOut} from "firebase/auth"
+import {getAuth,createUserWithEmailAndPassword,signOut,onAuthStateChanged} from "firebase/auth"
 import { v4 as uuidv4 } from 'uuid';
 import PopUp from '../../components/PopUp.vue'
 import {useRouter} from "vue-router"
@@ -217,13 +216,20 @@ const router = useRouter()
 export default {
     //Fetch data from Firebase afterwards
     name: 'StudentProfileForm',
-    emits: ['success'],
+    emits: ['success','return','cancel'],
     created() {
         this.interests.push({
             id:uuidv4(),
             value: "",
         })
         console.log(this.interests.target)
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user ) => {
+            if(user) {
+                console.log("currUser",user.email)
+                this.schoolEmail = user.email;
+            }
+        })
     },
     data() {
         return {
@@ -310,7 +316,7 @@ export default {
              //Add code to upload the resume somewhere
              this.resume = event.target.files[0]
              const storage = getStorage();   
-             const resumeRef = ref(storage, email +'/' + this.resume.name )
+             const resumeRef = ref(storage, this.email +'/' + this.resume.name )
              const uploadTask = uploadBytesResumable(resumeRef, this.resume)
              uploadTask.on('state_changed', (snapshot) => {}, (error)=> {
                  console.log(error)
@@ -326,7 +332,7 @@ export default {
              //Add code to upload the transcript somewhere
              this.transcript = event.target.files[0]
              const storage = getStorage();   
-             const transcriptRef = ref(storage, email +'/' + this.transcript.name )
+             const transcriptRef = ref(storage, this.email +'/' + this.transcript.name )
              const uploadTask = uploadBytesResumable(transcriptRef, this.transcript)
              uploadTask.on('state_changed', (snapshot) => {}, (error)=> {
                  console.log(error)
@@ -343,6 +349,7 @@ export default {
          },
          showPopUp() {
              this.popUp = true
+             this.$emit('cancel',true)
          },
          allInterestsEmpty() {
              console.log(this.interests)
@@ -352,9 +359,7 @@ export default {
                      return false
                  }
              }
-
             return true;
-
          },
          close(leave) {
              if (leave === false) {
@@ -403,25 +408,26 @@ export default {
             } else if (this.schoolEmail == '') {
                 this.schoolEmailErrorPresent = true;  
                 this.errorMessage = "Please enter your school email"
-            } else if (this.personalEmail == '') {
+            } else if (this.personalEmail == ''  || /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.personalEmail) == false) {
                 this.personalEmailErrorPresent = true;
-                this.errorMessage = "Please enter your personal email"
-            } else if (this.contactNo == '') {
+                this.errorMessage = "Please enter a valid personal email"
+            } else if (this.contactNo == '' || /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d+)\)?)[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i.test(this.contactNo)==false) {
                 this.contactNumberErrorPresent = true; 
                 this.errorMessage = "Please enter your contact number"
-            } else if (this.contactNo.length != 8) {
+            } /*else if (this.contactNo.length != 8) {
                 this.contactNumberErrorPresent = true;
                 this.errorMessage = "Please enter a valid contact number"
-            } else if (!this.resumePresent) {
+            } */else if (!this.resumePresent) {
                 this.resumeErrorPresent = true;
                 this.errorMessage = "Please upload your resume"
             } else if (!this.transcriptPresent) {
                 this.transcriptErrorPresent = true;   
                 this.errorMessage = "Please upload your transcript"
             } else {
-            this.$emit('success',true)
-            setDoc(doc(db,"students",String(user.email)),{
-                email: user.email,
+                const auth = getAuth()
+                const email = auth.currentUser.email;
+            setDoc(doc(db,"students",String(email)),{
+                email: email,
                 name:this.name,
                 course:this.course,
                 year:this.year,
@@ -435,9 +441,8 @@ export default {
                 appliedProjects: this.appliedProjects,
                 offeredProjects: this.offeredProjects,
                 rejectedProjects: this.rejectedProjects
-
             })
-
+            this.$emit('success',true)
             this.$router.push({name:'StudentHomePage'})
             }
 
@@ -473,6 +478,17 @@ export default {
     select {
         margin-bottom: 20px;
         margin-left:10px;
+    }
+
+    p {
+        color: blue;
+        cursor:pointer;
+    }
+
+    .profile-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .interest-flex {
@@ -512,17 +528,13 @@ export default {
       background-color: #BBDFCC;
       color:black;
       border-radius:5%;
-      height:160%;
-      margin-top:500px;
+      height:180%;
+      margin-top:600px;
     }
 
     img {
-        position: absolute;
         width:20px;
         height:20px;
-        left:10px;
-        right:0px;
-        
     }
 
     .addBtn {
@@ -606,6 +618,18 @@ export default {
      .errorMsg {
         color: red;
         margin-top:5px;
+    }
+
+    .profile-pic {
+        border-radius: 50%;
+        margin-top:10px;
+        width:10%;
+        height:10%;
+    }
+
+    img {
+        width:40px;
+        height:40px;
     }
 
     /*
