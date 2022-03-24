@@ -19,14 +19,18 @@
         </span>
         <span>
           <div class="projButtons" >
-            <button class="applyProj" data-bs-toggle="modal" data-bs-target="#applyModal" >APPLY NOW</button> <br>
+            <button id="applybtns" v-if="appstat == 'applied'" class="btn-applied">APPLIED</button>
+            <button id="applybtns" v-if="appstat == 'apply'" class="btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal" >APPLY NOW</button> <br>
           </div> 
           <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true" 
               data-bs-backdrop="false">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-body">
-                    <p>Apply for {{ items.projectTitle }}?</p>
+                    <div class="words">
+                    <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+                    <p>Apply for <span style="color: #0E8044"><strong>{{ items.projectTitle }} </strong></span>?</p>
+                    </div>
                     <span>
                       <div class = "applybtns">
                         <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="addApplicant()">Yes</button>
@@ -126,6 +130,7 @@ export default {
       user: false, 
       userEmail: "", 
       applied: [],
+      appstat: "",
     }
   },
   mounted() {
@@ -142,6 +147,8 @@ export default {
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
     this.projTitle = JSON.parse(this.$route.params.items).projectTitle
     this.items = JSON.parse(this.$route.params.items)
+    this.projId = JSON.parse(this.$route.params.items).projectId
+    this.appstat = JSON.parse(this.$route.params.items).appstat
 
     const that = this
     async function getAppliedProjects() {
@@ -167,13 +174,14 @@ export default {
         console.log(newApplicants)
         var projTitle = this.projTitle
         newApplicants.push(this.userEmail);
-        var projTitle = this.projTitle
-        newApplicants.push(this.userEmail);
+        var projId = this.projId
         var applied = this.applied
-        applied.push(projTitle);
+        applied.push(projId);
+        // applied.push(projTitle);
+        this.appstat = "applied"
 
         try {
-            const docRef = await updateDoc(doc(db, "Project", projTitle), {
+            const docRef = await updateDoc(doc(db, "Project", projId), {
                 New_Applicants: newApplicants
             })
 
@@ -314,13 +322,20 @@ export default {
     margin-left: 20px;
   }
 
-  .applyProj {
-    background-color: #0E8044;
+  #applybtns {
     color: white;
     border-radius: 15px;
     width: 250px;
     border-width: 0px;
     font-size: 18px;
+  }
+
+  .btn-apply {
+    background-color: #0E8044;
+  }
+
+  .btn-applied {
+    background-color: #888888;
   }
 
   .projButtons {
@@ -450,4 +465,55 @@ export default {
       top: 5px;
   }
 
+   #applyModal {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: #BBDFCC;
+    border: none;
+  }
+
+  .words {
+    width: max-content;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    height: 50px;
+  }
+
+  .applybtns {
+    width: max-content;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+
+  #yesbtn, #nobtn {
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color:#89ca9a;
+    color: #3f3f3f;
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+  }
+
+
+
+  #tickIcon {
+    height: 38px;
+    width: 38px;
+    color: #3D9956;
+    float: left;
+  }
+
+  .modal-body p {
+    text-align: center;
+    width: 180px;
+    margin-left: 48px;
+  }
 </style>

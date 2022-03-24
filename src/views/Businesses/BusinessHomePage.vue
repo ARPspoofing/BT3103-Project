@@ -16,9 +16,14 @@
       </span>
     </h1>
     <hr/>
+    <h1></h1>
       <div class="projectContainer">
         <div :key="item.key" v-for="(item, key) in testCollection">
-          <Card :apply=false :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivproj(key)"/>
+          <Card v-if="isEqual(item.posterId)"
+          :apply=false 
+          :projectTitle = "item.projectTitle" 
+          :description="item.description" 
+          @clickCard="indivproj(key)"/>
         </div>
       </div>
   </div>
@@ -30,7 +35,7 @@ import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
-import {signOut} from "firebase/auth"
+import { signOut, getAuth, onAuthStateChanged } from "firebase/auth"
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -44,6 +49,7 @@ export default {
     return {
       Heading: "MY PROJECTS",
       testCollection: [],
+      businessEmail: "",
     }
   },
 
@@ -67,10 +73,18 @@ export default {
       })
       console.log(key)
       console.log(this.testCollection[key])
-  }
+    },
+
+    isEqual(email) {
+      return email == this.businessEmail;
+    }
   },
 
   mounted() {
+    const auth = getAuth();
+    this.businessEmail = auth.currentUser.email;
+    console.log(this.businessEmail)
+
     const that = this;
     async function fetchProject() {
       let snapshot = await getDocs(collection(db, "Project"))
@@ -90,6 +104,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            posterId: data.poster_id,
         });
       });
       that.testCollection = testCollection
@@ -145,7 +160,7 @@ export default {
 
   .options {
     font-size: 15px;
-    padding: 10px 25px;
+    padding: 5px 25px;
     margin-left: 15px;
     border-radius: 30px; /* or 50% */
     background-color: #0E8044;

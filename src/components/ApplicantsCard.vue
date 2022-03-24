@@ -11,8 +11,46 @@
         </div>
         <span v-show=buttons>
           <div class="appButtons" >
-            <button href="#" class="accept" @click="acceptbtn">Accept</button> <br>
-            <button href="#" class="reject" @click="rejectbtn">Reject</button> <br>
+            <button href="#" class="accept" data-bs-toggle="modal" data-bs-target="#accModal">Accept</button> <br>
+            <div class="modal fade" id="accModal" tabindex="-1" aria-labelledby="accModalLabel" aria-hidden="true" 
+            data-bs-backdrop="false">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <div class="words">
+                  <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+                  <p>Accept <span style="color: #0E8044"><strong>{{ applicantName }} </strong></span>?</p>
+                  </div>
+                  <span>
+                    <div class = "applybtns">
+                      <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="acceptbtn">Yes</button>
+                      <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                    </div>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+            <button href="#" class="reject" data-bs-toggle="modal" data-bs-target="#rejModal">Reject</button> <br>
+            <div class="modal fade" id="rejModal" tabindex="-1" aria-labelledby="rejModalLabel" aria-hidden="true" 
+            data-bs-backdrop="false">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <div class="words">
+                  <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+                  <p>Reject <span style="color: #0E8044"><strong>{{ applicantName }} </strong></span>?</p>
+                  </div>
+                  <span>
+                    <div class = "applybtns">
+                      <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="rejectbtn">Yes</button>
+                      <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                    </div>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
           </div> 
         </span>
     </div>

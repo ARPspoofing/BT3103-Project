@@ -231,20 +231,10 @@ export default {
     }
 
     .form-wrap {
-        display:flex;
         height:105%;
         width:100%;
         background: url("../../assets/signupBG.png") no-repeat center center fixed;
         overflow:hidden;
-        /* overflow:hidden;
-        display:flex;
-        height:80vh;
-        justify-content: center;
-        align-self: center;
-        margin: 0 auto;
-        width:90%;
-        background-image:url("../../assets/signupBG.png");
-        background-repeat: no-repeat; */
     }
 
     form {
@@ -276,7 +266,7 @@ export default {
     }
 
     input {
-        width: 100%;
+        width: 80%;
         border: 2px solid darkgreen;
         background-color: white;
         padding: 4px 4px 4px 30px;
@@ -285,9 +275,8 @@ export default {
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
-        margin:5px;
+        margin:10px;
     }
-
     input:focus {
         outline: none;
     }
@@ -295,11 +284,13 @@ export default {
     .icon {
         width:12px;
         position:absolute;
-        margin-left:15px;
+        margin-left:20px;
     }
+
     button {
         margin-top:5vh;
-        width: 100%;
+        margin-left: 10px;
+        width: 80%;
         border: none;
         display:flex;
         align-items: center;
@@ -338,15 +329,23 @@ export default {
         order: 2px solid red;
     }
 
+    h1 {
+        text-align: left;
+        margin-top: 20px;
+        margin-left: 15px;
+    }
     h4 {
-        margin-left:15px;
-        font-size:18px;
-        font-weight:bolder;
+        font-size: 16px;
+        margin-bottom: 0px;
+        margin-top: 5px;
+        margin-left: 15px;
+    }
+    .inputLabel {
+        margin-bottom: 0px;
+        text-align: left;
     }
 
     h6 {
-        font-size:14px;
-        font-weight:bolder;
-        color:grey;
+        margin-left: 15px;
     }
 </style>

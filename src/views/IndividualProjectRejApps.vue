@@ -132,7 +132,7 @@ export default {
 
   .options {
     font-size: 15px;
-    padding: 10px 25px;
+    padding: 5px 25px;
     margin-left: 15px;
     border-radius: 30px; /* or 50% */
     background-color: #0E8044;

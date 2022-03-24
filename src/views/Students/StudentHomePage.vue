@@ -19,21 +19,39 @@
         <div class="carousel-item active">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, key) in testCollection">
-              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @applicantbtn="addApplicant(key)" @clickCard="indivproj(key)"/>
+              <Card v-if="key <= 5" 
+                :apply=true 
+                :projectTitle = "item.projectTitle" 
+                :description="item.description" 
+                :appstat="item.appstat"
+                @applicantbtn="addApplicant(key)" 
+                @clickCard="indivproj(key)"/>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, key) in testCollection.slice(6)">
-              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @applicantbtn="addApplicant(key + 6)" @clickCard="indivproj(key + 6)"/>
+              <Card v-if="key <= 5" 
+                :apply=true 
+                :projectTitle = "item.projectTitle" 
+                :description="item.description" 
+                :appstat="item.appstat"
+                @applicantbtn="addApplicant(key + 6)" 
+                @clickCard="indivproj(key + 6)"/>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, key) in testCollection.slice(12)">
-              <Card v-if="key <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @applicantbtn="addApplicant(key + 2*6)" @clickCard="indivproj(key + 2*6)"/>
+              <Card v-if="key <= 5" 
+              :apply=true 
+              :projectTitle = "item.projectTitle" 
+              :description="item.description" 
+              :appstat="item.appstat"
+              @applicantbtn="addApplicant(key + 2*6)" 
+              @clickCard="indivproj(key + 2*6)"/>
             </div>
           </div>
         </div>
@@ -54,7 +72,13 @@
     <hr/>
     <div class="carouContainer">
       <div :key="item.key" v-for="(item, index) in testCollection">
-        <Card v-if="index <= 5" :apply=true :projectTitle = "item.projectTitle" :description="item.description" @applicantbtn="addApplicant(key)"/>
+        <Card v-if="index <= 5" 
+          :apply=true 
+          :projectTitle = "item.projectTitle" 
+          :description="item.description" 
+          :appstat="item.appstat"
+          @applicantbtn="addApplicant(key)" 
+          @clickCard="indivproj(key + 2*6)"/>
       </div>
     </div>
   </div>
@@ -65,7 +89,7 @@ import StudentNavBar from '../../components/StudentNavBar.vue'
 import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
@@ -82,7 +106,8 @@ export default {
       testCollection: [],
       newApplicants:[],
       user: false, 
-      userEmail: ""
+      userEmail: "", 
+      applied: [],
     }
   },
   
@@ -93,18 +118,29 @@ export default {
       console.log(newApplicants)
       var projTitle = this.testCollection[key]["projectTitle"]
       newApplicants.push(this.userEmail);
+      var applied = this.applied
+      console.log(applied);
+      var projectId = this.testCollection[key]["projectId"]
+      console.log(projectId);
+      applied.push(projectId);
+      // applied.push(projTitle);
+      this.testCollection[key]["appstat"] = "applied"
 
-      alert("Applying for proj: " + projTitle);
+      // alert("Applying for proj: " + projTitle);
       
       //const auth = getAuth();
       //this.fbuser = auth.currentUser.email;
 
       try {
-          const docRef = await updateDoc(doc(db, "Project", projTitle), {
+          const docRef = await updateDoc(doc(db, "Project", projectId), {
               New_Applicants: newApplicants
           })
 
-          console.log(docRef)
+          const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
+                appliedProjects: applied
+            })
+
+          //console.log(docRef)
           this.$emit("updated")
       }
         catch(error) {
@@ -137,20 +173,33 @@ export default {
       }
     })
     this.userEmail = auth.currentUser.email;
-    console.log(this.userEmail)
+    //console.log(this.userEmail)
     //this.userEmail = auth.currentUser;
     //console.log(this.userEmail)
 
     const that = this;
+
+    async function getAppliedProjects() {
+      const ref = doc(db, "students", auth.currentUser.email);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      console.log(data.appliedProjects)
+      that.applied = data.appliedProjects
+    }
+
     async function fetchProject() {
       let snapshot = await getDocs(collection(db, "Project"))
       const testCollection = [];
+      console.log(that.applied)
       snapshot.forEach((docs) => {
         let data = docs.data()
-        testCollection.push({ 
+        var id = docs.id
+        if (that.applied.includes(data.Project_Title)) {
+          testCollection.push({ 
             /*projectTitle: data.Project_Title, 
             description: data.Description,
             newApplicants: data.New_Applicants*/
+            projectId: id,
             projectTitle: data.Project_Title, 
             description: data.Description, 
             vacancies: data.Num_Of_Vacancies,
@@ -163,12 +212,38 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
-        });
+            appstat: "applied"
+          });
+        } else {
+          testCollection.push({ 
+            /*projectTitle: data.Project_Title, 
+            description: data.Description,
+            newApplicants: data.New_Applicants*/
+            projectId: id,
+            projectTitle: data.Project_Title, 
+            description: data.Description, 
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
+            appstat: "apply"
+          });
+        }
+        
       });
       that.testCollection = testCollection
       console.log(testCollection)
     }
+    
+    getAppliedProjects()
     fetchProject();
+    console.log(that.applied)
   }
 }
 </script>

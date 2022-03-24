@@ -12,7 +12,7 @@
                     <h1>Welcome Back Business!</h1>
                 </div>
                 <div class="input">
-                    <h4>Dont't have an account?&nbsp;</h4>
+                    <h4>Don't have an account?&nbsp;</h4>
                     <router-link class="link" :to="{name:'BusinessSignup'}">Signup</router-link>
                     <router-view/>
                 </div>
@@ -156,6 +156,8 @@ export default {
         font-weight: bold;
         color: blue;
         align-self: flex-start;
+        margin-top: 5px;
+        margin-bottom: 8px;
     }
 
     h4 {
@@ -193,21 +195,15 @@ export default {
         position: relative;
         display: flex;
         justify-content: left;
-<<<<<<< HEAD
-        align-items: center;
-        
-        margin-bottom:5px;
-=======
         align-items: center;       
     }
     .errorMsg {
         color: red;
         font-size: 15px;
->>>>>>> main
     }
 
     input {
-        width: 100%;
+        width: 80%;
         border: 2px solid darkgreen;
         background-color: white;
         padding: 4px 4px 4px 30px;
@@ -216,11 +212,8 @@ export default {
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
-<<<<<<< HEAD
         margin:5px;
-=======
-        margin:10px
->>>>>>> main
+        margin-left: 10px;
     }
 
     input:focus {
@@ -230,16 +223,13 @@ export default {
     .icon {
         width:12px;
         position:absolute;
-<<<<<<< HEAD
         margin-left:20px;
-=======
-        margin-left:15px;
->>>>>>> main
     }
 
     button {
         margin-top:3vh;
-        width: 100%;
+        margin-left: 10px;
+        width: 80%;
         border: none;
         display:flex;
         align-items: center;
@@ -256,6 +246,7 @@ export default {
         color: darkgreen;
         font-weight:bolder;
         cursor: pointer;
+        width: 80%;
     }
 
     .shake {
@@ -267,23 +258,6 @@ export default {
     90% {
         transform: translate3d(-1px, 0, 0);
     }
-<<<<<<< HEAD
-
-     h1 {
-        text-align: left;
-        margin-top: 20px;
-    }
-
-    h4 {
-        font-size: 16px;
-        margin-bottom: 0px;
-    }
-
-    .inputLabel {
-        margin-bottom: 0px;
-        text-align: left;
-    }
-=======
     20%,
     80% {
         transform: translate3d(2px, 0, 0);
@@ -302,5 +276,19 @@ export default {
         order: 2px solid red;
     }
 
->>>>>>> main
+    h1 {
+        text-align: left;
+        margin-top: 20px;
+        margin-left: 15px;
+    }
+    h4 {
+        font-size: 16px;
+        margin-top: 5px;
+
+    }
+    .inputLabel {
+        margin-bottom: 0px;
+        text-align: left;
+    }
+
 </style>

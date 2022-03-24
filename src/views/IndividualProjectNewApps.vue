@@ -62,6 +62,7 @@ export default {
       var name = this.applicant[key].name
       console.log(accApplicant)
       var projTitle = this.items["projectTitle"]
+      var projId = this.items["projectId"]
       
       if (!this.accApplicants) {
         var accApplicants = [];
@@ -74,9 +75,9 @@ export default {
       this.newApplicants.splice(key,1);
       this.applicant.splice(key,1);
 
-      alert("Accepting applicant: " + name);
+      // alert("Accepting applicant: " + name);
       try {
-          const docRef = await updateDoc(doc(db, "Project", projTitle), {
+          const docRef = await updateDoc(doc(db, "Project", projId), {
               Acc_Applicants: this.accApplicants,
               New_Applicants: this.newApplicants
           })
@@ -93,6 +94,7 @@ export default {
       console.log(rejApplicant)
       var name = this.applicant[key].name
       var projTitle = this.items["projectTitle"]
+      var projId = this.items["projectId"]
       //rejApplicants.push(rejApplicant);
 
       if (!this.rejApplicants) {
@@ -108,7 +110,7 @@ export default {
       alert("Rejecting applicant: " + name);
 
       try {
-          const docRef = await updateDoc(doc(db, "Project", projTitle), {
+          const docRef = await updateDoc(doc(db, "Project", projId), {
               Rej_Applicants: this.rejApplicants, 
               New_Applicants: this.newApplicants
           })
@@ -203,7 +205,7 @@ export default {
 
   .options {
     font-size: 15px;
-    padding: 10px 25px;
+    padding: 5px 25px;
     margin-left: 15px;
     border-radius: 30px; /* or 50% */
     background-color: #0E8044;
