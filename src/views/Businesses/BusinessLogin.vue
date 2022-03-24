@@ -46,16 +46,17 @@
 
 <script>
 import {ref} from "vue"
-import {getAuth,signInWithEmailAndPassword} from "firebase/auth"
+import {getAuth,signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup} from "firebase/auth"
 import {useRouter} from "vue-router"
 import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../../firebase.js"
 import {getDoc, collection, doc} from "firebase/firestore"
 import ResetPassword from '../../components/ResetPassword.vue'
 
-
+const that = this
 const router = useRouter()
 const db = getFirestore(firebaseApp)
+const provider = new GoogleAuthProvider();
 
 export default {
     name:"BusinessLogin",

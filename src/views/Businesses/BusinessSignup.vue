@@ -44,6 +44,7 @@
                 </div>
             </div>
         </form>
+        <GoogleButton @click='google'/>
         <!--
         <button @click="googleSignIn">google</button>
          <div id="firebaseui-auth-container"></div>
@@ -58,10 +59,11 @@ import firebaseApp from '../../firebase.js';
 import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
 import {ref} from "vue"
-import {getAuth,createUserWithEmailAndPassword,sendSignInLinkToEmail,isSignInWithEmailLink, signInWithEmailLink} from "firebase/auth"
+import {getAuth,createUserWithEmailAndPassword,sendSignInLinkToEmail,isSignInWithEmailLink, signInWithEmailLink,GoogleAuthProvider,signInWithPopup} from "firebase/auth"
 import {useRouter} from "vue-router"
 import Loading from '../../components/Loading.vue'
 import VerifyEmail from '../../components/VerifyEmail.vue'
+import GoogleButton from '../../components/GoogleButton.vue'
 /*
 import firebase from '../../uifire'
 import 'firebase/compat/auth'
@@ -90,6 +92,7 @@ const actionCodeSettings = {
 
 const db = getFirestore(firebaseApp)
 const router = useRouter()
+const that = this
 
 export default {
     data() {
@@ -108,9 +111,51 @@ export default {
     },
     components: {
         Loading,
-        VerifyEmail
+        VerifyEmail,
+        GoogleButton
     },
     methods: {
+        async google() {
+            const auth = getAuth();
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                const user = result.user;
+                const docRef = doc(db,"businesses",String(this.email))
+                const docs = getDoc(docRef)
+                if (!docs.data().profileFormCreated || !docs.data().verifyEmail) {
+                    setDoc(doc(db,"businesses",String(this.email)),{
+                    profileFormCreated:false,
+                    verifyEmail:false,
+                    })
+                }
+                const formFilled = docs.data().profileFormCreated
+                const verifyEmail = docs.data().verifyEmail
+                cosole.log("verifyEmail",verifyEmail)
+                // The signed-in user info.
+                console.log("token",token)
+                if (!verifyEmail) {
+                    that.$router.push({name:'BusinessVerify'})
+                } else {
+                    that.$router.push({name:'BusinessHomePage'})
+                }
+                
+                
+                // ...
+            }).catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.email;
+                // The AuthCredential type that was used.
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                // ...
+            });
+        },
         /*
         googleSignIn() {
             var ui = firebaseui.auth.AuthUI.getInstance();
