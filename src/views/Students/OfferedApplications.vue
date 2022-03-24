@@ -17,13 +17,14 @@
       </span>
     </h1>
     <hr />
-    <div class="projectContainer" :key="item.key" v-for="(item, index) in projects">
+    <div class="projectContainer" :key="item.key" v-for="(item, key) in projects">
       <Card
         :apply=false
         :projectTitle="item.projectTitle"
         :description="item.description"
-        :stat="stat"
+        :stat="stat2"
         :offered=true
+        @acceptBtn="acceptProj(key)"
       />
     </div>
   </div>
@@ -55,12 +56,51 @@ export default {
   data() {
     return {
       Heading: "MY APPLICATIONS",
-      stat: "offered",
+      stat2: "offered",
       userEmail: "",
       offered: [],
       projects: [],
-
+      accepted:[],
     };
+  },
+  methods: {
+    async acceptProj(key) {
+      //var accApplicant = this.projects[key]
+      //var name = this.projects[key].name
+      //console.log(accApplicant)
+      //var projTitle = this.items["projectTitle"]
+      //var projId = this.items["projectId"]
+      var projId = this.offered[key]
+      //console.log(projId)
+      var projName = this.projects[key].projectTitle
+      
+      if (!this.accepted) {
+        var accepted = [];
+        accepted.push(projId);
+        this.accepted = accepted;
+      } else {
+        this.accepted.push(projId);
+      }
+      
+      this.projects.splice(key,1);
+      this.offered.splice(key,1);
+
+      //console.log(this.accepted)
+      //console.log(this.offered)
+
+      alert("Accepting Project: " + projName);
+      try {
+          const docRef = await updateDoc(doc(db, "students", this.userEmail), {
+              inProgProjects: this.accepted,
+              offeredProjects: this.offered,
+          })
+          //console.log(docRef)
+          this.$emit("updated")
+      }
+        catch(error) {
+          console.error("Error updating document: ", error);
+      }
+    },
   },
   mounted() {
     const auth = getAuth();
@@ -81,10 +121,20 @@ export default {
       for(var i = 0; i < data.offeredProjects.length; i++) {
         getProject(data.offeredProjects[i]).then((res)=>{that.projects.push(res)})
       }
-      console.log(that.projects)
       //console.log(that.applied)
+      console.log(that.offered)
+      console.log(that.projects)
     }
     getOfferedProjects()
+
+    async function getInProgProjects() {
+      const ref = doc(db, "students", auth.currentUser.email);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      that.accepted = data.inProgProjects;
+      console.log(that.accepted)
+    }
+    getInProgProjects()
     
     async function getProject(proj) {
       const ref = doc(db, "Project", proj);

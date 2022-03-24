@@ -34,7 +34,7 @@
               </div>
             </div>
           </div>
-        <button id="applybtns" v-show=offered class="btn-apply">Accept</button>
+        <button id="applybtns" v-show=offered @click="acceptBtn" class="btn-apply">Accept</button>
       </div>
 </template>
 
@@ -65,7 +65,11 @@ export default {
     
     clickCard() {
       this.$emit('clickCard')
-    }
+    },
+
+    acceptBtn() {
+        this.$emit('acceptBtn')
+    }, 
   }
 }
 </script>

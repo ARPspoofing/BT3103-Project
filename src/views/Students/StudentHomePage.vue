@@ -133,12 +133,12 @@ export default {
 
       try {
           const docRef = await updateDoc(doc(db, "Project", projectId), {
-              New_Applicants: newApplicants
+            New_Applicants: newApplicants
           })
 
           const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
-                appliedProjects: applied
-            })
+            appliedProjects: applied
+          })
 
           //console.log(docRef)
           this.$emit("updated")

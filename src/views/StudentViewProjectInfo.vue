@@ -141,14 +141,16 @@ export default {
       }
     })
     this.userEmail = auth.currentUser.email;
-    console.log(this.userEmail)
+    //console.log(this.userEmail)
     this.tasks = JSON.parse(this.$route.params.items).tasks
     this.tags = JSON.parse(this.$route.params.items).tags
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
     this.projTitle = JSON.parse(this.$route.params.items).projectTitle
     this.items = JSON.parse(this.$route.params.items)
+    console.log(JSON.parse(this.$route.params.items).projectId)
     this.projId = JSON.parse(this.$route.params.items).projectId
     this.appstat = JSON.parse(this.$route.params.items).appstat
+    //console.log(projId);
 
     const that = this
     async function getAppliedProjects() {
