@@ -135,6 +135,12 @@ const routes = [
   },
 
   {
+    path: "/business/loading",
+    name:"businessLoading",
+    component: () => import("../components/GoogleLoading.vue")
+  },
+
+  {
     path: "/business/profileForm",
     name: "BusinessProfileForm",
     component: () => import("../views/Businesses/BusinessProfileForm.vue"),

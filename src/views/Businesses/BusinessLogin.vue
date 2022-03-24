@@ -38,8 +38,16 @@
                 <div class="input">
                     <button @click="login"><b>Log In</b></button>
                 </div>
+                <div class="google">
+                    <GoogleButton @click="google" msg="sign in"/>
+                </div> 
+                <div class="input">
+                    <p> Users who signed up with Google must sign in with their Google account </p>
+                </div> 
+
             </div>
         </form>
+        
     </div>
     
 </template>
@@ -52,6 +60,7 @@ import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../../firebase.js"
 import {getDoc, collection, doc} from "firebase/firestore"
 import ResetPassword from '../../components/ResetPassword.vue'
+import GoogleButton from '../../components/GoogleButton.vue'
 
 const that = this
 const router = useRouter()
@@ -73,6 +82,7 @@ export default {
     },   
     components: {
         ResetPassword,
+        GoogleButton,
     }, 
     /*
     mounted() {
@@ -91,6 +101,28 @@ export default {
     close(e) {
         this.forgetPassword = false
     }, 
+    async google() {
+        const auth = getAuth();
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(auth, provider)
+        .then((result) => {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            const user = result.user;
+            this.$router.push({name:'businessLoading'})
+                // ...
+        }).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            // ...
+        });
+    },
     async login(){
         console.log("In method")
         if(this.email == '') {
@@ -267,6 +299,13 @@ export default {
         color: darkgreen;
         font-weight:bolder;
         cursor: pointer;
+    }
+
+    .google {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top:10px;
     }
 
     .shake {

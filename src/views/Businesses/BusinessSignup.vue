@@ -42,9 +42,15 @@
                 <div class="input">
                     <button @click="register"><b>Sign Up</b></button>
                 </div>
+                <div class="google">
+                    <GoogleButton @click='google' msg="sign up"/>
+                </div>
+                <div class="input">
+                    <p> Users who signed up with Google must sign in with their Google account </p>
+                </div> 
             </div>
         </form>
-        <GoogleButton @click='google'/>
+        
         <!--
         <button @click="googleSignIn">google</button>
          <div id="firebaseui-auth-container"></div>
@@ -124,26 +130,7 @@ export default {
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
                 const user = result.user;
-                const docRef = doc(db,"businesses",String(this.email))
-                const docs = getDoc(docRef)
-                if (!docs.data().profileFormCreated || !docs.data().verifyEmail) {
-                    setDoc(doc(db,"businesses",String(this.email)),{
-                    profileFormCreated:false,
-                    verifyEmail:false,
-                    })
-                }
-                const formFilled = docs.data().profileFormCreated
-                const verifyEmail = docs.data().verifyEmail
-                cosole.log("verifyEmail",verifyEmail)
-                // The signed-in user info.
-                console.log("token",token)
-                if (!verifyEmail) {
-                    that.$router.push({name:'BusinessVerify'})
-                } else {
-                    that.$router.push({name:'BusinessHomePage'})
-                }
-                
-                
+                this.$router.push({name:'businessLoading'})
                 // ...
             }).catch((error) => {
                 // Handle Errors here.
@@ -399,6 +386,13 @@ export default {
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
         color: white;
+    }
+
+    .google {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top:10px;
     }
 
     .shake {

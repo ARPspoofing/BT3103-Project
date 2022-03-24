@@ -2,8 +2,20 @@
     <Loading v-if="loading"/>
     <div class="popup">
         <div class="content">
+             <img src="../assets/Pathfinders.png">
             <div class="input">
-                <p><b>{{msg}}</b></p>
+                <h3><b>Please verify your email</b></h3>
+            </div>
+            <div class="input">
+                <p>You're almost there! We sent as email to<b> <br>
+                 {{email}}</b><br>Just click on the link in the email to complete your signup<br>
+                 If you don't see it, you may need to check <b>your spam folder</b></p>
+            </div>
+            <div class="input">
+                <p>Still can't find the email?</p>
+            </div>
+            <div class="button">
+                <button @click="resend" class="green">Resend Email</button>
             </div>
         </div>
     </div>
@@ -36,6 +48,7 @@ export default {
         async function check() {
             const auth = getAuth()
             let email = window.localStorage.getItem('emailForSignIn');
+            that.email = email
             const docRef = doc(db,"businesses",String(email))
             const docs = await getDoc(docRef)
             const formFilled = docs.data().profileFormCreated
@@ -88,12 +101,33 @@ export default {
                     this.notSent = false
                 }, 3500)
             }
+        },
+        resend() {
+                const auth = getAuth()
+                const actionCodeSettings = {
+                // URL you want to redirect back to. The domain (www.example.com) for this
+                // URL must be in the authorized domains list in the Firebase Console.
+                url: 'http://localhost:8080/?#/business/verify',
+                // This must be true.
+                handleCodeInApp: true,
+                iOS: {
+                    bundleId: 'com.example.ios'
+                },
+                android: {
+                    packageName: 'com.example.android',
+                    installApp: true,
+                    minimumVersion: '12'
+                }
+                };
+                sendSignInLinkToEmail(auth, this.email, actionCodeSettings)
         }
     },
 }
 </script>
 
 <style scoped>
+
+
 .popup {
     z-index:100;
     position:fixed;
@@ -108,6 +142,10 @@ export default {
     border-radius: 20px;
     padding: 80px 60px;
     background-color: lightseagreen;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
 }
 
 .cross {
@@ -124,7 +162,6 @@ export default {
         display: flex;
         justify-content: left;
         align-items: center;
-        margin-bottom:-10px;
     }
 
     input {
@@ -138,6 +175,7 @@ export default {
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
         border-bottom-right-radius: 25px;
+        
     }
 
     input:focus {
@@ -160,7 +198,6 @@ button,
     cursor: pointer;
     padding: 16px 24px;
     border-radius: 30px;
-    margin-top:30px;
     border: none;
     font-size: 12px;
     margin-right: 8px;
