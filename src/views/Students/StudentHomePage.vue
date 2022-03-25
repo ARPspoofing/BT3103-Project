@@ -1,5 +1,5 @@
 <template>
-  <StudentNavBar :search=true :header=false />
+  <StudentNavBar :search=true :header=true />
   <div class="mainBody">
     <h1 id="interest">Projects You May Like</h1>
     <!--
@@ -79,8 +79,10 @@ export default {
   data() {
     return {
       Heading: " ",
+      
       testCollection: [],
       newApplicants:[],
+
     }
   },
   
