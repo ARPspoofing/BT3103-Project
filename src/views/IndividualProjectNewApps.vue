@@ -62,8 +62,10 @@ export default {
       var accApplicant = this.newApplicants[key]
       var name = this.applicant[key].name
       console.log(accApplicant)
-      var projTitle = this.items["projectTitle"]
+      // var projTitle = this.items["projectTitle"]
       var projId = this.items["projectId"]
+      var appliedProjects = this.applicant[key].appliedProjects
+      var offeredProjects = this.applicant[key].offeredProjects
       
       if (!this.accApplicants) {
         var accApplicants = [];
@@ -73,18 +75,38 @@ export default {
         this.accApplicants.push(accApplicant);
       }
 
+      console.log(appliedProjects);
+      appliedProjects = appliedProjects.filter(id => id != projId)
+      console.log(appliedProjects);
+      
+      if (!offeredProjects) {
+        var offeredProjectsNew = [];
+        offeredProjectsNew.push(projId);
+        offeredProjects = offeredProjectsNew;
+      } else {
+        offeredProjects.push(projId);
+      }
+
       this.newApplicants.splice(key,1);
       this.applicant.splice(key,1);
       console.log(this.newApplicants)
       console.log(this.applicant)
       console.log(this.accApplicants)
+      console.log(accApplicant)
       alert("Accepting applicant: " + name);
       try {
           const docRef = await updateDoc(doc(db, "Project", projId), {
               Acc_Applicants: this.accApplicants,
               New_Applicants: this.newApplicants
+          });
+
+          const docRef2 = await updateDoc(doc(db, "students", accApplicant), {
+            appliedProjects: appliedProjects,
+            offeredProjects: offeredProjects
           })
+
           console.log(docRef)
+          console.log(docRef2)
           this.$emit("updated")
       }
         catch(error) {
@@ -98,6 +120,8 @@ export default {
       var name = this.applicant[key].name
       var projTitle = this.items["projectTitle"]
       var projId = this.items["projectId"]
+      var appliedProjects = this.applicant[key].appliedProjects
+      var rejectedProjects = this.applicant[key].rejectedProjects
       //rejApplicants.push(rejApplicant);
 
       if (!this.rejApplicants) {
@@ -107,6 +131,19 @@ export default {
       } else {
         this.rejApplicants.push(rejApplicant);
       }
+
+      console.log(rejectedProjects);
+      rejectedProjects = rejectedProjects.filter(id => id != projId)
+      console.log(rejectedProjects);
+      
+      if (!rejectedProjects) {
+        var rejectedProjectsNew = [];
+        rejectedProjectsNew.push(projId);
+        rejectedProjects = rejectedProjectsNew;
+      } else {
+        rejectedProjects.push(projId);
+      }
+
       this.newApplicants.splice(key,1);
       this.applicant.splice(key,1);
 
@@ -116,9 +153,15 @@ export default {
           const docRef = await updateDoc(doc(db, "Project", projId), {
               Rej_Applicants: this.rejApplicants, 
               New_Applicants: this.newApplicants
-          })
+          });
           
+          const docRef2 = await updateDoc(doc(db, "students", rejApplicant), {
+            appliedProjects: appliedProjects,
+            rejectedProjects: rejectedProjects
+          })
+
           console.log(docRef)
+          console.log(docRef2)
           this.$emit("updated")
       }
         catch(error) {
@@ -158,7 +201,10 @@ export default {
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       //let result = await data.name
-      return {name: data.name, course: data.course};
+      return {name: data.name, course: data.course, 
+        appliedProjects: data.appliedProjects,
+        offeredProjects: data.offeredProjects,
+        rejectedProjects: data.rejectedProjects};
     }
     console.log(this.newApplicants)
     console.log(this.applicant)
