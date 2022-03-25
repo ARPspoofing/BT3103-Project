@@ -239,12 +239,6 @@ export default {
       }
     })
     this.userEmail = auth.currentUser.email;
-    //console.log(this.userEmail)
-    //this.userEmail = auth.currentUser;
-    //console.log(this.userEmail)
-
-
-    // getTags(this.userEmail).then((res) => {this.studentTags.push(res)})
 
     const that = this;
 
@@ -256,15 +250,12 @@ export default {
       that.applied = data.appliedProjects
     }
 
-    console.log(this.studentTags)
-
     async function fetchProject() {
       const ref = doc(db, "students", that.userEmail);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       var array = []
       array.push(Object.values(data.interests))
-      //console.log(array)
       var returnArray = []
       for (var i = 0; i < array[0].length; i++) {
         returnArray.push(array[0][i]["value"])
@@ -300,6 +291,7 @@ export default {
             rejApplicants: data.Rej_Applicants,
             appstat: "applied",
             timestamp: data.Posted_Date,
+            company: data.poster_id,
           });
         } else {
           testCollection.push({ 
@@ -321,6 +313,7 @@ export default {
             rejApplicants: data.Rej_Applicants,
             appstat: "apply",
             timestamp: data.Posted_Date,
+            company: data.poster_id,
           });
         }
         
@@ -348,6 +341,7 @@ export default {
             rejApplicants: data.Rej_Applicants,
             appstat: "applied",
             timestamp: data.Posted_Date,
+            company: data.poster_id,
           });
         } else {
           wholeTestCollection.push({ 
@@ -369,6 +363,7 @@ export default {
             rejApplicants: data.Rej_Applicants,
             appstat: "apply",
             timestamp: data.Posted_Date,
+            company: data.poster_id,
           });
         }
         
