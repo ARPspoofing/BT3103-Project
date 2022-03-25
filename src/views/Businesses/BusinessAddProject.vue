@@ -97,7 +97,7 @@ import {getAuth} from "firebase/auth"
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
 console.log(auth.currentUser)
-const email = auth.currentUser.email;
+var email = auth.currentUser.email;
 
 export default {
   data() {
@@ -165,12 +165,17 @@ export default {
       var j = [];
       var k = [];
       var l = [];
+      // var today = new Date();
+      // var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      // var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      var m = new Date();
 
       // alert("Saving your data for Project: " + a);
+      console.log(email)
 
       try {
         const docRef = await addDoc(collection(db, "Project"), {
-          poster_id:email,
+          poster_id: email,
           Project_Title: a,
           Position: b,
           Num_Of_Vacancies: c,
@@ -183,6 +188,7 @@ export default {
           New_Applicants: j,
           Acc_Applicants: k,
           Rej_Applicants: l,
+          Posted_Date: m,
         })
 
         console.log(docRef)

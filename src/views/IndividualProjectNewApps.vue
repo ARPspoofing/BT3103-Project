@@ -139,6 +139,7 @@ export default {
       this.newApplicants = JSON.parse(this.$route.params.newApplicants)
       for(var i = 0; i < this.newApplicants.length; i++) {
         getApplicant(this.newApplicants[i]).then((res)=>{this.applicant.push(res)})
+        console.log(this.applicant);
       }
     }
     if (this.$route.params.accApplicants) {
