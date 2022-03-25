@@ -280,7 +280,7 @@ export default {
       snapshot.forEach((docs) => {
         let data = docs.data()
         var id = docs.id
-        if (that.applied.includes(data.Project_Title)) {
+        if (that.applied.includes(id)) {
           testCollection.push({ 
             /*projectTitle: data.Project_Title, 
             description: data.Description,
