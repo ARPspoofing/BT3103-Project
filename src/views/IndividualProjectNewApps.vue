@@ -48,6 +48,7 @@ export default {
   data() {
     return {
       Heading: "NEW APPLICANTS",
+      projectId: "",
       items: [],
       newApplicants: [],
       accApplicants: [],
@@ -74,8 +75,10 @@ export default {
 
       this.newApplicants.splice(key,1);
       this.applicant.splice(key,1);
-
-      // alert("Accepting applicant: " + name);
+      console.log(this.newApplicants)
+      console.log(this.applicant)
+      console.log(this.accApplicants)
+      alert("Accepting applicant: " + name);
       try {
           const docRef = await updateDoc(doc(db, "Project", projId), {
               Acc_Applicants: this.accApplicants,
@@ -128,6 +131,7 @@ export default {
 
   mounted() {
     this.items = JSON.parse(this.$route.params.items)
+    this.projectId = JSON.parse(this.$route.params.items).projectId
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
     this.accApplicants = JSON.parse(this.$route.params.items).accApplicants
     this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants
@@ -156,6 +160,7 @@ export default {
       //let result = await data.name
       return {name: data.name, course: data.course};
     }
+    console.log(this.newApplicants)
     console.log(this.applicant)
   }
 }

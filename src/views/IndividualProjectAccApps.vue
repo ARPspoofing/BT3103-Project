@@ -22,7 +22,7 @@
     <div>
         <div class="appContainer">
           <div :key="item.key" v-for="(item, key) in applicant">
-            <ApplicantsCard :buttons=false :applicantName="item.name" :applicantCourse="item.course"/>
+            <ApplicantsCard :buttons=false :applicantName="item.name" :applicantCourse="item.course" :status="status"/>
           </div>
         </div>
     </div>
@@ -47,6 +47,7 @@ export default {
   data() {
     return {
       Heading: "ACCEPTED APPLICANTS",
+      status: "pending",
       items: [],
       newApplicants: [],
       accApplicants: [],
