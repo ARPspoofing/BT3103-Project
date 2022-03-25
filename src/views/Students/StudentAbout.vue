@@ -252,6 +252,7 @@ export default {
             this.interests = this.interests.filter(interest => interest.id != id)
         }
     },
+
     showPopUp() {
         this.popUp = true
     },
@@ -329,7 +330,7 @@ export default {
           transcriptDownloadLink: this.transcriptLink,
       })
 
-      this.$router.push({name:'StudentHomePage'})
+      // this.$router.push({name:'StudentHomePage'})
       }
 
     },
