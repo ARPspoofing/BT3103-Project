@@ -1,6 +1,5 @@
 <template>
     <BusinessNavBar :search=false :Heading="Heading" :header=true />
-  <h1>{{items.projectTitle}}</h1>
     <div class="mainBody">
         <!-- <div>{{this.item.projectTitle}}</div> -->
         <form id="projectForm">

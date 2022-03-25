@@ -1,197 +1,109 @@
 <template>
-  <BusinessNavBar :Heading="Heading" :header="true" />
+  <BusinessNavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <form id="projectForm">
-      <div class="inputs">
-        <label for="projectTitle">Project Title*</label>
-        <input
-          type="text"
-          id="projectTitle"
-          required=""
-          placeholder="Project Title"
-        />
-        <br /><br />
+        <div class="inputs">
+            <label for="projectTitle">Project Title*</label>
+            <input type="text" id="projectTitle" required="" placeholder="Project Title"> <br><br>
 
-        <label for="position">Position*</label>
-        <input type="text" id="position" required="" placeholder="Position" />
-        <br /><br />
+            <label for="position">Position*</label>
+            <input type="text" id="position" required="" placeholder="Position"> <br><br>
 
-        <label for="noOfVacancies">Number of Vacancies*</label>
-        <input
-          type="number"
-          id="noOfVacancies"
-          required=""
-          placeholder="Number of Vacancies"
-        />
-        <br /><br />
+            <label for="noOfVacancies">Number of Vacancies*</label>
+            <input type="number" id="noOfVacancies" required="" placeholder="Number of Vacancies"> <br><br>
 
-        <label for="projectPeriodStart, projectPeriodEnd"
-          >Project Period*</label
-        >
-        <input
-          type="date"
-          id="projectPeriodStart"
-          required=""
-          placeholder="Choose Start Date"
-          style="width: 228px; margin-right: 15px"
-        />
-        <p>to</p>
-        <input
-          type="date"
-          id="projectPeriodEnd"
-          required=""
-          placeholder="Choose End Date"
-          style="width: 228px; margin-left: 15px"
-        />
-        <br /><br />
+            <label for="projectPeriodStart, projectPeriodEnd">Project Period*</label>
+            <input type="date" id="projectPeriodStart" required="" placeholder="Choose Start Date"
+              style="width: 228px; margin-right: 15px; ">
+            <p>to</p>
+            <input type="date" id="projectPeriodEnd" required="" placeholder="Choose End Date"
+              style="width: 228px; margin-left: 15px;"> <br><br>
 
-        <label for="projectAllowance">Allowance (in SGD)*</label>
-        <input
-          type="number"
-          id="projectAllowance"
-          required=""
-          placeholder="Allowance"
-        />
-        <br /><br />
+            <label for="projectAllowance">Allowance (in SGD)*</label>
+            <input type="number" id="projectAllowance" required="" placeholder="Allowance"> <br><br>
 
-        <label for="projectTags">Tags*</label>
-        <select
-          v-model="selected"
-          name="tagSelect"
-          multiple
-          size="5"
-          id="tagSelect"
-          required=""
-        >
-          <option value="Artificial Intelligence">
-            Artificial Intelligence
-          </option>
-          <option value="Scientific Computing Applications">
-            Scientific Computing Applications
-          </option>
-          <option value="Data Structures Algorithms">
-            Data Structures and Algorithms
-          </option>
-          <option value="Computer Architecture">Computer Architecture</option>
-          <option value="Computer Networks">Computer Networks</option>
-          <option value="Computer Database">Computer Database</option>
-          <option value="Database Mining">Database Mining</option>
-          <option value="Data Analytics">Data Analytics</option>
-          <option value="Computer Graphics Visualisation">
-            Computer Graphics and Visualisation
-          </option>
-          <option value="Image Sound Processing">
-            Image and Sound Processing
-          </option>
-          <option value="Distributed Computing">Distributed Computing</option>
-          <option value="Human Computer Interaction">
-            Human-Computer Interaction
-          </option>
-          <option value="Software Engineering">Software Engineering</option>
-          <option value="Information Coding Theory">
-            Information and Coding Theory
-          </option>
-        </select>
-        <br /><br />
+            <label for="projectTags">Tags*</label>
+            <select v-model="selected" name="tagSelect" multiple size="5" id="tagSelect" required="">
+              <option value="Artificial Intelligence">Artificial Intelligence</option>
+              <option value="Scientific Computing Applications">Scientific Computing Applications</option>
+              <option value="Data Structures Algorithms">Data Structures and Algorithms</option>
+              <option value="Computer Architecture">Computer Architecture</option>
+              <option value="Computer Networks">Computer Networks</option>
+              <option value="Computer Database">Computer Database</option>
+              <option value="Database Mining">Database Mining</option>
+              <option value="Data Analytics">Data Analytics</option>
+              <option value="Computer Graphics Visualisation">Computer Graphics and Visualisation</option>
+              <option value="Image Sound Processing">Image and Sound Processing</option>
+              <option value="Distributed Computing">Distributed Computing</option>
+              <option value="Human Computer Interaction">Human-Computer Interaction</option>
+              <option value="Software Engineering">Software Engineering</option>
+              <option value="Information Coding Theory">Information and Coding Theory</option>
+            </select> <br><br>
 
-        <label for="projectDescription">Description</label>
-        <textarea
-          id="projectDescription"
-          name="projectDescription"
-          rows="4"
-          cols="60"
-          placeholder="Project Description"
-        ></textarea>
-        <br /><br />
+            <label for="projectDescription">Description</label>
+            <textarea id="projectDescription" name="projectDescription" rows="4" cols="60" placeholder="Project Description"></textarea> <br><br>
 
-        <label for="projectDeliverables">Deliverables</label>
-        <button id="addDeliverableButton" @click="addTask">
-          <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
-          <p>Add deliverables</p>
-        </button>
-        <br />
-        <br />
-        <div
-          class="previous"
-          v-for="(task, counter) in tasks"
-          v-bind:key="counter"
-        >
-          <button id="deleteDeliverable" @click="deleteTask(counter)">
-            <i class="fa fa-times" id="crossIcon"></i>
-          </button>
-          <br />
-          <label for="duration">Task Name*</label>
-          <input type="text" v-model.lazy="task.taskName" required />
-          <br /><br />
-          <label for="description">Description</label>
-          <input type="text" v-model.lazy="task.taskDescription" required />
-          <br /><br />
-          <label for="duedate">Due Date*</label>
-          <input type="date" v-model.lazy="task.taskDueDate" required />
-        </div>
-      </div>
-      <button
-        id="saveButton"
-        type="button"
-        data-bs-toggle="modal"
-        data-bs-target="#saveModal"
-      >
-        Save
-      </button>
-      <div
-        class="modal fade"
-        id="saveModal"
-        tabindex="-1"
-        aria-labelledby="saveModalLabel"
-        aria-hidden="true"
-        data-bs-backdrop="false"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
-              <div class="words">
-                <i class="fa-solid fa-circle-plus" id="addIcon"></i>
-                <p>Add project?</p>
-              </div>
-              <span>
-                <div class="applybtns">
-                  <button
-                    type="button"
-                    id="yesbtn"
-                    data-bs-dismiss="modal"
-                    v-on:click="saveProject()"
-                  >
-                    Yes
-                  </button>
-                  <button type="button" id="nobtn" data-bs-dismiss="modal">
-                    No
-                  </button>
-                </div>
-              </span>
+            <label for="projectDeliverables">Deliverables</label>
+            <button id="addDeliverableButton" @click="addTask">
+              <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
+              <p> Add deliverables</p>
+            </button>
+            <br>
+            <br>
+            <div class="previous"
+            v-for="(task, counter) in tasks"
+            v-bind:key="counter">
+              <button id="deleteDeliverable" @click="deleteTask(counter)"> 
+                <i class="fa fa-times" id="crossIcon"></i>
+              </button> <br>
+              <label for="duration">Task Name*</label>
+              <input type="text" v-model.lazy="task.taskName" required> <br><br>
+              <label for="description">Description</label>
+              <input type="text" v-model.lazy="task.taskDescription" required> <br><br>
+              <label for="duedate">Due Date*</label>
+              <input type="date" v-model.lazy="task.taskDueDate" required>
             </div>
-          </div>
+            </div>
+        <button id="saveButton" type="button" data-bs-toggle="modal" data-bs-target="#saveModal">Save</button>
+        <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" 
+              data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <div class="words">
+                    <i class="fa-solid fa-circle-plus" id="addIcon"></i>
+                    <p>Add project?</p>
+                    </div>
+                    <span>
+                      <div class = "applybtns">
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal" v-on:click="saveProject()">Yes</button>
+                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
         </div>
-      </div>
     </form>
   </div>
 </template>
 
 <script>
-import BusinessNavBar from "../../components/BusinessNavBar.vue";
-import firebaseApp from "../../firebase.js";
-import { getFirestore } from "firebase/firestore";
-import { collection, doc, setDoc, addDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import BusinessNavBar from '../../components/BusinessNavBar.vue'
+import firebaseApp from '../../firebase.js';
+import { getFirestore } from "firebase/firestore"
+import { collection, doc, setDoc, addDoc } from "firebase/firestore"
+import {getAuth} from "firebase/auth"
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
-console.log(auth.currentUser);
-const email = auth.currentUser.email;
+console.log(auth.currentUser)
+var email = auth.currentUser.email;
 
 export default {
   data() {
     return {
-      Heading: "ADD PROJECT",
-      selected: [],
+      Heading: "ADD PROJECT", 
+      selected:[],
       /*tasks: [
         {
         taskName: "", 
@@ -199,15 +111,15 @@ export default {
         taskDueDate: ""
         }
       ],*/
-      tasks: [
-        {
-          taskName: "",
-          taskDescription: "",
-          taskDueDate: "",
-          taskStatus: "To do",
-        },
-      ],
-    };
+      tasks:[
+       {
+        taskName: '',
+        taskDescription:'',
+        taskDueDate: '',
+        taskStatus:'To do'
+       }
+     ]
+    }
   },
   methods: {
     /*add(){
@@ -220,16 +132,17 @@ export default {
     delete(counter){
       this.tasks.splice(counter,1);
     },*/
-    addTask() {
+    addTask(){
+      
       this.tasks.push({
-        taskName: "",
-        taskDescription: "",
-        taskDueDate: "",
-        taskStatus: "To do",
-      });
+        taskName:'',
+        taskDescription: '', 
+        taskDueDate: '',
+        taskStatus:'To do',
+      })
     },
-    deleteTask(counter) {
-      this.tasks.splice(counter, 1);
+    deleteTask(counter){
+      this.tasks.splice(counter,1);
     },
     async saveProject() {
       var a = document.getElementById("projectTitle").value;
@@ -239,7 +152,7 @@ export default {
       var e = document.getElementById("projectPeriodEnd").value;
       var f = document.getElementById("projectAllowance").value;
       //var g = document.getElementById("tagSelect").value;
-      if (typeof this.selected == String) {
+      if (typeof(this.selected) == String) {
         const tagArray = new Array();
         tagArray.push(this.selected);
         var g = tagArray;
@@ -252,8 +165,13 @@ export default {
       var j = [];
       var k = [];
       var l = [];
+      // var today = new Date();
+      // var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      // var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      var m = new Date();
 
       // alert("Saving your data for Project: " + a);
+      console.log(email)
 
       try {
         const docRef = await addDoc(collection(db, "Project"), {
@@ -270,175 +188,177 @@ export default {
           New_Applicants: j,
           Acc_Applicants: k,
           Rej_Applicants: l,
-        });
+          Posted_Date: m,
+        })
 
-        console.log(docRef);
+        console.log(docRef)
         document.getElementById("projectForm").reset();
-        this.$emit("added");
-        this.$router.push({ name: "BusinessHomePage" });
-      } catch (error) {
+        this.$emit("added")
+        this.$router.push({name:"BusinessHomePage"})
+      }
+      catch(error) {
         console.error("Error adding document: ", error);
       }
-    },
+    }
   },
   components: {
-    BusinessNavBar,
+    BusinessNavBar
   },
-};
+}
 </script>
 
 <style scoped>
-.mainBody {
-  background-color: #f5f5f5;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  overflow-y: scroll;
-  padding-bottom: 100px;
-}
 
-#projectForm {
-  text-align: center;
-  margin-bottom: 20px;
-}
+  .mainBody {
+    background-color: #F5F5F5;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow-y: scroll;
+    padding-bottom: 100px;
+  }
 
-#projectForm .inputs {
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  width: max-content;
-  text-align: right;
-}
+  #projectForm{
+      text-align: center;
+      margin-bottom: 20px;
+  }
 
-#projectForm .inputs input {
-  margin-left: 30px;
-  width: 500px;
-  background-color: #bbdfcc;
-  border-width: 0px;
-}
+  #projectForm .inputs{
+      margin-top: 20px;
+      margin-left: auto;
+      margin-right: auto;
+      width: max-content;
+      text-align: right;
+  }
 
-#projectForm .inputs textarea {
-  margin-left: 30px;
-  background-color: #bbdfcc;
-  border-width: 0px;
-}
+  #projectForm .inputs input{
+      margin-left: 30px;
+      width: 500px;
+      background-color: #BBDFCC;
+      border-width: 0px;
+  }
 
-p {
-  display: inline;
-}
+  #projectForm .inputs textarea{
+      margin-left: 30px;
+      background-color: #BBDFCC;
+      border-width: 0px;
+  }
 
-#addDeliverableButton {
-  background-color: #bbdfcc;
-  margin-left: 30px;
-  border-width: 0px;
-  width: 500px;
-  height: 28px;
-  text-align: left;
-  color: #797979;
-}
+  p {
+    display: inline;
+  }
 
-#tagSelect {
-  background-color: #bbdfcc;
-  margin-left: 30px;
-  border-width: 0px;
-  width: 500px;
-}
+  #addDeliverableButton {
+    background-color: #BBDFCC;
+    margin-left: 30px;
+    border-width: 0px;
+    width: 500px;
+    height: 28px;
+    text-align: left;
+    color: #797979;
+  }
 
-#addDeliverableBtn {
-  background-color: #004a23;
-  width: 200px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 20px;
-}
+  #tagSelect  {
+    background-color: #BBDFCC;
+    margin-left: 30px;
+    border-width: 0px;
+    width: 500px;
+  }
 
-#saveButton {
-  background-color: #004a23;
-  border-width: 0px;
-  border-radius: 8px;
-  color: white;
-  width: 200px;
-  height: 35px;
-  margin-top: 10px;
-  margin-left: 490px;
-}
+  #addDeliverableBtn {
+    background-color: #004A23;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
 
-#projectForm .previous {
-  background-color: #bbdfcc;
-  width: max-content;
-  text-align: right;
-  margin: 0px 0px 20px auto;
-  padding: 10px 10px 15px 10px;
-}
+  #saveButton {
+    background-color: #004A23;
+    border-width: 0px;
+    border-radius: 8px;
+    color: white;
+    width: 200px;
+    height: 35px;
+    margin-top: 10px;
+    margin-left: 490px;
+  }
 
-#projectForm .previous input {
-  width: 364px;
-  background-color: white;
-}
+  #projectForm .previous {
+    background-color: #BBDFCC;
+    width: max-content;
+    text-align: right;
+    margin: 0px 0px 20px auto;
+    padding: 10px 10px 15px 10px;
+  }
 
-#deleteDeliverable {
-  background-color: transparent;
-  border-width: 0px;
-  padding-bottom: 5px;
-}
+  #projectForm .previous input {
+    width: 364px;
+    background-color: white;
+  }
 
-#crossIcon:hover {
-  color: #004a23;
-}
+  #deleteDeliverable {
+    background-color: transparent;
+    border-width: 0px;
+    padding-bottom: 5px;
+  }
 
-#saveModal {
-  background-color: rgba(0, 0, 0, 0.5);
-}
+  #crossIcon:hover {
+    color: #004A23;
+  }
 
-.modal-content {
-  background-color: #bbdfcc;
-  border: none;
-}
+  #saveModal {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
 
-.modal-body p {
-  text-align: center;
-  color: #004a23;
-  font-size: 22px;
-}
+  .modal-content {
+    background-color: #BBDFCC;
+    border: none;
+  }
 
-.applybtns {
-  width: max-content;
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 10px;
-}
+  .modal-body p {
+    text-align: center;
+    color: #004A23;
+    font-size: 22px;
+  }
 
-#yesbtn,
-#nobtn {
-  margin: 10px;
-  border: none;
-  border-radius: 10px;
-  background-color: #89ca9a;
-  color: #3f3f3f;
-  width: 120px;
-  height: 30px;
-  font-size: 18px;
-}
-.words {
-  width: max-content;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 10px;
-  height: 40px;
-}
+  .applybtns {
+    width: max-content;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+  }
 
-#addIcon {
-  height: 33px;
-  width: 33px;
-  color: #3d9956;
-  float: left;
-}
+  #yesbtn, #nobtn {
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color:#89ca9a;
+    color: #3f3f3f;
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+  }
+  .words {
+    width: max-content;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    height: 40px;
+  }
 
-.modal-body p {
-  text-align: center;
-  width: 180px;
-  margin-left: 15px;
-}
+  #addIcon {
+    height: 33px;
+    width: 33px;
+    color: #3D9956;
+    float: left;
+  }
+
+  .modal-body p {
+    text-align: center;
+    width: 180px;
+    margin-left: 15px;
+  }
 </style>

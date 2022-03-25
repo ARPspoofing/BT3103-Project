@@ -69,17 +69,68 @@
     <br><br>
   
     <h1 id="latest">Latest Projects</h1>
-    <hr/>
-    <div class="carouContainer">
-      <div :key="item.key" v-for="(item, index) in testCollection">
-        <Card v-if="index <= 5" 
-          :apply=true 
-          :projectTitle = "item.projectTitle" 
-          :description="item.description" 
-          :appstat="item.appstat"
-          @applicantbtn="addApplicant(key)" 
-          @clickCard="indivproj(key + 2*6)"/>
+    <!--
+    <div v-if="isLoading">
+      Loading...
+    </div>
+    <div v-else>
+    <div v-for="(project, index) in projectList" v-bind:key=index >
+      {{project.projectTitle}}
+      {{project.description}}
+        <Card :projectTitle=project.projectTitle :description=project.description />
       </div>
+      </div>-->
+    <hr/>
+    <div id="carouselExampleControls1" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="carouContainer">
+            <div :key="item.key" v-for="(item, key) in wholeTestCollection">
+              <Card v-if="key <= 5" 
+                :apply=true 
+                :projectTitle = "item.projectTitle" 
+                :description="item.description" 
+                :appstat="item.appstat"
+                @applicantbtn="addApplicant(key)" 
+                @clickCard="indivproj(key)"/>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="carouContainer">
+            <div :key="item.key" v-for="(item, key) in wholeTestCollection.slice(6)">
+              <Card v-if="key <= 5" 
+                :apply=true 
+                :projectTitle = "item.projectTitle" 
+                :description="item.description" 
+                :appstat="item.appstat"
+                @applicantbtn="addApplicant(key + 6)" 
+                @clickCard="indivproj(key + 6)"/>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="carouContainer">
+            <div :key="item.key" v-for="(item, key) in wholeTestCollection.slice(12)">
+              <Card v-if="key <= 5" 
+              :apply=true 
+              :projectTitle = "item.projectTitle" 
+              :description="item.description" 
+              :appstat="item.appstat"
+              @applicantbtn="addApplicant(key + 2*6)" 
+              @clickCard="indivproj(key + 2*6)"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls1" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls1" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
   </div>
 </template>
@@ -88,8 +139,8 @@
 import StudentNavBar from '../../components/StudentNavBar.vue'
 import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
-import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc, query, where } from "firebase/firestore"
+import { getFirestore, query, where } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
@@ -104,6 +155,7 @@ export default {
     return {
       Heading: " ",
       testCollection: [],
+      wholeTestCollection: [],
       newApplicants:[],
       user: false, 
       userEmail: "", 
@@ -126,15 +178,20 @@ export default {
       applied.push(projectId);
       // applied.push(projTitle);
       this.testCollection[key]["appstat"] = "applied"
+
       // alert("Applying for proj: " + projTitle);
+      
+      //const auth = getAuth();
+      //this.fbuser = auth.currentUser.email;
+
       try {
           const docRef = await updateDoc(doc(db, "Project", projectId), {
-            New_Applicants: newApplicants
+              New_Applicants: newApplicants
           })
 
           const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
-            appliedProjects: applied
-          })
+                appliedProjects: applied
+            })
 
           //console.log(docRef)
           this.$emit("updated")
@@ -158,7 +215,20 @@ export default {
       })
       console.log(key)
       console.log(this.testCollection[key])
-  }
+    }, 
+
+    interestProjects() {
+      var intProjects = []
+      for (var item in this.testCollection) {
+        var itemTags = item.tags;
+        for (var eachitem in itemTags) {
+          if (this.studentTags.includes(eachitem) && !intProjects.includes(item)) {
+            intProjects.push(item)
+          }
+        }
+      }
+      return intProjects;
+    }
   },
   
   mounted() {
@@ -173,6 +243,9 @@ export default {
     //this.userEmail = auth.currentUser;
     //console.log(this.userEmail)
 
+
+    // getTags(this.userEmail).then((res) => {this.studentTags.push(res)})
+
     const that = this;
 
     async function getAppliedProjects() {
@@ -182,41 +255,28 @@ export default {
       console.log(data.appliedProjects)
       that.applied = data.appliedProjects
     }
-    
-    getTags(this.userEmail).then((res) => {this.studentTags.push(res)})
+
     console.log(this.studentTags)
 
-    async function getTags(app) {
-      const ref = doc(db, "students", app);
-      const docSnap = await getDoc(ref);
-      const data = docSnap.data();
-      var array = []
-      array.push(Object.values(data.interests))
-      var returnArray = []
-      for (var i = 0; i < array[0].length; i++) {
-        returnArray.push(array[0][i]["value"])
-      }
-      console.log(returnArray)
-      return returnArray;
-    }
-    //console.log(that.studentTags)
     async function fetchProject() {
       const ref = doc(db, "students", that.userEmail);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       var array = []
       array.push(Object.values(data.interests))
+      //console.log(array)
       var returnArray = []
       for (var i = 0; i < array[0].length; i++) {
         returnArray.push(array[0][i]["value"])
       }
       console.log(returnArray)
-    
+
       const projects = query(collection(db, "Project"), where('Tags', 'array-contains-any', returnArray));
-      //let snapshot = await getDocs(collection(db, "Project"))
       let snapshot = await getDocs(projects)
+      let wholeSnapshot = await getDocs(collection(db, "Project"))
+      const wholeTestCollection = [];
       const testCollection = [];
-      //console.log(that.applied)
+      console.log(that.applied)
       snapshot.forEach((docs) => {
         let data = docs.data()
         var id = docs.id
@@ -238,7 +298,8 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
-            appstat: "applied"
+            appstat: "applied",
+            timestamp: data.Posted_Date,
           });
         } else {
           testCollection.push({ 
@@ -258,14 +319,96 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
-            appstat: "apply"
+            appstat: "apply",
+            timestamp: data.Posted_Date,
+          });
+        }
+        
+      });
+      wholeSnapshot.forEach((docs) => {
+        let data = docs.data()
+        var id = docs.id
+        if (that.applied.includes(data.Project_Title)) {
+          wholeTestCollection.push({ 
+            /*projectTitle: data.Project_Title, 
+            description: data.Description,
+            newApplicants: data.New_Applicants*/
+            projectId: id,
+            projectTitle: data.Project_Title, 
+            description: data.Description, 
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
+            appstat: "applied",
+            timestamp: data.Posted_Date,
+          });
+        } else {
+          wholeTestCollection.push({ 
+            /*projectTitle: data.Project_Title, 
+            description: data.Description,
+            newApplicants: data.New_Applicants*/
+            projectId: id,
+            projectTitle: data.Project_Title, 
+            description: data.Description, 
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
+            appstat: "apply",
+            timestamp: data.Posted_Date,
           });
         }
         
       });
       that.testCollection = testCollection
+      that.wholeTestCollection = wholeTestCollection
       console.log(testCollection)
+      console.log(wholeTestCollection)
+      wholeTestCollection.sort(function(x, y){
+        return y.timestamp - x.timestamp;
+      })
+      console.log(wholeTestCollection)
     }
+    
+    //console.log("email is : "+ this.userEmail)
+    // getTags(this.userEmail).then((res) => {this.studentTags.push(res)})
+    // console.log(this.studentTags)
+
+    // async function getTags(app) {
+    //   const ref = doc(db, "students", app);
+    //   const docSnap = await getDoc(ref);
+    //   const data = docSnap.data();
+    //   var array = []
+    //   array.push(Object.values(data.interests))
+    //   //console.log(array)
+    //   var returnArray = []
+    //   for (var i = 0; i < array[0].length; i++) {
+    //     returnArray.push(array[0][i]["value"])
+    //   }
+    //   console.log(returnArray)
+    //   //let result = await data.name
+    //   return returnArray;
+    // }
+    //console.log(getTags(this.userEmail))
+
+
+    // getTags(this.userEmail).then((res)=>{this.studentTags.push(res)})
+    // console.log(this.studentTags)
+    
+    // getTags(this.userEmail).then((res)=>{console.log(res.map((x) => x["value"]))})
     
     getAppliedProjects()
     fetchProject();

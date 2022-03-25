@@ -73,6 +73,7 @@ export default {
     }
     //console.log(this.accApplicants);
     //console.log(this.newApplicants);
+    //console.log(this.applicant);
 
     async function getApplicant(app) {
       const ref = doc(db, "students", app);

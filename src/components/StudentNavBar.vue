@@ -61,24 +61,25 @@ export default {
     mounted() {
       const auth = getAuth();
       var userEmail = auth.currentUser.email;
-      console.log(userEmail)
+      //console.log(userEmail)
 
       async function getApplicant(userEmail) {
         const docSnap = await getDoc(doc(db, "students", userEmail));
         console.log("doc: "+ docSnap)
         let data = docSnap.data();
-        console.log(data)
+        //console.log(data)
         //name =  data.name;
         //console.log("name: "+ name)
         //let result = await data.name
         var name = data.name;
         dropdownMenuButton.innerHTML = name
         var picture = data.finalProfile;
-        console.log(picture)
+        //console.log(picture)
         document.getElementById("profilepic").src = picture
         return {name: data.name}
       }
       getApplicant(userEmail)
+
     }
 }
 </script>
