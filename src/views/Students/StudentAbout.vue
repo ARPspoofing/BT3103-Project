@@ -120,9 +120,6 @@
 
             <!--Save Exit-->
             <div class="save" id="buttons">
-                <div class="left">
-                  <button type="button" @click="showPopUp" class="red">Cancel</button>
-                </div>
                 <div class="right">
                   <button type="submit" @click="save" class="green">Save</button>                  
                 </div>
@@ -138,6 +135,7 @@ import firebaseApp from '../../firebase.js';
 import { getFirestore, collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 import { v4 as uuidv4 } from 'uuid';
+import PopUp from '../../components/PopUp.vue'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 
@@ -151,7 +149,8 @@ export default {
         console.log(this.interests.target)
     },
   components: {
-    StudentNavBar
+    StudentNavBar,
+    PopUp,
   },
 
   data() {
@@ -263,6 +262,16 @@ export default {
 
     showPopUp() {
         this.popUp = true
+        console.log(this.popUp)
+    },
+
+    close(leave) {
+        if (leave === false) {
+          this.popUp = false
+          this.$router.push({name:'StudentHomePage'})
+        } else {
+          this.popUp = false
+        }
     },
 
     allInterestsEmpty() {
@@ -337,9 +346,8 @@ export default {
           resumeDownloadLink: this.resumeLink,
           transcriptDownloadLink: this.transcriptLink,
       })
-
-      // this.$router.push({name:'StudentHomePage'})
       }
+      alert("save data")
 
     },
   },
@@ -512,18 +520,10 @@ img {
     
 }
 
-.left {
-    width: max-content;
-    float: left;
-    margin-right: 8px;  
-    margin-left: 180px;
-    margin-top: 20px;
-}
-
 .right {
     width: max-content;
     float: right;
-    margin-left: 8px;  
+    margin-left: 20px;  
     margin-right: 180px;
     margin-top: 20px;
 }
