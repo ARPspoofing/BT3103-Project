@@ -7,6 +7,9 @@
           {{ applicantName }} <br />
           {{ applicantCourse }}
         </div>
+        <div class="acceptedStat" v-show=accepted >
+          {{status}}
+        </div>
       </span>
     </div>
     <span v-show="buttons">
@@ -134,6 +137,8 @@ export default {
     buttons: Boolean,
     applicantName: String,
     applicantCourse: String,
+    status: String, 
+    accepted: Boolean, 
   },
 
   methods: {
@@ -168,6 +173,11 @@ export default {
 .appDetails {
   display: inline-block;
   font-size: 85%;
+}
+
+.acceptedStat {
+  font-size: 85%;
+  margin-top: 15px;
 }
 
 .appButtons {
