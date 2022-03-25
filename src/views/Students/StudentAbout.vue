@@ -148,6 +148,40 @@ export default {
   data() {
     return {
       Heading: "PROFILE",
+      name: '',
+      course: '',
+      year:'',
+      interest1:'',
+      interest2:'',
+      interest3:'',
+      schoolEmail:'',
+      personalEmail:'',
+      contactNo:'',
+      interests: [],
+      popUp:false,
+      menu:false,
+      //change to default later
+      profileImage: null,
+      resume:null,
+      transcript:null,
+      nameErrorPresent:false,
+      courseErrorPresent:false,
+      yearErrorPresent:false,
+      interestErrorPresent:false,
+      schoolEmailErrorPresent:false,
+      personalEmailErrorPresent:false,
+      contactNumberErrorPresent:false,
+      resumeErrorPresent:false,
+      transcriptErrorPresent:false,
+      transcriptPresent: false,
+      resumePresent: false,
+
+      //change to firebase later
+      finalProfile: '',
+      errorMessage:"",
+      resumeLink:'',
+      transcriptLink:'',
+      description: '',
     }
   },
   
@@ -158,29 +192,174 @@ export default {
   },
 
   methods:  {   
-    
+    add() {
+        const maxSize = 3
+        if (this.interests.length + 1 <= 3) {
+          this.interests.push({
+              id:uuidv4(),
+              value: "",
+          })
+        }
+        
+    },
+
+    onFileSelected(event) {
+      this.profileImage = event.target.files[0]
+      const storage = getStorage();
+      const profileRef = ref(storage, this.profileImage.name);
+      const uploadTask = uploadBytesResumable(profileRef, this.profileImage)
+      uploadTask.on('state_changed', (snapshot) => {}, (error) => {}, () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              console.log('File available at', this.finalProfile = downloadURL);
+          });
+      }
+      );
+    },
+
+    changeResume(event) {
+        this.resumePresent = true;  
+        //Add code to upload the resume somewhere
+        this.resume = event.target.files[0]
+        const storage = getStorage();   
+        const resumeRef = ref(storage, email +'/' + this.resume.name )
+        const uploadTask = uploadBytesResumable(resumeRef, this.resume)
+        uploadTask.on('state_changed', (snapshot) => {}, (error)=> {
+            console.log(error)
+        },() => {
+            getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                console.log("File available at", this.resumeLink = url)
+            })
+        })
+    },
+
+    changeTranscript(event) {
+        this.transcriptPresent = true; 
+        //Add code to upload the transcript somewhere
+        this.transcript = event.target.files[0]
+        const storage = getStorage();   
+        const transcriptRef = ref(storage, email +'/' + this.transcript.name )
+        const uploadTask = uploadBytesResumable(transcriptRef, this.transcript)
+        uploadTask.on('state_changed', (snapshot) => {}, (error)=> {
+            console.log(error)
+        },() => {
+            getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                console.log("File available at", this.transcriptLink = url)
+            })
+        })
+    },
+    deleteInterest(id) {
+        if (this.interests.length -1 > 0) {
+            this.interests = this.interests.filter(interest => interest.id != id)
+        }
+    },
+    showPopUp() {
+        this.popUp = true
+    },
+
+    allInterestsEmpty() {
+        console.log(this.interests)
+        console.log(this.interests.length)
+        for(let i = 0; i < this.interests.length; i++) {
+            if(this.interests[i].value != "") {
+                return false
+            }
+        }
+
+      return true;
+
+    },
+    async save() {             
+        this.nameErrorPresent = false;
+        this.courseErrorPresent = false;   
+        this.yearErrorPresent = false;  
+        this.interestErrorPresent = false; 
+        this.schoolEmailErrorPresent = false; 
+        this.personalEmailErrorPresent = false;
+        this.contactNumberErrorPresent = false;
+        this.resumeErrorPresent = false;
+        this.transcriptErrorPresent = false;
+
+      if(this.name == "") {
+          this.nameErrorPresent = true;
+          this.errorMessage = "Please fill out your name"
+          
+      } else if(this.course == '') {
+          this.courseErrorPresent = true;
+          this.errorMessage = "Please select your course from the options provided"
+      } else if (this.year == '') {
+          this.yearErrorPresent = true;
+          this.errorMessage = "Please fill out your current year of study"
+      } else if (parseInt(this.year) > 4 || parseInt(this.year) < 1) {
+          this.yearErrorPresent = true;  
+          this.errorMessage = "Please fill out a valid year of study (Must be between 1 and 4 inclusive)";  
+          
+      } else if (this.allInterestsEmpty()) {
+          this.interestErrorPresent = true; 
+          this.errorMessage = "Please select at least one area of interest"
+      } else if (this.schoolEmail == '') {
+          this.schoolEmailErrorPresent = true;  
+          this.errorMessage = "Please enter your school email"
+      } else if (this.personalEmail == '') {
+          this.personalEmailErrorPresent = true;
+          this.errorMessage = "Please enter your personal email"
+      } else if (this.contactNo == '') {
+          this.contactNumberErrorPresent = true; 
+          this.errorMessage = "Please enter your contact number"
+      } else if (this.contactNo.length != 8) {
+          this.contactNumberErrorPresent = true;
+          this.errorMessage = "Please enter a valid contact number"
+      } else if (!this.resumePresent) {
+          this.resumeErrorPresent = true;
+          this.errorMessage = "Please upload your resume"
+      } else if (!this.transcriptPresent) {
+          this.transcriptErrorPresent = true;   
+          this.errorMessage = "Please upload your transcript"
+      } else {
+
+      updateDoc(doc(db,"students",String(user.email)),{
+          email: user.email,
+          name:this.name,
+          course:this.course,
+          year:this.year,
+          interests:this.interests,
+          personalEmail:this.personalEmail,
+          contactNo:this.contactNo,
+          finalProfile:this.finalProfile,
+          resumeDownloadLink: this.resumeLink,
+          transcriptDownloadLink: this.transcriptLink,
+      })
+
+      this.$router.push({name:'StudentHomePage'})
+      }
+
+    },
   },
 
   mounted() {
-    // const auth = getAuth();
-    // var userEmail = auth.currentUser.email;
-    // console.log(userEmail)
-
-    // async function getApplicant(userEmail) {
-    //   const docSnap = await getDoc(doc(db, "students", userEmail));
-    //   console.log("doc: "+ docSnap)
-    //   let data = docSnap.data();
-    //   console.log(data)
-    //   //name =  data.name;
-    //   //console.log("name: "+ name)
-    //   //let result = await data.name
-    //   var name = data.name;
-    //   var picture = data.finalProfile;
-    //   console.log(picture)
-    //   document.getElementById("profilepic").src = picture
-    //   return {name: data.name}
-    // }
-    // getApplicant(userEmail)
+    const auth = getAuth();
+    var userEmail = auth.currentUser.email;
+    console.log(userEmail)
+    const that = this;
+    async function getApplicant(userEmail) {
+      const docSnap = await getDoc(doc(db, "students", userEmail));
+      console.log("doc: "+ docSnap)
+      let data = docSnap.data();
+      console.log(data)
+      that.finalProfile = data.finalProfile
+      that.name = data.name
+      that.course = data.course
+      that.year = data.year
+      that.interests = data.interests
+      that.schoolEmail = data.email
+      that.personalEmail = data.personalEmail
+      that.contactNo = data.contactNo
+      that.resumeLink = data.resumeDownloadLink
+      that.transcriptLink = data.transcriptDownloadLink
+      if (!data.description) {
+        that.description = data.description
+      }
+    }
+    getApplicant(userEmail)
   }
 }
 </script>
