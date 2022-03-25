@@ -121,8 +121,27 @@
             <!--Save Exit-->
             <div class="save" id="buttons">
                 <div class="right">
-                  <button type="submit" @click="save" class="green">Save</button>                  
+                  <button type="submit" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
                 </div>
+                <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" 
+                  data-bs-backdrop="false">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        <div class="words">
+                        <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+                        <p>Edit changes?</p>
+                        </div>
+                        <span>
+                          <div class = "applybtns">
+                            <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="save">Yes</button>
+                            <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                          </div>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+              </div>
             </div>
         </form>
     </div>
@@ -594,4 +613,41 @@ ul {
     cursor:pointer;
     color:blue;
 }    
+
+#saveModal {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+.modal-content {
+  background-color: #BBDFCC;
+  border: none;
+}
+
+.words {
+  width: max-content;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  height: 50px;
+}
+
+.applybtns {
+  width: max-content;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+#yesbtn, #nobtn {
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color:#89ca9a;
+  color: #3f3f3f;
+  width: 120px;
+  height: 20px;
+  font-size: 18px;
+}
 </style>
