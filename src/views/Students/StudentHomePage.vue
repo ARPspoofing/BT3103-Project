@@ -92,7 +92,7 @@
                 :description="item.description" 
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key)" 
-                @clickCard="indivproj(key)"/>
+                @clickCard="indivprojlatest(key)"/>
             </div>
           </div>
         </div>
@@ -105,7 +105,7 @@
                 :description="item.description" 
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key + 6)" 
-                @clickCard="indivproj(key + 6)"/>
+                @clickCard="indivprojlatest(key + 6)"/>
             </div>
           </div>
         </div>
@@ -118,7 +118,7 @@
               :description="item.description" 
               :appstat="item.appstat"
               @applicantbtn="addApplicant(key + 2*6)" 
-              @clickCard="indivproj(key + 2*6)"/>
+              @clickCard="indivprojlatest(key + 2*6)"/>
             </div>
           </div>
         </div>
@@ -217,18 +217,29 @@ export default {
       console.log(this.testCollection[key])
     }, 
 
-    interestProjects() {
-      var intProjects = []
-      for (var item in this.testCollection) {
-        var itemTags = item.tags;
-        for (var eachitem in itemTags) {
-          if (this.studentTags.includes(eachitem) && !intProjects.includes(item)) {
-            intProjects.push(item)
-          }
-        }
-      }
-      return intProjects;
-    }
+    indivprojlatest(key) {
+      this.$router.push({
+        name:'StudentViewProjectInfo', 
+        params: {
+          items: JSON.stringify(this.wholeTestCollection[key]),
+        },
+      })
+      console.log(key)
+      console.log(this.wholeTestCollection[key])
+    }, 
+
+    // interestProjects() {
+    //   var intProjects = []
+    //   for (var item in this.testCollection) {
+    //     var itemTags = item.tags;
+    //     for (var eachitem in itemTags) {
+    //       if (this.studentTags.includes(eachitem) && !intProjects.includes(item)) {
+    //         intProjects.push(item)
+    //       }
+    //     }
+    //   }
+    //   return intProjects;
+    // }
   },
   
   mounted() {

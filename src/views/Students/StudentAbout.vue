@@ -1,7 +1,7 @@
 <template>
   <StudentNavBar :search=true :Heading="Heading" :header=true />
   <PopUp @return="close" v-if="popUp"/>
-    <div @click="check" ref="formWrap" class="form-wrap flex flex-column">
+    <div @click="check" ref="formWrap" class="form-wrap flex flex-column" id="mainBody">
         <form @submit.prevent="submitForm" class="content">
             <div class="profile-pic-outer">
                 <img class="profile-pic" :src="finalProfile"/>
@@ -99,7 +99,7 @@
                 <h4>File Details</h4>
               <div class="input flex flex-column">
                     <label for="resume">Resume</label>
-                    <input type="file" multiple name="files[]" id="resume" accept=".jpeg,.pdf,.docx" v-on:change="changeResume">
+                    <input type="file" multiple name="files[]" id="resume" accept=".jpeg,.pdf,.docx" v-on:change="changeResume" >
                 </div>
              <div class="errorMsg" v-if="resumeErrorPresent">{{this.errorMessage}}</div>
               <div class="input flex flex-column">
@@ -119,11 +119,11 @@
             </div>
 
             <!--Save Exit-->
-            <div class="save flex">
+            <div class="save" id="buttons">
                 <div class="left">
                   <button type="button" @click="showPopUp" class="red">Cancel</button>
                 </div>
-                <div class="right flex">
+                <div class="right">
                   <button type="submit" @click="save" class="green">Save</button>                  
                 </div>
             </div>
@@ -137,10 +137,19 @@ import {signOut, getAuth, onAuthStateChanged} from "firebase/auth"
 import firebaseApp from '../../firebase.js';
 import { getFirestore, collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
+import { v4 as uuidv4 } from 'uuid';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 
 export default {
   name: 'StudentAbout',
+  created() {
+        this.interests.push({
+            id:uuidv4(),
+            value: "",
+        })
+        console.log(this.interests.target)
+    },
   components: {
     StudentNavBar
   },
@@ -316,8 +325,8 @@ export default {
           this.errorMessage = "Please upload your transcript"
       } else {
 
-      updateDoc(doc(db,"students",String(user.email)),{
-          email: user.email,
+      updateDoc(doc(db,"students",String(this.schoolEmail)),{
+          email: this.schoolEmail,
           name:this.name,
           course:this.course,
           year:this.year,
@@ -365,6 +374,16 @@ export default {
 </script>
 
 <style scoped>
+#mainBody {
+    background-color: #F5F5F5;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow-y: scroll;
+    padding-bottom: 150px;
+    padding-top: 20px;
+  }
+
 h3 {
     font-family: verdana;
     text-align: center;
@@ -477,8 +496,9 @@ cursor: pointer;
 padding: 16px 24px;
 border-radius: 30px;
 border: none;
-font-size: 12px;
+font-size: 14px;
 margin-right: 8px;
+margin-left: 20px;
 color: #fff;
 img {
         margin-right: 4px;
@@ -492,8 +512,20 @@ img {
     
 }
 
+.left {
+    width: max-content;
+    float: left;
+    margin-right: 8px;  
+    margin-left: 180px;
+    margin-top: 20px;
+}
+
 .right {
-    margin-left:80%;
+    width: max-content;
+    float: right;
+    margin-left: 8px;  
+    margin-right: 180px;
+    margin-top: 20px;
 }
 
 .dark-purple {
