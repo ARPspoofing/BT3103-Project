@@ -193,14 +193,13 @@ export default {
 
   methods:  {   
     add() {
-        const maxSize = 3
-        if (this.interests.length + 1 <= 3) {
-          this.interests.push({
-              id:uuidv4(),
-              value: "",
-          })
-        }
-        
+      const maxSize = 3
+      if (this.interests.length + 1 <= 3) {
+        this.interests.push({
+            id:uuidv4(),
+            value: "",
+        })
+      } 
     },
 
     onFileSelected(event) {
