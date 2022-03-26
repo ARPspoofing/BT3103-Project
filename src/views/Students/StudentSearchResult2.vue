@@ -10,9 +10,11 @@
          <h1 class = "noProjectsText">Sorry, no projects matched your search {{receivedSearch}}. Please ensure that you have spelled your search correctly.</h1>
      </div>
       <div v-else class="projectContainer">
+        
         <div :key="item.key" v-for="(item, key) in highestPriority">
           <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key + 2*6)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
         </div>
+        
 
         <div :key="item.key" v-for="(item, key) in secondPriority">
           <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojSecond(key)" @applicantbtn="addApplicantSecond(key + 2*6)"/>
@@ -21,6 +23,7 @@
         <div :key="item.key" v-for="(item, key) in thirdPriority">
           <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojThird(key)" @applicantbtn="addApplicantThird(key + 2*6)"/>
         </div>
+        
 
         
         </div>
@@ -113,6 +116,7 @@ export default {
       snapshot.forEach((docs) => {
         let data = docs.data()
         if (highestPriority.includes(docs.id)) {
+          alert("test")
         highestPriority.push({ 
             projectTitle: data.Project_Title, 
             description: data.Description, 
@@ -162,8 +166,6 @@ export default {
         }
         
       });
-
-
       that.highestPriority = highestPriority
       that.secondPriority = secondPriority
       that.thirdPriority = thirdPriority
