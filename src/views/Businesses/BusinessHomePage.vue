@@ -23,7 +23,8 @@
           :apply=false 
           :projectTitle = "item.projectTitle" 
           :description="item.description" 
-          @clickCard="indivproj(key)"/>
+          @clickCard="indivproj(key)"
+          :picture = "item.profilePicture"/>
         </div>
       </div>
   </div>
@@ -34,7 +35,7 @@ import BusinessNavBar from '../../components/BusinessNavBar.vue'
 import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth"
 const db = getFirestore(firebaseApp);
 
@@ -83,12 +84,26 @@ export default {
   mounted() {
     const auth = getAuth();
     this.businessEmail = auth.currentUser.email;
-    console.log(this.businessEmail)
+    console.log("email: " + this.businessEmail)
 
     const that = this;
     async function fetchProject() {
+      var businessEmail = auth.currentUser.email;
       let snapshot = await getDocs(collection(db, "Project"))
+      //console.log("doc: "+ snapshot)
       const testCollection = [];
+      const docSnap = await getDoc(doc(db, "businesses", businessEmail));
+      //console.log("doc: "+ docSnap)
+      let data1 = docSnap.data();
+      var pictureprof = data1.finalProfile;
+      if (typeof pictureprof === 'undefined') {
+          pictureprof = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
+      }
+      //console.log("pic: " + typeof(data1.finalProfile))
+        //console.log(data)
+        //name =  data.name;
+        //console.log("name: "+ name)
+        //let result = await data.name
       snapshot.forEach((docs) => {
         let data = docs.data()
         var id = docs.id
@@ -107,6 +122,7 @@ export default {
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
             posterId: data.poster_id,
+            profilePicture: pictureprof
         });
       });
       that.testCollection = testCollection

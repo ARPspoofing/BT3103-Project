@@ -1,7 +1,7 @@
 <template>
   <div class="card-body" @click.self="clickCard">
     <div class="clogo">
-      <img src="../assets/google-logo.png" alt="Logo" class="logo" />
+      <img v-bind:src=picture alt="Logo" class="logo" />
       <span class="card-title"> {{ projectTitle }} <br /> </span>
     </div>
     <div class="card-content">
@@ -106,6 +106,7 @@ export default {
     stat: String,
     appstat: String,
     offered: Boolean,
+    picture: String
     //applicantbtn: Function,
   },
   methods: {
