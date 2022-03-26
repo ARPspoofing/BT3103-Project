@@ -73,9 +73,13 @@ export default {
         //let result = await data.name
         var name = data.name;
         dropdownMenuButton.innerHTML = name
-        // var picture = data.finalProfile;
-        // console.log(picture)
-        // document.getElementById("profilepic").src = picture
+        var picture = data.finalProfile;
+        console.log(typeof picture === 'undefined')
+        if (typeof picture === 'undefined') {
+          document.getElementById("profilepic").src = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
+        } else {
+          document.getElementById("profilepic").src = picture
+        }
         return {name: data.name}
       }
       getApplicant(userEmail)

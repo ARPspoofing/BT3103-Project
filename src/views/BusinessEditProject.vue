@@ -36,7 +36,7 @@
                 <option value="Computer Graphics Visualisation">Computer Graphics and Visualisation</option>
                 <option value="Image Sound Processing">Image and Sound Processing</option>
                 <option value="Distributed Computing">Distributed Computing</option>
-                <option value="Human Computer Interaction">Human-Computer Interaction</option>
+                <option value="Human Computer Interaction">Human Computer Interaction</option>
                 <option value="Software Engineering">Software Engineering</option>
                 <option value="Information Coding Theory">Information and Coding Theory</option>
                 </select> <br><br>
