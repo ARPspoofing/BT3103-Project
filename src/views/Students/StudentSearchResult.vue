@@ -1,6 +1,9 @@
 <template>
   <StudentNavBar :search=true :header=true />
-  <div class="mainBody">    
+  <div v-if="loading">
+    Loading
+  </div>
+  <div v-if="!loading" class="mainBody">    
     <h1 id="status" class="searchDisplay" v-if = "!noProjects">
       Search results for {{receivedSearch}}:
     </h1>
@@ -52,6 +55,7 @@ export default {
       thirdPriority:[],
       noProjectsPresent:true,
       receivedSearch:'',
+      loading:false,
 
     }
   },

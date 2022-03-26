@@ -84,7 +84,6 @@ export default {
       var matchingResultsByBoth = []
       //array to store the matching results by title for the entered search
       var matchingResultsByTitle = []
-
       //array to store the matching results by tags for the entered search
       var matchingResultsByTag = []
 
