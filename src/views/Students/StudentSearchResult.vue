@@ -3,10 +3,39 @@
   <div v-if="loading">
     Loading
   </div>
-  <div v-if="!loading" class="mainBody">    
+  <div v-if="!loading" class="mainBody">   
+    <button @click="toggleFilterMenu"> Open filter menu </button>
+    <button @click="closeFilterMenu"> close filter menu </button>
+
+  <transition >
+     <ul> 
+        <l1>Hello</l1>
+        <l1>Hello</l1>
+        <l1>Hello</l1>
+        <l1>Hello</l1>
+    </ul>
+  </transition>
+
+  <TransitionGroup v-if="filterModal" name="list" tag="ul">
+    <ul>
+      <li>Hello</li>
+      <li>Hello</li>
+      <li>Hello</li>
+      <li>Hello</li>
+    </ul>
+</TransitionGroup>
+  
+
+
+    
+    
+    <div @click="openFilter" ref="filterWrap" class="filter-wrap flex flex-column">
+    
+    </div> 
     <h1 id="status" class="searchDisplay" v-if = "!noProjects">
       Search results for {{receivedSearch}}:
     </h1>
+   
     <hr/>
      <div v-if="noProjectsPresent" class = "noProject">
          <h1 class = "noProjectsText">Sorry, no projects matched your search {{receivedSearch}}. Please ensure that you have spelled your search correctly.</h1>
@@ -37,6 +66,9 @@ import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
 import {signOut} from "firebase/auth"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
+import Filter from '../../components/Filter.vue'
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -45,6 +77,11 @@ export default {
 
     StudentNavBar,
     Card,
+    Filter
+  },
+  
+  computed: {
+    ...mapState(['filterModal'])
   },
 
   data() {
@@ -61,6 +98,13 @@ export default {
   },
 
   methods: {
+    ...mapMutations(['TOGGLE_FILTER']),
+    toggleFilterMenu() {
+      this.TOGGLE_FILTER()
+    },
+    closeFilterMenu() {
+      this.TOGGLE_FILTER()
+    },
     indivprojFirst(key) {
       this.$router.push({
         name:'StudentViewProjectInfo', 
@@ -207,7 +251,53 @@ export default {
 
   .projectContainer {
     margin-left: 30px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
   }
+
+  /*
+    Transition for filter menu
+  */
+  .filter-enter-active {
+    transition: 0.8s ease all;
+  }
+
+  .filter-leave-active {
+    transition: 0.8s ease all;
+  }
+
+  .filter-enter-from {
+    transform:translateX(-700px);
+  }
+
+  .filter-leave-to {
+    transform:translateX(-700px);
+  }
+/*
+  ul {
+    position:absolute;
+    left:0px;
+    top:0px;
+    height:100vh;
+    width: 20vw;
+    background-color: black;
+  } 
+
+  li {
+      color:white;
+  }
+  */
+
+  .list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
 
   #status {
     text-align: left;
