@@ -25,6 +25,7 @@
         :stat="stat2"
         :offered=true
         @acceptBtn="acceptProj(key)"
+        @declineBtn="declineProj(key)"
       />
     </div>
   </div>
@@ -61,17 +62,12 @@ export default {
       offered: [],
       projects: [],
       accepted:[],
+      declined:[],
     };
   },
   methods: {
     async acceptProj(key) {
-      //var accApplicant = this.projects[key]
-      //var name = this.projects[key].name
-      //console.log(accApplicant)
-      //var projTitle = this.items["projectTitle"]
-      //var projId = this.items["projectId"]
       var projId = this.offered[key]
-      //console.log(projId)
       var projName = this.projects[key].projectTitle
       
       if (!this.accepted) {
@@ -85,13 +81,39 @@ export default {
       this.projects.splice(key,1);
       this.offered.splice(key,1);
 
-      //console.log(this.accepted)
-      //console.log(this.offered)
-
       alert("Accepting Project: " + projName);
       try {
           const docRef = await updateDoc(doc(db, "students", this.userEmail), {
               inProgProjects: this.accepted,
+              offeredProjects: this.offered,
+          })
+          //console.log(docRef)
+          this.$emit("updated")
+      }
+        catch(error) {
+          console.error("Error updating document: ", error);
+      }
+    },
+
+    async declineProj(key) {
+      var projId = this.offered[key]
+      var projName = this.projects[key].projectTitle
+      
+      if (!this.declined) {
+        var declined = [];
+        declined.push(projId);
+        this.declined = declined;
+      } else {
+        this.declined.push(projId);
+      }
+      
+      this.projects.splice(key,1);
+      this.offered.splice(key,1);
+
+      alert("Declining Project: " + projName);
+      try {
+          const docRef = await updateDoc(doc(db, "students", this.userEmail), {
+              declinedProjects: this.declined,
               offeredProjects: this.offered,
           })
           //console.log(docRef)
@@ -135,6 +157,15 @@ export default {
       console.log(that.accepted)
     }
     getInProgProjects()
+
+    async function getDeclinedProjects() {
+      const ref = doc(db, "students", auth.currentUser.email);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      that.declined = data.declinedProjects;
+      console.log(that.accepted)
+    }
+    getDeclinedProjects()
     
     async function getProject(proj) {
       const ref = doc(db, "Project", proj);

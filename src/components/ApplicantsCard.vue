@@ -7,6 +7,30 @@
           {{ applicantName }} <br />
           {{ applicantCourse }}
         </div>
+        <div
+          id="pendingOffer"
+          class="acceptedStat"
+          v-show="accepted"
+          v-if="status == 'pending'"
+        >
+          pending
+        </div>
+        <div
+          id="acceptedOffer"
+          class="acceptedStat"
+          v-show="accepted"
+          v-else-if="status == 'accepted'"
+        >
+          accepted
+        </div>
+        <div
+          id="declinedOffer"
+          class="acceptedStat"
+          v-show="accepted"
+          v-else-if="status == 'declined'"
+        >
+          declined
+        </div>
       </span>
     </div>
     <span v-show="buttons">
@@ -17,13 +41,7 @@
           data-bs-toggle="modal"
           data-bs-target="#accModal"
         >-->
-        <button
-          href="#"
-          class="accept"
-          @click="acceptbtn"
-        >
-          Accept
-        </button>
+        <button href="#" class="accept" @click="acceptbtn">Accept</button>
         <br />
         <!--<div
           class="modal fade"
@@ -70,13 +88,7 @@
           data-bs-toggle="modal"
           data-bs-target="#rejModal"
         >-->
-        <button
-          href="#"
-          class="reject"
-          @click="rejectbtn"
-          >
-          Reject
-        </button>
+        <button href="#" class="reject" @click="rejectbtn">Reject</button>
         <br />
         <!--<div
           class="modal fade"
@@ -127,6 +139,7 @@ export default {
   data() {
     return {
       testCollection: [],
+      status: ""
     };
   },
 
@@ -134,6 +147,8 @@ export default {
     buttons: Boolean,
     applicantName: String,
     applicantCourse: String,
+    status: String,
+    accepted: Boolean,
   },
 
   methods: {
@@ -168,6 +183,11 @@ export default {
 .appDetails {
   display: inline-block;
   font-size: 85%;
+}
+
+.acceptedStat {
+  font-size: 85%;
+  margin-top: 15px;
 }
 
 .appButtons {
@@ -210,5 +230,17 @@ export default {
   margin-right: 10px;
   vertical-align: left;
   float: left;
+}
+
+#acceptedOffer {
+  color: #0e8044;
+}
+
+#pendingOffer {
+  color: #e99141;
+}
+
+#declinedOffer {
+  color: #ec5c5c;
 }
 </style>

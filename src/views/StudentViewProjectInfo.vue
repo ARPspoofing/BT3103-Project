@@ -7,7 +7,7 @@
         <span>
           <div class="projTitle">
             {{items.projectTitle}}  <br>
-            Company Name <br>
+            {{companyName}} <br>
             <!--Tags-->
             <div id="tagsbox">
             <div id="tags" :key="item.key" v-for="(item, index) in tags">
@@ -131,6 +131,8 @@ export default {
       userEmail: "", 
       applied: [],
       appstat: "",
+      companyEmail: "", 
+      companyName: "",
     }
   },
   mounted() {
@@ -150,7 +152,7 @@ export default {
     console.log(JSON.parse(this.$route.params.items).projectId)
     this.projId = JSON.parse(this.$route.params.items).projectId
     this.appstat = JSON.parse(this.$route.params.items).appstat
-    //console.log(projId);
+    this.companyEmail = JSON.parse(this.$route.params.items).company
 
     const that = this
     async function getAppliedProjects() {
@@ -161,6 +163,15 @@ export default {
       that.applied = data.appliedProjects
     }
     getAppliedProjects()
+
+    async function getCompanyName() {
+      const ref = doc(db, "businesses", that.companyEmail);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      //console.log(data.id)
+      that.companyName = data.name
+    }
+    getCompanyName()
 
     /*console.log(JSON.parse(this.$route.params.tasks))*/
     //console.log(this.projTitle)
