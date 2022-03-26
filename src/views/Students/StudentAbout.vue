@@ -58,7 +58,7 @@
                                         <option value="Computer Graphics">Computer Graphics</option>
                                         <option value="Image/Sound Processing">Image/Sound Processing</option>
                                         <option value="Distributed Computing">Distributed Computing</option>
-                                        <option value="Human-Computer Interaction">Human-Computer Interaction</option>
+                                        <option value="Human Computer Interaction">Human Computer Interaction</option>
                                         <option value="Software Engineering">Software Engineering</option>
                                         <option value="Information Theory">Information Theory</option>                        
                                     </select>
