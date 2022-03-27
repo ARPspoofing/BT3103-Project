@@ -7,28 +7,11 @@
     <button @click="toggleFilterMenu"> Open filter menu </button>
     <button @click="closeFilterMenu"> close filter menu </button>
 
-  <transition >
-     <ul> 
-        <l1>Hello</l1>
-        <l1>Hello</l1>
-        <l1>Hello</l1>
-        <l1>Hello</l1>
-    </ul>
+  <transition name="filter">
+     <Filter v-if="filterModal"/>
   </transition>
-
-  <TransitionGroup v-if="filterModal" name="list" tag="ul">
-    <ul>
-      <li>Hello</li>
-      <li>Hello</li>
-      <li>Hello</li>
-      <li>Hello</li>
-    </ul>
-</TransitionGroup>
   
-
-
-    
-    
+      
     <div @click="openFilter" ref="filterWrap" class="filter-wrap flex flex-column">
     
     </div> 
@@ -274,31 +257,7 @@ export default {
   .filter-leave-to {
     transform:translateX(-700px);
   }
-/*
-  ul {
-    position:absolute;
-    left:0px;
-    top:0px;
-    height:100vh;
-    width: 20vw;
-    background-color: black;
-  } 
-
-  li {
-      color:white;
-  }
-  */
-
-  .list-enter-active,
-.list-leave-active {
-  transition: all 0.5s ease;
-}
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-
+  
   #status {
     text-align: left;
     font-size: 28px;
