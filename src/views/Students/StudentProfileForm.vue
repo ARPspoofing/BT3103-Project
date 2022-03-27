@@ -228,6 +228,7 @@ export default {
             if(user) {
                 console.log("currUser",user.email)
                 this.schoolEmail = user.email;
+                console.log("usssssssseeeeeeerrrrrrr",user.id)
             }
         })
     },
