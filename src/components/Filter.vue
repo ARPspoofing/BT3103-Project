@@ -30,7 +30,9 @@
             </ul>     
           </div> 
         </div>
-
+        <div class="addBtn">
+        <img @click="add" src="../assets/add.png" alt="add button">                                                                   
+        </div>
         <!--Duration-->
         <h4>Duration</h4>
         <div :class="{shake:!rangeSelected,'input-error':!rangeSelected,'datepick':true}">
@@ -42,10 +44,8 @@
       <div class="slider">
         <Slider v-model="value" :format="format" @change="checkPrice"/>
       </div>
-      <div class="addBtn">
-        <img @click="add" src="../assets/HomePage.png" alt="add button">                                                                   
-      </div>
-      <button @click="submitFilter"></button>
+      
+      <button class="green" @click="submitFilter">Enter</button>
     </div>
     
 </template>
@@ -252,17 +252,20 @@
 
   h4 {
     color:black;
+    margin-top:15px;
   }
 
    .nav-links {
     position:absolute;
     left:0px;
     top:0px;
-    height:60vh;
+    height:65vh;
     width: 35vw;
     background-color: #BBDFCC;
     align-items: center;
     justify-content: center;
+    border-top-right-radius: 5%;
+    border-bottom-right-radius:5%;
 
   } 
 
@@ -316,7 +319,8 @@
 
     .slider {
       width: 60%;
-      margin-left:18px;
+      margin: 0 auto 0 auto;
+      margin-top:40px;
     }
 
     .form-wrap {
@@ -344,7 +348,7 @@
     }
 
     p {
-        color: blue;
+        color: red;
         cursor:pointer;
     }
 
@@ -402,8 +406,8 @@
     }
 
     .addBtn {
-        margin-left:70%;
-        margin-top:-50px;
+        
+        margin: 0 auto 0 auto;
     }
     
     select{
@@ -411,7 +415,7 @@
     }
 
     .delete {
-        margin-top:-45px;
+        margin-top:-42px;
         margin-right:-15px;
         color:red;
     }
@@ -425,6 +429,7 @@
     font-size: 12px;
     margin-right: 8px;
     color: #fff;
+    margin-top:20px;
     img {
             margin-right: 4px;
           }
