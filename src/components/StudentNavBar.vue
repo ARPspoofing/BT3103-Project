@@ -63,6 +63,7 @@ export default {
         return false;
       } else {
         for(let tag of tags) {
+          console.log("tagaggagagaggaga",tag)
           tag = tag.toLowerCase();
           if(searchObj.includes(tag) || tag.includes(searchObj)) {
             return true;

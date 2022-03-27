@@ -142,7 +142,7 @@ export default {
       const testCollection = [];
       snapshot.forEach((docs) => {
         let data = docs.data()
-        if (highestPriority.includes(docs.id)) {
+        if (highestPriorityIds.includes(docs.id)) {
         highestPriority.push({ 
             projectTitle: data.Project_Title, 
             description: data.Description, 
