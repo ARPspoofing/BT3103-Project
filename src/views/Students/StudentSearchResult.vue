@@ -243,19 +243,21 @@ export default {
     Transition for filter menu
   */
   .filter-enter-active {
-    transition: 0.8s ease all;
+    transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
   }
 
   .filter-leave-active {
-    transition: 0.8s ease all;
+    transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
   }
 
   .filter-enter-from {
     transform:translateX(-700px);
+    /*transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);*/
   }
 
   .filter-leave-to {
     transform:translateX(-700px);
+    /*transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);*/
   }
   
   #status {

@@ -5,7 +5,7 @@
         <h4>Interests</h4>
         <div class="flex flex-row">
           <div style="margin-top: 5px;width: 100%;">
-            <ul  style="display: grid;grid-template-columns:repeat(2,40%);">
+            <ul  style="display: grid;grid-template-columns:repeat(2,50%);">
               <li v-for="(item,index) in interests" style="width: 20%;display: inline" >
                 <div class="interest-flex">                            
                   <select class="inputTag" id="interest" v-model="item.value" >   
@@ -29,7 +29,6 @@
               </li>
             </ul>     
           </div> 
-          <button @click="submitFilter"></button>
         </div>
 
         <!--Duration-->
@@ -46,6 +45,7 @@
       <div class="addBtn">
         <img @click="add" src="../assets/HomePage.png" alt="add button">                                                                   
       </div>
+      <button @click="submitFilter"></button>
     </div>
     
 </template>
@@ -199,24 +199,19 @@
           //e.g straw@gmail.com -> straw 
           const company_name = doc.data().poster_id.substr(0, doc.data().poster_id.indexOf('@'))
           //if the below condition is met, we should push it to the highest priority
-          alert(name)
           console.log("interests",this.interests,"projecttag",projectTags)
           if (this.includesDate(this.date,[projectStart,projectEnd])) {
             console.log("yes")
             matchingResultsByDate.push(id)
-            alert("1")
           } 
           if (this.includesPrice(this.value,price)) {
             console.log("yessir")
             matchingResultsByPrice.push(id)
-            alert("2")
           } 
           if (this.includesTags(this.interests,projectTags)) {
             console.log("yesirsir")
             matchingResultsByTag.push(id)
-            alert("3")
           }
-          alert(this.includesDate(this.date,[projectStart,projectEnd]) && this.includesPrice(this.value,price) && this.includesTags(this.interests,projectTags))
           if (this.includesDate(this.date,[projectStart,projectEnd]) && this.includesPrice(this.value,price) && this.includesTags(this.interests,projectTags)) {
             allMatch.push(id)
           }
@@ -263,9 +258,12 @@
     position:absolute;
     left:0px;
     top:0px;
-    height:100vh;
+    height:60vh;
     width: 35vw;
     background-color: #BBDFCC;
+    align-items: center;
+    justify-content: center;
+
   } 
 
   .shake {
@@ -500,7 +498,8 @@
 
     .datepick {
       
-      width:80%;
+      width: 80%;
+      margin: 0 auto 0 auto;
     }
 
 </style>
