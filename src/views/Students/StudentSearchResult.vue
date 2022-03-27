@@ -15,7 +15,7 @@
     <div @click="openFilter" ref="filterWrap" class="filter-wrap flex flex-column">
     
     </div> 
-    <h1 id="status" class="searchDisplay" v-if = "!noProjects">
+    <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
       Search results for {{receivedSearch}}:
     </h1>
    

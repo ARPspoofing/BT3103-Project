@@ -41,21 +41,16 @@ export default {
         Heading: String,
         search: Boolean,
         header: Boolean,
-        searchResult: String,
-        dateProp: Array,
-        priceProp: Array,
-        tagProp: Array,
-        companyProp: String,
+        //searchResult: String,
     },
 
     data() {
       return {
         userSearch: '',
+        searchResult: '',
       }
     },
-
     methods:  {   
-    
     async logOut() {
         const auth = getAuth()
         await signOut(auth) 
@@ -151,11 +146,11 @@ export default {
             matchingResultsByTitle.push(id)
           } else if (this.includes(projectTags,searchObj)) {
             matchingResultsByTag.push(id)
-          } else if (this.includesDate(this.dateProp,[projectStart,projectEnd])) {
+          } else if (this.includesDate(this.dateVal,[projectStart,projectEnd])) {
             matchingResultsByDate.push(id)
-          } else if (this.includesPrice(this.priceProp,price)) {
+          } else if (this.includesPrice(this.priceVal,price)) {
             matchingResultsByPrice.push(id)
-          } else if (this.includesTags(this.tagProp,projectTags)) {
+          } else if (this.includesTags(this.tagVal,projectTags)) {
             matchingResultsByTag.push(id)
           } else if (this.companyProp == company_name) {
             matchingResultsByCompany.push(id)
@@ -166,13 +161,16 @@ export default {
         })
         if(this.$route.name == "StudentSearchResult") {
           this.$router.push({name:"StudentSearchResult2",params: {displayFirst:matchingResultsByBoth,
-          displaySecond:matchingResultsByTitle, displayThird:matchingResultsByTag, searched:currSearch}})
+          displaySecond:matchingResultsByTitle, displayThird:matchingResultsByTag, displayFourth:matchingResultsByDate, 
+          displayFifth:matchingResultsByPrice, displaySixth:matchingResultsByCompany, searched:currSearch}})
           } else if (this.$route.name == "StudentSearchResult2") {
             this.$router.push({name:"StudentSearchResult",params: {displayFirst:matchingResultsByBoth,
-            displaySecond:matchingResultsByTitle, displayThird:matchingResultsByTag, searched:currSearch}})
+          displaySecond:matchingResultsByTitle, displayThird:matchingResultsByTag, displayFourth:matchingResultsByDate, 
+          displayFifth:matchingResultsByPrice, displaySixth:matchingResultsByCompany, searched:currSearch}})
           } else {
             this.$router.push({name:"StudentSearchResult",params: {displayFirst:matchingResultsByBoth,
-            displaySecond:matchingResultsByTitle, displayThird:matchingResultsByTag, searched:currSearch}})
+          displaySecond:matchingResultsByTitle, displayThird:matchingResultsByTag, displayFourth:matchingResultsByDate, 
+          displayFifth:matchingResultsByPrice, displaySixth:matchingResultsByCompany, searched:currSearch}})
           }
 
 

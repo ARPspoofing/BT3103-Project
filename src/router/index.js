@@ -84,7 +84,11 @@ const routes = [
       auth: true,
     },
   },
-
+  {
+    path:"/student/navBar",
+    name: "StudentNavBar",
+    component: () => import ("../components/StudentNavBar.vue"),
+  },
   {
     path: "/student/landingpage",
     name: "StudentLandingPage",

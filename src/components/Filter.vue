@@ -29,6 +29,7 @@
               </li>
             </ul>     
           </div> 
+          <button @click="submitFilter"></button>
         </div>
 
         <!--Duration-->
@@ -124,7 +125,102 @@
              }
              
          },
+         includes(tags, searchObj) {
+          if(tags.length == 0) {
+            return false;
+          } else {
+            for(let tag of tags) {
+              tag = tag.toLowerCase();
+              if(searchObj.includes(tag) || tag.includes(searchObj)) {
+                return true;
+              }
+            }
+            return false;
+          }
 
+        },
+        //Method to check if the project date falls in the date array prop
+          includesDate(datePropArray, projectDateArray) {
+            if([Date.parse(String(datePropArray[0])) >= projectDateArray[0]] && [Date.parse(String(datePropArray[1])) <= projectDateArray[1]]) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+          //Method to check if the project price falls in the price array prop
+          includesPrice(pricePropArray,projectPrice) {
+            if (projectPrice >= parseInt(pricePropArray[0]) && projectPrice <= parseInt(pricePropArray[1])) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+
+          //Method to check if project tags include prop tags (by using the first includes function)
+          includesTags(tagPropArray,projectTagsArray) {
+            var true_arr = []
+            tagPropArray.forEach((tag) => {
+              //console.log("taggagagagag",tag)
+              true_arr.push(this.includes(projectTagsArray,tag.value))
+            })
+            if (true in true_arr) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+
+         async submitFilter() {
+          //this.$router.push({name:'StudentNavBar',params:{dateVal:this.date,priceVal:this.value,tagVal:this.interests}})
+          var matchingResultsByTags = []
+          //array to store the matching results by price range
+          var matchingResultsByPrice = []
+          //array to store the matching results by date range
+          var matchingResultsByDate = []
+          const projects = await getDocs(collection(db, "Project"))
+        
+        projects.forEach(doc => {
+          const id = doc.id;
+          const name = doc.data().Project_Title;
+          console.log(name)
+          var testname = name.toLowerCase()
+          const projectTags = doc.data().Tags
+          const projectStart = doc.data().Project_Start
+          const projectEnd = doc.data().Project_End
+          const price = doc.data().Allowance
+          //For now, fetch the name of the company by taking the email name until the @
+          //e.g straw@gmail.com -> straw 
+          const company_name = doc.data().poster_id.substr(0, doc.data().poster_id.indexOf('@'))
+          console.log(projectTags)
+          //if the below condition is met, we should push it to the highest priority
+          if (this.includesDate(this.date,[projectStart,projectEnd])) {
+            console.log("yes")
+            matchingResultsByDate.push(id)
+          } 
+          if (this.includesPrice(this.value,price)) {
+            console.log("yessir")
+            matchingResultsByPrice.push(id)
+          } 
+          if (this.includesTags(this.interests,projectTags)) {
+            console.log("yesirsir")
+            matchingResultsByTag.push(id)
+          }
+          //Add company search to search bar 
+          /*else if (this.companyProp == company_name) {
+            matchingResultsByCompany.push(id)
+          }*/ 
+        })
+        if(this.$route.name == "StudentSearchResult") {
+          this.$router.push({name:"StudentSearchResult2",params: {displayFirst:matchingResultsByDate, 
+          displaySecond:matchingResultsByPrice, displayThird:matchingResultsByTags}})
+          } else if (this.$route.name == "StudentSearchResult2") {
+            this.$router.push({name:"StudentSearchResult",params: {displayFirst:matchingResultsByDate, 
+          displaySecond:matchingResultsByPrice, displayThird:matchingResultsByTags}})
+          } else {
+            this.$router.push({name:"StudentSearchResult",params: {displayFirst:matchingResultsByDate, 
+          displaySecond:matchingResultsByPrice, displayThird:matchingResultsByTags}})
+          }
+         }
       }
     }
 </script>
