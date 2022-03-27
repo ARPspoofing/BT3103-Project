@@ -41,10 +41,14 @@ export default {
         Heading: String,
         search: Boolean,
         header: Boolean,
+        searchResult: String,
+        dateProp: Array,
+        priceProp: Array,
+        tagProp: Array,
+        companyProp: String,
     },
 
     data() {
-
       return {
         userSearch: '',
       }
@@ -56,10 +60,9 @@ export default {
         const auth = getAuth()
         await signOut(auth) 
         this.$router.push({"name":"StudentLogin"})
-
       },
 
-    //Method to check if a search matches any tag
+    //Method to check if a search matches any tag 
     includes(tags, searchObj) {
       if(tags.length == 0) {
         return false;
@@ -70,10 +73,36 @@ export default {
             return true;
           }
         }
-
         return false;
       }
 
+    },
+    //Method to check if the project date falls in the date array prop
+    includesDate(datePropArray, projectDateArray) {
+      if([Date.parse(String(datePropArray[0])) >= projectDateArray[0]] && [Date.parse(String(datePropArray[1])) <= projectDateArray[1]]) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    //Method to check if the project price falls in the price array prop
+    includesPrice(pricePropArray,projectPrice) {
+      if (projectPrice >= parseInt(pricePropArray[0]) && projectPrice <= parseInt(pricePropArray[1])) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    //Method to check if project tags include prop tags (by using the first includes function)
+    includesTags(tagPropArray,projectTagsArray) {
+      true_arr = []
+      tagPropArray.forEach((tag) => true_arr.push(this.includes(projectTagsArray,tag)))
+      if (true in true_arr) {
+        return true;
+      } else {
+        return false;
+      }
     },
 
     async searchProjects() {
@@ -86,6 +115,12 @@ export default {
       var matchingResultsByTitle = []
       //array to store the matching results by tags for the entered search
       var matchingResultsByTag = []
+      //array to store the matching results by company's name
+      var matchingResultsByCompany = []
+      //array to store the matching results by price range
+      var matchingResultsByPrice = []
+      //array to store the matching results by date range
+      var matchingResultsByDate = []
 
       //testing if string is non pure whitespace
       if(/\S/.test(currSearch) && currSearch != '') {
@@ -102,6 +137,12 @@ export default {
           var testname = name.toLowerCase()
           var searchObj = currSearch.toLowerCase()
           const projectTags = doc.data().Tags
+          const projectStart = doc.data().Project_Start
+          const projectEnd = doc.data().Project_End
+          const price = doc.data().Allowance
+          //For now, fetch the name of the company by taking the email name until the @
+          //e.g straw@gmail.com -> straw 
+          const company_name = doc.data().poster_id.substr(0, doc.data().poster_id.indexOf('@'))
           console.log(projectTags)
           //if the below condition is met, we should push it to the highest priority
           if((searchObj.includes(testname) || testname.includes(searchObj)) && this.includes(projectTags, searchObj)) {
@@ -110,6 +151,14 @@ export default {
             matchingResultsByTitle.push(id)
           } else if (this.includes(projectTags,searchObj)) {
             matchingResultsByTag.push(id)
+          } else if (this.includesDate(this.dateProp,[projectStart,projectEnd])) {
+            matchingResultsByDate.push(id)
+          } else if (this.includesPrice(this.priceProp,price)) {
+            matchingResultsByPrice.push(id)
+          } else if (this.includesTags(this.tagProp,projectTags)) {
+            matchingResultsByTag.push(id)
+          } else if (this.companyProp == company_name) {
+            matchingResultsByCompany.push(id)
           }
 
           

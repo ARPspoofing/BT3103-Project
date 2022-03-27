@@ -102,6 +102,7 @@ export default {
         this.forgetPassword = false
     }, 
     async google() {
+        const that = this;
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
         signInWithPopup(auth, provider)
@@ -110,6 +111,7 @@ export default {
             const credential = GoogleAuthProvider.credentialFromResult(result);
             const token = credential.accessToken;
             const user = result.user;
+            window.localStorage.setItem('emailForSignIn', that.email);
             this.$router.push({name:'businessLoading'})
                 // ...
         }).catch((error) => {
@@ -154,6 +156,7 @@ export default {
             const verifyEmail = docs.data().verifyEmail
         signInWithEmailAndPassword(getAuth(), this.email,this.password)
         .then((data) => {
+            window.localStorage.setItem('emailForSignIn', that.email);
             if (!verifyEmail) {
                 this.$router.push({name:'BusinessVerify'})
             }

@@ -57,6 +57,17 @@ export default {
 
     }
   },
+  created() {
+    var that = this
+    var userEmail
+    var currUser = getAuth().onAuthStateChanged(function (user) {
+    if (user) {
+      //this.profileFormCreated = currUser.email
+      //console.log(this.profileFormCreated)
+      userEmail = user.email
+    }
+    })    
+  },
 
   methods: {
     indivprojFirst(key) {

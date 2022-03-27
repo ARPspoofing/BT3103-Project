@@ -101,6 +101,7 @@ export default {
     console.log(formFilled)
     await signInWithEmailAndPassword(auth, this.email,this.password)
     .then((data) => {
+        window.localStorage.setItem('emailForSignIn', this.email);
         if(!formFilled) {
             this.$router.push({name:'StudentHomePage'})
             //this.$router.push({name:'StudentProfileForm'})

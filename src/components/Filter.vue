@@ -1,16 +1,11 @@
 <template>
     <div class="nav-links"> 
-        Duration
-        <div :class="{shake:!rangeSelected,'input-error':!rangeSelected}">
-          <Datepicker format="dd-MM-yyyy"  v-model="date" :state="rangeSelected" @update:modelValue="checkDate" range></Datepicker>
-        </div>
-        <p v-if="!rangeSelected">{{rangeErrorMsg}}</p>
-        <div class="slider">
-          <Slider v-model="value" :format="format" @change="checkPrice"/>
-        </div>
+        
+        <!--Interests-->
+        <h4>Interests</h4>
         <div class="flex flex-row">
           <div style="margin-top: 5px;width: 100%;">
-            <ul  style="display: grid;grid-template-columns:repeat(2,1fr);">
+            <ul  style="display: grid;grid-template-columns:repeat(2,40%);">
               <li v-for="(item,index) in interests" style="width: 20%;display: inline" >
                 <div class="interest-flex">                            
                   <select class="inputTag" id="interest" v-model="item.value" >   
@@ -34,11 +29,22 @@
               </li>
             </ul>     
           </div> 
+        </div>
 
-          <div class="addBtn">
-          <img @click="add" src="../assets/add.png" alt="add button">                                                                   
-          </div>
-      </div> 
+        <!--Duration-->
+        <h4>Duration</h4>
+        <div :class="{shake:!rangeSelected,'input-error':!rangeSelected,'datepick':true}">
+          <Datepicker format="dd-MM-yyyy"  v-model="date" :state="rangeSelected" @update:modelValue="checkDate" range></Datepicker>
+        </div>
+        <p v-if="!rangeSelected">{{rangeErrorMsg}}</p>
+        <!--Slider-->
+      <h4>Allowance</h4>
+      <div class="slider">
+        <Slider v-model="value" :format="format" @change="checkPrice"/>
+      </div>
+      <div class="addBtn">
+        <img @click="add" src="../assets/HomePage.png" alt="add button">                                                                   
+      </div>
     </div>
     
 </template>
@@ -46,7 +52,7 @@
 <script>
     import firebaseApp from '../firebase.js';
     import {getFirestore} from 'firebase/firestore';
-    import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
+    import {doc,setDoc,collection,getDocs,deleteDoc,getDoc} from 'firebase/firestore';
     import {useRouter} from "vue-router"
     import {getAuth,signOut,onAuthStateChanged} from "firebase/auth"
     import Datepicker from '@vuepic/vue-datepicker';
@@ -63,14 +69,19 @@
       name:'Filter',
       components: { Datepicker, Slider },
       created() {
-        const auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
-            if(user) {
-                this.userEmail = user.email
-                const docRef = doc(db,"students",String(user.email))
-            }
-        })
-      },
+        const userEmail = window.localStorage.getItem('emailForSignIn')
+        console.log("testtesttesttest",userEmail)
+        var that = this
+        async function fetchInterests() {
+          const docRef = doc(db,"students",String(userEmail))
+          const docs = await getDoc(docRef)
+          for (var i=0;i<docs.data()['interests'].length;i++) {
+            that.interests.push((docs.data()['interests'][i]))  
+          }
+          
+        }
+        fetchInterests();
+        },
       data() {
         return {
           userEmail: '',
@@ -81,7 +92,7 @@
           format: function (value) {
             return `$${value}`
           },
-          interests: [{'id':1,'value':'hello'},{'id':2,'value':'hello'},{'id':3,'value':'hello'}],
+          interests: [],
         }
       },
       methods: {
@@ -99,7 +110,7 @@
           console.log(this.value)
         },
         deleteInterest(id) {
-             if (this.interests.length -1 > 0) {
+             if (this.interests.length> 0) {
                  this.interests = this.interests.filter(interest => interest.id != id)
              }
          },
@@ -119,13 +130,18 @@
 </script>
 
 <style scoped>
+
+  h4 {
+    color:black;
+  }
+
    .nav-links {
     position:absolute;
     left:0px;
     top:0px;
     height:100vh;
     width: 35vw;
-    background-color: black;
+    background-color: #BBDFCC;
   } 
 
   .shake {
@@ -177,12 +193,9 @@
     }
 
     .slider {
-      width: 88%;
+      width: 60%;
       margin-left:18px;
     }
-
-
-
 
     .form-wrap {
         top: 0;
@@ -220,15 +233,15 @@
     }
 
     .interest-flex {
-        width:200px;
-        margin-left:10px;
+        width:140px;
+
     }
 
     input,
     select,
     textarea {
         width:100%;
-        background-color: #33d69f;
+        background-color: #ffab2c;
         border: none;
         outline:none;
     }
@@ -240,6 +253,7 @@
     .labelTag,
     .inputTag {
         border-radius:20px;
+        font-size:10px;
     }
 
     .interest {
@@ -275,7 +289,7 @@
     }
 
     .delete {
-        margin-top:-42px;
+        margin-top:-45px;
         margin-right:-15px;
         color:red;
     }
@@ -358,6 +372,11 @@
     img {
         width:40px;
         height:40px;
+    }
+
+    .datepick {
+      
+      width:80%;
     }
 
 </style>

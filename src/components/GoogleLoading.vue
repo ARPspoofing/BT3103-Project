@@ -27,6 +27,7 @@ export default {
         //this.profileFormCreated = currUser.email
         //console.log(this.profileFormCreated)
             userEmail = user.email
+            console.log(user.email)
         }
         })
         async function checkToRoute() {
