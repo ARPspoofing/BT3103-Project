@@ -379,36 +379,49 @@ ul {
     background-color: rgba(0, 0, 0, 0.5);
   }
 
-.modal-content {
-  background-color: #BBDFCC;
-  border: none;
-}
+  .modal-content {
+    background-color: #BBDFCC;
+    border: none;
+  }
 
-.words {
-  width: max-content;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 10px;
-  height: 50px;
-}
+  .words {
+    width: max-content;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    height: 50px;
+  }
 
-.applybtns {
-  width: max-content;
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 20px;
-}
+  .applybtns {
+    width: max-content;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
 
-#yesbtn, #nobtn {
-  margin: 10px;
-  border: none;
-  border-radius: 10px;
-  background-color:#89ca9a;
-  color: #3f3f3f;
-  width: 120px;
-  height: 20px;
-  font-size: 18px;
-}
+  #yesbtn, #nobtn {
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color:#89ca9a;
+    color: #3f3f3f;
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+  }
+
+  #tickIcon {
+    height: 38px;
+    width: 38px;
+    color: #3D9956;
+    float: left;
+  }
+
+  .modal-body p {
+    text-align: center;
+    width: 180px;
+    margin-left: 48px;
+  }
 </style>
