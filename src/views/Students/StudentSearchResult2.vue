@@ -29,7 +29,7 @@
      </div>
       <div v-else class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key + 2*6)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key /*+ 2*6*/)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
         </div>
 
         <div :key="item.key" v-for="(item, key) in secondPriority">
@@ -105,6 +105,7 @@ export default {
     },
     */
     indivprojFirst(key) {
+      alert(key)
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {
@@ -116,6 +117,7 @@ export default {
   },
 
   indivprojSecond(key) {
+    alert(key)
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {
@@ -127,6 +129,7 @@ export default {
   },
 
   indivprojThird(key) {
+    alert(key)
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {

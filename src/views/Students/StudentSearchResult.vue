@@ -31,7 +31,7 @@
      </div>
       <div v-else class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key + 2*6)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key /*+ 2*6*/)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
         </div>
 
         <div :key="item.key" v-for="(item, key) in secondPriority">
@@ -85,9 +85,6 @@ export default {
       //store all id in one array
       searchId: null,
       //store all id in separate arrays
-      highestPriority: null,
-      secondPriority: null,
-      thirdPriority: null,
     }
   },
 
@@ -109,6 +106,7 @@ export default {
     },
     */
     indivprojFirst(key) {
+      alert(key)
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {
@@ -120,6 +118,7 @@ export default {
   },
 
   indivprojSecond(key) {
+      alert(key)
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {
@@ -131,6 +130,7 @@ export default {
   },
 
   indivprojThird(key) {
+    alert(key)
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {
@@ -152,7 +152,11 @@ export default {
     this.highestPriority = this.highestPriorityIds
     this.secondPriority = this.secondPriorityIds
     this.thirdPriority = this.thirdPriorityIds
-        
+    /*
+    alert(this.highestPriority)
+    alert(this.secondPriority)
+    alert(this.thirdPriority)
+    */
     
     async function setProjects() {
       //Non VUEX version. Uncomment if VUEX does not work
@@ -171,7 +175,7 @@ export default {
 
       const highestPriority = [];
       const secondPriority = [];  
-      const thirdPriority = []
+      const thirdPriority = [];
       console.log(highestPriorityIds)
       let snapshot = await getDocs(collection(db, "Project"))
       const testCollection = [];

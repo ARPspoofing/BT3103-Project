@@ -160,7 +160,7 @@
           },
           //Method to check if the project price falls in the price array prop
           includesPrice(pricePropArray,projectPrice) {
-            if (parseInt(projectPrice) >= parseInt(pricePropArray[0]) && parseInt(projectPrice) <= parseInt(pricePropArray[1])) {
+            if (projectPrice == '' || (parseInt(projectPrice) >= parseInt(pricePropArray[0]) && parseInt(projectPrice) <= parseInt(pricePropArray[1]))) {
               return true;
             } else {
               return false;
@@ -211,23 +211,35 @@
           //if the below condition is met, we should push it to the highest priority
           console.log("filterprice",this.value,"projectprice",price)
           if (this.date == null || this.includesDate(this.date,[projectStart,projectEnd])) {
-            console.log("yes")
+            if (this.includesPrice(this.value,price)) {
+              if (this.includesTags(this.interests,projectTags)) {
+                allMatch.push(id)
+                allMatch = allMatch.filter((x, i, a) => a.indexOf(x) === i)
+              }
+            }
+          }
+          /* To uncomment 
+          if (this.date == null || this.includesDate(this.date,[projectStart,projectEnd])) {
+            
             matchingResultsByDate.push(id)
           } 
           if (this.includesPrice(this.value,price)) {
-            console.log("yessir")
+     
             matchingResultsByPrice.push(id)
           } 
           if (this.includesTags(this.interests,projectTags)) {
-            console.log("yesirsir")
+      
             matchingResultsByTag.push(id)
           }
+    
           if (this.searchId.includes(id) != -1 && this.includesDate(this.date,[projectStart,projectEnd]) && this.includesPrice(this.value,price) && this.includesTags(this.interests,projectTags)) {
-            alert('true!')
             allMatch.push(id)
           }
+          */
+
+
           this.CLEAR_ALL()
-          this.SET_SEARCH_DATA(allMatch)
+          this.SET_HIGHEST_PRIORITYIDS(allMatch)
           
           //Add company search to search bar 
           /*else if (this.companyProp == company_name) {
