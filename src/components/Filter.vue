@@ -199,8 +199,8 @@
           //e.g straw@gmail.com -> straw 
           const company_name = doc.data().poster_id.substr(0, doc.data().poster_id.indexOf('@'))
           //if the below condition is met, we should push it to the highest priority
-          console.log("interests",this.interests,"projecttag",projectTags)
-          if (this.includesDate(this.date,[projectStart,projectEnd])) {
+          console.log("filterprice",this.value,"projectprice",price)
+          if (this.date == null || this.includesDate(this.date,[projectStart,projectEnd])) {
             console.log("yes")
             matchingResultsByDate.push(id)
           } 

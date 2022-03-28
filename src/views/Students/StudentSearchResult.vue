@@ -17,11 +17,15 @@
     </div> 
     <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
       Search results for {{receivedSearch}}:
+      
     </h1>
    
     <hr/>
      <div v-if="noProjectsPresent" class = "noProject">
          <h1 class = "noProjectsText">Sorry, no projects matched your search {{receivedSearch}}. Please ensure that you have spelled your search correctly.</h1>
+          {{GET_SEARCH_DATA}}
+          HELLOOOOOOOOOOOOOOO
+         
      </div>
       <div v-else class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
@@ -35,8 +39,6 @@
         <div :key="item.key" v-for="(item, key) in thirdPriority">
           <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojThird(key)" @applicantbtn="addApplicantThird(key + 2*6)"/>
         </div>
-
-        
         </div>
       </div>
  
@@ -51,11 +53,12 @@ import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
 import {signOut} from "firebase/auth"
 import {mapState} from "vuex"
 import {mapMutations} from "vuex"
+import {mapGetters} from "vuex"
 import Filter from '../../components/Filter.vue'
 const db = getFirestore(firebaseApp);
 
 export default {
-  name: 'StudentSearchResult',
+  name: 'StudentSearchResult2',
   components: {
 
     StudentNavBar,
@@ -64,7 +67,9 @@ export default {
   },
   
   computed: {
-    ...mapState(['filterModal'])
+    ...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds']),
+    ...mapGetters(['GET_SEARCH_DATA']),
+    
   },
 
   data() {
@@ -76,18 +81,29 @@ export default {
       noProjectsPresent:true,
       receivedSearch:'',
       loading:false,
-
+      //store all id in one array
+      searchId: null,
+      //store all id in separate arrays
+      highestPriority: null,
+      secondPriority: null,
+      thirdPriority: null,
     }
   },
 
   methods: {
     ...mapMutations(['TOGGLE_FILTER']),
+    
     toggleFilterMenu() {
       this.TOGGLE_FILTER()
     },
     closeFilterMenu() {
       this.TOGGLE_FILTER()
     },
+    /*
+    populateSearch() {
+      this.searchId = this.searchData
+    },
+    */
     indivprojFirst(key) {
       this.$router.push({
         name:'StudentViewProjectInfo', 
@@ -127,13 +143,28 @@ export default {
     const that = this;
     const gottenSearch = that.$route.params.searched;
     this.receivedSearch = gottenSearch;
+    //data variable = state variable 
+    this.searchId = this.searchData
+    this.highestPriority = this.highestPriorityIds
+    this.secondPriority = this.secondPriorityIds
+    this.thirdPriority = this.thirdPriorityIds
         
     
     async function setProjects() {
-        
+      //Non VUEX version. Uncomment if VUEX does not work
+      /*
       const highestPriorityIds = that.$route.params.displayFirst;
       const secondPriorityIds = that.$route.params.displaySecond;
       const thirdPriorityIds = that.$route.params.displayThird;
+      */
+     //VUEX version
+      //const highestPriorityIds = that.searchId
+      const highestPriorityIds = that.highestPriority
+      const secondPriorityIds = that.secondPriority
+      const thirdPriorityIds = that.thirdPriority
+      //const highestPriorityIds = that.searchData
+      
+
       const highestPriority = [];
       const secondPriority = [];  
       const thirdPriority = []

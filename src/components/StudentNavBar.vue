@@ -33,6 +33,8 @@
 import {signOut, getAuth} from "firebase/auth"
 import {getDocs,collection, getFirestore} from "firebase/firestore"
 import firebaseApp from '../firebase.js'
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -43,7 +45,9 @@ export default {
         header: Boolean,
         //searchResult: String,
     },
-
+    computed: {
+      ...mapState(['searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds'])
+    },
     data() {
       return {
         userSearch: '',
@@ -51,6 +55,7 @@ export default {
       }
     },
     methods:  {   
+    ...mapMutations(['SET_SEARCH_DATA','SET_HIGHEST_PRIORITYIDS','SET_SECOND_PRIORITYIDS','SET_THIRD_PRIORITYIDS']),
     async logOut() {
         const auth = getAuth()
         await signOut(auth) 
@@ -155,11 +160,20 @@ export default {
             matchingResultsByTag.push(id)
           } else if (this.companyProp == company_name) {
             matchingResultsByCompany.push(id)
-          }
-
-          
-          
+          }          
         })
+        
+        //Stores all the data into searchData state
+        this.SET_SEARCH_DATA(matchingResultsByBoth)
+        this.SET_SEARCH_DATA(matchingResultsByTitle)
+        this.SET_SEARCH_DATA(matchingResultsByTag)
+        
+        //Stores by order
+        this.SET_HIGHEST_PRIORITYIDS(matchingResultsByBoth)
+        this.SET_SECOND_PRIORITYIDS(matchingResultsByTitle)
+        this.SET_THIRD_PRIORITYIDS(matchingResultsByTag)
+
+        //Check whether want to search for price,date I think should but if dont't want, remove displayForuth - Sixth
         if(this.$route.name == "StudentSearchResult") {
           this.$router.push({name:"StudentSearchResult2",params: {displayFirst:matchingResultsByBoth,
           displaySecond:matchingResultsByTitle, displayThird:matchingResultsByTag, displayFourth:matchingResultsByDate, 
