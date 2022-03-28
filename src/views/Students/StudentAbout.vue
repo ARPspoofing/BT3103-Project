@@ -204,7 +204,7 @@ export default {
       resumePresent: false,
 
       //change to firebase later
-      finalProfile: '',
+      finalProfile: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",
       errorMessage:"",
       resumeLink:'',
       transcriptLink:'',
@@ -520,7 +520,7 @@ select{
 button,
 .button {
 cursor: pointer;
-padding: 16px 24px;
+padding: 2px 24px;
 border-radius: 30px;
 border: none;
 font-size: 14px;

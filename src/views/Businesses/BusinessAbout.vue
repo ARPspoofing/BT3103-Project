@@ -47,7 +47,7 @@
                       </div>
                       <span>
                         <div class = "applybtns">
-                          <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="save">Yes</button>
+                          <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="save()">Yes</button>
                           <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
                         </div>
                       </span>
@@ -64,12 +64,12 @@
 import BusinessNavBar from '../../components/BusinessNavBar.vue'
 import {signOut, getAuth, onAuthStateChanged} from "firebase/auth"
 import firebaseApp from '../../firebase.js';
-import { getFirestore, collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
+import { getFirestore, collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc, update, query, where } from "firebase/firestore"
+import { writeBatch} from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 import { v4 as uuidv4 } from 'uuid';
 import PopUp from '../../components/PopUp.vue'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-
 
 export default {
   name: 'BusinessAbout',
@@ -88,8 +88,9 @@ export default {
         nameErrorPresent:false,
         user:false,
         errorMessage:'',
-        finalProfile: '',   
+        finalProfile: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",   
         profileImage: null,
+        projectIds: [],
     }
   },
   
@@ -130,7 +131,37 @@ export default {
               name: this.name,
               industry: this.industry,
               description: this.description,
+              finalProfile: this.finalProfile,
           })
+
+          //const projects = query(collection(db, "Project"), where('poster_id', '==', email));
+          // let querySnapshot = await getDocs(collection(db, "Project"));
+          // //console.log(querySnapshot)
+          // querySnapshot.forEach((doc) => {
+          //   var data = doc.data()
+          //   var projId = doc.id
+          //   if (doc.data().poster_id == email)
+          //    doc.update({profPicture: this.finalProfile})
+          // });
+
+
+          let snapshot = await getDocs(collection(db, "Project"));
+
+          snapshot.forEach(async (docs) => {
+            let data = docs.data()
+            var projId = docs.id
+
+            if (data.poster_id == email) {
+              this.projectIds.push(projId)
+              console.log(this.projectIds)
+            }
+          });
+
+          for (var i = 0; i < this.projectIds.length; i++) {
+            await updateDoc(doc(db, "Project", this.projectIds[i]), {
+              profPicture: this.finalProfile
+            });
+          }
 
           this.$router.push({name:"BusinessHomePage"})
 
@@ -151,6 +182,7 @@ export default {
       console.log(data)
       // that.finalProfile = data.finalProfile
       that.name = data.name
+      that.finalProfile = data.finalProfile
       that.industry = data.industry
       if (!data.description) {
         that.description = data.description
@@ -281,7 +313,7 @@ select{
 button,
 .button {
 cursor: pointer;
-padding: 16px 24px;
+padding: 2px 24px;
 border-radius: 30px;
 border: none;
 font-size: 14px;
