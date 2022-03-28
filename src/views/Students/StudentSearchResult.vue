@@ -1,32 +1,16 @@
 <template>
-    <div class="container">
-        <input type="checkbox" id="checkbox4" class="checkbox4 visuallyHidden">
-        <label for="checkbox4">
-            <div class="hamburger hamburger4">
-                <span class="bar bar1"></span>
-                <span class="bar bar2"></span>
-                <span class="bar bar3"></span>
-                <span class="bar bar4"></span>
-                <span class="bar bar5"></span>
-            </div>
-        </label>
-    </div>
-  
-  
-  
-  
-  
-  
   <StudentNavBar :search=true :header=true />
   <div v-if="loading">
     Loading
   </div>
   <div v-if="!loading" class="mainBody">   
-    <button @click="toggleFilterMenu"> Open filter menu </button>
+    <button class="purple button" @click="toggleFilterMenu">Filter</button>
+    <!--
     <button @click="closeFilterMenu"> close filter menu </button>
+    -->
 
   <transition name="filter">
-     <Filter v-if="filterModal"/>
+     <Filter @submitFilter=closeFilterMenu v-if="filterModal"/>
   </transition>
   
       
@@ -78,10 +62,9 @@ const db = getFirestore(firebaseApp);
 export default {
   name: 'StudentSearchResult2',
   components: {
-
     StudentNavBar,
     Card,
-    Filter
+    Filter,
   },
   
   computed: {
@@ -110,11 +93,14 @@ export default {
 
   methods: {
     ...mapMutations(['TOGGLE_FILTER']),
-    
+    alertFunc() {
+      this.$refs.toggle.$el.click()
+    },
     toggleFilterMenu() {
       this.TOGGLE_FILTER()
     },
-    closeFilterMenu() {
+    closeFilterMenu(e) {
+      alert('close')
       this.TOGGLE_FILTER()
     },
     /*
@@ -391,98 +377,45 @@ h1 {
     justify-content: space-between;
 }
 
-.hamburger {
-    margin: 0 auto;
-    margin-top: 30px;
-    width: 30px;
-    height: 30px;
-    position: relative;
-}
+button,
+    .button {
+    cursor: pointer;
+    padding: 16px 24px;
+    border-radius: 30px;
+    borer: none;
+    font-size: 12px;
+    margin-right: 8px;
+    color: #fff;
+    margin-top:20px;
+    img {
+            margin-right: 4px;
+          }
+    }
 
-.hamburger .bar {
-    padding: 0;
-    width: 30px;
-    height: 4px;
-    background-color: rgb(0, 0, 0);
-    display: block;
-    border-radius: 4px;
-    transition: all 0.4s ease-in-out;
-    position: absolute; 
-}
+    .save {
+        div {
+            flex:1;
+        }
+    }
 
-.bar1 {
-    top: 0;
-}
+    .right {
+        margin-left:80%;
+    }
 
-.bar2,
-.bar3 {
-    top: 13.5px;
-}
-
-.bar3 {
-    right: 0;
-}
-
-.bar4 {
-    bottom: 0;
-}
-
-/* HAMBURGER 4 */
-
-.hamburger2 .bar2,
-.hamburger3 .bar3,
-.hamburger4 .bar4 {
-    top: 13.5px;
-}
-
-.hamburger4 .bar5 {
-    bottom: 0px;
-}
-
-.hamburger4 .bar {
-    transition: all 0.4s ease-in-out, transform 0.4s ease-in-out 0.4s;
-}
-
-.hamburger4 .bar2 {
-    width: 1px;
-    transform: rotate(90deg);
-    left: 13.5px;
-}
-
-.hamburger4 .bar3 {
-    width: 1px;
-    left: 13.5px;
-    
-}
-
-.checkbox4:checked + label > .hamburger4 > .bar1{
-    top: 13.5px;
-    background-color: transparent;
-}
-
-.checkbox4:checked + label > .hamburger4 > .bar2{
-    left: 0px;
-    width: 30px;
-    transform: rotate(45deg);
-}
-
-.checkbox4:checked + label > .hamburger4 > .bar3{
-    left: 0;
-    width: 30px;
-    transform: rotate(-45deg);
-}
-
-.checkbox4:checked + label > .hamburger4 > .bar4{
-    background-color: transparent;
-}
-
-.checkbox4:checked + label > .hamburger4 > .bar5{
-    bottom: 13.5px;
-    background-color: transparent; 
-}
-
-
-
-
+    .dark-purple {
+    background-color: #252945;
+    }
+    .red {
+    background-color: #ec5757;
+    }
+    .purple {
+    background-color: #7c5dfa;
+    }
+    .green {
+    background-color: #33d69f;
+    }
+    .orange {
+    background-color: #ff8f00;
+    }
 
 </style>

@@ -175,6 +175,7 @@
           },
 
          async submitFilter() {
+          this.$emit('submitFilter',true)
           console.log("hhhhhhhhhhh",this.interests)
           //this.$router.push({name:'StudentNavBar',params:{dateVal:this.date,priceVal:this.value,tagVal:this.interests}})
           var matchingResultsByTag = []
@@ -232,6 +233,7 @@
           displaySecond:matchingResultsByPrice, displayThird:matchingResultsByTags}})
           }
           */
+         
          if(this.$route.name == "StudentSearchResult") {
           this.$router.push({name:"StudentSearchResult2",params: {displayFirst:allMatch, 
           displaySecond:noneMatch, displayThird:noneMatch}})
