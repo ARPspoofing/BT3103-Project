@@ -55,7 +55,7 @@ export default {
       }
     },
     methods:  {   
-    ...mapMutations(['SET_SEARCH_DATA','SET_HIGHEST_PRIORITYIDS','SET_SECOND_PRIORITYIDS','SET_THIRD_PRIORITYIDS']),
+    ...mapMutations(['SET_SEARCH_DATA','SET_HIGHEST_PRIORITYIDS','SET_SECOND_PRIORITYIDS','SET_THIRD_PRIORITYIDS','CLEAR_ALL']),
     async logOut() {
         const auth = getAuth()
         await signOut(auth) 
@@ -164,6 +164,7 @@ export default {
         })
         
         //Stores all the data into searchData state
+        this.CLEAR_ALL()
         this.SET_SEARCH_DATA(matchingResultsByBoth)
         this.SET_SEARCH_DATA(matchingResultsByTitle)
         this.SET_SEARCH_DATA(matchingResultsByTag)

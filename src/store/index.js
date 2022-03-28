@@ -1,6 +1,10 @@
 import { createStore } from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 export default createStore({
+  plugins: [createPersistedState({
+      storage: window.sessionStorage,
+  })],
   state: {
     filterModal: null,
     //searchData for debugging to store all the ids in one array 
@@ -18,6 +22,12 @@ export default createStore({
   mutations: {
     TOGGLE_FILTER(state) {
       state.filterModal = !state.filterModal
+    },
+    CLEAR_ALL(state) {
+      state.searchData = [],
+      state.highestPriorityIds = [],
+      state.secondPriorityIds = [],
+      state.thirdPriorityIds = []
     },
     SET_SEARCH_DATA(state,payload) {
       state.searchData.push(...payload)

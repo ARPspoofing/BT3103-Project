@@ -1,6 +1,5 @@
 <template>
     <div class="nav-links"> 
-        
         <!--Interests-->
         <h4>Interests</h4>
         <div class="flex flex-row">
@@ -60,6 +59,9 @@
     import '@vuepic/vue-datepicker/dist/main.css';
     import "@vueform/slider/themes/default.css"
     import Slider from '@vueform/slider';
+    import {mapState} from "vuex"
+    import {mapMutations} from "vuex"
+    import {mapGetters} from "vuex"
     import { v4 as uuidv4 } from 'uuid';
     import { ref } from 'vue';
 
@@ -70,6 +72,7 @@
       name:'Filter',
       components: { Datepicker, Slider },
       created() {
+        this.searchId = this.searchData
         const userEmail = window.localStorage.getItem('emailForSignIn')
         console.log("testtesttesttest",userEmail)
         var that = this
@@ -85,6 +88,10 @@
         fetchInterests();
     
         },
+        computed: {
+          ...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds']),
+          ...mapGetters(['GET_SEARCH_DATA']),
+        },
       data() {
         return {
           userEmail: '',
@@ -96,9 +103,11 @@
             return `$${value}`
           },
           interests: [],
+          searchId: [],
         }
       },
       methods: {
+        ...mapMutations(['SET_SEARCH_DATA','SET_HIGHEST_PRIORITYIDS','SET_SECOND_PRIORITYIDS','SET_THIRD_PRIORITYIDS','CLEAR_ALL']),
         checkDate() {
           if (this.date[0] == null || this.date[1] == null) {
             this.rangeSelected = false
@@ -213,9 +222,13 @@
             console.log("yesirsir")
             matchingResultsByTag.push(id)
           }
-          if (this.includesDate(this.date,[projectStart,projectEnd]) && this.includesPrice(this.value,price) && this.includesTags(this.interests,projectTags)) {
+          if (this.searchId.includes(id) != -1 && this.includesDate(this.date,[projectStart,projectEnd]) && this.includesPrice(this.value,price) && this.includesTags(this.interests,projectTags)) {
+            alert('true!')
             allMatch.push(id)
           }
+          this.CLEAR_ALL()
+          this.SET_SEARCH_DATA(allMatch)
+          
           //Add company search to search bar 
           /*else if (this.companyProp == company_name) {
             matchingResultsByCompany.push(id)
