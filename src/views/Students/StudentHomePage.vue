@@ -19,13 +19,15 @@
         <div class="carousel-item active">
           <div class="carouContainer">
             <div :key="item.key" v-for="(item, key) in testCollection">
+              <!-- <h2>"item.projectTitle"</h2> -->
               <Card v-if="key <= 5" 
                 :apply=true 
                 :projectTitle = "item.projectTitle" 
                 :description="item.description" 
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key)" 
-                @clickCard="indivproj(key)"/>
+                @clickCard="indivproj(key)"
+                :picture = "item.profilePicture"/>
             </div>
           </div>
         </div>
@@ -38,7 +40,8 @@
                 :description="item.description" 
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key + 6)" 
-                @clickCard="indivproj(key + 6)"/>
+                @clickCard="indivproj(key + 6)"
+                :picture = "item.profilePicture"/>
             </div>
           </div>
         </div>
@@ -51,7 +54,8 @@
               :description="item.description" 
               :appstat="item.appstat"
               @applicantbtn="addApplicant(key + 2*6)" 
-              @clickCard="indivproj(key + 2*6)"/>
+              @clickCard="indivproj(key + 2*6)"
+              :picture = "item.profilePicture"/>
             </div>
           </div>
         </div>
@@ -92,7 +96,8 @@
                 :description="item.description" 
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key)" 
-                @clickCard="indivprojlatest(key)"/>
+                @clickCard="indivprojlatest(key)"
+                :picture = "item.profilePicture"/>
             </div>
           </div>
         </div>
@@ -105,7 +110,8 @@
                 :description="item.description" 
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key + 6)" 
-                @clickCard="indivprojlatest(key + 6)"/>
+                @clickCard="indivprojlatest(key + 6)"
+                :picture = "item.profilePicture"/>
             </div>
           </div>
         </div>
@@ -118,7 +124,8 @@
               :description="item.description" 
               :appstat="item.appstat"
               @applicantbtn="addApplicant(key + 2*6)" 
-              @clickCard="indivprojlatest(key + 2*6)"/>
+              @clickCard="indivprojlatest(key + 2*6)"
+              :picture = "item.profilePicture"/>
             </div>
           </div>
         </div>
@@ -279,10 +286,18 @@ export default {
       const wholeTestCollection = [];
       const testCollection = [];
       console.log(that.applied)
-      snapshot.forEach((docs) => {
+      snapshot.forEach( async (docs) => {
         let data = docs.data()
         var id = docs.id
+        // var comp = data.poster_id;
+        // const docSnap1 = await getDoc(doc(db, "businesses", comp));
+        // let data1 = docSnap1.data();
+        // var pictureprof = data1.finalProfile;
+        //   if (typeof pictureprof === 'undefined') {
+        //     pictureprof = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
+        //   }
         if (that.applied.includes(id)) {
+          console.log("pic is: " + data.profPicture)
           testCollection.push({ 
             /*projectTitle: data.Project_Title, 
             description: data.Description,
@@ -303,6 +318,7 @@ export default {
             appstat: "applied",
             timestamp: data.Posted_Date,
             company: data.poster_id,
+            profilePicture: data.profPicture,
           });
         } else {
           testCollection.push({ 
@@ -325,14 +341,22 @@ export default {
             appstat: "apply",
             timestamp: data.Posted_Date,
             company: data.poster_id,
+            profilePicture: data.profPicture,
           });
         }
         
       });
-      wholeSnapshot.forEach((docs) => {
+      wholeSnapshot.forEach( async (docs) => {
         let data = docs.data()
         var id = docs.id
-        if (that.applied.includes(id)) {
+        // var comp = data.poster_id;
+        // const docSnap1 = await getDoc(doc(db, "businesses", comp));
+        // let data1 = docSnap1.data();
+        // var pictureprof = data1.finalProfile;
+        //   if (typeof pictureprof === 'undefined') {
+        //     pictureprof = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
+        //   }
+        if (that.applied.includes(data.Project_Title)) {
           wholeTestCollection.push({ 
             /*projectTitle: data.Project_Title, 
             description: data.Description,
@@ -353,6 +377,7 @@ export default {
             appstat: "applied",
             timestamp: data.Posted_Date,
             company: data.poster_id,
+            profilePicture: data.profPicture,
           });
         } else {
           wholeTestCollection.push({ 
@@ -375,6 +400,7 @@ export default {
             appstat: "apply",
             timestamp: data.Posted_Date,
             company: data.poster_id,
+            profilePicture: data.profPicture,
           });
         }
         

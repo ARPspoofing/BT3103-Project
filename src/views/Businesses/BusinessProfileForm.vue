@@ -3,6 +3,13 @@
     <PopUp @return="close" v-if="popUp" />
     <div @click="check" ref="formWrap" class="form-wrap flex flex-column">
         <form @submit.prevent="submitForm" class="content">
+            <div class="profile-pic-outer">
+                <img class="profile-pic" :src="finalProfile"/>
+            </div>
+            <div class="profile-icon">
+                <input style="display:none" ref="profileUpload" type="file" @change="onFileSelected">
+                <h6 @click="$refs.profileUpload.click()">Pick Profile</h6>
+            </div>
             <!--Personal Details-->
             <div class="personal-details flex flex-column">
                 <h4>Company name</h4>
@@ -54,12 +61,12 @@ import { doc,setDoc } from 'firebase/firestore';
 import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../../firebase.js"
 import {getAuth, signOut,onAuthStateChanged} from 'firebase/auth'
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 const router = useRouter()
 const db = getFirestore(firebaseApp)
 export default {
     //Fetch data from Firebase afterwards
-    name: 'BusinessProfileForm',
-    
+    name: 'BusinessProfileForm', 
     data() {
         return {
             name:'',
@@ -69,8 +76,8 @@ export default {
             industryErrorPresent:false,
             nameErrorPresent:false,
             user:false,
-            errorMessage:''
-            
+            errorMessage:'',
+            finalProfile: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",    
         }
     },
 
@@ -126,13 +133,26 @@ export default {
                      name: this.name,
                      industry: this.industry,
                      description: this.description,
-                     profileFormCreated: true
+                     profileFormCreated: true,
+                     finalProfile:this.finalProfile,
                  })
 
                  this.$router.push({name:"BusinessHomePage"})
 
              }
-         }
+         },
+         onFileSelected(event) {
+            this.profileImage = event.target.files[0]
+            const storage = getStorage();
+            const profileRef = ref(storage, this.profileImage.name);
+            const uploadTask = uploadBytesResumable(profileRef, this.profileImage)
+            uploadTask.on('state_changed', (snapshot) => {}, (error) => {}, () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log('File available at', this.finalProfile = downloadURL);
+                });
+            }
+            );
+         },
 
          //save method would go to the landing page of the business
 
@@ -169,7 +189,7 @@ export default {
 
     input,
     select {
-        width:70%;
+        width:63%;
         background-color: white;
         border: none;
         outline:none;
@@ -296,6 +316,23 @@ export default {
      .errorMsg {
         color: red;
         margin-top:5px;
+    }
+
+    .profile-icon h6 {
+        display: grid;
+        place-items: center;
+        cursor:pointer;
+        color:blue;
+        margin-top: 130px;
+    }   
+
+    .profile-pic {
+        border-radius: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        width:120px;
+        height: 120px;
+
     }
 
   

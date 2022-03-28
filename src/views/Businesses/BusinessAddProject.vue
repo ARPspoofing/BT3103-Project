@@ -35,7 +35,7 @@
               <option value="Computer Graphics Visualisation">Computer Graphics and Visualisation</option>
               <option value="Image Sound Processing">Image and Sound Processing</option>
               <option value="Distributed Computing">Distributed Computing</option>
-              <option value="Human Computer Interaction">Human-Computer Interaction</option>
+              <option value="Human Computer Interaction">Human Computer Interaction</option>
               <option value="Software Engineering">Software Engineering</option>
               <option value="Information Coding Theory">Information and Coding Theory</option>
             </select> <br><br>
@@ -92,7 +92,7 @@
 import BusinessNavBar from '../../components/BusinessNavBar.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, addDoc } from "firebase/firestore"
+import { collection, doc, setDoc, addDoc, getDoc } from "firebase/firestore"
 import {getAuth} from "firebase/auth"
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
@@ -173,6 +173,13 @@ export default {
       // alert("Saving your data for Project: " + a);
       console.log(email)
 
+      const docSnap1 = await getDoc(doc(db, "businesses", email));
+      let data1 = docSnap1.data();
+      var pictureprof = data1.finalProfile;
+      if (typeof pictureprof === 'undefined') {
+        pictureprof = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
+      }
+
       try {
         const docRef = await addDoc(collection(db, "Project"), {
           poster_id: email,
@@ -189,6 +196,7 @@ export default {
           Acc_Applicants: k,
           Rej_Applicants: l,
           Posted_Date: m,
+          profPicture: pictureprof,
         })
 
         console.log(docRef)
@@ -199,7 +207,7 @@ export default {
       catch(error) {
         console.error("Error adding document: ", error);
       }
-    }
+    }, 
   },
   components: {
     BusinessNavBar
