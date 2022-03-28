@@ -127,6 +127,7 @@ export default {
           const email = auth.currentUser.email;
           //accessing the current user and setting the elements
           await updateDoc(doc(db,'businesses',String(email)), {
+              finalProfile: this.finalProfile,
               name: this.name,
               industry: this.industry,
               description: this.description,
@@ -149,7 +150,7 @@ export default {
       console.log("doc: "+ docSnap)
       let data = docSnap.data();
       console.log(data)
-      // that.finalProfile = data.finalProfile
+      that.finalProfile = data.finalProfile
       that.name = data.name
       that.industry = data.industry
       if (!data.description) {
