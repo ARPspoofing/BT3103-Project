@@ -273,9 +273,9 @@ export default {
 
   .projectContainer {
     margin-left: 30px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+    /*flex-grow: 1;
+    display: flex; */
+    flex-direction: row; 
   }
 
   /*

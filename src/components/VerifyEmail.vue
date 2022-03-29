@@ -93,7 +93,7 @@ export default {
         reset() {
             if (this.email != '') {        
                 const auth = getAuth()
-                sendPasswordResetEmail(getAuth(),this.email).then(() => {}).catch(() => {})
+                sendPasswordResetEmail(auth,this.email).then(() => {}).catch(() => {})
                 auth.currentUser.emailVerified
                 this.notEntered = false
                 this.msg = 'Please check your email inbox or the junk folder'

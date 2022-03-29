@@ -12,7 +12,7 @@
                     <h1>Welcome Back Business!</h1>
                 </div>
                 <div class="input">
-                    <h4>Dont't have an account?&nbsp;</h4>
+                    <h4>Don't have an account?&nbsp;</h4>
                     <router-link class="link" :to="{name:'BusinessSignup'}">Signup</router-link>
                     <router-view/>
                 </div>
@@ -154,10 +154,16 @@ export default {
             console.log(docs.data())
             const formFilled = docs.data().profileFormCreated
             const verifyEmail = docs.data().verifyEmail
+            console.log(verifyEmail)
         signInWithEmailAndPassword(getAuth(), this.email,this.password)
         .then((data) => {
-            window.localStorage.setItem('emailForSignIn', that.email);
-            if (!verifyEmail) {
+            window.localStorage.setItem('emailForSignIn', this.email);
+            console.log("wassup")
+            if(formFilled) {
+                console.log("there")
+                this.$router.push({name:'BusinessHomePage'})
+            }else if (!verifyEmail) {
+                console.log("here")
                 this.$router.push({name:'BusinessVerify'})
             }
             else {
@@ -170,6 +176,7 @@ export default {
             }
             
         } ).catch((error) => {
+            console.log(error)
             if(error.code === "auth/wrong-password") {
                 this.passwordErrorPresent = true;
                 this.errorMessage = "You have entered an incorrect password"
