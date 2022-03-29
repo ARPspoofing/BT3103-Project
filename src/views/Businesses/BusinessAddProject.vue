@@ -331,7 +331,7 @@ export default {
         this.deliverablesErrorMessage = "Please enter at least one Deliverable";
       }*/
 
-    for (i = 0; i < this.tasks.length; i++) {
+    /*for (i = 0; i < this.tasks.length; i++) {
       if (this.tasks[i].taskName == "") {
         this.deliverableTaskErrorPresent = true;
         this.deliverableTaskErrorMessage = "Please enter Task Name";
@@ -340,7 +340,7 @@ export default {
         this.deliverableDueDateErrorPresent = true;
         this.deliverableDueDateErrorMessage = "Please enter Task Due Date";
       }
-    }
+    }*/
 
       if (
         !this.projectTitleErrorPresent &&
