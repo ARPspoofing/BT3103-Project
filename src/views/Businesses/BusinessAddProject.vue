@@ -321,7 +321,7 @@ export default {
       if (this.selected.length == 0) {
         this.tagsErrorPresent = true;
         this.tagsErrorMessage = "Please select at least 1 tag";
-      } else if (this.selected.length > 0) {
+      } else if (this.selected.length > 3) {
         this.tagsErrorPresent = true;
         this.tagsErrorMessage = "Please select at most 3 tags";
       }
