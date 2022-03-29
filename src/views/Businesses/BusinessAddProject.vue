@@ -10,10 +10,16 @@
           required=""
           placeholder="Project Title"
         />
+        <div class="errorMsg" v-if="projectTitleErrorPresent">
+          {{ this.projectTitleErrorMessage }}
+        </div>
         <br /><br />
 
         <label for="position">Position*</label>
         <input type="text" id="position" required="" placeholder="Position" />
+        <div class="errorMsg" v-if="positionErrorPresent">
+          {{ this.positionErrorMessage }}
+        </div>
         <br /><br />
 
         <label for="noOfVacancies">Number of Vacancies*</label>
@@ -23,6 +29,9 @@
           required=""
           placeholder="Number of Vacancies"
         />
+        <div class="errorMsg" v-if="vacancyErrorPresent">
+          {{ this.vacancyErrorMessage }}
+        </div>
         <br /><br />
 
         <label for="projectPeriodStart, projectPeriodEnd"
@@ -43,6 +52,9 @@
           placeholder="Choose End Date"
           style="width: 228px; margin-left: 15px"
         />
+        <div class="errorMsg" v-if="projectPeriodErrorPresent">
+          {{ this.projectPeriodErrorMessage }}
+        </div>
         <br /><br />
 
         <label for="projectAllowance">Allowance (in SGD)*</label>
@@ -52,6 +64,9 @@
           required=""
           placeholder="Allowance"
         />
+        <div class="errorMsg" v-if="allowanceErrorPresent">
+          {{ this.allowanceErrorMessage }}
+        </div>
         <br /><br />
 
         <label for="projectTags">Tags*</label>
@@ -92,6 +107,9 @@
             Information and Coding Theory
           </option>
         </select>
+        <div class="errorMsg" v-if="tagsErrorPresent">
+          {{ this.tagsErrorMessage }}
+        </div>
         <br /><br />
 
         <label for="projectDescription">Description</label>
@@ -104,7 +122,7 @@
         ></textarea>
         <br /><br />
 
-        <label for="projectDeliverables">Deliverables</label>
+        <label for="projectDeliverables">Deliverables*</label>
         <button id="addDeliverableButton" @click="addTask">
           <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
           <p>Add deliverables</p>
@@ -120,15 +138,26 @@
             <i class="fa fa-times" id="crossIcon"></i>
           </button>
           <br />
+          <div class="errorMsg" v-if="deliverablesErrorPresent">
+          {{ this.deliverablesErrorMessage }}
+          </div>
+
           <label for="duration">Task Name*</label>
           <input type="text" v-model.lazy="task.taskName" required />
+          <div class="errorMsg" v-if="deliverableTaskErrorPresent">
+          {{ this.deliverableTaskErrorMessage }}
+        </div>
           <br /><br />
           <label for="description">Description</label>
           <input type="text" v-model.lazy="task.taskDescription" required />
           <br /><br />
           <label for="duedate">Due Date*</label>
           <input type="date" v-model.lazy="task.taskDueDate" required />
+          <div class="errorMsg" v-if="deliverableDueDateErrorPresent">
+          {{ this.deliverableDueDateErrorMessage }}
         </div>
+        </div>
+        
       </div>
       <button
         id="saveButton"
@@ -192,13 +221,6 @@ export default {
     return {
       Heading: "ADD PROJECT",
       selected: [],
-      /*tasks: [
-        {
-        taskName: "",
-        taskDescription: "",
-        taskDueDate: ""
-        }
-      ],*/
       tasks: [
         {
           taskName: "",
@@ -207,24 +229,27 @@ export default {
           taskStatus: "To do",
         },
       ],
-      option : {
-        animation : true,
-        delay : 2000
-      }
+      projectTitleErrorPresent: false,
+      positionErrorPresent: false,
+      vacancyErrorPresent: false,
+      allowanceErrorPresent: false,
+      projectPeriodErrorPresent: false,
+      tagsErrorPresent: false,
+      //deliverablesErrorPresent: false,
+      deliverableTaskErrorPresent: false, 
+      deliverableDueDateErrorPresent: false, 
+      projectTitleErrorMessage: "",
+      positionErrorMessage: "",
+      vacancyErrorMessage: "",
+      projectPeriodErrorMessage: "",
+      tagsErrorMessage: "",
+      allowanceErrorMessage: "",
+      //deliverablesErrorMessage: "",
+      deliverableTaskErrorErrorMessage: "", 
+      deliverableDueDateErrorErrorMessage: "", 
     };
   },
   methods: {
-    /*add(){
-      this.tasks.push({
-        taskName: "",
-        taskDescription: "",
-        taskDueDate: ""
-      })
-    },
-    delete(counter){
-      this.tasks.splice(counter,1);
-    },*/
-
     addTask() {
       this.tasks.push({
         taskName: "",
@@ -238,13 +263,22 @@ export default {
     },
 
     async saveProject() {
+      this.projectTitleErrorPresent = false;
+      this.positionErrorPresent = false;
+      this.vacancyErrorPresent = false;
+      this.projectPeriodErrorPresent = false;
+      this.tagsErrorPresent = false;
+      this.deliverablesErrorPresent = false;
+      this.allowanceErrorPresent = false;
+      this.deliverableTaskErrorPresent = false;
+      this.deliverableDueDateErrorPresent = false;
       var a = document.getElementById("projectTitle").value;
       var b = document.getElementById("position").value;
       var c = document.getElementById("noOfVacancies").value;
       var d = document.getElementById("projectPeriodStart").value;
       var e = document.getElementById("projectPeriodEnd").value;
       var f = document.getElementById("projectAllowance").value;
-      //var g = document.getElementById("tagSelect").value;
+
       if (typeof this.selected == String) {
         const tagArray = new Array();
         tagArray.push(this.selected);
@@ -252,6 +286,7 @@ export default {
       } else {
         var g = this.selected;
       }
+
       console.log(g);
       var h = document.getElementById("projectDescription").value;
       var i = this.tasks;
@@ -263,42 +298,92 @@ export default {
       // var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
       var m = new Date();
 
-      // alert("Saving your data for Project: " + a);
-      console.log(email);
-
-      const docSnap1 = await getDoc(doc(db, "businesses", email));
-      let data1 = docSnap1.data();
-      var pictureprof = data1.finalProfile;
-      if (typeof pictureprof === "undefined") {
-        pictureprof =
-          "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png";
+      if (a == "") {
+        this.projectTitleErrorPresent = true;
+        this.projectTitleErrorMessage = "Please enter a Project Title";
       }
+      if (b == "") {
+        this.positionErrorPresent = true;
+        this.positionErrorMessage = "Please enter a Position";
+      }
+      if (c == "") {
+        this.vacancyErrorPresent = true;
+        this.vacancyErrorMessage = "Please enter the Number of Vacancies";
+      }
+      if (d == "" || e == "") {
+        this.projectPeriodErrorPresent = true;
+        this.projectPeriodErrorMessage = "Please enter the Project Period";
+      }
+      if (f == "") {
+        this.allowanceErrorPresent = true;
+        this.allowanceErrorMessage = "Please enter an Allowance amount";
+      }
+      if (this.selected.length == 0) {
+        this.tagsErrorPresent = true;
+        this.tagsErrorMessage = "Please select at least one tag";
+      }
+      /*console.log(this.tasks.length)
+      if (i.length < 1 ) {
+        this.deliverablesErrorPresent = true;
+        this.deliverablesErrorMessage = "Please enter at least one Deliverable";
+      }*/
 
-      try {
-        const docRef = await addDoc(collection(db, "Project"), {
-          poster_id: email,
-          Project_Title: a,
-          Position: b,
-          Num_Of_Vacancies: c,
-          Project_Start: d,
-          Project_End: e,
-          Allowance: f,
-          Tags: g,
-          Description: h,
-          Tasks: i,
-          New_Applicants: j,
-          Acc_Applicants: k,
-          Rej_Applicants: l,
-          Posted_Date: m,
-          profPicture: pictureprof,
-        });
+    for (i = 0; i < this.tasks.length; i++) {
+      if (this.tasks[i].taskName == "") {
+        this.deliverableTaskErrorPresent = true;
+        this.deliverableTaskErrorMessage = "Please enter Task Name";
+      }  
+      if (this.tasks[i].taskDueDate == "") {
+        this.deliverableDueDateErrorPresent = true;
+        this.deliverableDueDateErrorMessage = "Please enter Task Due Date";
+      }
+    }
 
-        console.log(docRef);
-        document.getElementById("projectForm").reset();
-        this.$emit("added");
-        this.$router.push({ name: "BusinessHomePage" });
-      } catch (error) {
-        console.error("Error adding document: ", error);
+      if (
+        !this.projectTitleErrorPresent &&
+        !this.positionErrorPresent &&
+        !this.vacancyErrorPresent &&
+        !this.projectStartErrorPresent &&
+        !this.projectEndErrorPresent &&
+        !this.tagsErrorPresent &&
+        !this.allowanceErrorPresent &&
+        !this.deliverableTaskErrorErrorMessage &&
+        !this.deliverableTaskDueDateErrorErrorMessage
+      ) {
+        const docSnap1 = await getDoc(doc(db, "businesses", email));
+        let data1 = docSnap1.data();
+        var pictureprof = data1.finalProfile;
+        if (typeof pictureprof === "undefined") {
+          pictureprof =
+            "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png";
+        }
+
+        try {
+          const docRef = await addDoc(collection(db, "Project"), {
+            poster_id: email,
+            Project_Title: a,
+            Position: b,
+            Num_Of_Vacancies: c,
+            Project_Start: d,
+            Project_End: e,
+            Allowance: f,
+            Tags: g,
+            Description: h,
+            Tasks: i,
+            New_Applicants: j,
+            Acc_Applicants: k,
+            Rej_Applicants: l,
+            Posted_Date: m,
+            profPicture: pictureprof,
+          });
+
+          console.log(docRef);
+          document.getElementById("projectForm").reset();
+          this.$emit("added");
+          this.$router.push({ name: "BusinessHomePage" });
+        } catch (error) {
+          console.error("Error adding document: ", error);
+        }
       }
     },
   },
@@ -461,5 +546,12 @@ p {
   text-align: center;
   width: 180px;
   margin-left: 15px;
+}
+
+.errorMsg {
+  color: red;
+  margin-top: 5px;
+  text-align: left;
+  margin-left: 210px;
 }
 </style>
