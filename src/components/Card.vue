@@ -95,7 +95,7 @@ export default {
     return {
       testCollection: [],
       stat: "",
-      appstat: "",
+      appstat: "", 
     };
   },
 

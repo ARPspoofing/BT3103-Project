@@ -381,7 +381,7 @@ export default {
       console.log("doc: "+ docSnap)
       let data = docSnap.data();
       console.log(data)
-      that.finalProfile = data.finalProfile
+      that.finalProfile = data.finalProfile 
       that.name = data.name
       that.course = data.course
       that.year = data.year
