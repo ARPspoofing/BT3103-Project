@@ -80,6 +80,7 @@ export default {
 
   created() {
     var that = this
+    /*
     var userEmail
     var currUser = getAuth().onAuthStateChanged(function (user) {
       if (user) {
@@ -88,7 +89,8 @@ export default {
         userEmail = user.email
       }
     })
-
+    */
+    var userEmail = window.localStorage.getItem('emailForSignIn')
      async function profileFormCreatedCheck() {
       var profileFormCreated = false;
       

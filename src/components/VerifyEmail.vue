@@ -9,7 +9,7 @@
             <div class="input">
                 <p>You're almost there! We sent as email to<b> <br>
                  {{email}}</b><br>Just click on the link in the email to complete your signup<br>
-                 If you don't see it, you may need to check <b>your spam folder</b></p>
+                 If you don't see it, you may need to check <b>your spam folder and mark it as safe</b></p>
             </div>
             <div class="input">
                 <p>Still can't find the email?</p>
@@ -58,7 +58,7 @@ export default {
                     console.log("formFilled")      
                     that.$router.push({name:'BusinessHomePage'})
                 } else {
-                    that.$router.push({name:'BusinessProfileForm'})
+                    that.$router.push({name:'BusinessHomePage'})
                 }
             }
             console.log("CHECK",isSignInWithEmailLink(auth, window.location.href))
@@ -79,9 +79,9 @@ export default {
                     });
                     if(formFilled) {  
                         console.log("formFilled")      
-                        that.$router.push({name:'BusinessHomePage'})
+                        that.$router.push({name:'BusinessHomePage',params:{formFilled:true}})
                     } else {
-                        that.$router.push({name:'BusinessHomePage'})
+                        that.$router.push({name:'BusinessHomePage',params:{formFilled:false}})
                         //that.$router.push({name:'BusinessProfileForm'})
                     }
                 }

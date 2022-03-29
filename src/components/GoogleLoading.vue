@@ -31,6 +31,8 @@ export default {
         }
         })
         async function checkToRoute() {
+            var userEmail = window.localStorage.getItem('emailForSignIn')
+            alert(userEmail)
             const docRef = doc(db,"businesses",String(userEmail))
             console.log("doccccccc",docRef)
             //console.log(await getDoc(docRef))
@@ -76,7 +78,7 @@ export default {
                 });
             //that.$router.push({name:'BusinessVerify'})
             } else {
-                that.$router.push({name:'BusinessHomePage'})
+                that.$router.push({name:'BusinessHomePage',params:{'formFilled': true}})
             }
             
         }
