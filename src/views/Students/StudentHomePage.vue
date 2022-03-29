@@ -168,6 +168,7 @@ export default {
       userEmail: "", 
       applied: [],
       studentTags: [],
+      allApplied: [],
     }
   },
   
@@ -265,7 +266,20 @@ export default {
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       console.log(data.appliedProjects)
-      that.applied = data.appliedProjects
+      that.applied = data.appliedProjects  
+    }
+    getAppliedProjects();
+
+    async function getAllAppliedProjects() {
+      const ref = doc(db, "students", auth.currentUser.email);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      //console.log(data.appliedProjects)
+      that.allApplied = data.appliedProjects
+      that.allApplied = that.allApplied.concat(data.completedProjects)
+      that.allApplied = that.allApplied.concat(data.inProgProjects)
+      that.allApplied = that.allApplied.concat(data.offeredProjects)
+      that.allApplied = that.allApplied.concat(data.rejectedProjects)    
     }
 
     async function fetchProject() {
@@ -285,7 +299,7 @@ export default {
       let wholeSnapshot = await getDocs(collection(db, "Project"))
       const wholeTestCollection = [];
       const testCollection = [];
-      console.log(that.applied)
+      //console.log(that.applied)
       snapshot.forEach( async (docs) => {
         let data = docs.data()
         var id = docs.id
@@ -296,7 +310,7 @@ export default {
         //   if (typeof pictureprof === 'undefined') {
         //     pictureprof = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
         //   }
-        if (that.applied.includes(id)) {
+        if (that.allApplied.includes(id)) {
           console.log("pic is: " + data.profPicture)
           testCollection.push({ 
             /*projectTitle: data.Project_Title, 
@@ -356,7 +370,7 @@ export default {
         //   if (typeof pictureprof === 'undefined') {
         //     pictureprof = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
         //   }
-        if (that.applied.includes(data.Project_Title)) {
+        if (that.allApplied.includes(data.Project_Title)) {
           wholeTestCollection.push({ 
             /*projectTitle: data.Project_Title, 
             description: data.Description,
@@ -442,9 +456,9 @@ export default {
     
     // getTags(this.userEmail).then((res)=>{console.log(res.map((x) => x["value"]))})
     
-    getAppliedProjects()
+    getAllAppliedProjects()
     fetchProject();
-    console.log(that.applied)
+    //console.log(that.applied)
   }
 }
 </script>
