@@ -111,7 +111,8 @@ export default {
             const credential = GoogleAuthProvider.credentialFromResult(result);
             const token = credential.accessToken;
             const user = result.user;
-            window.localStorage.setItem('emailForSignIn', that.email);
+            alert(user.email)
+            window.localStorage.setItem('emailForSignIn', user.email);
             this.$router.push({name:'businessLoading'})
                 // ...
         }).catch((error) => {
@@ -158,20 +159,15 @@ export default {
         signInWithEmailAndPassword(getAuth(), this.email,this.password)
         .then((data) => {
             window.localStorage.setItem('emailForSignIn', this.email);
-            console.log("wassup")
-            if(formFilled) {
-                console.log("there")
-                this.$router.push({name:'BusinessHomePage'})
-            }else if (!verifyEmail) {
-                console.log("here")
+            if (!verifyEmail) {
                 this.$router.push({name:'BusinessVerify'})
             }
             else {
                 if(formFilled) {  
                     console.log("formFilled")      
-                    this.$router.push({name:'BusinessHomePage'})
+                    this.$router.push({name:'BusinessHomePage',params:{'formFilled':true}})
                 } else {
-                    this.$router.push({name:'BusinessProfileForm'})
+                    this.$router.push({name:'BusinessProfileForm',params:{'formFilled':false}})
                 }
             }
             

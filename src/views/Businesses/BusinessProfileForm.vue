@@ -109,8 +109,15 @@ export default {
                  this.industryErrorPresent = true;  
                  this.errorMessage = "Please fill in your company's industry"
              } else {
+                 //Previous version of retrieving email. Have some problem
+                 /*
                  const auth = getAuth()
                  const email = auth.currentUser.email;
+                 */
+                //New version
+                const email = window.localStorage.getItem('emailForSignIn')
+                 
+                 
                  //accessing the current user and setting the elements
                  await setDoc(doc(db,'businesses',String(email)), {
                      name: this.name,
@@ -120,6 +127,7 @@ export default {
                      verifyEmail:true
                  })
                 this.$emit('success',true)
+
                 this.$router.push({name:"BusinessHomePage"})
 
              }
