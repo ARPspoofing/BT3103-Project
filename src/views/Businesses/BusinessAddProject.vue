@@ -346,12 +346,9 @@ export default {
         !this.projectTitleErrorPresent &&
         !this.positionErrorPresent &&
         !this.vacancyErrorPresent &&
-        !this.projectStartErrorPresent &&
-        !this.projectEndErrorPresent &&
+        !this.projectPeriodErrorPresent &&
         !this.tagsErrorPresent &&
-        !this.allowanceErrorPresent &&
-        !this.deliverableTaskErrorErrorMessage &&
-        !this.deliverableTaskDueDateErrorErrorMessage
+        !this.allowanceErrorPresent
       ) {
         const docSnap1 = await getDoc(doc(db, "businesses", email));
         let data1 = docSnap1.data();
