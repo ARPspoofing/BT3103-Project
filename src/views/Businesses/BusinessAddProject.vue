@@ -320,7 +320,10 @@ export default {
       }
       if (this.selected.length == 0) {
         this.tagsErrorPresent = true;
-        this.tagsErrorMessage = "Please select at least one tag";
+        this.tagsErrorMessage = "Please select at least 1 tag";
+      } else if (this.selected.length > 0) {
+        this.tagsErrorPresent = true;
+        this.tagsErrorMessage = "Please select at most 3 tags";
       }
       /*console.log(this.tasks.length)
       if (i.length < 1 ) {
