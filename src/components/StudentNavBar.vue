@@ -14,22 +14,29 @@
     <ul class="navbar-nav ms-auto">
         <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Navigate
+            Navigation
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" >Home</router-link>
             <div class="dropdown-divider"></div>
             <router-link class="nav-item nav-link active" :to="{name:'StudentAbout'}">About</router-link>
             <div class="dropdown-divider"></div>
+            <router-link class="nav-item nav-link active" :to="{name:'StudentInProgressProjects'}">My Projects</router-link>
+            <div class="dropdown-divider"></div>
+            <router-link class="nav-item nav-link active" :to="{name:'OfferedApplications'}">My Applications</router-link>
+            <div class="dropdown-divider"></div>
             <router-link class="nav-item nav-link active" :to="{name:'StudentLogin'}"><span @click="logOut">Log Out</span></router-link>
-            
         </div>
+        </div>
+        <div class="profile-pic-outer">
+            <img id="profilepic" src="https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"/>
         </div>
     </ul>
   </nav>
 </template>
 
 <script>
+<<<<<<< HEAD
 import {signOut, getAuth} from "firebase/auth"
 import {getDocs,collection, getFirestore} from "firebase/firestore"
 import firebaseApp from '../firebase.js'
@@ -37,6 +44,13 @@ import {mapState} from "vuex"
 import {mapMutations} from "vuex"
 const db = getFirestore(firebaseApp);
 
+=======
+import firebaseApp from '../firebase.js';
+import {signOut, getAuth, onAuthStateChanged} from "firebase/auth"
+import { getFirestore } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
+const db = getFirestore(firebaseApp);
+>>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
 export default {
 
     props:{
@@ -62,6 +76,7 @@ export default {
         this.$router.push({"name":"StudentLogin"})
       },
 
+<<<<<<< HEAD
     //Method to check if a search matches any tag 
     includes(tags, searchObj) {
       if(tags.length == 0) {
@@ -193,6 +208,31 @@ export default {
       }
 
     }
+=======
+    },
+
+    mounted() {
+      const auth = getAuth();
+      var userEmail = auth.currentUser.email;
+      //console.log(userEmail)
+
+      async function getApplicant(userEmail) {
+        const docSnap = await getDoc(doc(db, "students", userEmail));
+        console.log("doc: "+ docSnap)
+        let data = docSnap.data();
+        //console.log(data)
+        //name =  data.name;
+        //console.log("name: "+ name)
+        //let result = await data.name
+        var name = data.name;
+        dropdownMenuButton.innerHTML = name
+        var picture = data.finalProfile;
+        //console.log(picture)
+        document.getElementById("profilepic").src = picture
+        return {name: data.name}
+      }
+      getApplicant(userEmail)
+>>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
 
     }
 }
@@ -218,6 +258,15 @@ export default {
 
   .btn {
     margin: 10px;
+    background-color: transparent;
+    text-decoration: underline;
+    border: none;
+  }
+
+  .btn:hover {
+    background-color: transparent;
+    border: none;
+    color: rgb(241, 184, 25);
   }
 
   #title {
@@ -232,5 +281,13 @@ export default {
     width: 100%;
     height: 100%;
     position: fixed;
+  }
+
+  #profilepic {
+    width: 40px;
+    height: 40px;
+    float: right;
+    margin: 10px 20px 10px 0px;
+    border-radius: 50%;
   }
 </style>

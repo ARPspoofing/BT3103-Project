@@ -5,7 +5,11 @@
             <div class="profile-icon flex flex-column">
                 <img class="profile-pic flex flex-column" :src="finalProfile"/>
                 <input style="display:none" ref="profileUpload" type="file" @change="onFileSelected">
+<<<<<<< HEAD
                 <p style="text-decoration: underline;" @click="$refs.profileUpload.click()">Pick Profile</p>
+=======
+                <h6 @click="$refs.profileUpload.click()">Pick Profile</h6>
+>>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
             </div>
             
 
@@ -57,7 +61,7 @@
                                         <option value="Computer Graphics">Computer Graphics</option>
                                         <option value="Image/Sound Processing">Image/Sound Processing</option>
                                         <option value="Distributed Computing">Distributed Computing</option>
-                                        <option value="Human-Computer Interaction">Human-Computer Interaction</option>
+                                        <option value="Human Computer Interaction">Human Computer Interaction</option>
                                         <option value="Software Engineering">Software Engineering</option>
                                         <option value="Information Theory">Information Theory</option>                        
                                     </select>
@@ -648,11 +652,13 @@ export default {
     input,
     select,
     textarea {
-        width:100%;
-        background-color: #33d69f;
+        width:70%;
+        background-color: white;
         border: none;
         outline:none;
         font-family: 'Poppins', sans-serif;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     textarea {
@@ -662,6 +668,14 @@ export default {
     .labelTag,
     .inputTag {
         border-radius:20px;
+    }
+
+    label {
+        text-align: left;
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 3px;
     }
 
     .addBtn {
@@ -678,9 +692,9 @@ export default {
     .content {
       position:relative;
       padding:50px;
-      width:90%;
-      background-color: green;
-      color:aliceblue;
+      width: 100%;
+      background-color: #BBDFCC;
+      color: #606060;
     }
 
     img {
@@ -698,16 +712,16 @@ export default {
     }
 
     .delete {
-        margin-top:-42px;
-        margin-right:-15px;
+        margin-top:-45px;
+        margin-left:35px;
         color:red;
     }
 
     .profile-pic {
         border-radius: 50%;
-        margin-top:10px;
-        width:10%;
-        height:10%;
+        margin:10px 0px;
+        width:120px;
+        height: 120px;
 
     }
 
@@ -722,7 +736,7 @@ export default {
     cursor: pointer;
     padding: 16px 24px;
     border-radius: 30px;
-    borer: none;
+    border: none;
     font-size: 12px;
     margin-right: 8px;
     color: #fff;
@@ -751,7 +765,7 @@ export default {
     background-color: #7c5dfa;
     }
     .green {
-    background-color: #33d69f;
+    background-color: #0E8044;
     }
     .orange {
     background-color: #ff8f00;
@@ -764,7 +778,11 @@ export default {
     }
 
     .flex-row {
-    flex-direction: row;
+        flex-direction: row;
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 0px;
     }
 
     .container {
@@ -785,6 +803,10 @@ export default {
         cursor: pointer;
     }
 
+    ul {
+        padding-left: 0px;
+    }
+
     .uploadIcon {
         border-radius: 10%;
         background-color:green;
@@ -798,7 +820,11 @@ export default {
         place-items: center;
         cursor:pointer;
         color:blue;
+<<<<<<< HEAD
     }  
     */  
 
+=======
+    }    
+>>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
 </style>

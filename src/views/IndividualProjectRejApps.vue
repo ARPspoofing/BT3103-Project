@@ -20,20 +20,25 @@
     </h1>
     <hr/>
     <div class="appContainer">
-      <div :key="item.key" v-for="item in rejApplicants">
-            <ApplicantsCard :buttons=false :applicantName="item"/>
+      <div :key="item.key" v-for="(item, key) in applicant">
+            <ApplicantsCard :buttons=false :applicantName="item.name" :applicantCourse="item.course"/>
       </div>
       <!--
         <ApplicantsCard :buttons=false />
         <ApplicantsCard :buttons=false />
         <ApplicantsCard :buttons=false />-->
     </div>
-  </div>../../components/NavBar.vue
-</template>../../components/ApplicantsCard.vue
+  </div>
+</template>
 
 <script>
 import BusinessNavBar from '../components/BusinessNavBar.vue'
 import ApplicantsCard from '../components/ApplicantsCard.vue'
+import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
+const db = getFirestore(firebaseApp);
+import { getAuth } from 'firebase/auth';
 
 export default {
   name: 'IndividualProjectRejApps',
@@ -47,7 +52,8 @@ export default {
       items: [],
       newApplicants: [],
       accApplicants: [],
-      rejApplicants:[]
+      rejApplicants:[], 
+      applicant: [],
     }
   },
   mounted() {
@@ -61,10 +67,22 @@ export default {
     }
     if (this.$route.params.rejApplicants) {
       this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
+      for(var i = 0; i < this.rejApplicants.length; i++) {
+        getApplicant(this.rejApplicants[i]).then((res)=>{this.applicant.push(res)})
+      }
     }
-    console.log(this.newApplicants)
-    console.log(this.accApplicants)
-    console.log(this.rejApplicants)
+    //console.log(this.newApplicants)
+    //console.log(this.accApplicants)
+    //console.log(this.rejApplicants)
+    
+    async function getApplicant(app) {
+      const ref = doc(db, "students", app);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      //let result = await data.name
+      return {name: data.name, course: data.course};
+    }
+    console.log(this.applicant);
   }
 }
 </script>
@@ -114,7 +132,7 @@ export default {
 
   .options {
     font-size: 15px;
-    padding: 10px 25px;
+    padding: 5px 25px;
     margin-left: 15px;
     border-radius: 30px; /* or 50% */
     background-color: #0E8044;

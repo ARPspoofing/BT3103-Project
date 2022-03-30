@@ -2,6 +2,13 @@
     <PopUp @return="close" v-if="popUp" />
     <div @click="check" ref="formWrap" class="form-wrap flex flex-column">
         <form @submit.prevent="submitForm" class="content">
+            <div class="profile-pic-outer">
+                <img class="profile-pic" :src="finalProfile"/>
+            </div>
+            <div class="profile-icon">
+                <input style="display:none" ref="profileUpload" type="file" @change="onFileSelected">
+                <h6 @click="$refs.profileUpload.click()">Pick Profile</h6>
+            </div>
             <!--Personal Details-->
             <div class="personal-details flex flex-column">
                 <h4>Company name</h4>
@@ -21,7 +28,12 @@
 
                 <h4>Description</h4> 
                 <div>
+<<<<<<< HEAD
                     <textarea name="" id="desc" cols="30" rows="10" v-model="description"></textarea>
+=======
+                  
+                    <textarea name="" id="desc" cols="107" rows="5" v-model="description"></textarea>
+>>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
                 </div>
             </div>     
             <!--Save Exit-->
@@ -45,6 +57,7 @@ import { doc,setDoc } from 'firebase/firestore';
 import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../../firebase.js"
 import {getAuth, signOut,onAuthStateChanged} from 'firebase/auth'
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 const router = useRouter()
 const db = getFirestore(firebaseApp)
 export default {
@@ -59,8 +72,8 @@ export default {
             industryErrorPresent:false,
             nameErrorPresent:false,
             user:false,
-            errorMessage:''
-            
+            errorMessage:'',
+            finalProfile: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",    
         }
     },
 
@@ -124,14 +137,30 @@ export default {
                      industry: this.industry,
                      description: this.description,
                      profileFormCreated: true,
+<<<<<<< HEAD
                      verifyEmail:true
+=======
+                     finalProfile:this.finalProfile,
+>>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
                  })
                 this.$emit('success',true)
 
                 this.$router.push({name:"BusinessHomePage"})
 
              }
-         }
+         },
+         onFileSelected(event) {
+            this.profileImage = event.target.files[0]
+            const storage = getStorage();
+            const profileRef = ref(storage, this.profileImage.name);
+            const uploadTask = uploadBytesResumable(profileRef, this.profileImage)
+            uploadTask.on('state_changed', (snapshot) => {}, (error) => {}, () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log('File available at', this.finalProfile = downloadURL);
+                });
+            }
+            );
+         },
 
          //save method would go to the landing page of the business
 
@@ -146,6 +175,7 @@ export default {
 <style scoped>
     
     .form-wrap {
+<<<<<<< HEAD
         top: 0;
         left: 0;
         z-index: 101;
@@ -161,6 +191,15 @@ export default {
 
     ::-webkit-scrollbar {
         display: none;
+=======
+      position:fixed;
+      top:0;
+      left:0%;
+      background-color: transparent;
+      width:100%;
+      height:100vh;
+      overflow:scroll;
+>>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
     }
 
     input,
@@ -175,6 +214,7 @@ export default {
     }
 
     input,
+<<<<<<< HEAD
     select,
     textarea {
         width:100%;
@@ -185,11 +225,29 @@ export default {
 
     textarea {
         margin-bottom: 8px;
+=======
+    select {
+        width:63%;
+        background-color: white;
+        border: none;
+        outline:none;
+        font-family: 'Poppins', sans-serif;
+        margin-left: auto;
+        margin-right: auto;
+>>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
     }
 
     .labelTag,
     .inputTag {
         border-radius:20px;
+    }
+
+    label {
+        text-align: left;
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 3px;
     }
 
     .interest {
@@ -202,12 +260,18 @@ export default {
     .content {
       position:relative;
       padding:50px;
+<<<<<<< HEAD
       width:80%;
       background-color: #BBDFCC;
       color:black;
       border-radius:5%;
+=======
+      width: 100%;
+      height: 100%;
+      background-color: #BBDFCC;
+      color: #606060;
+>>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
     }
-
     img {
         position: absolute;
         width:20px;
@@ -237,7 +301,7 @@ export default {
     cursor: pointer;
     padding: 16px 24px;
     border-radius: 30px;
-    borer: none;
+    border: none;
     font-size: 12px;
     margin-right: 8px;
     color: #fff;
@@ -299,6 +363,28 @@ export default {
         color: red;
         margin-top:5px;
     }
+<<<<<<< HEAD
     
     
+=======
+
+    .profile-icon h6 {
+        display: grid;
+        place-items: center;
+        cursor:pointer;
+        color:blue;
+        margin-top: 130px;
+    }   
+
+    .profile-pic {
+        border-radius: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        width:120px;
+        height: 120px;
+
+    }
+
+  
+>>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
 </style>

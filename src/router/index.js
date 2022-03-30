@@ -10,6 +10,12 @@ const routes = [
     component: Home,
   },
 
+  {
+    path: "/",
+    name: "About",
+    component: About,
+  },
+
   //Student routes
 
   {
@@ -93,6 +99,36 @@ const routes = [
     path: "/student/landingpage",
     name: "StudentLandingPage",
     component: () => import("../views/Students/StudentLandingPage.vue"),
+  },
+  {
+    path: "/student/inprogress",
+    name: "StudentInProgressProjects",
+    component: () => import("../views/Students/StudentInProgressProjects.vue"),
+  },
+  {
+    path: "/student/completed",
+    name: "StudentCompletedProjects",
+    component: () => import("../views/Students/StudentCompletedProjects.vue"),
+  },
+  {
+    path: "/student/landingpage",
+    name: "StudentLandingPage",
+    component: () => import("../views/Students/StudentLandingPage.vue"),
+  },
+  {
+    path: "/student/offeredapplications",
+    name: "OfferedApplications",
+    component: () => import("../views/Students/OfferedApplications.vue"),
+  },
+  {
+    path: "/student/pendingapplications",
+    name: "PendingApplications",
+    component: () => import("../views/Students/PendingApplications.vue"),
+  },
+  {
+    path: "/student/rejectedapplications",
+    name: "RejectedApplications",
+    component: () => import("../views/Students/RejectedApplications.vue"),
   },
   {
     path: "/student/management",

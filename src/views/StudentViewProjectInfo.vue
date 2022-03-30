@@ -1,16 +1,13 @@
 <template>
   <StudentNavBar :search=true :header=false />
   <div class="mainBody">
-    <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
-      <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
-    </router-link>
     <div>
       <div class = "clogo">
-        <!-- <img src="../assets/google-logo.png" alt="Logo" class = "logo"> -->
+        <img src="../assets/google-logo.png" alt="Logo" class = "logo">
         <span>
           <div class="projTitle">
             {{items.projectTitle}}  <br>
-            Company Name <br>
+            {{companyName}} <br>
             <!--Tags-->
             <div id="tagsbox">
             <div id="tags" :key="item.key" v-for="(item, index) in tags">
@@ -22,8 +19,28 @@
         </span>
         <span>
           <div class="projButtons" >
-            <button class="applyProj" @click="addApplicant()">APPLY NOW</button> <br>
+            <button id="applybtns" v-if="appstat == 'applied'" class="btn-applied">APPLIED</button>
+            <button id="applybtns" v-if="appstat == 'apply'" class="btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal" >APPLY NOW</button> <br>
           </div> 
+          <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true" 
+              data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <div class="words">
+                    <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+                    <p>Apply for <span style="color: #0E8044"><strong>{{ items.projectTitle }} </strong></span>?</p>
+                    </div>
+                    <span>
+                      <div class = "applybtns">
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="addApplicant()">Yes</button>
+                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
         </span>
       </div>
     </div>
@@ -79,7 +96,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
     </div>
     <br><br>
   </div>
@@ -91,13 +108,13 @@ import Deliverable from '../components/Deliverable.vue'
 import * as moment from 'moment'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default {
   name: 'StudentViewProjectInfo',
-  props: ['items'],
+  //props: ['items'],
   components: {
     StudentNavBar,
     Deliverable
@@ -106,22 +123,60 @@ export default {
     return {
       Heading: "MY PROJECTS",
       testCollection: [],
-      props: ['items'],
+      //props: ['items'],
       tags: [],
       tasks: [],
       items: [],
+      user: false, 
+      userEmail: "", 
+      applied: [],
+      appstat: "",
+      companyEmail: "", 
+      companyName: "",
     }
   },
   mounted() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if(user) {
+        this.user = user;
+      }
+    })
+    this.userEmail = auth.currentUser.email;
+    //console.log(this.userEmail)
     this.tasks = JSON.parse(this.$route.params.items).tasks
     this.tags = JSON.parse(this.$route.params.items).tags
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
     this.projTitle = JSON.parse(this.$route.params.items).projectTitle
     this.items = JSON.parse(this.$route.params.items)
+    console.log(JSON.parse(this.$route.params.items).projectId)
+    this.projId = JSON.parse(this.$route.params.items).projectId
+    this.appstat = JSON.parse(this.$route.params.items).appstat
+    this.companyEmail = JSON.parse(this.$route.params.items).company
+
+    const that = this
+    async function getAppliedProjects() {
+      const ref = doc(db, "students", auth.currentUser.email);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      //console.log(data.id)
+      that.applied = data.appliedProjects
+    }
+    getAppliedProjects()
+
+    async function getCompanyName() {
+      const ref = doc(db, "businesses", that.companyEmail);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      //console.log(data.id)
+      that.companyName = data.name
+    }
+    getCompanyName()
+
     /*console.log(JSON.parse(this.$route.params.tasks))*/
-    console.log(this.projTitle)
-    console.log(this.tags);
-    console.log(this.newApplicants);
+    //console.log(this.projTitle)
+    //console.log(this.tags);
+    //console.log(this.newApplicants);
   },
   methods: {
     formatDate(date) {
@@ -131,16 +186,20 @@ export default {
         var newApplicants = this.newApplicants
         console.log(newApplicants)
         var projTitle = this.projTitle
-        newApplicants.push("random");
-
-        alert("Applying for proj: " + projTitle);
-        
-        // const auth = getAuth();
-        // this.fbuser = auth.currentUser.email;
+        newApplicants.push(this.userEmail);
+        var projId = this.projId
+        var applied = this.applied
+        applied.push(projId);
+        // applied.push(projTitle);
+        this.appstat = "applied"
 
         try {
-            const docRef = await updateDoc(doc(db, "Project", projTitle), {
+            const docRef = await updateDoc(doc(db, "Project", projId), {
                 New_Applicants: newApplicants
+            })
+
+            const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
+                appliedProjects: applied
             })
             
             console.log(docRef)
@@ -276,13 +335,20 @@ export default {
     margin-left: 20px;
   }
 
-  .applyProj {
-    background-color: #0E8044;
+  #applybtns {
     color: white;
     border-radius: 15px;
     width: 250px;
     border-width: 0px;
     font-size: 18px;
+  }
+
+  .btn-apply {
+    background-color: #0E8044;
+  }
+
+  .btn-applied {
+    background-color: #888888;
   }
 
   .projButtons {
@@ -410,5 +476,57 @@ export default {
       width: 9px;
       content: "";
       top: 5px;
+  }
+
+   #applyModal {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: #BBDFCC;
+    border: none;
+  }
+
+  .words {
+    width: max-content;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    height: 50px;
+  }
+
+  .applybtns {
+    width: max-content;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+
+  #yesbtn, #nobtn {
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color:#89ca9a;
+    color: #3f3f3f;
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+  }
+
+
+
+  #tickIcon {
+    height: 38px;
+    width: 38px;
+    color: #3D9956;
+    float: left;
+  }
+
+  .modal-body p {
+    text-align: center;
+    width: 180px;
+    margin-left: 48px;
   }
 </style>
