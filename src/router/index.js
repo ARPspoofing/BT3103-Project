@@ -36,6 +36,18 @@ const routes = [
   },
 
   {
+    path: "/student/searchresult/:searched",
+    name: "StudentSearchResult",
+    component: () => import("../views/Students/StudentSearchResult.vue"),
+  },
+
+  {
+    path: "/student/searchresult2/:searched",
+    name: "StudentSearchResult2",
+    component: () => import("../views/Students/StudentSearchResult2.vue"),
+  },
+
+  {
     path: "/project",
     name: "IndividualProjectInfo",
     component: () => import("../views/IndividualProjectInfo.vue"),
@@ -58,12 +70,12 @@ const routes = [
   {
     path: "/project/student_projectinfo",
     name: "StudentViewProjectInfo",
-    component: () => import("../views/StudentViewProjectInfo.vue")
+    component: () => import("../views/StudentViewProjectInfo.vue"),
   },
   {
     path: "/project/business_editproj",
     name: "BusinessEditProject",
-    component: () => import("../views/BusinessEditProject.vue")
+    component: () => import("../views/BusinessEditProject.vue"),
   },
   {
     path: "/student/login",
@@ -74,6 +86,29 @@ const routes = [
     path: "/student/profileForm",
     name: "StudentProfileForm",
     component: () => import("../views/Students/StudentProfileForm.vue"),
+    meta: {
+      auth: true,
+    },
+  },
+  {
+    path:"/student/navBar",
+    name: "StudentNavBar",
+    component: () => import ("../components/StudentNavBar.vue"),
+  },
+  {
+    path: "/student/landingpage",
+    name: "StudentLandingPage",
+    component: () => import("../views/Students/StudentLandingPage.vue"),
+  },
+  {
+    path: "/student/inprogress",
+    name: "StudentInProgressProjects",
+    component: () => import("../views/Students/StudentInProgressProjects.vue"),
+  },
+  {
+    path: "/student/completed",
+    name: "StudentCompletedProjects",
+    component: () => import("../views/Students/StudentCompletedProjects.vue"),
   },
   {
     path: "/student/landingpage",
@@ -98,12 +133,12 @@ const routes = [
   {
     path: "/student/management",
     name: "StudentManagement",
-    component: () => import("../views/Students/StudentManagement.vue")
+    component: () => import("../views/Students/StudentManagement.vue"),
   },
   {
     path: "/student/management/ToDo:taskId",
     name: "ToDoTaskDetails",
-    component: () => import("../views/Students/ToDoView.vue")
+    component: () => import("../views/Students/ToDoView.vue"),
   },
 
   //Business routes
@@ -146,6 +181,18 @@ const routes = [
     path: "/business/login",
     name: "BusinessLogin",
     component: () => import("../views/Businesses/BusinessLogin.vue"),
+  },
+
+  {
+    path: "/business/verify",
+    name: "BusinessVerify",
+    component: () => import("../components/VerifyEmail.vue"),
+  },
+
+  {
+    path: "/business/loading",
+    name:"businessLoading",
+    component: () => import("../components/GoogleLoading.vue")
   },
 
   {

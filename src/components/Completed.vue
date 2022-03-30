@@ -1,21 +1,13 @@
 <template>
     <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoTaskDetails', params: {taskId: task['id']}}">
-    <div class="todo">
+    <div class="completed">
         <div class="top flex flex-row">
             <div class="title">{{task['taskname']}}</div>
-            <div class="status-button flex" :class="{todoButton:task['todo'],inprogressButton:task['inprogress'],pendingreviewButton:task['pendingreview'],completedButton:task['completed']}">
-                <div v-if="task['todo']">
-                    <p>Todo</p>
-                </div>
-                <div v-if="task['inprogress']">
-                    <p>In-Progress</p>
-                </div>
-                <div v-if="task['pendingreview']">
-                    <p>Pending Review</p>
-                </div>
-                <div v-if="task['completed']"> 
+            <div class="status-button flex inprogressButton">                
+                <div >
                     <p>Completed</p>
                 </div>
+                
             </div>
         </div>
         <div class="duedate">
@@ -37,7 +29,7 @@
 
 <script>
     export default {
-        name: 'ToDo',
+        name: 'InProgress',
         props: {
             task:Object,
         },
@@ -54,8 +46,8 @@
 
 <style scoped>
 
-    .todo {
-        background-color: aquamarine;
+    .completed {
+        background-color: #BD9DCC;
         border-radius: 20px;
         padding: 40px 20px;
         margin-right:5px;
@@ -85,21 +77,14 @@
         background-color: rgb(54, 179, 110);
     }
 
-    .inprogress {
-        color: white;
-        background-color: rgb(245, 116, 11);
-    }
+    
 
     .pendingreview {
         color: white;
         background-color: rgb(102, 117, 245);
     }
 
-    .completed {
-        color: white;
-        background-color: rgb(187, 111, 231);
-    }
-
+ 
      .status-button {
         width: 4px;
         height: 10px;
@@ -123,14 +108,18 @@
     }
 
     .inprogressButton {
+         background-color: rgb(230, 121, 139);
 
     }
 
     .pendingreviewButton {
+         background-color: rgb(230, 121, 139);
 
     }
 
+
     .completedButton {
+         background-color: rgb(230, 121, 139);
 
     }
 

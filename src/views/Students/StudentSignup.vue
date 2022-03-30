@@ -60,7 +60,7 @@ import Loading from '../../components/Loading.vue'
 
 const db = getFirestore(firebaseApp)
 const router = useRouter()
-var validEmail = []
+//var validEmail = []
 export default {
     data() {
         return {
@@ -73,25 +73,30 @@ export default {
             confirmPasswordErrorPresent:false,
             errorMessage:'',
             loading: null,
+            validEmail: []
         }
     },
-    created() {
-      this.getValidEmail()
-      console.log("validEmail",validEmail)
-    },
-    components: {
-        Loading,
-    },
-    methods: {
-        async getValidEmail() {
+    mounted() {
+    const curr = this
+    async function getValidEmail() {
+        var validEmail = []
           let database = await getDocs(collection(db,"nusEmails"))
           database.forEach((doc) => {
               var data = doc.data()
               validEmail.push(data.email)
               //console.log(validEmail)
               })
-      },
+      curr.validEmail = validEmail
+      console.log(curr.validEmail)
+      }
+      getValidEmail()
+    },
+    components: {
+        Loading,
+    },
+    methods: {
         register() { 
+            console.log(this.validEmail)
                 if(this.email == '') {
                     this.errorMessage = 'email field is empty'
                     this.emailErrorPresent = true
@@ -167,8 +172,9 @@ export default {
                         this.passwordErrorPresent = false
                     }, 1500)
                     */
-                }else if (!validEmail.includes(this.email)) {
+                }else if (!this.validEmail.includes(this.email)) {
                     this.errorMessage = 'Unregistered NUS email'
+                    console.log(this.validEmail)
                     this.emailErrorPresent = true
                     setTimeout(() => {
                         this.emailErrorPresent = false
@@ -177,15 +183,16 @@ export default {
                     this.loading = true               
                     createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                     .then((data) => {
+                        window.localStorage.setItem('emailForSignIn', this.email);
                          setDoc(doc(db,"students",this.email),{
                             email:this.email,
-                            password:this.password,
+                            //password:this.password,
                             //when a user logs in when this attribute is false, he/she will be directed to the 
                             //profile page otherwise will be directed to the landing page
                             profileFormCreated:false,
 
                 })
-                    this.$router.push({name:'StudentProfileForm'})
+                    this.$router.push({name:'StudentHomePage'})
                     this.loading = false
                     }).catch((err) => {
                         this.error = err.code

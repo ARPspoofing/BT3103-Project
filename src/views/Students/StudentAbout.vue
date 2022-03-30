@@ -342,13 +342,14 @@ export default {
       } else if (this.contactNo == '') {
           this.contactNumberErrorPresent = true; 
           this.errorMessage = "Please enter your contact number"
-      } else if (this.contactNo.length != 8) {
+      } else if (this.contactNo.toString().length != 8) {
+          console.log(this.contactNo.length)
           this.contactNumberErrorPresent = true;
           this.errorMessage = "Please enter a valid contact number"
-      } else if (!this.resumePresent) {
+      } else if (!this.resumePresent && this.resumeLink == '') {
           this.resumeErrorPresent = true;
           this.errorMessage = "Please upload your resume"
-      } else if (!this.transcriptPresent) {
+      } else if (!this.transcriptPresent && this.transcriptLink == '') {
           this.transcriptErrorPresent = true;   
           this.errorMessage = "Please upload your transcript"
       } else {
