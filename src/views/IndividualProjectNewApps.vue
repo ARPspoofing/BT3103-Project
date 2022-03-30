@@ -123,22 +123,17 @@ export default {
         name:'BusinessViewStudentInfo', 
         params: {
           applicants: JSON.stringify(this.applicant[key]),
-          // newApplicants: JSON.stringify(this.newApplicants[key]),
-          // accApplicants: JSON.stringify(this.accApplicants[key]),
-          // rejApplicants: JSON.stringify(this.rejApplicants[key]),
-          // offered: JSON.stringify(this.offered[key]),
-          // rejected: JSON.stringify(this.rejected[key]),
-          // applied: JSON.stringify(this.applied[key]),
-          // items: JSON.stringify(this.items),
+          buttonShow: true,
+          allApplicants: JSON.stringify(this.applicant),
+          newApplicants: JSON.stringify(this.newApplicants),
+          accApplicants: JSON.stringify(this.accApplicants),
+          rejApplicants: JSON.stringify(this.rejApplicants),
+          offered: JSON.stringify(this.offered[key]),
+          rejected: JSON.stringify(this.rejected[key]),
+          applied: JSON.stringify(this.applied[key]),
+          items: JSON.stringify(this.items),
+          key: JSON.stringify(key),
         },
-        // data() {
-        //   return {
-        //     buttonShow: true,
-        //   }
-        // },
-        // components: {
-        //   BusinessViewStudentInfo,
-        // },
       })
     },
 

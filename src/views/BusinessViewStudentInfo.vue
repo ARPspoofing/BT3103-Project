@@ -1,13 +1,13 @@
 <template>
   <BusinessNavBar :Heading="Heading" :header="true" />
   <div @click="check" ref="formWrap" class="form-wrap flex flex-column" id="mainBody">
-        <button @click="" id="backButton">Back to Applicants</button>
+        <button @click="goback" id="backButton">Back to Applicants</button>
         <form @submit.prevent="submitForm" class="content">
             <div class="profile-pic-outer">
                 <img class="profile-pic" :src="finalProfile"/>
             </div>
-            <!-- <div class="accRejButtons" v-show="buttonShow"> -->
-            <div class="accRejButtons" v-show=true>
+            <div class="accRejButtons" v-if="showButton">
+            <!-- <div class="accRejButtons" v-show=true> -->
                 <button id="accButton" @click="acceptbtn">Accept</button>
                 <button id="rejButton" @click="rejectbtn">Reject</button>
             </div>
@@ -91,12 +91,15 @@
 
 <script>
 import BusinessNavBar from '../components/BusinessNavBar.vue'
+import {signOut, getAuth, onAuthStateChanged} from "firebase/auth"
+import {useRouter} from "vue-router"
 import * as moment from 'moment'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, getDoc, updateDoc } from "firebase/firestore"
 import { v4 as uuidv4 } from 'uuid';
 const db = getFirestore(firebaseApp);
+const router = useRouter()
 export default {
     name:'BusinessViewStudentInfo',
     components: {
@@ -113,99 +116,121 @@ export default {
         buttonShow: Boolean,
     },
     methods: {
+        goback() {
+            //this.$router.push({name: "IndividualProjectNewApps"})
+        },
         async acceptbtn() {
-            // var accApplicant = this.newApplicant;
-            // var offered = this.offer;
-            // var name = this.applicant.name;
-            // var projTitle = this.item["projectTitle"];
-            // var projId = this.item["projectId"];
-            // var applied = this.apply;
-            // //console.log("bef" + applied)
+            var theaccApplicant = this.newApplicant[this.theKey];
+            console.log(theaccApplicant)
+            var offered = this.offer;
+            var name = this.applicant.name;
+            var projTitle = this.item["projectTitle"];
+            var projId = this.item["projectId"];
+            var applied = this.apply;
+            //console.log("bef" + applied)
 
-            // if (!this.accApplicant) {
-            //     var accApplicants = [];
-            //     accApplicants.push(accApplicant);
-            //     this.accApplicants = accApplicants;
-            // } else {
-            //     this.accApplicants.push(accApplicant);
-            // }
+            if (!this.accApplicant) {
+                var accApplicants = [];
+                accApplicants.push(theaccApplicant);
+                this.accApplicant = accApplicants;
+            } else {
+                this.accApplicant.push(theaccApplicant);
+            }
 
-            // var index = applied.indexOf(projId)
-            // applied.splice(index, 1)
-            // //console.log("after" + applied)
+            var index = applied.indexOf(projId)
+            applied.splice(index, 1)
+            //console.log("after" + applied)
 
-            // offered.push(projId);
-            // //console.log(offered);
-            // this.newApplicant.splice(key, 1);
-            // this.applicant.splice(key, 1);
-            // this.offer.splice(key, 1);
-            // this.apply.splice(key, 1);
+            offered.push(projId);
+            //console.log(offered);
+            this.newApplicant.splice(this.theKey, 1);
+            // this.allApplicant.splice(this.theKey, 1);
+            // this.offer.splice(this.theKey, 1);
+            // this.apply.splice(this.theKey, 1);
+            console.log(this.accApplicant)
+            console.log(this.newApplicant)
+            console.log(offered)
+            console.log(this.offer)
+            console.log(applied)
+            console.log(this.apply)
+            console.log(this.theKey)
 
-            // alert("Accepting applicant: " + name);
-            // try {
-            //     const docRef = await updateDoc(doc(db, "Project", projId), {
-            //         Acc_Applicants: this.accApplicants,
-            //         New_Applicants: this.newApplicants,
-            //     });
-            //     const docRef2 = await updateDoc(doc(db, "students", accApplicant), {
-            //         offeredProjects: offered,
-            //         appliedProjects: applied
-            //     });
-            //     console.log(docRef);
-            //     this.$emit("updated"); 
-            // } catch (error) {
-            //     console.error("Error updating document: ", error);
-            // }
+            alert("Accepting applicant: " + name);
+            try {
+                const docRef = await updateDoc(doc(db, "Project", projId), {
+                    Acc_Applicants: this.accApplicant,
+                    New_Applicants: this.newApplicant,
+                });
+                const docRef2 = await updateDoc(doc(db, "students", theaccApplicant), {
+                    offeredProjects: offered,
+                    appliedProjects: applied
+                });
+                console.log(docRef);
+                this.$emit("updated"); 
+            } catch (error) {
+                console.error("Error updating document: ", error);
+            }
         },
 
         async rejectbtn() {
-            // var rejApplicant = this.newApplicant;
-            // var rejected = this.reject;
-            // var name = this.applicant.name;
-            // var projTitle = this.item["projectTitle"];
-            // var projId = this.item["projectId"];
-            // var applied = this.apply;
-            // //console.log("bef" + applied)
+            var therejApplicant = this.newApplicant[this.theKey];
+            // var therejApplicant = this.newApplicant;
+            //var rejecting = this.rejectted
 
-            // if (!this.rejApplicant) {
-            //     var rejApplicants = [];
-            //     rejApplicants.push(rejApplicant);
-            //     this.rejApplicants = rejApplicant;
-            // } else {
-            //     this.rejApplicant.push(rejApplicant);
-            // }
+            var rejected = this.reject;
+            var name = this.applicant.name;
+            var projTitle = this.item["projectTitle"];
+            var projId = this.item["projectId"];
+            var applied = this.apply;
+            //console.log("bef" + applied)
 
-            // var index = applied.indexOf(projId)
-            // applied.splice(index, 1)
-            // //console.log("aft" + applied)
+            if (!this.rejApplicant) {
+                var rejApplicants = [];
+                rejApplicants.push(therejApplicant);
+                this.rejApplicant = rejApplicants;
+            } else {
+                this.rejApplicant.push(therejApplicant);
+            }
 
-            // rejected.push(projId);
+            var index = applied.indexOf(projId)
+            applied.splice(index, 1)
+            //console.log("aft" + applied)
+
+            rejected.push(projId);
 
             // this.reject.splice(key, 1);
-            // this.newApplicant.splice(key, 1);
+            this.newApplicant.splice(this.theKey, 1);
             // this.applicant.splice(key, 1);
             // this.apply.splice(key, 1);
+            console.log(this.rejApplicant)
+            console.log(this.newApplicant)
+            console.log(rejected)
+            console.log(this.reject)
+            console.log(applied)
+            console.log(this.apply)
+            console.log(this.theKey)
 
-            // alert("Rejecting applicant: " + name);
 
-            // try {
-            //     const docRef = await updateDoc(doc(db, "Project", projId), {
-            //         Rej_Applicants: this.rejApplicant,
-            //         New_Applicants: this.newApplicant,
-            //     });
+            alert("Rejecting applicant: " + name);
 
-            //     const docRef2 = await updateDoc(doc(db, "students", rejApplicant), {
-            //         rejectedProjects: reject,
-            //         appliedProjects: apply
-            //     });
+            try {
+                const docRef = await updateDoc(doc(db, "Project", projId), {
+                    Rej_Applicants: this.rejApplicant,
+                    New_Applicants: this.newApplicant,
+                });
 
-            //     console.log(docRef);
-            //     this.$emit("updated");
-            // } catch (error) {
-            //     console.error("Error updating document: ", error);
-            // }
-            // console.log(this.rejApplicant);
-            // console.log(key);
+                const docRef2 = await updateDoc(doc(db, "students", therejApplicant), {
+                    rejectedProjects: rejected,
+                    appliedProjects: applied
+                });
+
+                console.log(docRef);
+                this.$emit("updated");
+            } catch (error) {
+                console.error("Error updating document: ", error);
+            }
+            //console.log(this.rejApplicant);
+            //console.log(key);
         },
     },
     data() {
@@ -230,22 +255,30 @@ export default {
             newApplicant: [],
             accApplicant: [],
             rejApplicant: [],
+            allApplicant: [],
             applicant: [],
-            key: '',
+            theKey: '',
             offer: [],
             reject: [],
             apply: [],
+            showButton: false,
         }
     },
     mounted() {
+        const auth = getAuth();
+        var userEmail = auth.currentUser.email;
         this.applicant = JSON.parse(this.$route.params.applicants)
-        // this.newApplicant = JSON.parse(this.$route.params.newApplicants)
-        // this.accApplicant = JSON.parse(this.$route.params.accApplicants)
-        // this.rejApplicant = JSON.parse(this.$route.params.rejApplicants)
-        // this.offer = JSON.parse(this.$route.params.offered)
-        // this.reject = JSON.parse(this.$route.params.rejected)
-        // this.apply = JSON.parse(this.$route.params.applied)
-        //this.item = JSON.parse(this.$route.params.items)
+        this.allApplicant = JSON.parse(this.$route.params.allApplicants)
+        this.showButton = JSON.parse(this.$route.params.buttonShow)
+        this.newApplicant = JSON.parse(this.$route.params.newApplicants)
+        this.accApplicant = JSON.parse(this.$route.params.accApplicants)
+        this.rejApplicant = JSON.parse(this.$route.params.rejApplicants)
+        this.offer = JSON.parse(this.$route.params.offered)
+        this.reject = JSON.parse(this.$route.params.rejected)
+        this.apply = JSON.parse(this.$route.params.applied)
+        this.item = JSON.parse(this.$route.params.items)
+        this.theKey = JSON.parse(this.$route.params.key)
+        console.log(this.accApplicant)
 
         var email = JSON.parse(this.$route.params.applicants).email
         const that = this;
