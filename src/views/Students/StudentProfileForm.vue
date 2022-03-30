@@ -426,7 +426,8 @@ export default {
             } else {
                 const auth = getAuth()
                 const email = auth.currentUser.email;
-            setDoc(doc(db,"students",String(email)),{
+                console.log(email)
+            await setDoc(doc(db,"students",String(email)),{
                 email: email,
                 name:this.name,
                 course:this.course,
