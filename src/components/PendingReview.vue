@@ -1,21 +1,14 @@
 <template>
     <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoTaskDetails', params: {taskId: task['id']}}">
-    <div class="todo">
+    <div class="pendingreview">
         <div class="top flex flex-row">
             <div class="title">{{task['taskname']}}</div>
-            <div class="status-button flex" :class="{todoButton:task['todo'],inprogressButton:task['inprogress'],pendingreviewButton:task['pendingreview'],completedButton:task['completed']}">
-                <div v-if="task['todo']">
-                    <p>Todo</p>
-                </div>
-                <div v-if="task['inprogress']">
-                    <p>In-Progress</p>
-                </div>
-                <div v-if="task['pendingreview']">
+            <div class="status-button flex todoButton">
+               
+                <div>
                     <p>Pending Review</p>
                 </div>
-                <div v-if="task['completed']"> 
-                    <p>Completed</p>
-                </div>
+                
             </div>
         </div>
         <div class="duedate">
@@ -37,7 +30,7 @@
 
 <script>
     export default {
-        name: 'ToDo',
+        name: 'PendingReview',
         props: {
             task:Object,
         },
@@ -54,8 +47,8 @@
 
 <style scoped>
 
-    .todo {
-        background-color: aquamarine;
+    .pendingreview {
+        background-color: hsl(202, 54%, 56%);
         border-radius: 20px;
         padding: 40px 20px;
         margin-right:5px;

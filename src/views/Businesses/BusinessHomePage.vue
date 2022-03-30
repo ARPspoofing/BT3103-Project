@@ -1,6 +1,7 @@
 <template>
   <BusinessNavBar :Heading="Heading" :header=true />
-  <div class="mainBody">
+  <BusinessProfileForm @success='close' v-if='!profileFormCreated'/>
+  <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
@@ -9,55 +10,77 @@
         <b>POSTED</b>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'BusinessInProgress'}" ><b>IN PROGRESS</b></router-link>
+        <router-link class="optionsOff" :to="{ name: 'BusinessInProgress' }"
+          ><b>IN PROGRESS</b></router-link
+        >
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'BusinessCompleted'}" ><b>COMPLETED</b></router-link>
+        <router-link class="optionsOff" :to="{ name: 'BusinessCompleted' }"
+          ><b>COMPLETED</b></router-link
+        >
       </span>
     </h1>
-    <hr/>
+    <hr />
     <h1></h1>
-      <div class="projectContainer">
-        <div :key="item.key" v-for="(item, key) in testCollection">
-          <Card v-if="isEqual(item.posterId)"
-          :apply=false 
-          :projectTitle = "item.projectTitle" 
-          :description="item.description" 
+    <div class="projectContainer">
+      <div :key="item.key" v-for="(item, key) in testCollection">
+        <Card
+          v-if="isEqual(item.posterId)"
+          :apply="false"
+          :projectTitle="item.projectTitle"
+          :description="item.description"
           @clickCard="indivproj(key)"
-          :picture = "item.profilePicture"/>
-        </div>
+          :picture="item.profilePicture"
+        />
       </div>
+    </div>
   </div>
 </template> 
 
 <script>
-import BusinessNavBar from '../../components/BusinessNavBar.vue'
-import Card from '../../components/Card.vue'
-import firebaseApp from '../../firebase.js';
-import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
-import { signOut, getAuth, onAuthStateChanged } from "firebase/auth"
+import BusinessNavBar from "../../components/BusinessNavBar.vue";
+import Card from "../../components/Card.vue";
+import firebaseApp from "../../firebase.js";
+import { getFirestore } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  setDoc,
+  deleteDoc,
+  getDocs,
+  updateDoc,
+  getDoc,
+  query,
+  orderBy,
+} from "firebase/firestore";
+import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
+import BusinessProfileForm from './BusinessProfileForm.vue'
 const db = getFirestore(firebaseApp);
 
 export default {
-  name: 'BusinessHomePage',
+  name: "BusinessHomePage",
   components: {
     BusinessNavBar,
-    Card
+    Card,
+    BusinessProfileForm
   },
-
   data() {
     return {
       Heading: "MY PROJECTS",
       testCollection: [],
+      profileFormCreated: true,
+      foreverTrue: true,    
       businessEmail: "",
-    }
+    };
   },
 
   methods: {
+    close(e) {
+      this.profileFormCreated = e
+    },
     indivproj(key) {
       this.$router.push({
-        name:'IndividualProjectInfo', 
+        name: "IndividualProjectInfo",
         params: {
           /*
           projectTitle: this.testCollection[key].projectTitle,
@@ -71,64 +94,106 @@ export default {
           tags: JSON.stringify(this.testCollection[key].tags),*/
           items: JSON.stringify(this.testCollection[key]),
         },
-      })
-      console.log(key)
-      console.log(this.testCollection[key])
+      });
+      console.log(key);
+      console.log(this.testCollection[key]);
     },
 
     isEqual(email) {
       return email == this.businessEmail;
-    }
+    },
   },
 
+  created() {
+    var that = this
+    /*
+    var userEmail
+    var currUser = getAuth().onAuthStateChanged(function (user) {
+      if (user) {
+        //this.profileFormCreated = currUser.email
+        //console.log(this.profileFormCreated)
+        userEmail = user.email
+      }
+    })
+    */
+    var userEmail = window.localStorage.getItem('emailForSignIn')
+     async function profileFormCreatedCheck() {
+      var profileFormCreated = false;
+      
+      let snapshot = await getDocs(collection(db,'businesses'))
+      /*
+      if (snapshot.profileFormCreated == true) {
+        profileFormCreated = true
+      }
+      that.profileFormCreated = profileFormCreated
+      */
+     snapshot.forEach((doc) => (doc.id==userEmail) ? profileFormCreated = doc.data().profileFormCreated : profileFormCreated = profileFormCreated )
+     that.profileFormCreated = profileFormCreated
+    }
+    profileFormCreatedCheck()
+
+
+    /*
+    var currUser = getAuth().currentUser
+    this.profileFormCreated = currUser.email
+    */
+
+  },
   mounted() {
+    /*
+    const auth = getAuth().currentUser.email
+    console.log("curr user",auth)
+    */
+    //console.log("auth",auth)
     const auth = getAuth();
     this.businessEmail = auth.currentUser.email;
-    console.log("email: " + this.businessEmail)
+    console.log("email: " + this.businessEmail);
 
     const that = this;
+  
     async function fetchProject() {
       var businessEmail = auth.currentUser.email;
-      let snapshot = await getDocs(collection(db, "Project"))
-      //console.log("doc: "+ snapshot)
+
+      //order projects by posted date, from latest to oldest
+      let projects = query(collection(db, "Project"), orderBy("Posted_Date", "desc"));
+      let snapshot = await getDocs(projects);
       const testCollection = [];
       const docSnap = await getDoc(doc(db, "businesses", businessEmail));
-      //console.log("doc: "+ docSnap)
       let data1 = docSnap.data();
       var pictureprof = data1.finalProfile;
-      if (typeof pictureprof === 'undefined') {
-          pictureprof = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
+      if (typeof pictureprof === "undefined") {
+        pictureprof =
+          "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png";
       }
-      //console.log("pic: " + typeof(data1.finalProfile))
-        //console.log(data)
-        //name =  data.name;
-        //console.log("name: "+ name)
-        //let result = await data.name
+
       snapshot.forEach((docs) => {
-        let data = docs.data()
-        var id = docs.id
-        testCollection.push({ 
-            projectId: id,
-            projectTitle: data.Project_Title, 
-            description: data.Description, 
-            vacancies: data.Num_Of_Vacancies,
-            allowance: data.Allowance,
-            position: data.Position,
-            projectStart: data.Project_Start,
-            projectEnd: data.Project_End,
-            tasks: data.Tasks,
-            tags: data.Tags,
-            newApplicants: data.New_Applicants,
-            accApplicants: data.Acc_Applicants,
-            rejApplicants: data.Rej_Applicants,
-            posterId: data.poster_id,
-            profilePicture: pictureprof
+        let data = docs.data();
+        var id = docs.id;
+        testCollection.push({
+          projectId: id,
+          projectTitle: data.Project_Title,
+          description: data.Description,
+          vacancies: data.Num_Of_Vacancies,
+          allowance: data.Allowance,
+          position: data.Position,
+          projectStart: data.Project_Start,
+          projectEnd: data.Project_End,
+          tasks: data.Tasks,
+          tags: data.Tags,
+          newApplicants: data.New_Applicants,
+          accApplicants: data.Acc_Applicants,
+          rejApplicants: data.Rej_Applicants,
+          posterId: data.poster_id,
+          profilePicture: pictureprof,
         });
       });
-      that.testCollection = testCollection
-      console.log(testCollection)
+      that.testCollection = testCollection;
+      console.log(testCollection);
     }
     fetchProject();
+    /*
+    profileFormCreatedCheck();
+    */
   }
 }
 </script>
@@ -149,6 +214,10 @@ export default {
       margin: 10px;
   }
 
+  .blur {
+  filter: blur(5px); 
+  }
+
   .mainBody {
     background-color: #F5F5F5;
     width: 100%;
@@ -156,6 +225,9 @@ export default {
     position: fixed;
     overflow-y: scroll;
     padding-bottom: 550px;
+    /*
+    filter: blur(5px);
+    */
   }
 
   .projectContainer {
@@ -178,7 +250,7 @@ export default {
 
   .options {
     font-size: 15px;
-    padding: 5px 25px;
+    padding: 10px 25px;
     margin-left: 15px;
     border-radius: 30px; /* or 50% */
     background-color: #0E8044;

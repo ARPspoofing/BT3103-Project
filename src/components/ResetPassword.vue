@@ -20,7 +20,7 @@
 <script>
 import firebaseApp from '../firebase.js';
 import {getFirestore} from 'firebase/firestore';
-import {getAuth,sendPasswordResetEmail} from "firebase/auth"
+import {getAuth,sendPasswordResetEmail,sendSignInLinkToEmail} from "firebase/auth"
 import {useRouter} from "vue-router"
 export default {
     name:'ResetPassword',
@@ -34,9 +34,10 @@ export default {
     },
     methods: {
         reset() {
-            if (this.email != '') {
+            if (this.email != '') {        
                 const auth = getAuth()
                 sendPasswordResetEmail(getAuth(),this.email).then(() => {}).catch(() => {})
+                auth.currentUser.emailVerified
                 this.notEntered = false
                 this.msg = 'Please check your email inbox or the junk folder'
                 setTimeout(() => {

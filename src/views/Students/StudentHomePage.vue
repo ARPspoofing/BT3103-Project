@@ -1,6 +1,9 @@
 <template>
+
   <StudentNavBar :search=true :header=false />
-  <div class="mainBody">
+  <StudentProfileForm @cancel='cancel' @success='close' v-if='!profileFormCreated'/>
+  <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
+    
     <h1 id="interest">Projects You May Like</h1>
     <!--
     <div v-if="isLoading">
@@ -149,29 +152,45 @@ import firebaseApp from '../../firebase.js';
 import { getFirestore, query, where } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
+
+import StudentProfileForm from './StudentProfileForm.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default {
   name: 'StudentHomePage',
   components: {
     StudentNavBar, 
-    Card
-  },
+    Card,
+    StudentProfileForm,
 
+  },
+  emits: ['cancel'],
   data() {
     return {
       Heading: " ",
+      
       testCollection: [],
       wholeTestCollection: [],
       newApplicants:[],
+      foreverTrue:true,
+      profileFormCreated: true,
+      cancel: false,
       user: false, 
       userEmail: "", 
       applied: [],
       studentTags: [],
+      allApplied: [],
     }
   },
   
   methods: {
+    close(e) {
+      this.profileFormCreated = true;
+    },
+    cancel(e) {
+      this.cancel = e;
+      console.log("eeeeeeeeeeeeeeee")
+    },
     async addApplicant(key) {
       console.log(this.testCollection[key])
       var newApplicants = this.testCollection[key]["newApplicants"]
@@ -248,7 +267,39 @@ export default {
     //   return intProjects;
     // }
   },
-  
+  created() {
+    var that = this
+    var userEmail
+    var currUser = getAuth().onAuthStateChanged(function (user) {
+      if (user) {
+        //this.profileFormCreated = currUser.email
+        //console.log(this.profileFormCreated)
+        userEmail = user.email
+      }
+    })
+
+     async function profileFormCreatedCheck() {
+      var profileFormCreated = false;
+      
+      let snapshot = await getDocs(collection(db,'students'))
+      /*
+      if (snapshot.profileFormCreated == true) {
+        profileFormCreated = true
+      }
+      that.profileFormCreated = profileFormCreated
+      */
+     snapshot.forEach((doc) => (doc.id==userEmail) ? profileFormCreated = doc.data().profileFormCreated : profileFormCreated = profileFormCreated )
+     that.profileFormCreated = profileFormCreated
+    }
+    profileFormCreatedCheck()
+
+
+    /*
+    var currUser = getAuth().currentUser
+    this.profileFormCreated = currUser.email
+    */
+
+  },
   mounted() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -265,7 +316,20 @@ export default {
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       console.log(data.appliedProjects)
-      that.applied = data.appliedProjects
+      that.applied = data.appliedProjects  
+    }
+    getAppliedProjects();
+
+    async function getAllAppliedProjects() {
+      const ref = doc(db, "students", auth.currentUser.email);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      //console.log(data.appliedProjects)
+      that.allApplied = data.appliedProjects
+      that.allApplied = that.allApplied.concat(data.completedProjects)
+      that.allApplied = that.allApplied.concat(data.inProgProjects)
+      that.allApplied = that.allApplied.concat(data.offeredProjects)
+      that.allApplied = that.allApplied.concat(data.rejectedProjects)    
     }
 
     async function fetchProject() {
@@ -285,7 +349,7 @@ export default {
       let wholeSnapshot = await getDocs(collection(db, "Project"))
       const wholeTestCollection = [];
       const testCollection = [];
-      console.log(that.applied)
+      //console.log(that.applied)
       snapshot.forEach( async (docs) => {
         let data = docs.data()
         var id = docs.id
@@ -296,7 +360,7 @@ export default {
         //   if (typeof pictureprof === 'undefined') {
         //     pictureprof = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
         //   }
-        if (that.applied.includes(id)) {
+        if (that.allApplied.includes(id)) {
           console.log("pic is: " + data.profPicture)
           testCollection.push({ 
             /*projectTitle: data.Project_Title, 
@@ -356,7 +420,7 @@ export default {
         //   if (typeof pictureprof === 'undefined') {
         //     pictureprof = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
         //   }
-        if (that.applied.includes(data.Project_Title)) {
+        if (that.allApplied.includes(data.Project_Title)) {
           wholeTestCollection.push({ 
             /*projectTitle: data.Project_Title, 
             description: data.Description,
@@ -442,9 +506,9 @@ export default {
     
     // getTags(this.userEmail).then((res)=>{console.log(res.map((x) => x["value"]))})
     
-    getAppliedProjects()
+    getAllAppliedProjects()
     fetchProject();
-    console.log(that.applied)
+    //console.log(that.applied)
   }
 }
 </script>
@@ -462,6 +526,10 @@ export default {
 
   .carouContainer {
     margin-left: 30px;
+  }
+
+  .blur {
+  filter: blur(5px); 
   }
 
   #interest, #latest {

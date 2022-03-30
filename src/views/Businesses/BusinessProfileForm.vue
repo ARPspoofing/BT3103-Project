@@ -1,5 +1,4 @@
-<template>
-    
+<template> 
     <PopUp @return="close" v-if="popUp" />
     <div @click="check" ref="formWrap" class="form-wrap flex flex-column">
         <form @submit.prevent="submitForm" class="content">
@@ -29,17 +28,9 @@
 
                 <h4>Description</h4> 
                 <div>
-                  
-                    <textarea name="" id="desc" cols="107" rows="5" v-model="description"></textarea>
+                    <textarea name="" id="desc" cols="30" rows="10" v-model="description"></textarea>
                 </div>
-
-
             </div>     
-                 
-            
-            <div>
-                <img class="addBtn" @click="add" src="../../assets/add.png" alt="add button">
-            </div>
             <!--Save Exit-->
             <div class="save flex">
                 <div class="left">
@@ -76,6 +67,8 @@ export default {
             industryErrorPresent:false,
             nameErrorPresent:false,
             user:false,
+            completedProjects: [],
+            inProgressProjects: [],
             errorMessage:'',
             finalProfile: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",    
         }
@@ -126,18 +119,30 @@ export default {
                  this.industryErrorPresent = true;  
                  this.errorMessage = "Please fill in your company's industry"
              } else {
+                 //Previous version of retrieving email. Have some problem
+                 /*
                  const auth = getAuth()
                  const email = auth.currentUser.email;
+                 */
+                //New version
+                const email = window.localStorage.getItem('emailForSignIn')
+                 
+                 
                  //accessing the current user and setting the elements
                  await setDoc(doc(db,'businesses',String(email)), {
                      name: this.name,
                      industry: this.industry,
                      description: this.description,
                      profileFormCreated: true,
+                     verifyEmail:true,
                      finalProfile:this.finalProfile,
-                 })
+                     inProgressProjects: this.inProgressProjects,
+                     completedProjects: this.completedProjects,
 
-                 this.$router.push({name:"BusinessHomePage"})
+                 })
+                this.$emit('success',true)
+
+                this.$router.push({name:"BusinessHomePage"})
 
              }
          },
@@ -167,13 +172,21 @@ export default {
 <style scoped>
     
     .form-wrap {
-      position:fixed;
-      top:0;
-      left:0%;
-      background-color: transparent;
-      width:100%;
-      height:100vh;
-      overflow:scroll;
+        top: 0;
+        left: 0;
+        z-index: 101;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;      
+        overflow:scroll;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
     }
 
     input,
@@ -188,14 +201,16 @@ export default {
     }
 
     input,
-    select {
-        width:63%;
-        background-color: white;
+    select,
+    textarea {
+        width:100%;
+        background-color: #33d69f;
         border: none;
         outline:none;
-        font-family: 'Poppins', sans-serif;
-        margin-left: auto;
-        margin-right: auto;
+    }
+
+    textarea {
+        margin-bottom: 8px;
     }
 
     .labelTag,
@@ -212,7 +227,7 @@ export default {
     }
 
     .interest {
-        gap:10px;
+        gap:5px;
         div {
             flex: 1;
         }
@@ -221,10 +236,10 @@ export default {
     .content {
       position:relative;
       padding:50px;
-      width: 100%;
-      height: 100%;
+      width:80%;
       background-color: #BBDFCC;
-      color: #606060;
+      color:black;
+      border-radius:5%;
     }
     img {
         position: absolute;

@@ -10,7 +10,7 @@
 
 <style scoped>
     .loading {
-        z-index: 101;
+        z-index: 999;
         height: 30%;
         width: 30%;
         position: absolute;

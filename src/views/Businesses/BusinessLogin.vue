@@ -38,24 +38,34 @@
                 <div class="input">
                     <button @click="login"><b>Log In</b></button>
                 </div>
+                <div class="google">
+                    <GoogleButton @click="google" msg="sign in"/>
+                </div> 
+                <div class="input">
+                    <p> Users who signed up with Google must sign in with their Google account </p>
+                </div> 
+
             </div>
         </form>
+        
     </div>
     
 </template>
 
 <script>
 import {ref} from "vue"
-import {getAuth,signInWithEmailAndPassword} from "firebase/auth"
+import {getAuth,signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup} from "firebase/auth"
 import {useRouter} from "vue-router"
 import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../../firebase.js"
 import {getDoc, collection, doc} from "firebase/firestore"
 import ResetPassword from '../../components/ResetPassword.vue'
+import GoogleButton from '../../components/GoogleButton.vue'
 
-
+const that = this
 const router = useRouter()
 const db = getFirestore(firebaseApp)
+const provider = new GoogleAuthProvider();
 
 export default {
     name:"BusinessLogin",
@@ -72,7 +82,18 @@ export default {
     },   
     components: {
         ResetPassword,
-    },    
+        GoogleButton,
+    }, 
+    /*
+    mounted() {
+        async function checkVerified() {
+            const docRef = doc(db,"businesses",String(this.email))
+            const docs = await getDoc(docRef)
+            const  = docs.data().profileFormCreated
+        }
+        checkVerified()
+    },  
+    */ 
     methods: {
     forgot() {
         this.forgetPassword = true
@@ -80,6 +101,31 @@ export default {
     close(e) {
         this.forgetPassword = false
     }, 
+    async google() {
+        const that = this;
+        const auth = getAuth();
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(auth, provider)
+        .then((result) => {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            const user = result.user;
+            alert(user.email)
+            window.localStorage.setItem('emailForSignIn', user.email);
+            this.$router.push({name:'businessLoading'})
+                // ...
+        }).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            // ...
+        });
+    },
     async login(){
         console.log("In method")
         if(this.email == '') {
@@ -108,15 +154,28 @@ export default {
             } else {
             console.log(docs.data())
             const formFilled = docs.data().profileFormCreated
+            const verifyEmail = docs.data().verifyEmail
+            console.log(verifyEmail)
         signInWithEmailAndPassword(getAuth(), this.email,this.password)
         .then((data) => {
-            if(formFilled) {  
-                console.log("formFilled")      
-                this.$router.push({name:'BusinessHomePage'})
-            } else {
-                this.$router.push({name:'BusinessProfileForm'})
+            window.localStorage.setItem('emailForSignIn', this.email);
+            if(formFilled) {
+                 this.$router.push({name:'BusinessHomePage',params:{'formFilled':true}})
+
+            }else if (!verifyEmail) {
+                this.$router.push({name:'BusinessVerify'})
             }
+            else {
+                if(formFilled) {  
+                    console.log("formFilled")      
+                    this.$router.push({name:'BusinessHomePage',params:{'formFilled':true}})
+                } else {
+                    this.$router.push({name:'BusinessProfileForm',params:{'formFilled':false}})
+                }
+            }
+            
         } ).catch((error) => {
+            console.log(error)
             if(error.code === "auth/wrong-password") {
                 this.passwordErrorPresent = true;
                 this.errorMessage = "You have entered an incorrect password"
@@ -247,6 +306,13 @@ export default {
         font-weight:bolder;
         cursor: pointer;
         width: 80%;
+    }
+
+    .google {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top:10px;
     }
 
     .shake {
