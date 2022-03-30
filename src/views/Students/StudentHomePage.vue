@@ -152,12 +152,9 @@ import firebaseApp from '../../firebase.js';
 import { getFirestore, query, where } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
-<<<<<<< HEAD
-import { getAuth,onAuthStateChanged } from 'firebase/auth';
+
 import StudentProfileForm from './StudentProfileForm.vue'
-=======
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
 
 export default {
   name: 'StudentHomePage',
@@ -175,17 +172,14 @@ export default {
       testCollection: [],
       wholeTestCollection: [],
       newApplicants:[],
-<<<<<<< HEAD
       foreverTrue:true,
       profileFormCreated: true,
       cancel: false,
-=======
       user: false, 
       userEmail: "", 
       applied: [],
       studentTags: [],
       allApplied: [],
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
     }
   },
   

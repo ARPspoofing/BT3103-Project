@@ -28,12 +28,7 @@
 
                 <h4>Description</h4> 
                 <div>
-<<<<<<< HEAD
                     <textarea name="" id="desc" cols="30" rows="10" v-model="description"></textarea>
-=======
-                  
-                    <textarea name="" id="desc" cols="107" rows="5" v-model="description"></textarea>
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
                 </div>
             </div>     
             <!--Save Exit-->
@@ -72,6 +67,8 @@ export default {
             industryErrorPresent:false,
             nameErrorPresent:false,
             user:false,
+            completedProjects: [],
+            inProgressProjects: [],
             errorMessage:'',
             finalProfile: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",    
         }
@@ -137,11 +134,11 @@ export default {
                      industry: this.industry,
                      description: this.description,
                      profileFormCreated: true,
-<<<<<<< HEAD
-                     verifyEmail:true
-=======
+                     verifyEmail:true,
                      finalProfile:this.finalProfile,
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
+                     inProgressProjects: this.inProgressProjects,
+                     completedProjects: this.completedProjects,
+
                  })
                 this.$emit('success',true)
 
@@ -175,7 +172,6 @@ export default {
 <style scoped>
     
     .form-wrap {
-<<<<<<< HEAD
         top: 0;
         left: 0;
         z-index: 101;
@@ -191,15 +187,6 @@ export default {
 
     ::-webkit-scrollbar {
         display: none;
-=======
-      position:fixed;
-      top:0;
-      left:0%;
-      background-color: transparent;
-      width:100%;
-      height:100vh;
-      overflow:scroll;
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
     }
 
     input,
@@ -214,7 +201,6 @@ export default {
     }
 
     input,
-<<<<<<< HEAD
     select,
     textarea {
         width:100%;
@@ -225,16 +211,6 @@ export default {
 
     textarea {
         margin-bottom: 8px;
-=======
-    select {
-        width:63%;
-        background-color: white;
-        border: none;
-        outline:none;
-        font-family: 'Poppins', sans-serif;
-        margin-left: auto;
-        margin-right: auto;
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
     }
 
     .labelTag,
@@ -260,17 +236,10 @@ export default {
     .content {
       position:relative;
       padding:50px;
-<<<<<<< HEAD
       width:80%;
       background-color: #BBDFCC;
       color:black;
       border-radius:5%;
-=======
-      width: 100%;
-      height: 100%;
-      background-color: #BBDFCC;
-      color: #606060;
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
     }
     img {
         position: absolute;
@@ -363,10 +332,6 @@ export default {
         color: red;
         margin-top:5px;
     }
-<<<<<<< HEAD
-    
-    
-=======
 
     .profile-icon h6 {
         display: grid;
@@ -386,5 +351,4 @@ export default {
     }
 
   
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
 </style>

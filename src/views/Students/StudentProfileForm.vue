@@ -5,11 +5,7 @@
             <div class="profile-icon flex flex-column">
                 <img class="profile-pic flex flex-column" :src="finalProfile"/>
                 <input style="display:none" ref="profileUpload" type="file" @change="onFileSelected">
-<<<<<<< HEAD
-                <p style="text-decoration: underline;" @click="$refs.profileUpload.click()">Pick Profile</p>
-=======
                 <h6 @click="$refs.profileUpload.click()">Pick Profile</h6>
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
             </div>
             
 
@@ -274,6 +270,9 @@ export default {
             appliedProjects:[],
             offeredProjects:[],
             rejectedProjects:[],
+            inProgProjects: [],
+            compledProjects:[],
+            declinedProjects:[],
 
         }
     },
@@ -445,7 +444,10 @@ export default {
                 transcriptDownloadLink: this.transcriptLink,
                 appliedProjects: this.appliedProjects,
                 offeredProjects: this.offeredProjects,
-                rejectedProjects: this.rejectedProjects
+                rejectedProjects: this.rejectedProjects,
+                inProgProjects: this.inProgProjects,
+                declinedProjects: this.declinedProjects,
+                completedProjects: this.completedProjects
             })
             this.$emit('success',true)
             this.$router.push({name:'StudentHomePage'})
@@ -820,11 +822,7 @@ export default {
         place-items: center;
         cursor:pointer;
         color:blue;
-<<<<<<< HEAD
     }  
     */  
 
-=======
-    }    
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
 </style>

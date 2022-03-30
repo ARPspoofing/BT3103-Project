@@ -1,17 +1,8 @@
 <template>
-<<<<<<< HEAD
   <BusinessNavBar :Heading="Heading" :header=true />
   <BusinessProfileForm @success='close' v-if='!profileFormCreated'/>
   <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
-=======
-  <BusinessNavBar :Heading="Heading" :header="true" />
-  <div class="mainBody">
-    <router-link
-      class="floating-right-bottom-btn"
-      :to="{ name: 'BusinessAddProject' }"
-    >
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
     <h1 id="status">
@@ -47,16 +38,6 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-import BusinessNavBar from '../../components/BusinessNavBar.vue'
-import Card from '../../components/Card.vue'
-import firebaseApp from '../../firebase.js';
-import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
-import {getAuth, onAuthStateChanged} from "firebase/auth"
-import {signOut} from "firebase/auth"
-import BusinessProfileForm from './BusinessProfileForm.vue'
-=======
 import BusinessNavBar from "../../components/BusinessNavBar.vue";
 import Card from "../../components/Card.vue";
 import firebaseApp from "../../firebase.js";
@@ -73,7 +54,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
+import BusinessProfileForm from './BusinessProfileForm.vue'
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -81,23 +62,16 @@ export default {
   components: {
     BusinessNavBar,
     Card,
-<<<<<<< HEAD
     BusinessProfileForm
-=======
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
   },
   data() {
     return {
       Heading: "MY PROJECTS",
       testCollection: [],
-<<<<<<< HEAD
       profileFormCreated: true,
-      foreverTrue: true,
-    }
-=======
+      foreverTrue: true,    
       businessEmail: "",
     };
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
   },
 
   methods: {
@@ -166,18 +140,15 @@ export default {
 
   },
   mounted() {
-<<<<<<< HEAD
     /*
     const auth = getAuth().currentUser.email
     console.log("curr user",auth)
     */
     //console.log("auth",auth)
-=======
     const auth = getAuth();
     this.businessEmail = auth.currentUser.email;
     console.log("email: " + this.businessEmail);
 
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
     const that = this;
   
     async function fetchProject() {
@@ -220,7 +191,6 @@ export default {
       console.log(testCollection);
     }
     fetchProject();
-<<<<<<< HEAD
     /*
     profileFormCreatedCheck();
     */
@@ -319,93 +289,3 @@ export default {
     color: #004A23;
   }
 </style>
-=======
-  },
-};
-</script>
-
-<style scoped>
-.navbar-custom {
-  background-color: #004a23;
-}
-
-#title {
-  color: white;
-  margin-left: 30px;
-  margin-right: 30px;
-  margin-bottom: 0px;
-}
-
-.btn {
-  margin: 10px;
-}
-
-.mainBody {
-  background-color: #f5f5f5;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  overflow-y: scroll;
-  padding-bottom: 550px;
-}
-
-.projectContainer {
-  margin-left: 30px;
-}
-
-#status {
-  text-align: left;
-  font-size: 28px;
-  margin: 30px 30px 0px 30px;
-  color: #606060;
-}
-
-hr {
-  border: 0;
-  border-top: 2px solid #606060;
-  width: 90%;
-  margin: 5px 0px 16px 38px;
-}
-
-.options {
-  font-size: 15px;
-  padding: 5px 25px;
-  margin-left: 15px;
-  border-radius: 30px; /* or 50% */
-  background-color: #0e8044;
-  color: white;
-  text-align: center;
-}
-
-.optionsOff {
-  font-size: 15px;
-  padding: 10px 25px;
-  margin-left: 15px;
-  border-radius: 30px; /* or 50% */
-  background-color: F5F5F5;
-  text-align: center;
-  color: #606060;
-  text-decoration: none;
-}
-
-.floating-right-bottom-btn {
-  position: fixed;
-  right: 40px;
-  bottom: 50px;
-  background-color: white;
-  border-width: 0px;
-  height: 70px;
-  width: 70px;
-  z-index: 110;
-  border-radius: 50%;
-  padding: 0px;
-  background: #f8f8f8;
-}
-
-#plusIcon {
-  height: 70px;
-  width: 70px;
-  color: #004a23;
-}
-</style>
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed

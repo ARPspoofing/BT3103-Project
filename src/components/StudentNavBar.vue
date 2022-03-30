@@ -36,21 +36,14 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-import {signOut, getAuth} from "firebase/auth"
-import {getDocs,collection, getFirestore} from "firebase/firestore"
+import {signOut, getAuth,onAuthStateChanged} from "firebase/auth"
+import {getDocs,collection, getFirestore,doc,setDoc,deleteDoc,updateDoc,getDoc} from "firebase/firestore"
 import firebaseApp from '../firebase.js'
+
 import {mapState} from "vuex"
 import {mapMutations} from "vuex"
 const db = getFirestore(firebaseApp);
 
-=======
-import firebaseApp from '../firebase.js';
-import {signOut, getAuth, onAuthStateChanged} from "firebase/auth"
-import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
-const db = getFirestore(firebaseApp);
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
 export default {
 
     props:{
@@ -76,7 +69,6 @@ export default {
         this.$router.push({"name":"StudentLogin"})
       },
 
-<<<<<<< HEAD
     //Method to check if a search matches any tag 
     includes(tags, searchObj) {
       if(tags.length == 0) {
@@ -208,7 +200,6 @@ export default {
       }
 
     }
-=======
     },
 
     mounted() {
@@ -232,7 +223,6 @@ export default {
         return {name: data.name}
       }
       getApplicant(userEmail)
->>>>>>> 2becbad020275192bacc95ed82b236b4e105bbed
 
     }
 }

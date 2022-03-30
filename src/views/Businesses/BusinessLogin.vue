@@ -159,7 +159,10 @@ export default {
         signInWithEmailAndPassword(getAuth(), this.email,this.password)
         .then((data) => {
             window.localStorage.setItem('emailForSignIn', this.email);
-            if (!verifyEmail) {
+            if(formFilled) {
+                 this.$router.push({name:'BusinessHomePage',params:{'formFilled':true}})
+
+            }else if (!verifyEmail) {
                 this.$router.push({name:'BusinessVerify'})
             }
             else {
