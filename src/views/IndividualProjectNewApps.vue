@@ -67,6 +67,7 @@
             :applicantCourse="item.course"
             @acceptbtn="accApplicant(key)"
             @rejectbtn="rejApplicant(key)"
+            @clickCard="indvApplicant(key)"
           />
         </div>
       </div>
@@ -77,6 +78,7 @@
 <script>
 import BusinessNavBar from "../components/BusinessNavBar.vue";
 import ApplicantsCard from "../components/ApplicantsCard.vue";
+import BusinessViewStudentInfo from "./BusinessViewStudentInfo.vue";
 import firebaseApp from "../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
@@ -96,6 +98,7 @@ export default {
   components: {
     BusinessNavBar,
     ApplicantsCard,
+    BusinessViewStudentInfo,
   },
 
   data() {
@@ -110,10 +113,30 @@ export default {
       offered: [],
       rejected: [],
       applied: [],
+      buttonShow: true,
     };
   },
 
   methods: {
+    indvApplicant(key) {
+      this.$router.push({
+        name:'BusinessViewStudentInfo', 
+        params: {
+          applicants: JSON.stringify(this.applicant[key]),
+          buttonShow: true,
+          allApplicants: JSON.stringify(this.applicant),
+          newApplicants: JSON.stringify(this.newApplicants),
+          accApplicants: JSON.stringify(this.accApplicants),
+          rejApplicants: JSON.stringify(this.rejApplicants),
+          offered: JSON.stringify(this.offered[key]),
+          rejected: JSON.stringify(this.rejected[key]),
+          applied: JSON.stringify(this.applied[key]),
+          items: JSON.stringify(this.items),
+          key: JSON.stringify(key),
+        },
+      })
+    },
+
     async accApplicant(key) {
       var accApplicant = this.newApplicants[key];
       var offered = this.offered[key];
@@ -153,7 +176,7 @@ export default {
           appliedProjects: applied
         });
         console.log(docRef);
-        this.$emit("updated");
+        this.$emit("updated"); 
       } catch (error) {
         console.error("Error updating document: ", error);
       }
@@ -250,7 +273,7 @@ export default {
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       //let result = await data.name
-      return { name: data.name, course: data.course };
+      return { name: data.name, course: data.course, email: data.email };
     }
 
     async function getOfferedProjects(app) {

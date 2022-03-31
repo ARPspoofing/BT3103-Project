@@ -4,7 +4,7 @@
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
-    <!-- <h3>{{items}}</h3> -->
+    <!-- <h3>{{items}}</h3> --> 
     <h1 id="interest">
       <span class="options">
         <b>PROJECT INFO</b>
