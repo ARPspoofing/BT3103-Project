@@ -11,7 +11,7 @@
       <div class="profile-pic-outer">
         <img class="profile-pic" :src="finalProfile" />
       </div>
-      <div class="accRejButtons" v-if="showButton">
+      <div class="accRejButtons" v-if="stat == 'showbtns'">
         <!-- <div class="accRejButtons" v-show=true> -->
         <button id="accButton" @click="acceptbtn">Accept</button>
         <button id="rejButton" @click="rejectbtn">Reject</button>
@@ -286,6 +286,7 @@ export default {
   data() {
     return {
       Heading: "STUDENT INFORMATION",
+      stat: "",
       name: "",
       course: "",
       year: "",
@@ -333,6 +334,7 @@ export default {
     this.apply = JSON.parse(this.$route.params.applied);
     this.item = JSON.parse(this.$route.params.items);
     this.theKey = JSON.parse(this.$route.params.key);
+    this.stat = JSON.parse(this.$route.params.stat)
     console.log(this.accApplicant);
     this.items = JSON.parse(this.$route.params.items);
     this.projectId = JSON.parse(this.$route.params.items).projectId;
