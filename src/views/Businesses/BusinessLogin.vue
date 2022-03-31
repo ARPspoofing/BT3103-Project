@@ -20,7 +20,7 @@
                     <h4>Email</h4>
                 </div>
                 <div class="input">
-                    <input type="text" v-model="email">
+                    <input type="text" v-model="email" placeholder="user@organization.com">
                     <img class="icon" src="../../assets/envelope.png">
                 </div>
                 <div class="errorMsg" v-if="emailErrorPresent">{{this.errorMessage}}</div>
@@ -312,7 +312,9 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-top:10px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        width: 400px;
     }
 
     .shake {
@@ -355,6 +357,11 @@ export default {
     .inputLabel {
         margin-bottom: 0px;
         text-align: left;
+    }
+
+    p {
+        width: 400px;
+        font-size: 13px;
     }
 
 </style>
