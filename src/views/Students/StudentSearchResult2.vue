@@ -20,7 +20,7 @@
       <hr/>
     </h1>
      <div v-if="noProjectsPresent" class = "noProject">
-         <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> ensure that you have spelled your search correctly.</h1>
+         <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> Ensure that you have spelt your search correctly.</h1>
           <!-- {{GET_SEARCH_DATA}} -->        
      </div>
       <div v-else class="projectContainer">
