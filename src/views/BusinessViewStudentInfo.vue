@@ -6,7 +6,7 @@
             <div class="profile-pic-outer">
                 <img class="profile-pic" :src="finalProfile"/>
             </div>
-            <div class="accRejButtons" v-if="showButton">
+            <div class="accRejButtons" v-if="stat == 'showbtns'">
             <!-- <div class="accRejButtons" v-show=true> -->
                 <button id="accButton" @click="acceptbtn">Accept</button>
                 <button id="rejButton" @click="rejectbtn">Reject</button>
@@ -112,9 +112,9 @@ export default {
         })
         console.log(this.interests.target)
     },
-    props: {
-        buttonShow: Boolean,
-    },
+    // props: {
+    //     buttonShow: Boolean,
+    // },
     methods: {
         goback() {
             //this.$router.push({name: "IndividualProjectNewApps"})
@@ -147,13 +147,13 @@ export default {
             // this.allApplicant.splice(this.theKey, 1);
             // this.offer.splice(this.theKey, 1);
             // this.apply.splice(this.theKey, 1);
-            console.log(this.accApplicant)
-            console.log(this.newApplicant)
-            console.log(offered)
-            console.log(this.offer)
-            console.log(applied)
-            console.log(this.apply)
-            console.log(this.theKey)
+            // console.log(this.accApplicant)
+            // console.log(this.newApplicant)
+            // console.log(offered)
+            // console.log(this.offer)
+            // console.log(applied)
+            // console.log(this.apply)
+            // console.log(this.theKey)
 
             alert("Accepting applicant: " + name);
             try {
@@ -202,13 +202,13 @@ export default {
             this.newApplicant.splice(this.theKey, 1);
             // this.applicant.splice(key, 1);
             // this.apply.splice(key, 1);
-            console.log(this.rejApplicant)
-            console.log(this.newApplicant)
-            console.log(rejected)
-            console.log(this.reject)
-            console.log(applied)
-            console.log(this.apply)
-            console.log(this.theKey)
+            // console.log(this.rejApplicant)
+            // console.log(this.newApplicant)
+            // console.log(rejected)
+            // console.log(this.reject)
+            // console.log(applied)
+            // console.log(this.apply)
+            // console.log(this.theKey)
 
 
             alert("Rejecting applicant: " + name);
@@ -236,6 +236,7 @@ export default {
     data() {
         return {
             Heading: "STUDENT INFORMATION",
+            stat: '',
             name: '',
             course: '',
             year:'',
@@ -261,7 +262,7 @@ export default {
             offer: [],
             reject: [],
             apply: [],
-            showButton: false,
+            // showButton: false,
         }
     },
     mounted() {
@@ -269,16 +270,17 @@ export default {
         var userEmail = auth.currentUser.email;
         this.applicant = JSON.parse(this.$route.params.applicants)
         this.allApplicant = JSON.parse(this.$route.params.allApplicants)
-        this.showButton = JSON.parse(this.$route.params.buttonShow)
+        // this.showButton = JSON.parse(this.$route.params.buttonShow)
         this.newApplicant = JSON.parse(this.$route.params.newApplicants)
         this.accApplicant = JSON.parse(this.$route.params.accApplicants)
         this.rejApplicant = JSON.parse(this.$route.params.rejApplicants)
-        this.offer = JSON.parse(this.$route.params.offered)
-        this.reject = JSON.parse(this.$route.params.rejected)
-        this.apply = JSON.parse(this.$route.params.applied)
+        // this.offer = JSON.parse(this.$route.params.offered)
+        // this.reject = JSON.parse(this.$route.params.rejected)
+        // this.apply = JSON.parse(this.$route.params.applied)
         this.item = JSON.parse(this.$route.params.items)
         this.theKey = JSON.parse(this.$route.params.key)
         console.log(this.accApplicant)
+        this.stat = JSON.parse(this.$route.params.stat)
 
         var email = JSON.parse(this.$route.params.applicants).email
         const that = this;

@@ -21,12 +21,16 @@
     <hr/>
     <div class="appContainer">
       <div :key="item.key" v-for="(item, key) in applicant">
-            <ApplicantsCard :buttons=false :applicantName="item.name" :applicantCourse="item.course"/>
+            <ApplicantsCard 
+              :buttons=false 
+              :applicantName="item.name" 
+              :applicantCourse="item.course"
+              @clickCard="indvApplicant(key)"/>
       </div>
-      <!--
+<!--       
         <ApplicantsCard :buttons=false />
         <ApplicantsCard :buttons=false />
-        <ApplicantsCard :buttons=false />-->
+        <ApplicantsCard :buttons=false /> -->
     </div>
   </div>
 </template>
@@ -54,8 +58,33 @@ export default {
       accApplicants: [],
       rejApplicants:[], 
       applicant: [],
+      offered: [],
+      rejected: [],
+      applied: [],
     }
   },
+
+  methods: {
+    indvApplicant(key) {
+      this.$router.push({
+        name:'BusinessViewStudentInfo', 
+        params: {
+          applicants: JSON.stringify(this.applicant[key]),
+          allApplicants: JSON.stringify(this.applicant),
+          newApplicants: JSON.stringify(this.newApplicants),
+          accApplicants: JSON.stringify(this.accApplicants),
+          rejApplicants: JSON.stringify(this.rejApplicants),
+          offered: JSON.stringify(this.offered[key]),
+          rejected: JSON.stringify(this.rejected[key]),
+          applied: JSON.stringify(this.applied[key]),
+          items: JSON.stringify(this.items),
+          key: JSON.stringify(key),
+          stat: JSON.stringify(""),
+        },
+      })
+    },
+  },
+
   mounted() {
     this.items = JSON.parse(this.$route.params.items)
     console.log(this.items)
@@ -80,7 +109,7 @@ export default {
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       //let result = await data.name
-      return {name: data.name, course: data.course};
+      return {name: data.name, course: data.course, email: data.email};
     }
     console.log(this.applicant);
   }

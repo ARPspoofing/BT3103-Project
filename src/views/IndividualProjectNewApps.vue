@@ -36,6 +36,9 @@
               newApplicants: JSON.stringify(this.newApplicants),
               accApplicants: JSON.stringify(this.accApplicants),
               rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
             },
           }"
           ><b>ACCEPTED APPLICANTS</b></router-link
@@ -51,6 +54,9 @@
               newApplicants: JSON.stringify(this.newApplicants),
               accApplicants: JSON.stringify(this.accApplicants),
               rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
             },
           }"
           ><b>REJECTED APPLICANTS</b></router-link
@@ -113,7 +119,6 @@ export default {
       offered: [],
       rejected: [],
       applied: [],
-      buttonShow: true,
     };
   },
 
@@ -123,7 +128,6 @@ export default {
         name:'BusinessViewStudentInfo', 
         params: {
           applicants: JSON.stringify(this.applicant[key]),
-          buttonShow: true,
           allApplicants: JSON.stringify(this.applicant),
           newApplicants: JSON.stringify(this.newApplicants),
           accApplicants: JSON.stringify(this.accApplicants),
@@ -133,6 +137,7 @@ export default {
           applied: JSON.stringify(this.applied[key]),
           items: JSON.stringify(this.items),
           key: JSON.stringify(key),
+          stat: JSON.stringify("showbtns"),
         },
       })
     },
