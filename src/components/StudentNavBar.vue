@@ -14,7 +14,7 @@
     <ul class="navbar-nav ms-auto">
         <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Navigation
+            {{username}}
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" >Home</router-link>
@@ -39,7 +39,6 @@
 import {signOut, getAuth,onAuthStateChanged} from "firebase/auth"
 import {getDocs,collection, getFirestore,doc,setDoc,deleteDoc,updateDoc,getDoc} from "firebase/firestore"
 import firebaseApp from '../firebase.js'
-
 import {mapState} from "vuex"
 import {mapMutations} from "vuex"
 const db = getFirestore(firebaseApp);
@@ -53,12 +52,13 @@ export default {
         //searchResult: String,
     },
     computed: {
-      ...mapState(['searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds'])
+      ...mapState(['searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','name','userEmail'])
     },
     data() {
       return {
         userSearch: '',
         searchResult: '',
+        username: '',
       }
     },
     methods:  {   
@@ -203,8 +203,13 @@ export default {
     },
 
     mounted() {
+      /*
       const auth = getAuth();
       var userEmail = auth.currentUser.email;
+      */
+     var userEmail = this.userEmail
+     this.username = this.name
+     alert(userEmail)
       //console.log(userEmail)
 
       async function getApplicant(userEmail) {

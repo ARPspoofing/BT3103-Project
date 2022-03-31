@@ -151,8 +151,10 @@ import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore, query, where } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
-const db = getFirestore(firebaseApp);
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 
+const db = getFirestore(firebaseApp);
 import StudentProfileForm from './StudentProfileForm.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
@@ -165,10 +167,12 @@ export default {
 
   },
   emits: ['cancel'],
+  computed: {
+    ...mapState(['userEmail']),
+  },
   data() {
     return {
       Heading: " ",
-      
       testCollection: [],
       wholeTestCollection: [],
       newApplicants:[],
@@ -176,7 +180,7 @@ export default {
       profileFormCreated: true,
       cancel: false,
       user: false, 
-      userEmail: "", 
+      userEmailData: "", 
       applied: [],
       studentTags: [],
       allApplied: [],
@@ -269,7 +273,9 @@ export default {
   },
   created() {
     var that = this
-    var userEmail
+    this.userEmailData = this.userEmail
+    var userEmail = this.userEmail
+    /*
     var currUser = getAuth().onAuthStateChanged(function (user) {
       if (user) {
         //this.profileFormCreated = currUser.email
@@ -277,6 +283,7 @@ export default {
         userEmail = user.email
       }
     })
+    */
 
      async function profileFormCreatedCheck() {
       var profileFormCreated = false;
@@ -301,6 +308,7 @@ export default {
 
   },
   mounted() {
+    /*
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if(user) {
@@ -308,11 +316,13 @@ export default {
       }
     })
     this.userEmail = auth.currentUser.email;
+    */
+    this.userEmailData = this.userEmail
 
     const that = this;
 
     async function getAppliedProjects() {
-      const ref = doc(db, "students", auth.currentUser.email);
+      const ref = doc(db, "students", that.userEmailData);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       console.log(data.appliedProjects)
@@ -321,7 +331,7 @@ export default {
     getAppliedProjects();
 
     async function getAllAppliedProjects() {
-      const ref = doc(db, "students", auth.currentUser.email);
+      const ref = doc(db, "students", that.userEmailData);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       //console.log(data.appliedProjects)
@@ -333,7 +343,7 @@ export default {
     }
 
     async function fetchProject() {
-      const ref = doc(db, "students", that.userEmail);
+      const ref = doc(db, "students", that.userEmailData);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       var array = []

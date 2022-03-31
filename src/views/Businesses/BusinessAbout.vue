@@ -172,8 +172,11 @@ export default {
   },
 
   mounted() {
+    /*
     const auth = getAuth();
     var userEmail = auth.currentUser.email;
+    */
+    var userEmail = window.localStorage.getItem('emailForSignIn')
     console.log(userEmail)
     const that = this;
     async function getApplicant(email) {
@@ -185,9 +188,12 @@ export default {
       that.name = data.name
       that.finalProfile = data.finalProfile
       that.industry = data.industry
+      that.description = data.description
+      /*
       if (!data.description) {
         that.description = data.description
       }
+      */
     }
     getApplicant(userEmail)
   }

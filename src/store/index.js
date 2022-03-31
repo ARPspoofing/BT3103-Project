@@ -1,10 +1,29 @@
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+import  VuexPersistence from 'vuex-persistedstate'
+import {getFirestore} from "firebase/firestore"
+import firebaseApp from "../firebase.js"
+
+import {
+  collection,
+  doc,
+  setDoc,
+  deleteDoc,
+  getDocs,
+  updateDoc,
+  getDoc,
+  query,
+  orderBy,
+} from "firebase/firestore";
+import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
+const db = getFirestore(firebaseApp);
 
 export default createStore({
+  
   plugins: [createPersistedState({
       storage: window.sessionStorage,
   })],
+  
   state: {
     filterModal: null,
     //searchData for debugging to store all the ids in one array 
@@ -12,6 +31,8 @@ export default createStore({
     highestPriorityIds: [],
     secondPriorityIds: [],
     thirdPriorityIds: [],
+    name: '',
+    userEmail: '',
   },
   //getter for debugging
   getters: {
@@ -51,9 +72,13 @@ export default createStore({
     },
     GET_SEARCH_DATA(state) {
       return state.searchData
-    }
-  },
-  actions: {
+    },
+    SET_NAME(state,payload) {
+      state.name = payload
+    },
+    SET_USEREMAIL(state,payload) {
+      state.userEmail = payload
+    },
   },
   modules: {
   }

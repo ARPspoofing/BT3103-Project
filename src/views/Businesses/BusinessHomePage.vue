@@ -42,6 +42,9 @@ import BusinessNavBar from "../../components/BusinessNavBar.vue";
 import Card from "../../components/Card.vue";
 import firebaseApp from "../../firebase.js";
 import { getFirestore } from "firebase/firestore";
+import {useRouter} from "vue-router"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 import {
   collection,
   doc,
@@ -56,6 +59,7 @@ import {
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
 import BusinessProfileForm from './BusinessProfileForm.vue'
 const db = getFirestore(firebaseApp);
+const router = useRouter();
 
 export default {
   name: "BusinessHomePage",
@@ -70,13 +74,17 @@ export default {
       testCollection: [],
       profileFormCreated: true,
       foreverTrue: true,    
-      businessEmail: "",
+      businessEmail: '',
     };
   },
-
+  computed: {
+    ...mapState(['userEmail']),
+  },
   methods: {
     close(e) {
       this.profileFormCreated = e
+      this.$router.push({name:'BusinessHomePage'})
+
     },
     indivproj(key) {
       this.$router.push({
@@ -116,7 +124,8 @@ export default {
       }
     })
     */
-    var userEmail = window.localStorage.getItem('emailForSignIn')
+    var userEmail = this.userEmail
+    //var userEmail = window.localStorage.getItem('emailForSignIn')
      async function profileFormCreatedCheck() {
       var profileFormCreated = false;
       
@@ -145,15 +154,17 @@ export default {
     console.log("curr user",auth)
     */
     //console.log("auth",auth)
+    /*
     const auth = getAuth();
     this.businessEmail = auth.currentUser.email;
     console.log("email: " + this.businessEmail);
-
+    */
     const that = this;
   
     async function fetchProject() {
-      var businessEmail = auth.currentUser.email;
-
+      //var businessEmail = auth.currentUser.email;
+      //var businessEmail = window.localStorage.getItem('emailForSignIn')
+      var businessEmail = that.userEmail
       //order projects by posted date, from latest to oldest
       let projects = query(collection(db, "Project"), orderBy("Posted_Date", "desc"));
       let snapshot = await getDocs(projects);
