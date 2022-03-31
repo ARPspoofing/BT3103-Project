@@ -272,13 +272,13 @@ export default {
             offeredProjects:[],
             rejectedProjects:[],
             inProgProjects: [],
-            compledProjects:[],
+            completedProjects:[],
             declinedProjects:[],
 
         }
     },
     computed: {
-        ...mapState(['name']),
+        ...mapState(['name','userEmail']),
     },
     methods: {
         ...mapMutations(['SET_NAME']),
@@ -452,7 +452,8 @@ export default {
                 rejectedProjects: this.rejectedProjects,
                 inProgProjects: this.inProgProjects,
                 declinedProjects: this.declinedProjects,
-                completedProjects: this.completedProjects
+                completedProjects: this.completedProjects,
+                description: this.description,
             })
             this.$emit('success',true)
             this.$router.push({name:'StudentHomePage'})

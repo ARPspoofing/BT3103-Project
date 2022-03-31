@@ -42,6 +42,7 @@ import {
   updateDoc,
   getDoc
 } from "firebase/firestore";
+import {mapState} from "vuex";
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -59,7 +60,11 @@ export default {
       projects: [],
     }
   },
+  computed: {
+    ...mapState(['userEmail']),
+  },
   mounted() {
+    /*
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -67,10 +72,11 @@ export default {
       }
     });
     this.userEmail = auth.currentUser.email;
-
+    */
+    var userEmail = this.userEmail
     const that = this
     async function getAppliedProjects() {
-      const ref = doc(db, "students", auth.currentUser.email);
+      const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       that.applied = data.appliedProjects

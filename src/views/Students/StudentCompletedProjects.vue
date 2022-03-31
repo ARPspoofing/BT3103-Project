@@ -36,6 +36,8 @@ import { getFirestore, query, where } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {mapState} from 'vuex'
+import {mapMutations} from 'vuex'
 
 export default {
 name: 'StudentCompletedProjects',
@@ -49,7 +51,12 @@ name: 'StudentCompletedProjects',
         completedProjects: [],
     };
   },
+  computed: {
+    ...mapState(['userEmail']),
+  },
     mounted() {
+    //non-vuex
+    /*
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -57,18 +64,23 @@ name: 'StudentCompletedProjects',
       }
     });
     this.userEmail = auth.currentUser.email;
+    */
 
     const that = this
+    var userEmail = this.userEmail
+    alert('now')
+    alert(userEmail)
     async function getinProgProjects() {
-      const ref = doc(db, "students", auth.currentUser.email);
+      const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       //var projects = data.inProgProjects
       //that.inProgProjects = data.inProgProjects
-      for(var i = 0; i < data.completedProjects.length; i++) {
-        getProject(data.completedProjects[i]).then((res)=>{that.completedProjects.push(res)})
+      if (data) {
+        for(var i = 0; i < data.completedProjects.length; i++) {
+          getProject(data.completedProjects[i]).then((res)=>{that.completedProjects.push(res)})
+        }
       }
-      
     }
     getinProgProjects()
     

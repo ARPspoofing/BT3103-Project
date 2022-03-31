@@ -45,6 +45,7 @@ import {
   updateDoc,
   getDoc
 } from "firebase/firestore";
+import {mapState} from "vuex"
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -64,6 +65,9 @@ export default {
       accepted:[],
       declined:[],
     };
+  },
+  computed: {
+    ...mapState(['userEmail']),
   },
   methods: {
     async acceptProj(key) {
@@ -125,23 +129,28 @@ export default {
     },
   },
   mounted() {
+    /*
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.user = user;
       }
     });
-    this.userEmail = auth.currentUser.email;
+    */
+    //this.userEmail = auth.currentUser.email;
     //console.log(this.userEmail)
 
     const that = this
+    var userEmail = this.userEmail
     async function getOfferedProjects() {
-      const ref = doc(db, "students", auth.currentUser.email);
+      const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       that.offered = data.offeredProjects
-      for(var i = 0; i < data.offeredProjects.length; i++) {
-        getProject(data.offeredProjects[i]).then((res)=>{that.projects.push(res)})
+      if (data.offeredProjects) {
+        for(var i = 0; i < data.offeredProjects.length; i++) {
+          getProject(data.offeredProjects[i]).then((res)=>{that.projects.push(res)})
+        }
       }
       //console.log(that.applied)
       console.log(that.offered)
@@ -150,7 +159,7 @@ export default {
     getOfferedProjects()
 
     async function getInProgProjects() {
-      const ref = doc(db, "students", auth.currentUser.email);
+      const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       that.accepted = data.inProgProjects;
@@ -159,7 +168,7 @@ export default {
     getInProgProjects()
 
     async function getDeclinedProjects() {
-      const ref = doc(db, "students", auth.currentUser.email);
+      const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       that.declined = data.declinedProjects;
