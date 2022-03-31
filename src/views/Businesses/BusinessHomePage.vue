@@ -78,7 +78,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['userEmail']),
+    ...mapState(['userEmail','cardItems']),
   },
   methods: {
     close(e) {
@@ -160,11 +160,13 @@ export default {
     console.log("email: " + this.businessEmail);
     */
     const that = this;
+    this.businessEmail = this.userEmail
   
     async function fetchProject() {
       //var businessEmail = auth.currentUser.email;
       //var businessEmail = window.localStorage.getItem('emailForSignIn')
       var businessEmail = that.userEmail
+      alert(businessEmail)
       //order projects by posted date, from latest to oldest
       let projects = query(collection(db, "Project"), orderBy("Posted_Date", "desc"));
       let snapshot = await getDocs(projects);

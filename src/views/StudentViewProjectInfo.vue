@@ -138,7 +138,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userEmail']),
+    ...mapState(['userEmail','cardItems']),
   },
   mounted() {
     /*
@@ -152,6 +152,8 @@ export default {
     */
     this.userEmailData = this.userEmail
     //console.log(this.userEmail)
+    //Non-Vuex
+    /*
     this.tasks = JSON.parse(this.$route.params.items).tasks
     this.tags = JSON.parse(this.$route.params.items).tags
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
@@ -161,6 +163,20 @@ export default {
     this.projId = JSON.parse(this.$route.params.items).projectId
     this.appstat = JSON.parse(this.$route.params.items).appstat
     this.companyEmail = JSON.parse(this.$route.params.items).company
+    */
+
+    //Vuex
+    console.log("cardItems",this.cardItems)
+    this.tasks = JSON.parse(this.cardItems).tasks
+    this.tags = JSON.parse(this.cardItems).tags
+    this.newApplicants = JSON.parse(this.cardItems).newApplicants
+    this.projTitle = JSON.parse(this.cardItems).projectTitle
+    this.items = JSON.parse(this.cardItems)
+    console.log(JSON.parse(this.cardItems).projectId)
+    this.projId = JSON.parse(this.cardItems).projectId
+    this.appstat = JSON.parse(this.cardItems).appstat
+    this.companyEmail = JSON.parse(this.cardItems).company
+
 
     const that = this
     async function getAppliedProjects() {

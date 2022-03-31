@@ -33,6 +33,7 @@ export default createStore({
     thirdPriorityIds: [],
     name: '',
     userEmail: '',
+    cardItems: null,
   },
   //getter for debugging
   getters: {
@@ -78,6 +79,12 @@ export default createStore({
     },
     SET_USEREMAIL(state,payload) {
       state.userEmail = payload
+    },
+    SET_CARDITEMS(state,payload) {
+      state.cardItems = payload
+    },
+    CLEAR_CARDITEMS(state) {
+      state.cardItems = null
     },
   },
   modules: {

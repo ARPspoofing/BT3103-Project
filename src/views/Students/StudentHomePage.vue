@@ -168,7 +168,7 @@ export default {
   },
   emits: ['cancel'],
   computed: {
-    ...mapState(['userEmail']),
+    ...mapState(['userEmail','cardItems']),
   },
   data() {
     return {
@@ -188,6 +188,7 @@ export default {
   },
   
   methods: {
+    ...mapMutations(['SET_CARDITEMS','CLEAR_CARDITEMS']),
     close(e) {
       this.profileFormCreated = true;
     },
@@ -237,8 +238,12 @@ export default {
     },
     
     indivproj(key) {
+      //Vuex Version
+      this.CLEAR_CARDITEMS()
+      this.SET_CARDITEMS(JSON.stringify(this.testCollection[key]))
       this.$router.push({
         name:'StudentViewProjectInfo', 
+        //Non-Vuex version
         params: {
           items: JSON.stringify(this.testCollection[key]),
         },
@@ -248,8 +253,12 @@ export default {
     }, 
 
     indivprojlatest(key) {
+      //Vuex version
+      this.CLEAR_CARDITEMS()
+      this.SET_CARDITEMS(JSON.stringify(this.wholeTestCollection[key]))
       this.$router.push({
         name:'StudentViewProjectInfo', 
+        //Non-Vuex version
         params: {
           items: JSON.stringify(this.wholeTestCollection[key]),
         },
