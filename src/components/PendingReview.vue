@@ -1,5 +1,19 @@
 <template>
-    <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoTaskDetails', params: {taskId: task['id']}}">
+    <router-link style="text-decoration: none; color: inherit; " 
+        :to="{name:'ToDoView', 
+            params: {
+                taskId: task['id'],
+                shortdescription: task['shortdescription'],
+                duedate: task['duedate'],
+                taskname: task['taskname'],
+                status:task['status'],
+                todo: task['todo'],
+                inprogress: task['inprogress'],
+                pendingreview: task['pendingreview'],
+                completed: task['completed']
+            }
+        }"
+    >
     <div class="pendingreview">
         <div class="top flex flex-row">
             <div class="title">{{task['taskname']}}</div>
@@ -13,7 +27,7 @@
         </div>
         <div class="duedate">
             <p>
-                 Due date: {{duedate}}
+                 Due date: {{formatDate(task["duedate"])}}
             </p>
         </div>
        
@@ -35,13 +49,18 @@
             task:Object,
         },
         data() {
-            return {
-                duedate: new Date(this.task['duedate']['seconds']).toLocaleDateString('en-us',{year: "numeric", month: "short", day: "numeric"}),
-                dateOptions: {year: "numeric", month: "short", day: "numeric"},
-            }
+            // return {
+            //     duedate: new Date(this.task['duedate']['seconds']).toLocaleDateString('en-us',{year: "numeric", month: "short", day: "numeric"}),
+            //     dateOptions: {year: "numeric", month: "short", day: "numeric"},
+            // }
         },
         watch: {
         },
+        methods: {
+            formatDate(date) {
+                return moment(date).format("DD MMMM YYYY");
+            },
+        }
     }
 </script>
 

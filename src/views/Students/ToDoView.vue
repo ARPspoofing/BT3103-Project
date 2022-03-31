@@ -1,8 +1,11 @@
 <template>
+    <button @click="goback" id="backButton">Back to Management</button>
    <div class="view container">
-       <router-link :to="{name:'StudentManagement'}">
+
+       <!-- <router-link :to="{name:'BusinessManagement'}">
+           
            <img src='../../assets/back.png'> Go Back
-       </router-link>
+       </router-link> -->
        <!--
        <div class="header flex">
            <div class="left flex">
@@ -21,7 +24,7 @@
        <div class="details flex flex-column">
            <div class="top flex">
                <div class="left flex">
-                   <p>#<span></span>{{task_id}} {{name}}</p>
+                   <p>#<span></span>{{taskId}} {{name}}</p>
                   
                </div>
                <div class="right flex flex-column">
@@ -81,8 +84,8 @@ const router = useRouter()
        name: 'ToDoView',
        data() {
            return {
-               name: '',
-               task_id: this.$route.params.taskId,
+               taskname: '',
+               taskId: '',
                duedate: '',
                extend: '',
                documents: '',
@@ -98,7 +101,28 @@ const router = useRouter()
                this.duedate = new Date(this.duedate).toLocaleDateString('en-us',this.dateOptions)
            }
        },
+       methods: {
+            goback() {
+                this.$router.push({
+                    name: "BusinessManagement",
+                    params: {
+                        taskname: this.$route.params.taskname,
+                        taskId: this.$route.params.taskId,
+                        duedate: this.$route.params.duedate,
+                        shortdescription: this.$route.params.shortdescription,
+                        status: this.$route.params.status,
+                        todo: this.$route.params.todo,
+                        inprogress: this.$route.params.inprogress,
+                        pendingreview: this.$route.params.pendingreview,
+                        completed: this.$route.params.completed,
+                    },
+                });
+            },
+       },
        mounted() {
+           this.taskname = this.$route.params.taskname
+           this.taskId = this.$route.params.taskId
+           this.duedate = this.$route.params.duedate
            const curr = this
            async function getTasksDetails() {
            //Change "To-Do" to props later
@@ -106,7 +130,7 @@ const router = useRouter()
            var temp = []
            database.forEach((doc) => {
                //Change to dynamic props later
-               if (doc.id == ("ToDo" + curr.task_id)) {
+               if (doc.id == ("ToDo" + curr.taskId)) {
                    var data = doc.data()
                    console.log(data) 
                    temp.push({
@@ -225,8 +249,14 @@ const router = useRouter()
    .bottom {
 
    }
- 
- 
- 
+
+   #backButton {
+    background: #0e8044;
+    width: 190px;
+    height: 30px;
+    color: white;
+    margin: 20px;
+   }
+
  
 </style>

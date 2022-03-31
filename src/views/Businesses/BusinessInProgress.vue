@@ -66,8 +66,9 @@ export default {
   },
   methods: {
     indivproj(key) {
+      console.log(JSON.stringify(this.testCollection[key].tasks))
       this.$router.push({
-        name: "IndividualProjectInfo",
+        name: "BusinessManagement",
         params: {
           items: JSON.stringify(this.testCollection[key]),
         },
@@ -194,6 +195,15 @@ export default {
     width: 100%;
     height: 100%;
     position: fixed;
+    overflow-y: scroll;
+    padding-bottom: 550px;
+    /*
+    filter: blur(5px);
+    */
+  }
+
+  .projectContainer {
+    margin-left: 30px;
   }
 
   #interest {

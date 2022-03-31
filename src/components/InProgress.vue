@@ -1,5 +1,19 @@
 <template>
-    <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoTaskDetails', params: {taskId: task['id']}}">
+    <router-link style="text-decoration: none; color: inherit; " 
+        :to="{name:'ToDoView', 
+            params: {
+                taskId: task['id'],
+                shortdescription: task['shortdescription'],
+                duedate: task['duedate'],
+                taskname: task['taskname'],
+                status:task['status'],
+                todo: task['todo'],
+                inprogress: task['inprogress'],
+                pendingreview: task['pendingreview'],
+                completed: task['completed']
+            }
+        }"
+    >
     <div class="inProgress">
         <div class="top flex flex-row">
             <div class="title">{{task['taskname']}}</div>
@@ -12,7 +26,7 @@
         </div>
         <div class="duedate">
             <p>
-                 Due date: {{duedate}}
+                 Due date: {{formatDate(task["duedate"])}}
             </p>
         </div>
        
@@ -41,6 +55,11 @@
         },
         watch: {
         },
+        methods: {
+            formatDate(date) {
+                return moment(date).format("DD MMMM YYYY");
+            },
+        }
     }
 </script>
 
