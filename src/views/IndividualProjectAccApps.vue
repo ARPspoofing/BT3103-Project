@@ -18,6 +18,9 @@
               newApplicants: JSON.stringify(this.newApplicants),
               accApplicants: JSON.stringify(this.accApplicants),
               rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
             },
           }"
           ><b>PROJECT INFO</b></router-link
@@ -33,6 +36,9 @@
               newApplicants: JSON.stringify(this.newApplicants),
               accApplicants: JSON.stringify(this.accApplicants),
               rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
             },
           }"
           ><b>NEW APPLICANTS</b></router-link
@@ -51,6 +57,9 @@
               newApplicants: JSON.stringify(this.newApplicants),
               accApplicants: JSON.stringify(this.accApplicants),
               rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
             },
           }"
           ><b>REJECTED APPLICANTS</b></router-link
@@ -119,6 +128,7 @@ export default {
   methods: {
     indvApplicant(key) {
       console.log(this.applicant[key])
+      console.log(this.offered)
       this.$router.push({
         name:'BusinessViewStudentInfo', 
         params: {
@@ -127,9 +137,9 @@ export default {
           newApplicants: JSON.stringify(this.newApplicants),
           accApplicants: JSON.stringify(this.accApplicants),
           rejApplicants: JSON.stringify(this.rejApplicants),
-          offered: JSON.stringify(this.offered[key]),
-          rejected: JSON.stringify(this.rejected[key]),
-          applied: JSON.stringify(this.applied[key]),
+          offered: JSON.stringify(this.offered),
+          rejected: JSON.stringify(this.rejected),
+          applied: JSON.stringify(this.applied),
           items: JSON.stringify(this.items),
           key: JSON.stringify(key),
           stat: JSON.stringify(""),

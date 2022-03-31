@@ -343,6 +343,7 @@ export default {
     this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants;
 
     var email = JSON.parse(this.$route.params.applicants).email;
+    console.log(email)
     const that = this;
     async function getApplicant(email) {
       const docSnap = await getDoc(doc(db, "students", email));

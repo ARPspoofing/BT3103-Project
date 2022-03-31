@@ -18,6 +18,9 @@
               newApplicants: JSON.stringify(this.newApplicants),
               accApplicants: JSON.stringify(this.accApplicants),
               rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
             },
           }"
           ><b>PROJECT INFO</b></router-link
@@ -124,6 +127,8 @@ export default {
 
   methods: {
     indvApplicant(key) {
+      console.log(this.applicant[key])
+      console.log(this.offered[key])
       this.$router.push({
         name:'BusinessViewStudentInfo', 
         params: {
