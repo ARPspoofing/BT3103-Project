@@ -313,7 +313,7 @@ export default {
       offer: [],
       reject: [],
       apply: [],
-      showButton: false,
+    //   showButton: false,
       items: [],
       newApplicants: [],
       accApplicants: [],
@@ -325,7 +325,7 @@ export default {
     var userEmail = auth.currentUser.email;
     this.applicant = JSON.parse(this.$route.params.applicants);
     this.allApplicant = JSON.parse(this.$route.params.allApplicants);
-    this.showButton = JSON.parse(this.$route.params.buttonShow);
+    // this.showButton = JSON.parse(this.$route.params.buttonShow);
     this.newApplicant = JSON.parse(this.$route.params.newApplicants);
     this.accApplicant = JSON.parse(this.$route.params.accApplicants);
     this.rejApplicant = JSON.parse(this.$route.params.rejApplicants);
