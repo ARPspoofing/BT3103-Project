@@ -90,6 +90,8 @@ import {
   query, 
   where
 } from "firebase/firestore";
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 const db = getFirestore(firebaseApp);
 import { getAuth } from "firebase/auth";
 
@@ -98,6 +100,9 @@ export default {
   components: {
     BusinessNavBar,
     ApplicantsCard,
+  },
+  computed: {
+    ...mapState(['cardItems']),
   },
   data() {
     return {
@@ -113,6 +118,8 @@ export default {
   },
 
   mounted() {
+    //Non-vuex
+    /*
     this.items = JSON.parse(this.$route.params.items);
     this.projectId = JSON.parse(this.$route.params.items).projectId;
     console.log(this.$route.params.newApplicants);
@@ -131,9 +138,23 @@ export default {
     if (this.$route.params.rejApplicants) {
       this.rejApplicants = JSON.parse(this.$route.params.rejApplicants);
     }
+    */
     //console.log(this.accApplicants);
     //console.log(this.newApplicants);
     //console.log(this.applicant);
+
+    //vuex
+    this.items = JSON.parse(this.cardItems);
+    this.projectId = JSON.parse(this.cardItems).projectId;
+    if (this.cardItems.accApplicants) {
+      this.accApplicants = JSON.parse(this.cardItems.accApplicants);
+      for (var i = 0; i < this.accApplicants.length; i++) {
+        getApplicant(this.accApplicants[i]).then((res) => {
+          this.applicant.push(res);
+        });
+      }
+    }
+
     const that = this
     async function getApplicant(app) {
       const stuRef = collection(db, "students")

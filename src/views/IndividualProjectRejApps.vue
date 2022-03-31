@@ -39,6 +39,8 @@ import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 import { getAuth } from 'firebase/auth';
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 
 export default {
   name: 'IndividualProjectRejApps',
@@ -56,7 +58,13 @@ export default {
       applicant: [],
     }
   },
+  computed: {
+    ...mapState(['cardItems']),
+  },
   mounted() {
+
+    //non-vuex
+    /*
     this.items = JSON.parse(this.$route.params.items)
     console.log(this.items)
     if (this.$route.params.newApplicants) {
@@ -71,9 +79,18 @@ export default {
         getApplicant(this.rejApplicants[i]).then((res)=>{this.applicant.push(res)})
       }
     }
+    */
     //console.log(this.newApplicants)
     //console.log(this.accApplicants)
     //console.log(this.rejApplicants)
+    //Veux
+    this.items = JSON.parse(this.cardItems);
+    if (this.cardItems.rejApplicants) {
+      this.rejApplicants = JSON.parse(this.cardItems.rejApplicants)
+      for(var i = 0; i < this.rejApplicants.length; i++) {
+        getApplicant(this.rejApplicants[i]).then((res)=>{this.applicant.push(res)})
+      }
+    }
     
     async function getApplicant(app) {
       const ref = doc(db, "students", app);
