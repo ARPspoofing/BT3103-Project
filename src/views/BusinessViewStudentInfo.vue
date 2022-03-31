@@ -117,7 +117,12 @@ export default {
     },
     methods: {
         goback() {
-            //this.$router.push({name: "IndividualProjectNewApps"})
+            this.$router.push({name: "IndividualProjectNewApps", params: {
+              items: JSON.stringify(this.items),
+              newApplicants: JSON.stringify(this.newApplicants),
+              accApplicants: JSON.stringify(this.accApplicants),
+              rejApplicants: JSON.stringify(this.rejApplicants),
+            },})
         },
         async acceptbtn() {
             var theaccApplicant = this.newApplicant[this.theKey];
@@ -262,6 +267,10 @@ export default {
             reject: [],
             apply: [],
             showButton: false,
+            items: [],
+      newApplicants: [],
+      accApplicants: [],
+      rejApplicants: [],
         }
     },
     mounted() {
@@ -279,6 +288,11 @@ export default {
         this.item = JSON.parse(this.$route.params.items)
         this.theKey = JSON.parse(this.$route.params.key)
         console.log(this.accApplicant)
+        this.items = JSON.parse(this.$route.params.items);
+    this.projectId = JSON.parse(this.$route.params.items).projectId;
+    this.newApplicants = JSON.parse(this.$route.params.items).newApplicants;
+    this.accApplicants = JSON.parse(this.$route.params.items).accApplicants;
+    this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants;
 
         var email = JSON.parse(this.$route.params.applicants).email
         const that = this;
