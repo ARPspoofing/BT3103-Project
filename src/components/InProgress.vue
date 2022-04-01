@@ -2,7 +2,9 @@
     <router-link style="text-decoration: none; color: inherit; " 
         :to="{name:'ToDoView', 
             params: {
-                taskId: task['id'],
+                projectId: task['projectId'],
+                projectTitle: task['projectTitle'],
+                taskId: task['taskId'],
                 shortdescription: task['shortdescription'],
                 duedate: task['duedate'],
                 taskname: task['taskname'],

@@ -81,8 +81,8 @@ export default {
     methods: {
     },
     mounted() {
-        this.Heading = JSON.parse(this.$route.params.items).projectTitle
-        this.projectId = JSON.parse(this.$route.params.items).projectId
+        this.Heading = JSON.parse(this.$route.params.projectTitle)
+        this.projectId = JSON.parse(this.$route.params.projectId)
 
         const curr = this
         async function getTasks() {
@@ -104,7 +104,9 @@ export default {
             let taskstatus = tasks[i]["taskStatus"]
             if (taskstatus == "To do") {
                 toDoTask.push({
-                    id: i,
+                    projectId: curr.projectId,
+                    projectTitle: curr.Heading,
+                    taskId: i,
                     shortdescription: tasks[i]["taskDescription"],
                     duedate: tasks[i]["taskDueDate"],
                     taskname: tasks[i]["taskName"],
@@ -116,7 +118,9 @@ export default {
                 })
             } else if (taskstatus == "InProgress") {
                 inProgressTask.push({
-                    id: i,
+                    projectId: curr.projectId,
+                    projectTitle: curr.Heading,
+                    taskId: i,
                     shortdescription: tasks[i]["taskDescription"],
                     duedate: tasks[i]["taskDueDate"],
                     taskname: tasks[i]["taskName"],
@@ -128,7 +132,9 @@ export default {
                 })
             } else if (taskstatus == "PendingReview") {
                 pendingReviewTask.push({
-                    id: i,
+                    projectId: curr.projectId,
+                    projectTitle: curr.Heading,
+                    taskId: i,
                     shortdescription: tasks[i]["taskDescription"],
                     duedate: tasks[i]["taskDueDate"],
                     taskname: tasks[i]["taskName"],
@@ -140,7 +146,9 @@ export default {
                 })
             } else {
                 completedTask.push({
-                    id: i,
+                    projectId: curr.projectId,
+                    projectTitle: curr.Heading,
+                    taskId: i,
                     shortdescription: tasks[i]["taskDescription"],
                     duedate: tasks[i]["taskDueDate"],
                     taskname: tasks[i]["taskName"],

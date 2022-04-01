@@ -67,10 +67,12 @@ export default {
   methods: {
     indivproj(key) {
       console.log(JSON.stringify(this.testCollection[key].tasks))
+      console.log(JSON.stringify(this.testCollection[key].projectId))
       this.$router.push({
         name: "BusinessManagement",
         params: {
-          items: JSON.stringify(this.testCollection[key]),
+          projectId: JSON.stringify(this.testCollection[key].projectId),
+          projectTitle: JSON.stringify(this.testCollection[key].projectTitle),
         },
       });
       //console.log(key);
