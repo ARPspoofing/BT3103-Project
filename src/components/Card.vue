@@ -112,7 +112,9 @@ export default {
     stat: String,
     appstat: String,
     offered: Boolean,
-    picture: String
+    picture: String,
+    like:false,
+    latest:false,
     //applicantbtn: Function,
   },
   methods: {
@@ -132,7 +134,16 @@ export default {
       this.$emit("declineBtn");
     },
     apply() {
-      this.$emit("applying");
+      //emit true if Projects you may like
+      //emit false if latest
+
+      //If like == true and latest == false, emit true. Then use testCollection in StudentHomePage "applying()"
+      //If like == false and latest == true, emit false. Then use wholeCollection in StudentHomePage "applying()"
+      if (this.like == true && this.latest == false) {
+        this.$emit("applying",true)
+      } else {
+        this.$emit("applying",false)
+      }
     }
   },
 };

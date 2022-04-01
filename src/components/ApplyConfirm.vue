@@ -12,11 +12,11 @@
         <button
             type="button"
             id="yesbtn"
-            @click="applicantbtn"
+            @click="applicantbtnYes"
         >
             Yes
         </button>
-        <button type="button" id="nobtn">
+        <button type="button" id="nobtn" @click="applicantbtnNo">
             No
         </button>
         </div>
@@ -97,6 +97,16 @@
     export default {
         name: "ApplyConfirm",
         props: ["projectTitle"],
+        methods: {
+            applicantbtnYes() {
+                alert("accept")
+                this.$emit('confirmYes',true)
+            },
+            applicantbtnNo() {
+                alert("decline")
+                this.$emit('confirmYes',false)
+            }
+        },
     }
 </script>
 

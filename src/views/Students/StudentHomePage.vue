@@ -1,12 +1,12 @@
 <template>
   <StudentNavBar :search=true :header=false />
-  <div class="modal-overlay" v-if="applyConfirm" @click="applyConfirm = false"></div>
+  <!--<div class="modal-overlay" v-if="applyConfirm"></div>-->
   <StudentProfileForm @cancel='cancel' @success='close' v-if='!profileFormCreated'/>
   <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
   
     <h1 id="interest">Projects You May Like</h1>
     <transition name="applyConfirm" mode="out-in">
-    <ApplyConfirm v-if="applyConfirm" :projectTitle='currProject'/>
+    <ApplyConfirm @confirmYes="confirmYes" v-if="applyConfirm" :projectTitle='currProject'/>
     </transition>
 
     <!--
@@ -29,12 +29,14 @@
               <!-- <h2>"item.projectTitle"</h2> -->
               <Card v-if="key <= 5" 
                 :apply=true 
+                :like=true
+                :latest=false
                 :projectTitle = "item.projectTitle" 
                 :description="item.description" 
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key)"
                 @clickCard="indivproj(key)"
-                @applying="applying(key)"
+                @applying="applying($event,key)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -44,11 +46,14 @@
             <div :key="item.key" v-for="(item, key) in testCollection.slice(6)">
               <Card v-if="key <= 5" 
                 :apply=true 
+                :like=true
+                :latest=false
                 :projectTitle = "item.projectTitle" 
                 :description="item.description" 
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key + 6)" 
                 @clickCard="indivproj(key + 6)"
+                @applying="applying($event,key)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -58,11 +63,14 @@
             <div :key="item.key" v-for="(item, key) in testCollection.slice(12)">
               <Card v-if="key <= 5" 
               :apply=true 
+              :like=true
+              :latest=false
               :projectTitle = "item.projectTitle" 
               :description="item.description" 
               :appstat="item.appstat"
               @applicantbtn="addApplicant(key + 2*6)" 
               @clickCard="indivproj(key + 2*6)"
+              @applying="applying(key)"
               :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -100,11 +108,14 @@
             <div :key="item.key" v-for="(item, key) in wholeTestCollection">
               <Card v-if="key <= 5" 
                 :apply=true 
+                :like=false
+                :latest=true
                 :projectTitle = "item.projectTitle" 
                 :description="item.description" 
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key)" 
                 @clickCard="indivprojlatest(key)"
+                @applying="applying(key)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -114,11 +125,14 @@
             <div :key="item.key" v-for="(item, key) in wholeTestCollection.slice(6)">
               <Card v-if="key <= 5" 
                 :apply=true 
+                :like=false
+                :latest=true
                 :projectTitle = "item.projectTitle" 
                 :description="item.description" 
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key + 6)" 
                 @clickCard="indivprojlatest(key + 6)"
+                @applying="applying(key)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -128,11 +142,14 @@
             <div :key="item.key" v-for="(item, key) in wholeTestCollection.slice(12)">
               <Card v-if="key <= 5" 
               :apply=true 
+              :like=false
+              :latest=true
               :projectTitle = "item.projectTitle" 
               :description="item.description" 
               :appstat="item.appstat"
               @applicantbtn="addApplicant(key + 2*6)" 
               @clickCard="indivprojlatest(key + 2*6)"
+              @applying="applying(key)"
               :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -193,6 +210,7 @@ export default {
       allApplied: [],
       applyConfirm: false,
       currProject: '',
+      currKey:null,
     }
   },
   
@@ -208,7 +226,15 @@ export default {
     applying(key) {
       alert(key)
       this.applyConfirm = true
+      this.currKey = key
       this.currProject = this.testCollection[key]["projectTitle"]
+    },
+    confirmYes(e) {
+      if (e == true) {
+        this.addApplicant(this.currKey)
+      }
+      console.log("yes")
+      this.applyConfirm = false
     },
     async addApplicant(key) {
       alert(key)
