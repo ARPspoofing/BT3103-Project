@@ -70,7 +70,7 @@
               :appstat="item.appstat"
               @applicantbtn="addApplicant(key + 2*6)" 
               @clickCard="indivproj(key + 2*6)"
-              @applying="applying(key)"
+              @applying="applying($event,key)"
               :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -115,7 +115,7 @@
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key)" 
                 @clickCard="indivprojlatest(key)"
-                @applying="applying(key)"
+                @applying="applying($event,key)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -132,7 +132,7 @@
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key + 6)" 
                 @clickCard="indivprojlatest(key + 6)"
-                @applying="applying(key)"
+                @applying="applying($event,key)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -149,7 +149,7 @@
               :appstat="item.appstat"
               @applicantbtn="addApplicant(key + 2*6)" 
               @clickCard="indivprojlatest(key + 2*6)"
-              @applying="applying(key)"
+              @applying="applying($event,key)"
               :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -211,6 +211,8 @@ export default {
       applyConfirm: false,
       currProject: '',
       currKey:null,
+      like:false,
+      latest:false,
     }
   },
   
@@ -223,11 +225,20 @@ export default {
       this.cancel = e;
       console.log("eeeeeeeeeeeeeeee")
     },
-    applying(key) {
+    applying(event,key) {
       alert(key)
       this.applyConfirm = true
       this.currKey = key
-      this.currProject = this.testCollection[key]["projectTitle"]
+      if (event) {
+        this.currProject = this.testCollection[key]["projectTitle"]
+        tbis.like = true
+        this.latest = false
+      } else {
+        this.currProject = this.wholeTestCollection[key]["projectTitle"]
+        this.like = false
+        this.latest = true
+      }
+      
     },
     confirmYes(e) {
       if (e == true) {
