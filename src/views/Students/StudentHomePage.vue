@@ -1,9 +1,9 @@
 <template>
 
   <StudentNavBar :search=true :header=false />
+  <ApplyConfirm v-if="applyConfirm"/>
   <StudentProfileForm @cancel='cancel' @success='close' v-if='!profileFormCreated'/>
   <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
-    
     <h1 id="interest">Projects You May Like</h1>
     <!--
     <div v-if="isLoading">
@@ -148,6 +148,7 @@
 
 <script>
 import StudentNavBar from '../../components/StudentNavBar.vue'
+import ApplyConfirm from '../../components/ApplyConfirm.vue'
 import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore, query, where } from "firebase/firestore"
@@ -165,6 +166,7 @@ export default {
     StudentNavBar, 
     Card,
     StudentProfileForm,
+    ApplyConfirm,
 
   },
   emits: ['cancel'],
@@ -185,6 +187,7 @@ export default {
       applied: [],
       studentTags: [],
       allApplied: [],
+      applyConfirm: false,
     }
   },
   
@@ -199,6 +202,7 @@ export default {
     },
     applying(key) {
       alert(key)
+      this.applyConfirm = true
     },
     async addApplicant(key) {
       alert(key)
