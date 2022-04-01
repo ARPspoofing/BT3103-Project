@@ -1,46 +1,5 @@
 <template>
-  <div class="card-body" @click.self="clickCard">
-    <div class="clogo">
-      <img v-bind:src=picture alt="Logo" class="logo" />
-      <span class="card-title"> {{ currProjectTitle }} <br /> </span>
-    </div>
-    <div class="card-content">
-      <p class="card-text">{{ description }}</p>
-    </div>
-    <p id="appstatus" class="offered" v-if="stat == 'offered'">Offered</p>
-    <p id="appstatus" class="pending" v-else-if="stat == 'pending'">Pending</p>
-    <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">
-      Rejected
-    </p>
-
-    <button
-      id="applybtns"
-      v-show="apply"
-      v-if="appstat == 'applied'"
-      class="btn-applied"
-    >
-      Applied
-    </button>
-    <button
-      id="applybtns"
-      v-show="apply"
-      v-else="appstat == 'apply'"
-      class="btn-apply"
-      data-bs-toggle="modal"
-      data-bs-target="#applyModal"
-      @click="apply"
-    >
-      Apply Now
-    </button>
-    <div 
-      class="modal fade"
-      id="applyModal"
-      tabindex="-1"
-      aria-labelledby="applyModalLabel"
-      aria-hidden="true"
-      data-bs-backdrop="false"
-    >
-      <div class="modal-dialog">
+    <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body">
             <div class="words">
@@ -71,72 +30,13 @@
         </div>
       </div>
     </div>
-    <button
-      id="acceptbtn"
-      v-show="offered"
-      @click="acceptBtn"
-      class="btn-apply"
-    >
-      Accept
-    </button>
-    <button
-      id="declinebtn"
-      v-show="offered"
-      @click="declineBtn"
-      class="btn-apply"
-    >
-      Decline
-    </button>
-  </div>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      testCollection: [],
-      stat: "",
-      appstat: "",
-      currProjectTitle: "",
-    };
-  },
-  mounted() {
-    this.currProjectTitle = this.projectTitle
-  },
-  props: {
-    projectTitle: String,
-    description: String,
-    apply: Boolean,
-    stat: String,
-    appstat: String,
-    offered: Boolean,
-    picture: String
-    //applicantbtn: Function,
-  },
-  methods: {
-    applicantbtn() {
-      this.$emit("applicantbtn");
-    },
-
-    clickCard() {
-      this.$emit("clickCard");
-    },
-
-    acceptBtn() {
-      this.$emit("acceptBtn");
-    },
-
-    declineBtn() {
-      this.$emit("declineBtn");
-    },
-    apply() {
-      this.$emit("applying");
-    }
-  },
-};
+    
 </script>
 
-<style>
+<style scoped>
 .card-text {
   width: 100%;
   height: 45px;

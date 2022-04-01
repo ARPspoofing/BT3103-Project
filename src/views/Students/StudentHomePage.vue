@@ -30,6 +30,7 @@
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key)"
                 @clickCard="indivproj(key)"
+                @applying="applying(key)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -195,6 +196,9 @@ export default {
     cancel(e) {
       this.cancel = e;
       console.log("eeeeeeeeeeeeeeee")
+    },
+    applying(key) {
+      alert(key)
     },
     async addApplicant(key) {
       alert(key)
