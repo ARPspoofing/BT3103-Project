@@ -4,7 +4,7 @@
     Loading
   </div>
   <div v-if="!loading" class="mainBody">   
-    <button class="purple button" @click="toggleFilterMenu">Filter</button>
+    <!-- <button class="purple button" @click="toggleFilterMenu">Filter</button> -->
     <!--
     <button @click="closeFilterMenu"> close filter menu </button>
     -->
@@ -18,15 +18,13 @@
     
     </div> 
     <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
+      <button class="purple button" @click="toggleFilterMenu">Filter</button>
       Search results for {{receivedSearch}}:
-      
+      <hr/>
     </h1>
-   
-    <hr/>
      <div v-if="noProjectsPresent" class = "noProject">
-         <h1 class = "noProjectsText">Sorry, no projects matched your search {{receivedSearch}}. Please ensure that you have spelled your search correctly.</h1>
-         
-         
+         <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> ensure that you have spelled your search correctly.</h1>
+          <!-- {{GET_SEARCH_DATA}} -->        
      </div>
       <div v-else class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
@@ -301,15 +299,17 @@ export default {
   #status {
     text-align: left;
     font-size: 28px;
-    margin: 30px 30px 0px 30px;
+    margin: 30px 30px 0px 40px;
     color: #606060;
   }
 
   hr {
     border: 0;
     border-top: 2px solid #606060;
-    width: 90%;
-    margin: 5px 0px 16px 38px;
+    width: 83%;
+    margin: 5px 0px 16px 0px;
+    position: sticky;
+    z-index: -1;
   }
 
   .options {
@@ -371,6 +371,7 @@ export default {
 
 h1 {
     text-align: center;
+    margin: 30px 30px 0px 50px;
 }
 
 .container {
@@ -383,13 +384,14 @@ h1 {
 button,
     .button {
     cursor: pointer;
-    padding: 16px 24px;
-    border-radius: 30px;
-    borer: none;
-    font-size: 12px;
-    margin-right: 8px;
-    color: #fff;
-    margin-top:20px;
+    padding: 8px 44px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    margin-right: 20px;
+    color:white;
+    float: right;
+    background-color: #ec9f39;
     img {
             margin-right: 4px;
           }
@@ -405,20 +407,5 @@ button,
         margin-left:80%;
     }
 
-    .dark-purple {
-    background-color: #252945;
-    }
-    .red {
-    background-color: #ec5757;
-    }
-    .purple {
-    background-color: #7c5dfa;
-    }
-    .green {
-    background-color: #33d69f;
-    }
-    .orange {
-    background-color: #ff8f00;
-    }
-
+    
 </style>

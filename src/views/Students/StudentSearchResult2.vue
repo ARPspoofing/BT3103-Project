@@ -4,11 +4,10 @@
     Loading
   </div>
   <div v-if="!loading" class="mainBody">   
-    <button @click="toggleFilterMenu"> Open filter menu </button>
-    <button @click="closeFilterMenu"> close filter menu </button>
+    <!-- <button class="purple button" @click="toggleFilterMenu">Filter</button> -->
 
   <transition name="filter">
-     <Filter v-if="filterModal"/>
+     <Filter v-if="filterModal"/> 
   </transition>
   
       
@@ -16,16 +15,13 @@
     
     </div> 
     <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
+      <button class="purple button" @click="toggleFilterMenu">Filter</button>
       Search results for {{receivedSearch}}:
-      
+      <hr/>
     </h1>
-   
-    <hr/>
      <div v-if="noProjectsPresent" class = "noProject">
-         <h1 class = "noProjectsText">Sorry, no projects matched your search {{receivedSearch}}. Please ensure that you have spelled your search correctly.</h1>
-          {{GET_SEARCH_DATA}}
-          
-         
+         <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> Ensure that you have spelt your search correctly.</h1>
+          <!-- {{GET_SEARCH_DATA}} -->        
      </div>
       <div v-else class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
@@ -268,9 +264,15 @@ export default {
 
   .projectContainer {
     margin-left: 30px;
-    flex-grow: 1;
-    display: flex;
+    /* flex-grow: 1;
+    display: flex; */
     flex-direction: column;
+  }
+
+  .noProjectsText {
+    font-size: 24px;
+    color: rgb(0, 0, 0);
+    padding: 30px;
   }
 
   /*
@@ -297,15 +299,17 @@ export default {
   #status {
     text-align: left;
     font-size: 28px;
-    margin: 30px 30px 0px 30px;
+    margin: 30px 30px 0px 40px;
     color: #606060;
   }
 
   hr {
     border: 0;
     border-top: 2px solid #606060;
-    width: 90%;
-    margin: 5px 0px 16px 38px;
+    width: 83%;
+    margin: 5px 0px 16px 0px;
+    position: sticky;
+    z-index: -1;
   }
 
   .options {
@@ -353,6 +357,23 @@ export default {
     width: 70px;
     color: #004A23;
   }
+
+  button,
+    .button {
+    cursor: pointer;
+    padding: 8px 44px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    margin-right: 20px;
+    color:white;
+    float: right;
+    background-color: #ec9f39;
+    img {
+            margin-right: 4px;
+          }
+    }
+
 </style>
 
 

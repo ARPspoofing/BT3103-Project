@@ -521,7 +521,7 @@ export default {
     height: 100%;
     position: fixed;
     overflow-y: scroll;
-    padding-bottom: 550px;
+    padding-bottom: 250px;
   }
 
   .carouContainer {
