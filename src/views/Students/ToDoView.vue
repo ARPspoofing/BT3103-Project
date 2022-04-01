@@ -24,7 +24,7 @@
        <div class="details flex flex-column">
            <div class="top flex">
                <div class="left flex">
-                   <p>#<span></span>{{taskId}} {{taskname}}</p>
+                   <p>#<span></span><strong>{{taskId}} {{taskname}}</strong></p>
                   
                </div>
                <div class="right flex flex-column">
@@ -38,19 +38,20 @@
                </div>
            </div>
            <div class="top-middle flex">
-                <div class="date flex flex-column">
-                   <h4>Task Issue Date: {{formatDate(duedate)}}</h4>
-                   <h4>Task Due Date: {{formatDate(duedate)}}</h4>
+                <div id="duedate" class="date flex flex-column">
+                   <p>Task Issue Date: {{formatDate(duedate)}}</p>
+                   <p>Task Due Date: {{formatDate(duedate)}}</p>
                </div>
            </div>
            <div class="middle flex">
-               <div class="description flex flex-column">
-                   <h4>Full Task Description</h4>
-                   <p>{{long}}</p>
+               <div id="description" class="description flex flex-column">
+                   <p>Full Task Description</p>
+                   <p>{{this.shortdescription}}</p>
                </div>
            </div>
            <div class="middle-bottom flex">
                <div class="documents flex flex-column">
+                   <p>Relevant Documents:</p>
                    <img src="../../assets/document.jpeg">
                </div>
            </div>
@@ -222,7 +223,8 @@ import * as moment from 'moment'
    .details {
        padding: 48px;
        margin-top:24px;
-       background-color:rgb(11, 167, 115);
+       /*background-color:rgb(11, 167, 115);*/
+       background-color: #B3CABE;
        border-radius:20px;
    }
  
@@ -292,11 +294,17 @@ import * as moment from 'moment'
 
    #backButton {
     background: #0e8044;
-    width: 190px;
-    height: 30px;
+    /*width: 190px;
+    height: 30px;*/
     color: white;
     margin: 20px;
+    border-radius: 30px;
+    border: none;
+    padding: 10px 25px;
+    font-size: 14px;
    }
 
- 
+   #duedate {
+    text-align: left;
+   }
 </style>

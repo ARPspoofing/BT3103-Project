@@ -2,7 +2,7 @@
 <BusinessNavBar :Heading="Heading" :header=true />
 <div v-if="toDoTask.length > 0" class="wrapper-outer">
     <div class="wrapper">
-        <h4>To-Do</h4>
+        <h4>TO-DO</h4>
         <ToDo v-if="toDoTask" v-for="(task,index) in toDoTask" :task="task" :key="index"/>
         <div v-else>
         <img src="../../assets/empty.png">   
@@ -265,7 +265,7 @@ export default {
     }
     
     .wrapper {
-        background-color: rgb(195, 238, 197);
+        background-color:#DBEBE3; /* rgb(195, 238, 197);*/
         /* height:100vh; */
         flex:1;
         align-items: center;
@@ -273,6 +273,7 @@ export default {
         align-content: center;
         justify-items: center;
         margin-right:5px;
+        padding: 15px;
     }
 
     .empty {
@@ -288,6 +289,10 @@ export default {
         text-align: center;
         font-size:12px;
         font-weight:300;
+    }
+
+    h4 {
+        font-weight: bold;
     }
 
 </style>
