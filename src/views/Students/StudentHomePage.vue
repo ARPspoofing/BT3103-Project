@@ -1,13 +1,14 @@
 <template>
-
   <StudentNavBar :search=true :header=false />
-  
-  <transition name="applyConfirm">
-  <ApplyConfirm v-if="applyConfirm" :projectTitle='currProject'/>
-  </transition>
+  <div class="modal-overlay" v-if="applyConfirm" @click="applyConfirm = false"></div>
   <StudentProfileForm @cancel='cancel' @success='close' v-if='!profileFormCreated'/>
   <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
+  
     <h1 id="interest">Projects You May Like</h1>
+    <transition name="applyConfirm" mode="out-in">
+    <ApplyConfirm v-if="applyConfirm" :projectTitle='currProject'/>
+    </transition>
+
     <!--
     <div v-if="isLoading">
       Loading...
@@ -592,22 +593,39 @@ export default {
   }
 
   .applyConfirm-enter-active {
-    transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  
+    transition: transform 0.4s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.4s linear;
   }
 
   .applyConfirm-leave-active {
-    transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+    
+    transition: transform 0.4s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.4s linear;
   }
 
   .applyConfirm-enter-from {
-    transform:translateX(-700px);
+    opacity: 0;
+    transform:translateY(-700px);
     /*transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);*/
   }
 
   .applyConfirm-leave-to {
-    transform:translateX(-700px);
+    opacity: 0;
+    transform:translateY(-700px);
     /*transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);*/
   }
 
+  .modal-overlay {
+  content: '';
+  position: absolute;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 998;
+  background: #2c3e50;
+  opacity: 0.6;
+  cursor: pointer;
+}
 
 </style>
