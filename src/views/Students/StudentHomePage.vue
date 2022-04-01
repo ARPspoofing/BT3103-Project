@@ -28,7 +28,7 @@
                 :projectTitle = "item.projectTitle" 
                 :description="item.description" 
                 :appstat="item.appstat"
-                @applicantbtn="addApplicant(key)" 
+                @applicantbtn="addApplicant(key)"
                 @clickCard="indivproj(key)"
                 :picture = "item.profilePicture"/>
             </div>
@@ -197,6 +197,7 @@ export default {
       console.log("eeeeeeeeeeeeeeee")
     },
     async addApplicant(key) {
+      alert(key)
       console.log(this.testCollection[key])
       var newApplicants = this.testCollection[key]["newApplicants"]
       console.log(newApplicants)
@@ -214,7 +215,7 @@ export default {
       
       //const auth = getAuth();
       //this.fbuser = auth.currentUser.email;
-
+      
       try {
           const docRef = await updateDoc(doc(db, "Project", projectId), {
               New_Applicants: newApplicants
@@ -230,15 +231,17 @@ export default {
         catch(error) {
           console.error("Error updating document: ", error);
       }
+      
       //console.log(newApplicants);
       //console.log(key)
       //console.log(this.testCollection[key])
-      console.log(appliedProjects)
+      //console.log(appliedProjects)
       // var applicants = testCollection[key]["Applicants"]
     },
     
     indivproj(key) {
       //Vuex Version
+      alert(key)
       this.CLEAR_CARDITEMS()
       this.SET_CARDITEMS(JSON.stringify(this.testCollection[key]))
       this.$router.push({
@@ -253,6 +256,7 @@ export default {
     }, 
 
     indivprojlatest(key) {
+      alert(key)
       //Vuex version
       this.CLEAR_CARDITEMS()
       this.SET_CARDITEMS(JSON.stringify(this.wholeTestCollection[key]))
