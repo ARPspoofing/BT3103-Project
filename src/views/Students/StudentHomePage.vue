@@ -1,7 +1,10 @@
 <template>
 
   <StudentNavBar :search=true :header=false />
-  <ApplyConfirm v-if="applyConfirm"/>
+  
+  <transition name="applyConfirm">
+  <ApplyConfirm v-if="applyConfirm" :projectTitle='currProject'/>
+  </transition>
   <StudentProfileForm @cancel='cancel' @success='close' v-if='!profileFormCreated'/>
   <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
     <h1 id="interest">Projects You May Like</h1>
@@ -188,6 +191,7 @@ export default {
       studentTags: [],
       allApplied: [],
       applyConfirm: false,
+      currProject: '',
     }
   },
   
@@ -203,6 +207,7 @@ export default {
     applying(key) {
       alert(key)
       this.applyConfirm = true
+      this.currProject = this.testCollection[key]["projectTitle"]
     },
     async addApplicant(key) {
       alert(key)
@@ -585,5 +590,24 @@ export default {
   .carousel-control-prev  {
     filter: invert(100%);
   }
+
+  .applyConfirm-enter-active {
+    transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  }
+
+  .applyConfirm-leave-active {
+    transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  }
+
+  .applyConfirm-enter-from {
+    transform:translateX(-700px);
+    /*transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);*/
+  }
+
+  .applyConfirm-leave-to {
+    transform:translateX(-700px);
+    /*transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);*/
+  }
+
 
 </style>
