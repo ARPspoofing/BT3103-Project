@@ -1,5 +1,8 @@
 <template>
-    <div class="modal-dialog">
+    <div 
+      class="modal fade"
+    >
+      <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body">
             <div class="words">
@@ -7,7 +10,7 @@
               <p>
                 Apply for
                 <span style="color: #0e8044"
-                  ><strong> {{ projectTitle }} </strong></span
+                  ><strong> <!--{{ projectTitle }}--> yahoo </strong></span
                 >?
               </p>
             </div>
@@ -16,12 +19,11 @@
                 <button
                   type="button"
                   id="yesbtn"
-                  data-bs-dismiss="modal"
                   @click="applicantbtn"
                 >
                   Yes
                 </button>
-                <button type="button" id="nobtn" data-bs-dismiss="modal">
+                <button type="button" id="nobtn">
                   No
                 </button>
               </div>
@@ -30,10 +32,29 @@
         </div>
       </div>
     </div>
+    <button
+      id="acceptbtn"
+      v-show="offered"
+      @click="acceptBtn"
+      class="btn-apply"
+    >
+      Accept
+    </button>
+    <button
+      id="declinebtn"
+      v-show="offered"
+      @click="declineBtn"
+      class="btn-apply"
+    >
+      Decline
+    </button>
 </template>
 
 <script>
-    
+    export default {
+        name: "ApplyConfirm",
+        props: ["projectTitle"],
+    }
 </script>
 
 <style scoped>

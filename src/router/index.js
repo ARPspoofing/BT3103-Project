@@ -140,6 +140,11 @@ const routes = [
     name: "ToDoTaskDetails",
     component: () => import("../views/Students/ToDoView.vue"),
   },
+  {
+    path: "/student/applyconfirm",
+    name:"ApplyConfirm",
+    component: () => import("../components/ApplyConfirm.vue")
+  },
 
   //Business routes
   {

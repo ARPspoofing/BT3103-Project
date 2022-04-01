@@ -32,6 +32,7 @@
     >
       Apply Now
     </button>
+    
     <div 
       class="modal fade"
       id="applyModal"
