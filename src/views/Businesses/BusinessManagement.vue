@@ -86,6 +86,10 @@ export default {
   name: "BusinessManagement",
   components: {
     BusinessNavBar,
+    ToDo,
+    InProgress,
+    PendingReview,
+    Completed,
   },
   props: {
     //So that this page can easily access the project that it is clicked on
@@ -269,12 +273,6 @@ export default {
       // console.log(pendingReviewTask)
     }
     getTasks();
-  },
-  components: {
-    ToDo,
-    InProgress,
-    PendingReview,
-    Completed,
   },
 };
 </script>
