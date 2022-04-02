@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
     <router-link style="text-decoration: none; color: inherit; " 
         :to="{name:'ToDoView', 
             params: {
@@ -18,10 +17,6 @@
             }
         }"
     >
-=======
-    <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
-        taskId: task['id'], projectId:task['projectId'], projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
->>>>>>> shyamal
     <div class="todo">
         <div class="top flex flex-row">
             <div class="title">{{task['taskname']}}</div>

@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
 <div class="mainBody">
     <button @click="goback" id="backButton">
         <i class="fa-solid fa-angles-left"></i>
@@ -8,10 +7,6 @@
 
        <!-- <router-link :to="{name:'BusinessManagement'}">
            
-=======
-    
-       <router-link :to="{name:'StudentManagement', params:{projectId:this.$route.params.projectId,projectTitle:this.$route.params.projectTitle}}">
->>>>>>> shyamal
            <img src='../../assets/back.png'> Go Back
        </router-link> -->
        <!--
@@ -32,8 +27,7 @@
        <div class="details flex flex-column">
            <div class="top flex">
                <div class="left flex">
-<<<<<<< HEAD
-                   <p>#<span></span><strong>{{taskIndex}} {{taskname}}</strong></p>
+                   <p>#<span></span><strong>{{task_id}} for {{projectTitle}}</strong></p>
                   
                </div>
                <div class="right flex flex-column">
@@ -45,39 +39,30 @@
                            <option value="7 days">1 week</option>
                        </select>
                </div>
-               <div class="right flex flex-column" id="rightmost">
+               <!--<div class="right flex flex-column" id="rightmost">
                        <label>Change Task Status</label>
                        <select v-model="extend" id="input">
-                           <!-- change accordingly -->
+                            change accordingly 
                            <option value="1 day">1 day</option>
                            <option value="3 days">3 days</option>
                            <option value="5 days">5 days</option>
                            <option value="7 days">1 week</option>
-=======
+                           </select>
                    <p>#<span></span>{{task_id}} for {{projectTitle}}</p>
-                  
-               </div>
-               <div class="right flex flex-column">
-                       <label>Change status</label>
-                       <select v-model="status">                  
+               </div>-->
+               <div class="right flex flex-column" id="rightmost">
+                       <label>Change Task Status</label>
+                       <select v-model="extend" id="input">                
                            <option value="To do">To Do</option>
                            <option value="In progress">In Progress</option>
                            <option value="Pending review">Send for review</option>                          
->>>>>>> shyamal
                        </select>
                </div>
            </div>
            <div class="top-middle flex">
-<<<<<<< HEAD
                 <div id="duedate" class="date flex flex-column">
                    <p><b>Task Issue Date :</b> {{formatDate(issuedate)}}</p>
                    <p><b>Due Date :</b> {{formatDate(duedate)}}</p>
-=======
-                <div class="date flex flex-column">
-                    <!-- Task issue date necessary? -->
-                   <h4>Task Issue Date: {{duedate}}</h4>
-                   <h4>Task Due Date: {{duedate}}</h4>
->>>>>>> shyamal
                </div>
            </div>
            <div class="middle flex">
@@ -112,12 +97,8 @@
                </div>
            </div>
        </div>
-<<<<<<< HEAD
    </div>
 </div>
-=======
-   
->>>>>>> shyamal
  
    <!-- {{task_id}}
    {{taskname}}
