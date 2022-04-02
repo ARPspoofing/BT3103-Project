@@ -145,9 +145,12 @@ export default {
 
     //vuex
     this.items = JSON.parse(this.cardItems);
+    console.log(this.cardItems)
+    console.log("below carditems",this.items['accApplicants'])
     this.projectId = JSON.parse(this.cardItems).projectId;
-    if (this.cardItems.accApplicants) {
-      this.accApplicants = JSON.parse(this.cardItems.accApplicants);
+    if (this.items["accApplicants"]) {
+      alert('There is an accepted applicant')
+      this.accApplicants = this.items['accApplicants'];
       for (var i = 0; i < this.accApplicants.length; i++) {
         getApplicant(this.accApplicants[i]).then((res) => {
           this.applicant.push(res);

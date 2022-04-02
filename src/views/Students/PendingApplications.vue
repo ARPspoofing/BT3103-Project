@@ -74,6 +74,7 @@ export default {
     this.userEmail = auth.currentUser.email;
     */
     var userEmail = this.userEmail
+    alert(this.userEmail)
     const that = this
     async function getAppliedProjects() {
       const ref = doc(db, "students", userEmail);

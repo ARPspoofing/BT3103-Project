@@ -1,6 +1,6 @@
 <template>
   <StudentNavBar :search=true :header=false />
-  <!--<div class="modal-overlay" v-if="applyConfirm"></div>-->
+  <!--div class="modal-overlay" v-if="applyConfirm"></div>-->
   <StudentProfileForm @cancel='cancel' @success='close' v-if='!profileFormCreated'/>
   <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
   
@@ -249,38 +249,74 @@ export default {
     },
     async addApplicant(key) {
       alert(key)
-      console.log(this.testCollection[key])
-      var newApplicants = this.testCollection[key]["newApplicants"]
-      console.log(newApplicants)
-      var projTitle = this.testCollection[key]["projectTitle"]
-      newApplicants.push(this.userEmail);
-      var applied = this.applied
-      console.log(applied);
-      var projectId = this.testCollection[key]["projectId"]
-      console.log(projectId);
-      applied.push(projectId);
-      // applied.push(projTitle);
-      this.testCollection[key]["appstat"] = "applied"
+      if (this.like) {
+        console.log(this.testCollection[key])
+        var newApplicants = this.testCollection[key]["newApplicants"]
+        console.log(newApplicants)
+        var projTitle = this.testCollection[key]["projectTitle"]
+        newApplicants.push(this.userEmail);
+        var applied = this.applied
+        console.log(applied);
+        var projectId = this.testCollection[key]["projectId"]
+        console.log(projectId);
+        applied.push(projectId);
+        // applied.push(projTitle);
+        this.testCollection[key]["appstat"] = "applied"
 
-      // alert("Applying for proj: " + projTitle);
-      
-      //const auth = getAuth();
-      //this.fbuser = auth.currentUser.email;
-      
-      try {
-          const docRef = await updateDoc(doc(db, "Project", projectId), {
-              New_Applicants: newApplicants
-          })
-
-          const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
-                appliedProjects: applied
+        // alert("Applying for proj: " + projTitle);
+        
+        //const auth = getAuth();
+        //this.fbuser = auth.currentUser.email;
+        
+        try {
+            const docRef = await updateDoc(doc(db, "Project", projectId), {
+                New_Applicants: newApplicants
             })
 
-          //console.log(docRef)
-          this.$emit("updated")
-      }
-        catch(error) {
-          console.error("Error updating document: ", error);
+            const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
+                  appliedProjects: applied
+              })
+
+            //console.log(docRef)
+            this.$emit("updated")
+        }
+          catch(error) {
+            console.error("Error updating document: ", error);
+        }
+      } else if (this.latest) {
+        console.log(this.wholeTestCollection[key])
+        var newApplicants = this.wholeTestCollection[key]["newApplicants"]
+        console.log(newApplicants)
+        var projTitle = this.wholeTestCollection[key]["projectTitle"]
+        newApplicants.push(this.userEmail);
+        var applied = this.applied
+        console.log(applied);
+        var projectId = this.wholeTestCollection[key]["projectId"]
+        console.log(projectId);
+        applied.push(projectId);
+        // applied.push(projTitle);
+        this.wholeTestCollection[key]["appstat"] = "applied"
+
+        // alert("Applying for proj: " + projTitle);
+        
+        //const auth = getAuth();
+        //this.fbuser = auth.currentUser.email;
+        
+        try {
+            const docRef = await updateDoc(doc(db, "Project", projectId), {
+                New_Applicants: newApplicants
+            })
+
+            const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
+                  appliedProjects: applied
+              })
+
+            //console.log(docRef)
+            this.$emit("updated")
+        }
+          catch(error) {
+            console.error("Error updating document: ", error);
+        }
       }
       
       //console.log(newApplicants);
@@ -659,7 +695,7 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 998;
+  z-index: 10;
   background: #2c3e50;
   opacity: 0.6;
   cursor: pointer;

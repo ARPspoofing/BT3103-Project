@@ -59,7 +59,7 @@ export default {
     return {
       Heading: "MY APPLICATIONS",
       stat2: "offered",
-      userEmail: "",
+      //userEmail: "",
       offered: [],
       projects: [],
       accepted:[],
@@ -139,9 +139,9 @@ export default {
     */
     //this.userEmail = auth.currentUser.email;
     //console.log(this.userEmail)
-
-    const that = this
     var userEmail = this.userEmail
+    alert(this.userEmail)
+    const that = this
     async function getOfferedProjects() {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);

@@ -225,6 +225,7 @@ export default {
     this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants;
     */
     //vuex 
+    console.log(this.cardItems)
     this.items = JSON.parse(this.cardItems);
     this.projectId = JSON.parse(this.cardItems).projectId;
     this.newApplicants = JSON.parse(this.cardItems).newApplicants;

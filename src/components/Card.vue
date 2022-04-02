@@ -12,7 +12,7 @@
     <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">
       Rejected
     </p>
-
+<div v-show=false>NO</div>
     <button
       id="applybtns"
       v-show="apply"
@@ -28,7 +28,7 @@
       class="btn-apply"
       data-bs-toggle="modal"
       data-bs-target="#applyModal"
-      @click="apply"
+      @click="applying"
     >
       Apply Now
     </button>    
@@ -133,7 +133,7 @@ export default {
     declineBtn() {
       this.$emit("declineBtn");
     },
-    apply() {
+    applying() {
       //emit true if Projects you may like
       //emit false if latest
 
