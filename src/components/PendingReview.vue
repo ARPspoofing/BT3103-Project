@@ -1,5 +1,6 @@
 <template>
-    <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoTaskDetails', params: {taskId: task['id']}}">
+    <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoTaskDetails', params: {task:task,
+        taskId: task['id'], projectId:task['projectId'], projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
     <div class="pendingreview">
         <div class="top flex flex-row">
             <div class="title">{{task['taskname']}}</div>
@@ -33,15 +34,23 @@
         name: 'PendingReview',
         props: {
             task:Object,
+            projectTitle:String,
+            projectId:String
+        },
+         mounted() {
+            const curr = this
+            console.log(curr.task)
+            
         },
         data() {
             return {
-                duedate: new Date(this.task['duedate']['seconds']).toLocaleDateString('en-us',{year: "numeric", month: "short", day: "numeric"}),
+                duedate: this.task.duedate,
                 dateOptions: {year: "numeric", month: "short", day: "numeric"},
             }
         },
-        watch: {
-        },
+      
+
+       
     }
 </script>
 

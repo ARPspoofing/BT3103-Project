@@ -20,8 +20,11 @@
         <Card
           :apply="false"
           :projectTitle="item.projectTitle"
+          :projectId ="item.id"
           :description="item.description"
           :picture="item.profilePicture"
+          :inProgress='true'
+          @viewTasks ="viewTasks(item.id, item.projectTitle)"
         />
       </div>
     </div>
@@ -84,7 +87,16 @@ export default {
       const ref = doc(db, "Project", proj);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      return {projectTitle: data.Project_Title, description: data.Description, profilePicture: data.profPicture}
+      return {projectTitle: data.Project_Title, description: data.Description, profilePicture: data.profPicture,
+      id: docSnap.id}
+    }
+  },
+
+  methods: {
+    viewTasks(id, title) {
+      console.log("in method")
+      console.log(title)
+      this.$router.push({name:'StudentManagement',params:{projectId:id, projectTitle:title}})
     }
   }
 };

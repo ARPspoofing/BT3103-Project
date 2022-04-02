@@ -86,6 +86,15 @@
     >
       Decline
     </button>
+
+    <button
+      id="studentManagementButton"
+      v-show="inProgress"
+      @click="viewTasksBtn"
+      class="btn-apply"
+    >
+      View tasks
+    </button>
   </div>
 </template>
 
@@ -106,7 +115,10 @@ export default {
     stat: String,
     appstat: String,
     offered: Boolean,
-    picture: String
+    picture: String,
+    inProgress: Boolean,
+    projectId: String
+
     //applicantbtn: Function,
   },
   methods: {
@@ -125,6 +137,10 @@ export default {
     declineBtn() {
       this.$emit("declineBtn");
     },
+
+    viewTasksBtn() {
+      this.$emit("viewTasks");
+    }
   },
 };
 </script>
@@ -199,6 +215,16 @@ export default {
   border-width: 0px;
   height: 30px;
 }
+
+#studentManagementButton {
+  background-color: orange;
+  color: white;
+  border-radius: 8px;
+  border-width: 0px;
+  height: 30px;
+}
+
+
 
 .btn-apply {
   background-color: #0e8044;
