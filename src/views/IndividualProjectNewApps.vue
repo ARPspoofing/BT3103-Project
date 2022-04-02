@@ -99,6 +99,9 @@ import {
   updateDoc,
   getDoc,
 } from "firebase/firestore";
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
+
 const db = getFirestore(firebaseApp);
 import { getAuth } from "firebase/auth";
 
@@ -109,7 +112,9 @@ export default {
     ApplicantsCard,
     BusinessViewStudentInfo,
   },
-
+  computed: {
+    ...mapState(['cardItems','userEmail']),
+  },
   data() {
     return {
       Heading: "NEW APPLICANTS",
@@ -244,15 +249,27 @@ export default {
   },
 
   mounted() {
+    //Non-vuex
+    /*
     this.items = JSON.parse(this.$route.params.items);
     this.projectId = JSON.parse(this.$route.params.items).projectId;
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants;
     this.accApplicants = JSON.parse(this.$route.params.items).accApplicants;
     this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants;
+    */
+    //vuex 
+    console.log(this.cardItems)
+    this.items = JSON.parse(this.cardItems);
+    this.projectId = JSON.parse(this.cardItems).projectId;
+    this.newApplicants = JSON.parse(this.cardItems).newApplicants;
+    this.accApplicants = JSON.parse(this.cardItems).accApplicants;
+    this.rejApplicants = JSON.parse(this.cardItems).rejApplicants;
     //console.log(this.newApplicants)
     //console.log(this.accApplicants)
     //console.log(this.rejApplicants)
     //console.log(this.rejApplicants)
+    //Non-vuex
+    /*
     if (this.$route.params.newApplicants) {
       this.newApplicants = JSON.parse(this.$route.params.newApplicants);
       for (var i = 0; i < this.newApplicants.length; i++) {
@@ -276,6 +293,26 @@ export default {
     }
     if (this.$route.params.rejApplicants) {
       this.rejApplicants = JSON.parse(this.$route.params.rejApplicants);
+    }
+    */
+
+    //Vuex
+    if (this.newApplicants) {
+      for (var i = 0; i < this.newApplicants.length; i++) {
+        getApplicant(this.newApplicants[i]).then((res) => {
+          this.applicant.push(res);
+        });
+        getOfferedProjects(this.newApplicants[i]).then((res) => {
+          this.offered.push(res);
+        });
+        getRejectedProjects(this.newApplicants[i]).then((res) => {
+          this.rejected.push(res);
+        });
+        getAppliedProjects(this.newApplicants[i]).then((res) => {
+          this.applied.push(res);
+        });
+        console.log(this.applicant);
+      }
     }
 
     async function getApplicant(app) {

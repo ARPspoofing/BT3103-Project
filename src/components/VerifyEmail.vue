@@ -9,7 +9,7 @@
             <div class="input">
                 <p>You're almost there! We sent as email to<b> <br>
                  {{email}}</b><br>Just click on the link in the email to complete your signup<br>
-                 If you don't see it, you may need to check <b>your spam folder and mark it as safe</b></p>
+                 If you don't see it, you may need to: <br> Check <b>your spam folder, mark it as safe, and remove spam label</b></p>
             </div>
             <div class="input">
                 <p>Still can't find the email?</p>
@@ -48,6 +48,7 @@ export default {
         async function check() {
             const auth = getAuth()
             let email = window.localStorage.getItem('emailForSignIn');
+            alert(email)
             that.email = email
             const docRef = doc(db,"businesses",String(email))
             const docs = await getDoc(docRef)

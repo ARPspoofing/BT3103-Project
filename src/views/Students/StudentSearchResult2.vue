@@ -15,10 +15,30 @@
     
     </div> 
     <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
-      <button class="purple button" @click="toggleFilterMenu">Filter</button>
+      <button class="button" @click="toggleFilterMenu">Filter</button>
+      <button class="order" @click="toggleSortMenu">Sort</button>
+
+      <nav class="menu">
+      <ol>
+        <li class="menu-item">
+          <a>Sort By</a>
+          <ol class="sub-menu">
+            <li class="menu-item"><a href="#0">Shishkabobs</a></li>
+            <li class="menu-item"><a href="#0">Shishkabobs</a></li>
+            <li class="menu-item"><a href="#0">Shishkabobs</a></li>
+            <li class="menu-item"><a href="#0">Shishkabobs</a></li>
+            <li class="menu-item"><a href="#0">BBQ kabobs</a></li>
+            <li class="menu-item"><a href="#0">Summer kabobs</a></li>
+          </ol>
+        </li>
+      </ol>
+      </nav>
+
+
       Search results for {{receivedSearch}}:
       <hr/>
     </h1>
+    
      <div v-if="noProjectsPresent" class = "noProject">
          <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> Ensure that you have spelt your search correctly.</h1>
           <!-- {{GET_SEARCH_DATA}} -->        
@@ -373,6 +393,76 @@ export default {
             margin-right: 4px;
           }
     }
+
+    .menu ol {
+	    list-style: none;
+	    padding: 0;
+	    margin: 0;
+      background-color: #ec9f39; 
+    }
+    .menu ol:first-child {
+      width: 10%;
+      max-width: 960px;
+      margin: 1rem auto 0 auto;
+      align-items: right;
+      box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+    }
+    .menu-item {
+      border-top: 2px solid #16a085;
+      position: relative;
+      transition: background 0.3s ease-in-out; 
+    }
+   
+    .menu-item:nth-child(1) > a::before {
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 1rem;
+      font-weight: 900;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
+      display: inline-block;
+      font-style: normal;
+      font-variant: normal;
+      text-rendering: auto;
+      line-height: 1;
+      color: #16a085;
+    }
+
+    .menu-item .sub-menu {
+      position: absolute;
+      top: 100%;
+      width: 100%;
+      transform-origin: top;
+      transform: rotateX(-90deg);
+      transition: transform 0.3s linear;
+      background-color: #ec9f39;
+    }
+    .menu-item .sub-menu .menu-item {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .menu-item:hover, .menu-item.active {
+      border-top: 2px solid #ec9f39;
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    .menu-item:hover a::before, .menu-item.active a::before {
+      color: #ec9f39;
+    }
+    .menu-item:hover .sub-menu {
+      transform: rotateX(0deg);
+    }
+    .menu-item a {
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+      text-transform: uppercase;
+      height: 100%;
+      width: 100%;
+      padding: 1.5em 1em;
+    }
+
 
 </style>
 

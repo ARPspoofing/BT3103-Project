@@ -54,6 +54,8 @@ import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
 import {ref} from "vue"
 import {getAuth,createUserWithEmailAndPassword} from "firebase/auth"
 import {useRouter} from "vue-router"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 import Loading from '../../components/Loading.vue'
 
 //Style 
@@ -76,6 +78,9 @@ export default {
             validEmail: []
         }
     },
+    computed: {
+    ...mapState(['userEmail']),
+    },
     mounted() {
     const curr = this
     async function getValidEmail() {
@@ -95,6 +100,7 @@ export default {
         Loading,
     },
     methods: {
+        ...mapMutations(['SET_USEREMAIL']),
         register() { 
             console.log(this.validEmail)
                 if(this.email == '') {
@@ -183,7 +189,8 @@ export default {
                     this.loading = true               
                     createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                     .then((data) => {
-                        window.localStorage.setItem('emailForSignIn', this.email);
+                        this.SET_USEREMAIL(this.email)
+                        //window.localStorage.setItem('emailForSignIn', this.email);
                          setDoc(doc(db,"students",this.email),{
                             email:this.email,
                             //password:this.password,

@@ -152,6 +152,9 @@ import * as moment from 'moment'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
+
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -160,6 +163,9 @@ export default {
   components: {
     BusinessNavBar, 
     Deliverable
+  },
+  computed: {
+    ...mapState(['cardItems']),
   },
   data() {
     return {
@@ -175,6 +181,8 @@ export default {
     }
   },
   mounted() {
+    //Non Vuex version
+    /*
     this.tasks = JSON.parse(this.$route.params.items).tasks
     this.tags = JSON.parse(this.$route.params.items).tags
     this.items = JSON.parse(this.$route.params.items)
@@ -191,7 +199,24 @@ export default {
     if (this.$route.params.rejApplicants) {
       this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
     }
-    
+    */
+    //Vuex version
+    this.tasks = JSON.parse(this.cardItems).tasks
+    this.tags = JSON.parse(this.cardItems).tags
+    this.items = JSON.parse(this.cardItems)
+    this.newApplicants = JSON.parse(this.cardItems).newApplicants
+    this.accApplicants = JSON.parse(this.cardItems).accApplicants
+    this.rejApplicants = JSON.parse(this.cardItems).rejApplicants
+
+    if (this.$route.params.newApplicants) {
+      this.newApplicants = JSON.parse(this.$route.params.newApplicants)
+    }
+    if (this.$route.params.accApplicants) {
+      this.accApplicants = JSON.parse(this.$route.params.accApplicants)
+    }
+    if (this.$route.params.rejApplicants) {
+      this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
+    }
   },
   methods: {
     formatDate(date) {

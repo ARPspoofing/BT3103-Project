@@ -52,9 +52,9 @@ import {useRouter} from "vue-router"
 import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../../firebase.js"
 import {getDoc, collection, doc} from "firebase/firestore"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 import ResetPassword from '../../components/ResetPassword.vue'
-
-
 
 const router = useRouter()
 const auth = getAuth()
@@ -76,7 +76,11 @@ export default {
     components: {
         ResetPassword,
     },
+    computed: {
+    ...mapState(['userEmail']),
+    },
     methods: {
+        ...mapMutations(['SET_USEREMAIL']),
         forgot() {
             this.forgetPassword = true
         },
@@ -101,7 +105,8 @@ export default {
     console.log(formFilled)
     await signInWithEmailAndPassword(auth, this.email,this.password)
     .then((data) => {
-        window.localStorage.setItem('emailForSignIn', this.email);
+        this.SET_USEREMAIL(this.email)
+        //window.localStorage.setItem('emailForSignIn', this.email);
         if(!formFilled) {
             this.$router.push({name:'StudentHomePage'})
             //this.$router.push({name:'StudentProfileForm'})

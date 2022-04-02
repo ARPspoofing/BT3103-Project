@@ -59,6 +59,8 @@ import {useRouter} from "vue-router"
 import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../../firebase.js"
 import {getDoc, collection, doc} from "firebase/firestore"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 import ResetPassword from '../../components/ResetPassword.vue'
 import GoogleButton from '../../components/GoogleButton.vue'
 
@@ -84,6 +86,9 @@ export default {
         ResetPassword,
         GoogleButton,
     }, 
+    computed: {
+        ...mapState(['userEmail'])
+    },
     /*
     mounted() {
         async function checkVerified() {
@@ -95,6 +100,7 @@ export default {
     },  
     */ 
     methods: {
+    ...mapMutations(['SET_USEREMAIL']),
     forgot() {
         this.forgetPassword = true
     },
@@ -112,6 +118,7 @@ export default {
             const token = credential.accessToken;
             const user = result.user;
             alert(user.email)
+            this.SET_USEREMAIL(user.email)
             window.localStorage.setItem('emailForSignIn', user.email);
             this.$router.push({name:'businessLoading'})
                 // ...
@@ -158,6 +165,7 @@ export default {
             console.log(verifyEmail)
         signInWithEmailAndPassword(getAuth(), this.email,this.password)
         .then((data) => {
+            this.SET_USEREMAIL(this.email)
             window.localStorage.setItem('emailForSignIn', this.email);
             if(formFilled) {
                  this.$router.push({name:'BusinessHomePage',params:{'formFilled':true}})
