@@ -6,7 +6,9 @@
     class="form-wrap flex flex-column"
     id="mainBody"
   >
-    <button @click="goback" id="backButton">Back to Applicants</button>
+    <button @click="goback" id="backButton">
+      <i class="fa-solid fa-angles-left"></i>
+      Back to Applicants</button>
     <form @submit.prevent="submitForm" class="content">
       <div class="profile-pic-outer">
         <img class="profile-pic" :src="finalProfile" />
@@ -647,8 +649,8 @@ ul {
 
 #backButton {
   background: #0e8044;
-  width: 180px;
-  height: 50px;
+  padding: 10px 25px;
+  width: 200px;
 }
 
 #accButton {

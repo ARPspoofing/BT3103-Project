@@ -227,6 +227,7 @@ export default {
           taskDescription: "",
           taskDueDate: "",
           taskStatus: "To do",
+          taskIssueDate: new Date().toISOString().split('T')[0],
         },
       ],
       projectTitleErrorPresent: false,
@@ -256,6 +257,7 @@ export default {
         taskDescription: "",
         taskDueDate: "",
         taskStatus: "To do",
+        taskIssueDate: new Date().toISOString().split('T')[0],
       });
     },
     deleteTask(counter) {

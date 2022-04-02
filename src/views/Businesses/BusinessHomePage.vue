@@ -1,7 +1,7 @@
 <template>
   <BusinessNavBar :Heading="Heading" :header=true />
   <BusinessProfileForm @success='close' v-if='!profileFormCreated'/>
-  <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">
+  <div :class="{blur:!profileFormCreated, mainBody:foreverTrue}">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
@@ -199,6 +199,18 @@ export default {
 </script>
 
 <style scoped>
+.mainBody {
+    background-color: #F5F5F5;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow-y: scroll;
+    padding-bottom: 550px;
+    /*
+    filter: blur(5px);
+    */
+  }
+  
   .navbar-custom {
     background-color: #004A23;
   }
@@ -216,18 +228,6 @@ export default {
 
   .blur {
   filter: blur(5px); 
-  }
-
-  .mainBody {
-    background-color: #F5F5F5;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    overflow-y: scroll;
-    padding-bottom: 550px;
-    /*
-    filter: blur(5px);
-    */
   }
 
   .projectContainer {
@@ -250,7 +250,7 @@ export default {
 
   .options {
     font-size: 15px;
-    padding: 10px 25px;
+    padding: 5px 25px;
     margin-left: 15px;
     border-radius: 30px; /* or 50% */
     background-color: #0E8044;

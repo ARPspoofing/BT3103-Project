@@ -1,62 +1,66 @@
 <template>
   <BusinessNavBar :Heading="Heading" :header="true" />
-  <button @click="goback" id="backButton">Back to Projects</button>
-  <div v-if="toDoTask.length > 0" class="wrapper-outer">
-    <div class="wrapper">
-      <h4>TO-DO</h4>
-      <ToDo
-        v-if="toDoTask"
-        v-for="(task, index) in toDoTask"
-        :task="task"
-        :key="index"
-      />
-      <div v-else>
-        <img src="../../assets/empty.png" />
-        <h3>Congratulations, you do not have any tasks to do</h3>
+  <div class="mainBody">
+      <button @click="goback" id="backButton">
+        <i class="fa-solid fa-angles-left"></i>
+        Back to Projects</button>
+      <div v-if="toDoTask.length > 0" class="wrapper-outer">
+        <div class="wrapper">
+          <h4>TO-DO</h4>
+          <ToDo
+            v-if="toDoTask"
+            v-for="(task, index) in toDoTask"
+            :task="task"
+            :key="index"
+          />
+          <div v-else>
+            <img src="../../assets/empty.png" />
+            <h3>Congratulations, you do not have any tasks to do</h3>
+          </div>
+        </div>
+        <div class="wrapper">
+          <h4>IN PROGRESS</h4>
+          <InProgress
+            v-if="inProgressTask"
+            v-for="(task, index) in inProgressTask"
+            :task="task"
+            :key="index"
+          />
+          <div v-else>
+            <h3>
+              You currently do not have any in-progress tasks. Please update the
+              status of To-Do tasks if you are working on anything
+            </h3>
+          </div>
+        </div>
+        <div class="wrapper">
+          <h4>PENDING REVIEW</h4>
+          <PendingReview
+            v-if="pendingReviewTask"
+            v-for="(task, index) in pendingReviewTask"
+            :task="task"
+            :key="index"
+          />
+          <div v-else>
+            <h3>
+              You do not have any tasks awaiting review. Please update the status of
+              your tasks if you would like to send them for review.
+            </h3>
+          </div>
+        </div>
+        <div class="wrapper">
+          <h4>COMPLETED</h4>
+          <Completed
+            v-if="completedTask"
+            v-for="(task, index) in completedTask"
+            :task="task"
+            :key="index"
+          />
+          <div v-else>
+            <h3>No task has been completed yet.</h3>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="wrapper">
-      <h4>IN PROGRESS</h4>
-      <InProgress
-        v-if="inProgressTask"
-        v-for="(task, index) in inProgressTask"
-        :task="task"
-        :key="index"
-      />
-      <div v-else>
-        <h3>
-          You currently do not have any in-progress tasks. Please update the
-          status of To-Do tasks if you are working on anything
-        </h3>
-      </div>
-    </div>
-    <div class="wrapper">
-      <h4>PENDING REVIEW</h4>
-      <PendingReview
-        v-if="pendingReviewTask"
-        v-for="(task, index) in pendingReviewTask"
-        :task="task"
-        :key="index"
-      />
-      <div v-else>
-        <h3>
-          You do not have any tasks awaiting review. Please update the status of
-          your tasks if you would like to send them for review.
-        </h3>
-      </div>
-    </div>
-    <div class="wrapper">
-      <h4>COMPLETED</h4>
-      <Completed
-        v-if="completedTask"
-        v-for="(task, index) in completedTask"
-        :task="task"
-        :key="index"
-      />
-      <div v-else>
-        <h3>No task has been completed yet.</h3>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -143,6 +147,7 @@ export default {
             duedate: tasks[i]["taskDueDate"],
             taskname: tasks[i]["taskName"],
             status: tasks[i]["taskStatus"],
+            issueDate: tasks[i]["taskIssueDate"],
             todo: true,
             inprogress: false,
             pendingreview: false,
@@ -157,6 +162,7 @@ export default {
             duedate: tasks[i]["taskDueDate"],
             taskname: tasks[i]["taskName"],
             status: tasks[i]["taskStatus"],
+            issueDate: tasks[i]["taskIssueDate"],
             todo: true,
             inprogress: false,
             pendingreview: false,
@@ -171,6 +177,7 @@ export default {
             duedate: tasks[i]["taskDueDate"],
             taskname: tasks[i]["taskName"],
             status: tasks[i]["taskStatus"],
+            issueDate: tasks[i]["taskIssueDate"],
             todo: true,
             inprogress: false,
             pendingreview: false,
@@ -185,6 +192,7 @@ export default {
             duedate: tasks[i]["taskDueDate"],
             taskname: tasks[i]["taskName"],
             status: tasks[i]["taskStatus"],
+            issueDate: tasks[i]["taskIssueDate"],
             todo: true,
             inprogress: false,
             pendingreview: false,
@@ -278,15 +286,30 @@ export default {
 </script>
 
 <style scoped>
+.mainBody {
+    background-color: #F5F5F5;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow-y: scroll;
+    padding-bottom: 150px;
+    /*
+    filter: blur(5px);
+   */
+}
+
+
 .wrapper-outer {
   display: flex;
   flex-direction: row;
-  position: fixed;
-  overflow-y: scroll;
-  padding-bottom: 100px;
+  /* position: fixed; */
+  /* overflow-y: scroll; */
+  /* padding-bottom: 150px; */
   margin: 20px;
+  margin-top: 0px;
   width: 98%;
   padding: 20px;
+  padding-bottom: 150px;
 }
 
 .wrapper {

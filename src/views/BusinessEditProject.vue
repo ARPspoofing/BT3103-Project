@@ -104,9 +104,9 @@ export default {
     mounted() {
         //this.items = JSON.parse(this.$route.params.items)
         this.item = JSON.parse(this.$route.params.items)
-        var prevTitle = JSON.parse(this.$route.params.items).projectTitle
+        var prevTitle = JSON.parse(this.$route.params.items).projectId
         this.previousTitle = prevTitle
-        console.log(this.item)
+        console.log(prevTitle)
         // console.log(this.item.tasks.push({
         //         taskName:'hi',
         //         taskDescription: 'hi', 
@@ -118,7 +118,9 @@ export default {
             this.item.tasks.push({
                 taskName:'',
                 taskDescription: '', 
-                taskDueDate: ''
+                taskDueDate: '',
+                taskStatus: "To do",
+                taskIssueDate: new Date().toISOString().split('T')[0],
             })
         },
         deleteTaskEdit(counter){

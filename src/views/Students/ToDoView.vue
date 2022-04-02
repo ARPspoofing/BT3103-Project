@@ -1,5 +1,8 @@
 <template>
-    <button @click="goback" id="backButton">Back to Management</button>
+<div class="mainBody">
+    <button @click="goback" id="backButton">
+        <i class="fa-solid fa-angles-left"></i>
+        Back to Management</button>
    <div class="view container">
 
        <!-- <router-link :to="{name:'BusinessManagement'}">
@@ -24,12 +27,22 @@
        <div class="details flex flex-column">
            <div class="top flex">
                <div class="left flex">
-                   <p>#<span></span><strong>{{taskId}} {{taskname}}</strong></p>
+                   <p>#<span></span><strong>{{taskIndex}} {{taskname}}</strong></p>
                   
                </div>
                <div class="right flex flex-column">
                        <label>Extend Due Date</label>
-                       <select v-model="extend">                  
+                       <select v-model="extend" id="input">                  
+                           <option value="1 day">1 day</option>
+                           <option value="3 days">3 days</option>
+                           <option value="5 days">5 days</option>
+                           <option value="7 days">1 week</option>
+                       </select>
+               </div>
+               <div class="right flex flex-column" id="rightmost">
+                       <label>Change Task Status</label>
+                       <select v-model="extend" id="input">
+                           <!-- change accordingly -->
                            <option value="1 day">1 day</option>
                            <option value="3 days">3 days</option>
                            <option value="5 days">5 days</option>
@@ -39,20 +52,33 @@
            </div>
            <div class="top-middle flex">
                 <div id="duedate" class="date flex flex-column">
-                   <p>Task Issue Date: {{formatDate(duedate)}}</p>
-                   <p>Task Due Date: {{formatDate(duedate)}}</p>
+                   <p><b>Task Issue Date :</b> {{formatDate(issuedate)}}</p>
+                   <p><b>Due Date :</b> {{formatDate(duedate)}}</p>
                </div>
            </div>
            <div class="middle flex">
                <div id="description" class="description flex flex-column">
-                   <p>Full Task Description</p>
+                   <p><b>Task Description</b></p>
                    <p>{{this.shortdescription}}</p>
                </div>
            </div>
            <div class="middle-bottom flex">
                <div class="documents flex flex-column">
-                   <p>Relevant Documents:</p>
-                   <img src="../../assets/document.jpeg">
+                   <p><b>Submit Relevant Documents :</b></p>
+                   <button id="addFileButton" @click="addFile">
+                    <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
+                    Add Files
+                    </button>
+                    <div
+                    class="previous"
+                    v-for="(task, counter) in files"
+                    v-bind:key="counter"
+                    >
+                    <button id="deleteFile" @click="deleteFile(counter)">
+                        <i class="fa fa-times" id="crossIcon"></i>
+                    </button>
+                   <input type="file" multiple name="files[]" id="files" v-on:change="uploadFiles">
+                   </div>
                </div>
            </div>
            <div class="bottom flex flex-column">
@@ -63,6 +89,7 @@
            </div>
        </div>
    </div>
+</div>
  
    <!-- {{task_id}}
    {{taskname}}
@@ -81,6 +108,7 @@ import Loading from '../../components/Loading.vue'
 const db = getFirestore(firebaseApp)
 const router = useRouter()
 import * as moment from 'moment'
+import { getStorage, uploadBytesResumable, getDownloadURL } from "firebase/storage";
  
    export default {
        name: 'ToDoView',
@@ -102,6 +130,7 @@ import * as moment from 'moment'
                comments: '',
                long: '',
                dateOptions: {year: "numeric", month: "short", day: "numeric"},
+               files: [],
            }
        },
        watch: {
@@ -111,7 +140,22 @@ import * as moment from 'moment'
                this.duedate = new Date(this.duedate).toLocaleDateString('en-us',this.dateOptions)
            }
        },
+       computed: {
+           taskIndex() {
+               return parseInt(this.taskId) + 1;
+           }
+       },
+
        methods: {
+           addFile() {
+                this.files.push(
+                    ''
+                );
+            },
+            deleteFile(counter) {
+                this.files.splice(counter, 1);
+            },
+
            formatDate(date) {
                 return moment(date).format("DD MMMM YYYY");
             },
@@ -126,6 +170,7 @@ import * as moment from 'moment'
                         taskname: JSON.stringify(this.taskname),
                         taskId: JSON.stringify(this.taskId),
                         duedate: JSON.stringify(this.duedate),
+                        issuedate: JSON.stringify(this.issuedate),
                         shortdescription: JSON.stringify(this.shortdescription),
                         status: JSON.stringify(this.status),
                         todo: JSON.stringify(this.todo),
@@ -147,7 +192,21 @@ import * as moment from 'moment'
                 } catch (error) {
                     console.error("Error updating document: ", error);
                 }
-            }
+            },
+
+            uploadFiles(event) {
+             this.files = event.target.files[0]
+             const storage = getStorage();   
+             const filesRef = ref(storage, this.email +'/' + this.files.name )
+             const uploadTask = uploadBytesResumable(filesRef, this.files)
+             uploadTask.on('state_changed', (snapshot) => {}, (error)=> {
+                 console.log(error)
+             },() => {
+                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                     console.log("File available at", this.filesLink = url)
+                 })
+             })
+         },
        },
 
        mounted() {
@@ -156,6 +215,7 @@ import * as moment from 'moment'
            this.taskname = this.$route.params.taskname
            this.taskId = this.$route.params.taskId
            this.duedate = this.$route.params.duedate
+           this.issuedate = this.$route.params.issuedate
            this.shortdescription = this.$route.params.shortdescription
            this.status = this.$route.params.status
            this.todo = this.$route.params.todo
@@ -197,6 +257,17 @@ import * as moment from 'moment'
 </script>
  
 <style scoped>
+    .mainBody {
+        background-color: #F5F5F5;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        overflow-y: scroll;
+        padding-bottom: 150px;
+        /*
+        filter: blur(5px);
+    */
+    }
   
    .flex {
        display: flex;
@@ -229,7 +300,7 @@ import * as moment from 'moment'
    }
  
    .top div {
-       flex:1
+       flex-grow: 1
    }
  
    .left {
@@ -256,15 +327,16 @@ import * as moment from 'moment'
    }
  
    .middle {
-       margin-top:50px;
+       margin-top:30px;
        color: black;
        gap:16px;
    }
- 
+
    h4 {
        font-size:12px;
        font-weight: 400;
        margin-bottom:5px;
+       margin-top: 20px;
    }
  
    p {
@@ -276,9 +348,10 @@ import * as moment from 'moment'
    }
  
    .description {
-       margin-left:20px;
+       margin-left:0px;
        text-align: justify;
         text-justify: inter-word;
+        color: #2C3E50;
    }
 
     textarea {
@@ -306,5 +379,40 @@ import * as moment from 'moment'
 
    #duedate {
     text-align: left;
+   }
+
+   label {
+       font-size: 14px;
+       font-weight: bold;
+       margin-bottom: 7px;
+   }
+
+   #input {
+       width: 150px;
+       height: 25px;
+   }
+
+   .documents {
+       text-align: left;
+   }
+
+   #files {
+       background: #F5F5F5;
+       width: 700px;
+       margin-bottom: 10px;
+   }
+
+   #addFileButton {
+       background: transparent;
+       border: none;
+       color: #2C3E50;
+       width: 120px;
+       padding-bottom: 7px;
+   }
+
+   #deleteFile {
+       background: transparent;
+       border: none;
+       color: rgb(214, 28, 28);
    }
 </style>

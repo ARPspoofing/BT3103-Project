@@ -8,6 +8,7 @@
                 shortdescription: task['shortdescription'],
                 duedate: task['duedate'],
                 taskname: task['taskname'],
+                issuedate: task['issueDate'],
                 status:task['status'],
                 todo: task['todo'],
                 inprogress: task['inprogress'],
@@ -79,13 +80,28 @@ import * as moment from 'moment'
     .todo {
         /*background-color: aquamarine;*/
         border-radius: 20px;
-        padding: 40px 20px;
+        padding: 30px 20px;
         /*margin-right:5px;
         margin-left:5px;
         margin-bottom: 4px;*/
         text-decoration: none;
         margin: 15px 5px;
         box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.15);
+        height: 170px;
+        text-align: left;
+    }
+    p {
+        margin: 0px;
+    }
+
+    .title {
+        height: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1; /* number of lines to show */
+        line-clamp: 1;
+        -webkit-box-orient: vertical;
     }
 
     .flex {
@@ -102,6 +118,7 @@ import * as moment from 'moment'
 
     .duedate {
         width:15vw;
+        
     }
 
     .todo {
@@ -144,6 +161,8 @@ import * as moment from 'moment'
     
     .todoButton {
         background-color: rgb(230, 121, 139);
+        padding-top: 10px;
+        padding-bottom: 10px;;
     }
 
     .inprogressButton {
@@ -159,11 +178,20 @@ import * as moment from 'moment'
     }
 
     .duedate {
-        font-size:12px;
-        margin-top:-15px;
+        font-size:13px;
+        margin-top:-7px;
     }
     
-
-
+    .short {
+        font-size:13px;
+        margin-top:5px;
+        height: 63px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* number of lines to show */
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
 
 </style>
