@@ -394,7 +394,7 @@ export default {
           }
     }
 
-     .menu ol {
+    .menu ol {
 	    list-style: none;
 	    padding: 0;
 	    margin: 0;
@@ -404,16 +404,13 @@ export default {
       width: 10%;
       max-width: 960px;
       margin: 1rem auto 0 auto;
-      align-items: center;
+      align-items: right;
       box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
     }
     .menu-item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       border-top: 2px solid #16a085;
       position: relative;
-      transition: background 0.3s ease-in-out;
+      transition: background 0.3s ease-in-out; 
     }
    
     .menu-item:nth-child(1) > a::before {
@@ -458,7 +455,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      color: black;
+      color: white;
       text-decoration: none;
       text-transform: uppercase;
       height: 100%;
