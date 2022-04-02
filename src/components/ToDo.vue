@@ -18,7 +18,7 @@
     >
     <div class="todo">
         <div class="top flex flex-row">
-            <div class="title">{{task['taskname']}}</div>
+            <div class="title"><strong>{{task['taskname']}}</strong></div>
             <div class="status-button flex" :class="{todoButton:task['todo'],inprogressButton:task['inprogress'],pendingreviewButton:task['pendingreview'],completedButton:task['completed']}">
                 <div v-if="task['todo']">
                     <p>Todo</p>
@@ -77,13 +77,15 @@ import * as moment from 'moment'
 <style scoped>
 
     .todo {
-        background-color: aquamarine;
+        /*background-color: aquamarine;*/
         border-radius: 20px;
         padding: 40px 20px;
-        margin-right:5px;
+        /*margin-right:5px;
         margin-left:5px;
-        margin-bottom: 4px;
+        margin-bottom: 4px;*/
         text-decoration: none;
+        margin: 15px 5px;
+        box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.15);
     }
 
     .flex {
@@ -104,7 +106,7 @@ import * as moment from 'moment'
 
     .todo {
         color: white;
-        background-color: rgb(54, 179, 110);
+        background-color: #73AD8E; /*rgb(54, 179, 110);*/
     }
 
     .inprogress {
