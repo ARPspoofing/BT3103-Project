@@ -1,5 +1,6 @@
 <template>
 <BusinessNavBar :Heading="Heading" :header=true />
+<button @click="goback" id="backButton">Back to Projects</button>
 <div v-if="toDoTask.length > 0" class="wrapper-outer">
     <div class="wrapper">
         <h4>To-Do</h4>
@@ -79,6 +80,13 @@ export default {
         }
     },
     methods: {
+        goback() {
+            this.$router.push({
+                name: "BusinessInProgress",
+                params: {
+                },
+            });
+        },
     },
     mounted() {
         this.Heading = JSON.parse(this.$route.params.projectTitle)
@@ -288,6 +296,14 @@ export default {
         text-align: center;
         font-size:12px;
         font-weight:300;
+    }
+
+    #backButton {
+        background: #0e8044;
+        width: 190px;
+        height: 30px;
+        color: white;
+        margin: 20px;
     }
 
 </style>
