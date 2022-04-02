@@ -14,9 +14,10 @@
     <ul class="navbar-nav ms-auto">
         <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Navigate
+            {{username}}
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          
             <router-link class="nav-item nav-link active" :to="{name:'BusinessHomePage'}" >Home</router-link>
             <div class="dropdown-divider"></div>
             <router-link class="nav-item nav-link active" :to="{name:'BusinessAbout'}">About</router-link>
@@ -38,6 +39,8 @@ import firebaseApp from '../firebase.js';
 import {signOut, getAuth, onAuthStateChanged} from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 const db = getFirestore(firebaseApp);
 export default {
 
@@ -46,23 +49,33 @@ export default {
         search: Boolean,
         header: Boolean,
     },
+    data() {
+      return {
+        username: '',
+      }
+    },
 
     methods:  {   
-    
     async logOut() {
         const auth = getAuth()
         await signOut(auth) 
         this.$router.push({"name":"BusinessLogin"})
-
       },
-
     }, 
-
+    computed: {
+      ...mapState(['name','userEmail']),
+    },
     mounted() {
+      
+      /*
       const auth = getAuth();
       var userEmail = auth.currentUser.email;
       console.log(userEmail)
-
+      */
+      //const userEmail = window.localStorage.getItem('emailForSignIn')
+      this.username = this.userEmail
+      const userEmail = this.userEmail
+      alert(userEmail)
       async function getApplicant(userEmail) {
         const docSnap = await getDoc(doc(db, "businesses", userEmail));
         console.log("doc: "+ docSnap)
@@ -72,6 +85,7 @@ export default {
         //console.log("name: "+ name)
         //let result = await data.name
         var name = data.name;
+        alert(name)
         dropdownMenuButton.innerHTML = name
         var picture = data.finalProfile;
         console.log(typeof picture === 'undefined')

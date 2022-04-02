@@ -37,7 +37,7 @@ export default {
             if (this.email != '') {        
                 const auth = getAuth()
                 sendPasswordResetEmail(getAuth(),this.email).then(() => {}).catch(() => {})
-                auth.currentUser.emailVerified
+                //auth.currentUser.emailVerified
                 this.notEntered = false
                 this.msg = 'Please check your email inbox or the junk folder'
                 setTimeout(() => {
@@ -62,16 +62,17 @@ export default {
 
 .content {
     border-radius: 20px;
-    padding: 80px 60px;
-    background-color: lightseagreen;
+    padding: 80px 60px 40px 60px;
+    background-color: #bbdfcc;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.35);
 }
 
 .cross {
     display: flex;
     align-items: flex-start;
-    margin-top:-80px;
+    margin-top:-60px;
     margin-left:-30px;
-    color:red;
+    color:black;
     cursor:pointer;
 }
 
@@ -89,11 +90,8 @@ export default {
         background-color: white;
         color:black;
         padding: 4px 4px 4px 30px;
-        height: 25px;
-        border-top-left-radius: 25px;
-        border-bottom-left-radius: 25px;
-        border-top-right-radius: 25px;
-        border-bottom-right-radius: 25px;
+        height: 30px;
+        border-radius: 10px;
     }
 
     input:focus {
@@ -108,17 +106,17 @@ p {
     background-color: #ec5757;
 }
 .green {
-    background-color: #33d69f;
+    background-color: #0E8044;
 }
 
 button,
     .button {
     cursor: pointer;
-    padding: 16px 24px;
-    border-radius: 30px;
+    padding: 8px 34px;
+    border-radius: 15px;
     margin-top:30px;
     border: none;
-    font-size: 12px;
+    font-size: 14px;
     margin-right: 8px;
     color: #fff;
     }

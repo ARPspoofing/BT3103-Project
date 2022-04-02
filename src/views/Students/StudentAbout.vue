@@ -156,7 +156,8 @@ const db = getFirestore(firebaseApp);
 import { v4 as uuidv4 } from 'uuid';
 import PopUp from '../../components/PopUp.vue'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-
+import {mapState} from 'vuex'
+import {mapMutations} from 'vuex'
 
 export default {
   name: 'StudentAbout',
@@ -171,7 +172,9 @@ export default {
     StudentNavBar,
     PopUp,
   },
-
+  computed: {
+      ...mapState(['userEmail']),
+  },
   data() {
     return {
       Heading: "PROFILE",
@@ -245,6 +248,7 @@ export default {
     changeResume(event) {
         this.resumePresent = true;  
         //Add code to upload the resume somewhere
+        var email = this.userEmail
         this.resume = event.target.files[0]
         const storage = getStorage();   
         const resumeRef = ref(storage, email +'/' + this.resume.name )
@@ -261,6 +265,7 @@ export default {
     changeTranscript(event) {
         this.transcriptPresent = true; 
         //Add code to upload the transcript somewhere
+        var email = this.userEmail
         this.transcript = event.target.files[0]
         const storage = getStorage();   
         const transcriptRef = ref(storage, email +'/' + this.transcript.name )
@@ -365,6 +370,7 @@ export default {
           finalProfile:this.finalProfile,
           resumeDownloadLink: this.resumeLink,
           transcriptDownloadLink: this.transcriptLink,
+          description: this.description,
       })
       }
       alert("save data")
@@ -373,16 +379,19 @@ export default {
   },
 
   mounted() {
+      /*
     const auth = getAuth();
     var userEmail = auth.currentUser.email;
     console.log(userEmail)
+    */
+   var userEmail = this.userEmail
     const that = this;
     async function getApplicant(userEmail) {
       const docSnap = await getDoc(doc(db, "students", userEmail));
       console.log("doc: "+ docSnap)
       let data = docSnap.data();
       console.log(data)
-      that.finalProfile = data.finalProfile
+      that.finalProfile = data.finalProfile 
       that.name = data.name
       that.course = data.course
       that.year = data.year
@@ -392,9 +401,12 @@ export default {
       that.contactNo = data.contactNo
       that.resumeLink = data.resumeDownloadLink
       that.transcriptLink = data.transcriptDownloadLink
+      that.description = data.description
+      /*
       if (!data.description) {
         that.description = data.description
       }
+      */
     }
     getApplicant(userEmail)
   }

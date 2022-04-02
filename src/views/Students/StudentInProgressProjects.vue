@@ -45,6 +45,7 @@ import {
   updateDoc,
   getDoc,
 } from "firebase/firestore";
+import {mapState} from "vuex"
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -54,13 +55,17 @@ export default {
     StudentNavBar,
     Card,
   },
+  computed: {
+    ...mapState(['userEmail']),
+  },
   data() {
     return {
       Heading: "MY PROJECTS",
-    inProgProjects: [],
+      inProgProjects: [],
     };
   },
   mounted() {
+    /*
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -68,18 +73,21 @@ export default {
       }
     });
     this.userEmail = auth.currentUser.email;
-
+    */
+    var userEmail = this.userEmail
     const that = this
     async function getinProgProjects() {
-      const ref = doc(db, "students", auth.currentUser.email);
+      const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       //var projects = data.inProgProjects
       //that.inProgProjects = data.inProgProjects
-      for(var i = 0; i < data.inProgProjects.length; i++) {
-        getProject(data.inProgProjects[i]).then((res)=>{that.inProgProjects.push(res)})
+      if (data) {
+        for(var i = 0; i < data.inProgProjects.length; i++) {
+          getProject(data.inProgProjects[i]).then((res)=>{that.inProgProjects.push(res)})
+        }
+        console.log(that.inProgProjects)
       }
-      console.log(that.inProgProjects)
     }
     getinProgProjects()
     

@@ -18,6 +18,9 @@
               newApplicants: JSON.stringify(this.newApplicants),
               accApplicants: JSON.stringify(this.accApplicants),
               rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
             },
           }"
           ><b>PROJECT INFO</b></router-link
@@ -36,6 +39,9 @@
               newApplicants: JSON.stringify(this.newApplicants),
               accApplicants: JSON.stringify(this.accApplicants),
               rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
             },
           }"
           ><b>ACCEPTED APPLICANTS</b></router-link
@@ -51,6 +57,9 @@
               newApplicants: JSON.stringify(this.newApplicants),
               accApplicants: JSON.stringify(this.accApplicants),
               rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
             },
           }"
           ><b>REJECTED APPLICANTS</b></router-link
@@ -67,6 +76,7 @@
             :applicantCourse="item.course"
             @acceptbtn="accApplicant(key)"
             @rejectbtn="rejApplicant(key)"
+            @clickCard="indvApplicant(key)"
           />
         </div>
       </div>
@@ -77,6 +87,7 @@
 <script>
 import BusinessNavBar from "../components/BusinessNavBar.vue";
 import ApplicantsCard from "../components/ApplicantsCard.vue";
+import BusinessViewStudentInfo from "./BusinessViewStudentInfo.vue";
 import firebaseApp from "../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
@@ -88,6 +99,9 @@ import {
   updateDoc,
   getDoc,
 } from "firebase/firestore";
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
+
 const db = getFirestore(firebaseApp);
 import { getAuth } from "firebase/auth";
 
@@ -96,8 +110,11 @@ export default {
   components: {
     BusinessNavBar,
     ApplicantsCard,
+    BusinessViewStudentInfo,
   },
-
+  computed: {
+    ...mapState(['cardItems','userEmail']),
+  },
   data() {
     return {
       Heading: "NEW APPLICANTS",
@@ -114,6 +131,27 @@ export default {
   },
 
   methods: {
+    indvApplicant(key) {
+      console.log(this.applicant[key])
+      console.log(this.offered[key])
+      this.$router.push({
+        name:'BusinessViewStudentInfo', 
+        params: {
+          applicants: JSON.stringify(this.applicant[key]),
+          allApplicants: JSON.stringify(this.applicant),
+          newApplicants: JSON.stringify(this.newApplicants),
+          accApplicants: JSON.stringify(this.accApplicants),
+          rejApplicants: JSON.stringify(this.rejApplicants),
+          offered: JSON.stringify(this.offered[key]),
+          rejected: JSON.stringify(this.rejected[key]),
+          applied: JSON.stringify(this.applied[key]),
+          items: JSON.stringify(this.items),
+          key: JSON.stringify(key),
+          stat: JSON.stringify("showbtns"),
+        },
+      })
+    },
+
     async accApplicant(key) {
       var accApplicant = this.newApplicants[key];
       var offered = this.offered[key];
@@ -153,7 +191,7 @@ export default {
           appliedProjects: applied
         });
         console.log(docRef);
-        this.$emit("updated");
+        this.$emit("updated"); 
       } catch (error) {
         console.error("Error updating document: ", error);
       }
@@ -211,15 +249,27 @@ export default {
   },
 
   mounted() {
+    //Non-vuex
+    /*
     this.items = JSON.parse(this.$route.params.items);
     this.projectId = JSON.parse(this.$route.params.items).projectId;
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants;
     this.accApplicants = JSON.parse(this.$route.params.items).accApplicants;
     this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants;
+    */
+    //vuex 
+    console.log(this.cardItems)
+    this.items = JSON.parse(this.cardItems);
+    this.projectId = JSON.parse(this.cardItems).projectId;
+    this.newApplicants = JSON.parse(this.cardItems).newApplicants;
+    this.accApplicants = JSON.parse(this.cardItems).accApplicants;
+    this.rejApplicants = JSON.parse(this.cardItems).rejApplicants;
     //console.log(this.newApplicants)
     //console.log(this.accApplicants)
     //console.log(this.rejApplicants)
     //console.log(this.rejApplicants)
+    //Non-vuex
+    /*
     if (this.$route.params.newApplicants) {
       this.newApplicants = JSON.parse(this.$route.params.newApplicants);
       for (var i = 0; i < this.newApplicants.length; i++) {
@@ -244,13 +294,33 @@ export default {
     if (this.$route.params.rejApplicants) {
       this.rejApplicants = JSON.parse(this.$route.params.rejApplicants);
     }
+    */
+
+    //Vuex
+    if (this.newApplicants) {
+      for (var i = 0; i < this.newApplicants.length; i++) {
+        getApplicant(this.newApplicants[i]).then((res) => {
+          this.applicant.push(res);
+        });
+        getOfferedProjects(this.newApplicants[i]).then((res) => {
+          this.offered.push(res);
+        });
+        getRejectedProjects(this.newApplicants[i]).then((res) => {
+          this.rejected.push(res);
+        });
+        getAppliedProjects(this.newApplicants[i]).then((res) => {
+          this.applied.push(res);
+        });
+        console.log(this.applicant);
+      }
+    }
 
     async function getApplicant(app) {
       const ref = doc(db, "students", app);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       //let result = await data.name
-      return { name: data.name, course: data.course };
+      return { name: data.name, course: data.course, email: data.email };
     }
 
     async function getOfferedProjects(app) {

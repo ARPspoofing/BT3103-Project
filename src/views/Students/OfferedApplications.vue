@@ -45,6 +45,7 @@ import {
   updateDoc,
   getDoc
 } from "firebase/firestore";
+import {mapState} from "vuex"
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -58,18 +59,24 @@ export default {
     return {
       Heading: "MY APPLICATIONS",
       stat2: "offered",
-      userEmail: "",
+      //userEmail: "",
       offered: [],
       projects: [],
       accepted:[],
       declined:[],
+      bizProjects: [],
     };
+  },
+  computed: {
+    ...mapState(['userEmail']),
   },
   methods: {
     async acceptProj(key) {
       var projId = this.offered[key]
       var projName = this.projects[key].projectTitle
-      
+      var business = this.projects[key].business
+      var biz = this.bizProjects[key]
+
       if (!this.accepted) {
         var accepted = [];
         accepted.push(projId);
@@ -77,9 +84,31 @@ export default {
       } else {
         this.accepted.push(projId);
       }
+
+      if (!biz) {
+        var biz = [];
+        biz.push(projId);
+      } else {
+        biz.push(projId);
+      }
+      biz = [... new Set(biz)]
+      for(var i = 0; i < this.projects.length; i++) {
+        console.log(business, this.projects[i].business === business )
+        if (this.projects[i].business === business) {
+          this.bizProjects[i].push(projId)
+        }
+      }
+      //this.bizProjects[key] = biz
+      console.log(this.bizProjects)
       
       this.projects.splice(key,1);
       this.offered.splice(key,1);
+      this.bizProjects.splice(key,1);
+      /*for(var i = 0; i < this.projects.length; i++) {
+        if (this.projects[i].business === business) {
+          this.bizProjects[i].push(projId)
+        }
+      }*/
 
       alert("Accepting Project: " + projName);
       try {
@@ -87,6 +116,11 @@ export default {
               inProgProjects: this.accepted,
               offeredProjects: this.offered,
           })
+
+          const docRef2 = await updateDoc(doc(db, "businesses", business), {
+              inProgProjects: biz,
+          })
+
           //console.log(docRef)
           this.$emit("updated")
       }
@@ -125,53 +159,64 @@ export default {
     },
   },
   mounted() {
+    /*
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.user = user;
       }
     });
-    this.userEmail = auth.currentUser.email;
+    */
+    //this.userEmail = auth.currentUser.email;
     //console.log(this.userEmail)
-
+    var userEmail = this.userEmail
+    alert(this.userEmail)
     const that = this
     async function getOfferedProjects() {
-      const ref = doc(db, "students", auth.currentUser.email);
+      const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       that.offered = data.offeredProjects
-      for(var i = 0; i < data.offeredProjects.length; i++) {
-        getProject(data.offeredProjects[i]).then((res)=>{that.projects.push(res)})
+      if (data.offeredProjects) {
+        for(var i = 0; i < data.offeredProjects.length; i++) {
+          getProject(data.offeredProjects[i]).then((res)=>{that.projects.push(res)})
+        }
       }
-      //console.log(that.applied)
-      console.log(that.offered)
-      console.log(that.projects)
     }
     getOfferedProjects()
 
     async function getInProgProjects() {
-      const ref = doc(db, "students", auth.currentUser.email);
+      const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       that.accepted = data.inProgProjects;
-      console.log(that.accepted)
+      //console.log(that.accepted)
     }
     getInProgProjects()
 
     async function getDeclinedProjects() {
-      const ref = doc(db, "students", auth.currentUser.email);
+      const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       that.declined = data.declinedProjects;
-      console.log(that.accepted)
+      //console.log(that.accepted)
     }
     getDeclinedProjects()
+
+    async function getBizProjects(email) {
+      const ref = doc(db, "businesses", email);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      return data.inProgProjects;
+    }
+    getBizProjects()
     
     async function getProject(proj) {
       const ref = doc(db, "Project", proj);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      return {projectTitle: data.Project_Title, description: data.Description}
+      getBizProjects(data.poster_id).then((res)=>{that.bizProjects.push(res)})
+      return {projectTitle: data.Project_Title, description: data.Description, business: data.poster_id}
     }
   },
 };

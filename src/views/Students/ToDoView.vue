@@ -1,8 +1,8 @@
 <template>
-   <div class="view container">
+    
        <router-link :to="{name:'StudentManagement', params:{projectId:this.$route.params.projectId,projectTitle:this.$route.params.projectTitle}}">
            <img src='../../assets/back.png'> Go Back
-       </router-link>
+       </router-link> -->
        <!--
        <div class="header flex">
            <div class="left flex">
@@ -41,13 +41,14 @@
                </div>
            </div>
            <div class="middle flex">
-               <div class="description flex flex-column">
-                   <h4>Full Task Description</h4>
-                   <p>{{long}}</p>
+               <div id="description" class="description flex flex-column">
+                   <p>Full Task Description</p>
+                   <p>{{this.shortdescription}}</p>
                </div>
            </div>
            <div class="middle-bottom flex">
                <div class="documents flex flex-column">
+                   <p>Relevant Documents:</p>
                    <img src="../../assets/document.jpeg">
                </div>
            </div>
@@ -58,14 +59,13 @@
                </div>
            </div>
        </div>
-   </div>
+   
  
-   {{task_id}}
-   {{name}}
-   {{projectTitle}}
-   {{duedate}}
+   <!-- {{task_id}}
+   {{taskname}}
+   {{formatDate(duedate)}}
    {{documents}}
-   {{comments}}
+   {{comments}} -->
 </template>
  
 <script>
@@ -78,6 +78,7 @@ import {useRouter} from "vue-router"
 import Loading from '../../components/Loading.vue'
 const db = getFirestore(firebaseApp)
 const router = useRouter()
+import * as moment from 'moment'
  
    export default {
        name: 'ToDoView',
@@ -98,9 +99,25 @@ const router = useRouter()
            }
        },
 
-       methods: {
+       
+       watch: {
+           extend() {
+               const extendedDate = new Date()
+               this.duedate = extendedDate.setDate(extendedDate.getDate() + parseInt(this.extend))
+               this.duedate = new Date(this.duedate).toLocaleDateString('en-us',this.dateOptions)
+           },
 
-           async updateStatus() {
+           status() {
+               var self = this;
+               self.updateStatus()
+            },
+       },
+       methods: {
+           formatDate(date) {
+                return moment(date).format("DD MMMM YYYY");
+            },
+
+            async updateStatus() {
                const currStatus = this.status;
                console.log(currStatus)
                let ref = await doc(db,"Project", this.projectId);
@@ -135,19 +152,42 @@ const router = useRouter()
                await updateDoc(ref, {Tasks: arrayUnion(newTask)})
 
                this.task = newTask;
-           }
-    },
-       watch: {
-           extend() {
-               const extendedDate = new Date()
-               this.duedate = extendedDate.setDate(extendedDate.getDate() + parseInt(this.extend))
-               this.duedate = new Date(this.duedate).toLocaleDateString('en-us',this.dateOptions)
            },
 
-           status() {
-               this.updateStatus()
+            goback() {
+                console.log(JSON.stringify(this.projectId))
+                this.$router.push({
+                    name: "BusinessManagement",
+                    params: {
+                        projectId: JSON.stringify(this.projectId),
+                        projectTitle: JSON.stringify(this.projectTitle),
+                        taskname: JSON.stringify(this.taskname),
+                        taskId: JSON.stringify(this.taskId),
+                        duedate: JSON.stringify(this.duedate),
+                        shortdescription: JSON.stringify(this.shortdescription),
+                        status: JSON.stringify(this.status),
+                        todo: JSON.stringify(this.todo),
+                        inprogress: JSON.stringify(this.inprogress),
+                        pendingreview: JSON.stringify(this.pendingreview),
+                        completed: JSON.stringify(this.completed),
+                    },
+                });
+            },
+
+            async updateTask() {
+                try {
+                    const docRef = await updateDoc(doc(db, "Project", this.projectId), {
+                        
+                    });
+
+                    console.log(docRef);
+                    this.$emit("updated");
+                } catch (error) {
+                    console.error("Error updating document: ", error);
+                }
+            }
        },
-       },
+
        mounted() {
            const curr = this
            const taskId = curr.$route.params.taskId
@@ -227,7 +267,8 @@ const router = useRouter()
    .details {
        padding: 48px;
        margin-top:24px;
-       background-color:rgb(11, 167, 115);
+       /*background-color:rgb(11, 167, 115);*/
+       background-color: #B3CABE;
        border-radius:20px;
    }
  
@@ -294,8 +335,20 @@ const router = useRouter()
    .bottom {
 
    }
- 
- 
- 
- 
+
+   #backButton {
+    background: #0e8044;
+    /*width: 190px;
+    height: 30px;*/
+    color: white;
+    margin: 20px;
+    border-radius: 30px;
+    border: none;
+    padding: 10px 25px;
+    font-size: 14px;
+   }
+
+   #duedate {
+    text-align: left;
+   }
 </style>

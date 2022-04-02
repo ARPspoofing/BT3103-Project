@@ -8,13 +8,13 @@
     <div v-show=search class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <form v-show=search class="form-inline my-2 my-lg-0">
         <input v-show=search class="form-control-inline mr-sm-2" type="search" placeholder="Search" aria-label="Search" v-on:keyup.enter = "searchProjects()" v-model = "userSearch">
-        <button v-show=search v-on:click = "searchProjects()" class="btn btn-outline-success my-2 my-sm-0"  type="submit">Search</button>
+        <button v-show=search v-on:click = "searchProjects()" class="btn btn-outline-success my-2 my-sm-0" id="searchButton" type="submit">Search</button>
       </form>
     </div>
     <ul class="navbar-nav ms-auto">
         <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Navigation
+            {{username}}
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" >Home</router-link>
@@ -39,7 +39,6 @@
 import {signOut, getAuth,onAuthStateChanged} from "firebase/auth"
 import {getDocs,collection, getFirestore,doc,setDoc,deleteDoc,updateDoc,getDoc} from "firebase/firestore"
 import firebaseApp from '../firebase.js'
-
 import {mapState} from "vuex"
 import {mapMutations} from "vuex"
 const db = getFirestore(firebaseApp);
@@ -53,12 +52,13 @@ export default {
         //searchResult: String,
     },
     computed: {
-      ...mapState(['searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds'])
+      ...mapState(['searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','name','userEmail'])
     },
     data() {
       return {
         userSearch: '',
         searchResult: '',
+        username: '',
       }
     },
     methods:  {   
@@ -203,8 +203,13 @@ export default {
     },
 
     mounted() {
+      /*
       const auth = getAuth();
       var userEmail = auth.currentUser.email;
+      */
+     var userEmail = this.userEmail
+     this.username = this.name
+     alert(userEmail)
       //console.log(userEmail)
 
       async function getApplicant(userEmail) {
@@ -244,6 +249,7 @@ export default {
     height: 35px;
     width: 350px;
     margin-left:30px;
+    padding: 0px 3px;
   }
 
   .btn {
@@ -279,5 +285,12 @@ export default {
     float: right;
     margin: 10px 20px 10px 0px;
     border-radius: 50%;
+  }
+
+  #searchButton {
+    background:#0d7c41;
+    color: white;
+    border-radius: 7px;
+    text-decoration: none;
   }
 </style>

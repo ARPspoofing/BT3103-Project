@@ -6,13 +6,55 @@
     </router-link>
     <h1 id="interest">
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectInfo', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>PROJECT INFO</b></router-link>
+        <router-link 
+          class="optionsOff" 
+          :to="{
+            name:'IndividualProjectInfo', 
+            params:{
+              items: JSON.stringify(this.items), 
+              newApplicants: JSON.stringify(this.newApplicants), 
+              accApplicants: JSON.stringify(this.accApplicants), 
+              rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
+            }
+          }" 
+          ><b>PROJECT INFO</b></router-link>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectNewApps', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>NEW APPLICANTS</b></router-link>
+        <router-link 
+          class="optionsOff" 
+          :to="{
+            name:'IndividualProjectNewApps', 
+            params:{
+              items: JSON.stringify(this.items), 
+              newApplicants: JSON.stringify(this.newApplicants), 
+              accApplicants: JSON.stringify(this.accApplicants), 
+              rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
+            }
+          }" 
+          ><b>NEW APPLICANTS</b></router-link>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'IndividualProjectAccApps', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>ACCEPTED APPLICANTS</b></router-link>
+        <router-link 
+          class="optionsOff" 
+          :to="{
+            name:'IndividualProjectAccApps', 
+            params:{
+              items: JSON.stringify(this.items), 
+              newApplicants: JSON.stringify(this.newApplicants), 
+              accApplicants: JSON.stringify(this.accApplicants), 
+              rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
+            }
+          }" 
+          ><b>ACCEPTED APPLICANTS</b></router-link>
       </span>
       <span class="options">
         <b>REJECTED APPLICANTS</b>
@@ -21,12 +63,16 @@
     <hr/>
     <div class="appContainer">
       <div :key="item.key" v-for="(item, key) in applicant">
-            <ApplicantsCard :buttons=false :applicantName="item.name" :applicantCourse="item.course"/>
+            <ApplicantsCard 
+              :buttons=false 
+              :applicantName="item.name" 
+              :applicantCourse="item.course"
+              @clickCard="indvApplicant(key)"/>
       </div>
-      <!--
+<!--       
         <ApplicantsCard :buttons=false />
         <ApplicantsCard :buttons=false />
-        <ApplicantsCard :buttons=false />-->
+        <ApplicantsCard :buttons=false /> -->
     </div>
   </div>
 </template>
@@ -39,6 +85,8 @@ import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 import { getAuth } from 'firebase/auth';
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 
 export default {
   name: 'IndividualProjectRejApps',
@@ -54,9 +102,42 @@ export default {
       accApplicants: [],
       rejApplicants:[], 
       applicant: [],
+      offered: [],
+      rejected: [],
+      applied: [],
     }
   },
+  computed: {
+    ...mapState(['cardItems']),
+  },
+
+  methods: {
+    indvApplicant(key) {
+      console.log(this.applicant[key])
+      console.log(this.offered)
+      this.$router.push({
+        name:'BusinessViewStudentInfo', 
+        params: {
+          applicants: JSON.stringify(this.applicant[key]),
+          allApplicants: JSON.stringify(this.applicant),
+          newApplicants: JSON.stringify(this.newApplicants),
+          accApplicants: JSON.stringify(this.accApplicants),
+          rejApplicants: JSON.stringify(this.rejApplicants),
+          offered: JSON.stringify(this.offered),
+          rejected: JSON.stringify(this.rejected),
+          applied: JSON.stringify(this.applied),
+          items: JSON.stringify(this.items),
+          key: JSON.stringify(key),
+          stat: JSON.stringify(""),
+        },
+      })
+    },
+  },
+
   mounted() {
+
+    //non-vuex
+    /*
     this.items = JSON.parse(this.$route.params.items)
     console.log(this.items)
     if (this.$route.params.newApplicants) {
@@ -71,16 +152,25 @@ export default {
         getApplicant(this.rejApplicants[i]).then((res)=>{this.applicant.push(res)})
       }
     }
+    */
     //console.log(this.newApplicants)
     //console.log(this.accApplicants)
     //console.log(this.rejApplicants)
+    //Veux
+    this.items = JSON.parse(this.cardItems);
+    if (this.cardItems.rejApplicants) {
+      this.rejApplicants = JSON.parse(this.cardItems.rejApplicants)
+      for(var i = 0; i < this.rejApplicants.length; i++) {
+        getApplicant(this.rejApplicants[i]).then((res)=>{this.applicant.push(res)})
+      }
+    }
     
     async function getApplicant(app) {
       const ref = doc(db, "students", app);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       //let result = await data.name
-      return {name: data.name, course: data.course};
+      return {name: data.name, course: data.course, email: data.email};
     }
     console.log(this.applicant);
   }

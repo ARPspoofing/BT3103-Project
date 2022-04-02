@@ -1,11 +1,18 @@
 <template>
     <div class="nav-links"> 
+      <!--Duration-->
+        <h4>Duration</h4>
+        <div :class="{shake:!rangeSelected,'input-error':!rangeSelected,'datepick':true}">
+          <Datepicker format="dd-MM-yyyy" v-model="date" :state="rangeSelected" @update:modelValue="checkDate" range></Datepicker>
+        </div>
+        <p v-if="!rangeSelected">{{rangeErrorMsg}}</p>
+        <hr class="divider">
         <!--Interests-->
         <h4>Interests</h4>
         <div class="flex flex-row">
-          <div style="margin-top: 5px;width: 100%;">
+          <div style="margin-top: 5px;width: 100%; height: 83px;">
             <ul  style="display: grid;grid-template-columns:repeat(2,50%);">
-              <li v-for="(item,index) in interests" style="width: 20%;display: inline" >
+              <li v-for="(item,index) in interests" style="width:20%; display: inline" >
                 <div class="interest-flex">                            
                   <select class="inputTag" id="interest" v-model="item.value" >   
                     <option value="Artificial Intelligence">Artificial Intelligence</option>
@@ -32,19 +39,21 @@
         <div class="addBtn">
         <img @click="add" src="../assets/add.png" alt="add button">                                                                   
         </div>
+        <hr class="divider">
         <!--Duration-->
-        <h4>Duration</h4>
+        <!-- <h4>Duration</h4>
         <div :class="{shake:!rangeSelected,'input-error':!rangeSelected,'datepick':true}">
-          <Datepicker format="dd-MM-yyyy"  v-model="date" :state="rangeSelected" @update:modelValue="checkDate" range></Datepicker>
+          <Datepicker format="dd-MM-yyyy" v-model="date" :state="rangeSelected" @update:modelValue="checkDate" range></Datepicker>
         </div>
         <p v-if="!rangeSelected">{{rangeErrorMsg}}</p>
+        <hr class="divider"> -->
         <!--Slider-->
       <h4>Allowance</h4>
       <div class="slider">
         <Slider v-model="value" :format="format" @change="checkPrice"/>
       </div>
       
-      <button class="green" @click="submitFilter">Enter</button>
+      <button class="orange" @click="submitFilter">Enter</button>
     </div>
     
 </template>
@@ -277,23 +286,32 @@
 
 <style scoped>
 
+  .divider {
+    width: 85%;
+    border-top: 1.5px solid #606060;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   h4 {
     color:black;
-    margin-top:15px;
+    margin-top:15px; 
+    font-size: 20px;
   }
 
    .nav-links {
     position:absolute;
+    margin-top: 20px;
     left:0px;
     top:0px;
-    height:65vh;
-    width: 35vw;
-    background-color: #BBDFCC;
+    height:85vh;
+    width: 37vw;
+    background-color: #FFE9C8;
     align-items: center;
     justify-content: center;
     border-top-right-radius: 5%;
     border-bottom-right-radius:5%;
-
+    box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.15);
   } 
 
   .shake {
@@ -338,7 +356,7 @@
       --dp-disabled-color: #f6f6f6;
       --dp-scroll-bar-background: #f3f3f3;
       --dp-scroll-bar-color: #959595;
-      --dp-success-color: #76d275;
+      --dp-success-color: #959595;
       --dp-success-color-disabled: #a3d9b1;
       --dp-icon-color: #959595;
       --dp-danger-color: #ff6f60;
@@ -406,7 +424,10 @@
     .labelTag,
     .inputTag {
         border-radius:20px;
-        font-size:10px;
+        font-size:13px;
+        width: 180px;
+        height: 25px;
+        padding-left: 18px;;
     }
 
     .interest {
@@ -442,26 +463,27 @@
     }
 
     .delete {
-        margin-top:-42px;
-        margin-right:-15px;
+        margin-top:-45px;
         color:red;
+        font-weight: bold;
     }
 
     button,
     .button {
     cursor: pointer;
-    padding: 16px 24px;
-    border-radius: 30px;
-    borer: none;
-    font-size: 12px;
-    margin-right: 8px;
-    color: #fff;
-    margin-top:20px;
+    position: sticky;
+    padding: 8px 44px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    margin-right: 40px;
+    color:white;
+    margin-top:30px;
+    background-color: #FFAB2C;
     img {
             margin-right: 4px;
           }
     }
-
     .save {
         div {
             flex:1;
@@ -485,7 +507,7 @@
     background-color: #33d69f;
     }
     .orange {
-    background-color: #ff8f00;
+    background-color: #FFAB2C;
     }
     .flex {
     display: flex;
@@ -532,6 +554,11 @@
       
       width: 80%;
       margin: 0 auto 0 auto;
+    }
+
+    .datetime-picker input[data-v-a46a390c] {
+      width: 150px;
+      height: 38px;
     }
 
 </style>

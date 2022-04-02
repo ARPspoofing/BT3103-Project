@@ -67,6 +67,8 @@ import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
 import {ref} from "vue"
 import {getAuth,createUserWithEmailAndPassword,sendSignInLinkToEmail,isSignInWithEmailLink, signInWithEmailLink,GoogleAuthProvider,signInWithPopup} from "firebase/auth"
 import {useRouter} from "vue-router"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 import Loading from '../../components/Loading.vue'
 import VerifyEmail from '../../components/VerifyEmail.vue'
 import GoogleButton from '../../components/GoogleButton.vue'
@@ -94,8 +96,6 @@ const actionCodeSettings = {
   dynamicLinkDomain: 'example.page.link'
 };
 
-
-
 const db = getFirestore(firebaseApp)
 const router = useRouter()
 const that = this
@@ -120,7 +120,11 @@ export default {
         VerifyEmail,
         GoogleButton
     },
+    computed: {
+        ...mapState(['userEmail']),
+    },
     methods: {
+        ...mapMutations(['SET_USEREMAIL']),
         async google() {
             const auth = getAuth();
             const provider = new GoogleAuthProvider();
@@ -130,6 +134,7 @@ export default {
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
                 const user = result.user;
+                this.SET_USEREMAIL(user.email)
                 this.$router.push({name:'businessLoading'})
                 // ...
             }).catch((error) => {
@@ -219,8 +224,8 @@ export default {
                 
                 createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                 .then((data) => {
+                    this.SET_USEREMAIL(this.email)
                     console.log("in method")
-                    
                     setDoc(doc(db,"businesses",String(this.email)),{
                             profileFormCreated:false,
                             verifyEmail:false,
@@ -386,7 +391,9 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-top:10px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        width: 400px;
     }
 
     .shake {
@@ -434,5 +441,10 @@ export default {
 
     h6 {
         margin-left: 15px;
+    }
+
+    p {
+        width: 400px;
+        font-size: 13px;
     }
 </style>

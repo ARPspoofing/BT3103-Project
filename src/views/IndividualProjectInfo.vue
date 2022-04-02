@@ -4,7 +4,7 @@
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
-    <!-- <h3>{{items}}</h3> -->
+    <!-- <h3>{{items}}</h3> --> 
     <h1 id="interest">
       <span class="options">
         <b>PROJECT INFO</b>
@@ -39,7 +39,7 @@
         <span>
           <div class="projButtons" >
             <button class="edit-proj" @click="editProject()">EDIT PROJECT DETAILS</button> <br>
-            <button href="#" class="close-proj" data-bs-toggle="modal" data-bs-target="#closeModal">CLOSE PROJECT</button> <br>
+            <button href="#" class="close-proj" data-bs-toggle="modal" data-bs-target="#closeModal" @click="closeProject()">CLOSE PROJECT</button> <br>
             <div class="modal fade" id="closeModal" tabindex="-1" aria-labelledby="closeModalLabel" aria-hidden="true" 
               data-bs-backdrop="false">
               <div class="modal-dialog">
@@ -61,7 +61,7 @@
                 </div>
               </div>
             </div>
-            <button href="#" class="del-proj" data-bs-toggle="modal" data-bs-target="#delModal">DELETE PROJECT</button>
+            <!--<button href="#" class="del-proj" data-bs-toggle="modal" data-bs-target="#delModal">DELETE PROJECT</button>-->
             <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="delModalLabel" aria-hidden="true" 
               data-bs-backdrop="false">
               <div class="modal-dialog">
@@ -152,6 +152,9 @@ import * as moment from 'moment'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
+
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -160,6 +163,9 @@ export default {
   components: {
     BusinessNavBar, 
     Deliverable
+  },
+  computed: {
+    ...mapState(['cardItems']),
   },
   data() {
     return {
@@ -175,6 +181,8 @@ export default {
     }
   },
   mounted() {
+    //Non Vuex version
+    /*
     this.tasks = JSON.parse(this.$route.params.items).tasks
     this.tags = JSON.parse(this.$route.params.items).tags
     this.items = JSON.parse(this.$route.params.items)
@@ -191,7 +199,24 @@ export default {
     if (this.$route.params.rejApplicants) {
       this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
     }
-    
+    */
+    //Vuex version
+    this.tasks = JSON.parse(this.cardItems).tasks
+    this.tags = JSON.parse(this.cardItems).tags
+    this.items = JSON.parse(this.cardItems)
+    this.newApplicants = JSON.parse(this.cardItems).newApplicants
+    this.accApplicants = JSON.parse(this.cardItems).accApplicants
+    this.rejApplicants = JSON.parse(this.cardItems).rejApplicants
+
+    if (this.$route.params.newApplicants) {
+      this.newApplicants = JSON.parse(this.$route.params.newApplicants)
+    }
+    if (this.$route.params.accApplicants) {
+      this.accApplicants = JSON.parse(this.$route.params.accApplicants)
+    }
+    if (this.$route.params.rejApplicants) {
+      this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
+    }
   },
   methods: {
     formatDate(date) {
@@ -206,6 +231,10 @@ export default {
           items: JSON.stringify(this.items),
         },
       })
+    },
+
+    closeProject() {
+      
     }
   },
 }

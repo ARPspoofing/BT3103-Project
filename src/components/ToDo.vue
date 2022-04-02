@@ -1,5 +1,5 @@
 <template>
-    <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoTaskDetails', params: {task:task,
+    <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
         taskId: task['id'], projectId:task['projectId'], projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
     <div class="todo">
         <div class="top flex flex-row">
@@ -14,7 +14,7 @@
         </div>
         <div class="duedate">
             <p>
-                 Due date: {{duedate}}
+                 Due date: {{formatDate(task["duedate"])}}
             </p>
         </div>
        
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import * as moment from 'moment'
     export default {
         name: 'ToDo',
         props: {
@@ -51,19 +52,26 @@
         },
         watch: {
         },
+        methods: {
+            formatDate(date) {
+                return moment(date).format("DD MMMM YYYY");
+            },
+        }
     }
 </script>
 
 <style scoped>
 
     .todo {
-        background-color: aquamarine;
+        /*background-color: aquamarine;*/
         border-radius: 20px;
         padding: 40px 20px;
-        margin-right:5px;
+        /*margin-right:5px;
         margin-left:5px;
-        margin-bottom: 4px;
+        margin-bottom: 4px;*/
         text-decoration: none;
+        margin: 15px 5px;
+        box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.15);
     }
 
     .flex {
@@ -84,7 +92,7 @@
 
     .todo {
         color: white;
-        background-color: rgb(54, 179, 110);
+        background-color: #73AD8E; /*rgb(54, 179, 110);*/
     }
 
     .inprogress {

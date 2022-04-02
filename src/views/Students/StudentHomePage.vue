@@ -1,10 +1,14 @@
 <template>
-
   <StudentNavBar :search=true :header=false />
+  <!--div class="modal-overlay" v-if="applyConfirm"></div>-->
   <StudentProfileForm @cancel='cancel' @success='close' v-if='!profileFormCreated'/>
   <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
-    
+  
     <h1 id="interest">Projects You May Like</h1>
+    <transition name="applyConfirm" mode="out-in">
+    <ApplyConfirm @confirmYes="confirmYes" v-if="applyConfirm" :projectTitle='currProject'/>
+    </transition>
+
     <!--
     <div v-if="isLoading">
       Loading...
@@ -25,11 +29,14 @@
               <!-- <h2>"item.projectTitle"</h2> -->
               <Card v-if="key <= 5" 
                 :apply=true 
+                :like=true
+                :latest=false
                 :projectTitle = "item.projectTitle" 
                 :description="item.description" 
                 :appstat="item.appstat"
-                @applicantbtn="addApplicant(key)" 
+                @applicantbtn="addApplicant(key)"
                 @clickCard="indivproj(key)"
+                @applying="applying($event,key)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -39,11 +46,14 @@
             <div :key="item.key" v-for="(item, key) in testCollection.slice(6)">
               <Card v-if="key <= 5" 
                 :apply=true 
+                :like=true
+                :latest=false
                 :projectTitle = "item.projectTitle" 
                 :description="item.description" 
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key + 6)" 
                 @clickCard="indivproj(key + 6)"
+                @applying="applying($event,key)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -53,11 +63,14 @@
             <div :key="item.key" v-for="(item, key) in testCollection.slice(12)">
               <Card v-if="key <= 5" 
               :apply=true 
+              :like=true
+              :latest=false
               :projectTitle = "item.projectTitle" 
               :description="item.description" 
               :appstat="item.appstat"
               @applicantbtn="addApplicant(key + 2*6)" 
               @clickCard="indivproj(key + 2*6)"
+              @applying="applying($event,key)"
               :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -95,11 +108,14 @@
             <div :key="item.key" v-for="(item, key) in wholeTestCollection">
               <Card v-if="key <= 5" 
                 :apply=true 
+                :like=false
+                :latest=true
                 :projectTitle = "item.projectTitle" 
                 :description="item.description" 
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key)" 
                 @clickCard="indivprojlatest(key)"
+                @applying="applying($event,key)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -109,11 +125,14 @@
             <div :key="item.key" v-for="(item, key) in wholeTestCollection.slice(6)">
               <Card v-if="key <= 5" 
                 :apply=true 
+                :like=false
+                :latest=true
                 :projectTitle = "item.projectTitle" 
                 :description="item.description" 
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key + 6)" 
                 @clickCard="indivprojlatest(key + 6)"
+                @applying="applying($event,key)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -123,11 +142,14 @@
             <div :key="item.key" v-for="(item, key) in wholeTestCollection.slice(12)">
               <Card v-if="key <= 5" 
               :apply=true 
+              :like=false
+              :latest=true
               :projectTitle = "item.projectTitle" 
               :description="item.description" 
               :appstat="item.appstat"
               @applicantbtn="addApplicant(key + 2*6)" 
               @clickCard="indivprojlatest(key + 2*6)"
+              @applying="applying($event,key)"
               :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -147,12 +169,15 @@
 
 <script>
 import StudentNavBar from '../../components/StudentNavBar.vue'
+import ApplyConfirm from '../../components/ApplyConfirm.vue'
 import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore, query, where } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
-const db = getFirestore(firebaseApp);
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 
+const db = getFirestore(firebaseApp);
 import StudentProfileForm from './StudentProfileForm.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
@@ -162,13 +187,16 @@ export default {
     StudentNavBar, 
     Card,
     StudentProfileForm,
+    ApplyConfirm,
 
   },
   emits: ['cancel'],
+  computed: {
+    ...mapState(['userEmail','cardItems']),
+  },
   data() {
     return {
       Heading: " ",
-      
       testCollection: [],
       wholeTestCollection: [],
       newApplicants:[],
@@ -176,14 +204,20 @@ export default {
       profileFormCreated: true,
       cancel: false,
       user: false, 
-      userEmail: "", 
+      userEmailData: "", 
       applied: [],
       studentTags: [],
       allApplied: [],
+      applyConfirm: false,
+      currProject: '',
+      currKey:null,
+      like:false,
+      latest:false,
     }
   },
   
   methods: {
+    ...mapMutations(['SET_CARDITEMS','CLEAR_CARDITEMS']),
     close(e) {
       this.profileFormCreated = true;
     },
@@ -191,50 +225,115 @@ export default {
       this.cancel = e;
       console.log("eeeeeeeeeeeeeeee")
     },
-    async addApplicant(key) {
-      console.log(this.testCollection[key])
-      var newApplicants = this.testCollection[key]["newApplicants"]
-      console.log(newApplicants)
-      var projTitle = this.testCollection[key]["projectTitle"]
-      newApplicants.push(this.userEmail);
-      var applied = this.applied
-      console.log(applied);
-      var projectId = this.testCollection[key]["projectId"]
-      console.log(projectId);
-      applied.push(projectId);
-      // applied.push(projTitle);
-      this.testCollection[key]["appstat"] = "applied"
-
-      // alert("Applying for proj: " + projTitle);
+    applying(event,key) {
+      alert(key)
+      this.applyConfirm = true
+      this.currKey = key
+      if (event) {
+        this.currProject = this.testCollection[key]["projectTitle"]
+        tbis.like = true
+        this.latest = false
+      } else {
+        this.currProject = this.wholeTestCollection[key]["projectTitle"]
+        this.like = false
+        this.latest = true
+      }
       
-      //const auth = getAuth();
-      //this.fbuser = auth.currentUser.email;
+    },
+    confirmYes(e) {
+      if (e == true) {
+        this.addApplicant(this.currKey)
+      }
+      console.log("yes")
+      this.applyConfirm = false
+    },
+    async addApplicant(key) {
+      alert(key)
+      if (this.like) {
+        console.log(this.testCollection[key])
+        var newApplicants = this.testCollection[key]["newApplicants"]
+        console.log(newApplicants)
+        var projTitle = this.testCollection[key]["projectTitle"]
+        newApplicants.push(this.userEmail);
+        var applied = this.applied
+        console.log(applied);
+        var projectId = this.testCollection[key]["projectId"]
+        console.log(projectId);
+        applied.push(projectId);
+        // applied.push(projTitle);
+        this.testCollection[key]["appstat"] = "applied"
 
-      try {
-          const docRef = await updateDoc(doc(db, "Project", projectId), {
-              New_Applicants: newApplicants
-          })
-
-          const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
-                appliedProjects: applied
+        // alert("Applying for proj: " + projTitle);
+        
+        //const auth = getAuth();
+        //this.fbuser = auth.currentUser.email;
+        
+        try {
+            const docRef = await updateDoc(doc(db, "Project", projectId), {
+                New_Applicants: newApplicants
             })
 
-          //console.log(docRef)
-          this.$emit("updated")
+            const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
+                  appliedProjects: applied
+              })
+
+            //console.log(docRef)
+            this.$emit("updated")
+        }
+          catch(error) {
+            console.error("Error updating document: ", error);
+        }
+      } else if (this.latest) {
+        console.log(this.wholeTestCollection[key])
+        var newApplicants = this.wholeTestCollection[key]["newApplicants"]
+        console.log(newApplicants)
+        var projTitle = this.wholeTestCollection[key]["projectTitle"]
+        newApplicants.push(this.userEmail);
+        var applied = this.applied
+        console.log(applied);
+        var projectId = this.wholeTestCollection[key]["projectId"]
+        console.log(projectId);
+        applied.push(projectId);
+        // applied.push(projTitle);
+        this.wholeTestCollection[key]["appstat"] = "applied"
+
+        // alert("Applying for proj: " + projTitle);
+        
+        //const auth = getAuth();
+        //this.fbuser = auth.currentUser.email;
+        
+        try {
+            const docRef = await updateDoc(doc(db, "Project", projectId), {
+                New_Applicants: newApplicants
+            })
+
+            const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
+                  appliedProjects: applied
+              })
+
+            //console.log(docRef)
+            this.$emit("updated")
+        }
+          catch(error) {
+            console.error("Error updating document: ", error);
+        }
       }
-        catch(error) {
-          console.error("Error updating document: ", error);
-      }
+      
       //console.log(newApplicants);
       //console.log(key)
       //console.log(this.testCollection[key])
-      console.log(appliedProjects)
+      //console.log(appliedProjects)
       // var applicants = testCollection[key]["Applicants"]
     },
     
     indivproj(key) {
+      //Vuex Version
+      alert(key)
+      this.CLEAR_CARDITEMS()
+      this.SET_CARDITEMS(JSON.stringify(this.testCollection[key]))
       this.$router.push({
         name:'StudentViewProjectInfo', 
+        //Non-Vuex version
         params: {
           items: JSON.stringify(this.testCollection[key]),
         },
@@ -244,8 +343,13 @@ export default {
     }, 
 
     indivprojlatest(key) {
+      alert(key)
+      //Vuex version
+      this.CLEAR_CARDITEMS()
+      this.SET_CARDITEMS(JSON.stringify(this.wholeTestCollection[key]))
       this.$router.push({
         name:'StudentViewProjectInfo', 
+        //Non-Vuex version
         params: {
           items: JSON.stringify(this.wholeTestCollection[key]),
         },
@@ -269,7 +373,9 @@ export default {
   },
   created() {
     var that = this
-    var userEmail
+    this.userEmailData = this.userEmail
+    var userEmail = this.userEmail
+    /*
     var currUser = getAuth().onAuthStateChanged(function (user) {
       if (user) {
         //this.profileFormCreated = currUser.email
@@ -277,6 +383,7 @@ export default {
         userEmail = user.email
       }
     })
+    */
 
      async function profileFormCreatedCheck() {
       var profileFormCreated = false;
@@ -301,6 +408,7 @@ export default {
 
   },
   mounted() {
+    /*
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if(user) {
@@ -308,11 +416,13 @@ export default {
       }
     })
     this.userEmail = auth.currentUser.email;
+    */
+    this.userEmailData = this.userEmail
 
     const that = this;
 
     async function getAppliedProjects() {
-      const ref = doc(db, "students", auth.currentUser.email);
+      const ref = doc(db, "students", that.userEmailData);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       console.log(data.appliedProjects)
@@ -321,7 +431,7 @@ export default {
     getAppliedProjects();
 
     async function getAllAppliedProjects() {
-      const ref = doc(db, "students", auth.currentUser.email);
+      const ref = doc(db, "students", that.userEmailData);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       //console.log(data.appliedProjects)
@@ -333,7 +443,7 @@ export default {
     }
 
     async function fetchProject() {
-      const ref = doc(db, "students", that.userEmail);
+      const ref = doc(db, "students", that.userEmailData);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       var array = []
@@ -420,7 +530,7 @@ export default {
         //   if (typeof pictureprof === 'undefined') {
         //     pictureprof = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
         //   }
-        if (that.allApplied.includes(data.Project_Title)) {
+        if (that.allApplied.includes(id)) {
           wholeTestCollection.push({ 
             /*projectTitle: data.Project_Title, 
             description: data.Description,
@@ -521,7 +631,7 @@ export default {
     height: 100%;
     position: fixed;
     overflow-y: scroll;
-    padding-bottom: 550px;
+    padding-bottom: 250px;
   }
 
   .carouContainer {
@@ -554,5 +664,41 @@ export default {
   .carousel-control-prev  {
     filter: invert(100%);
   }
+
+  .applyConfirm-enter-active {
+  
+    transition: transform 0.4s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.4s linear;
+  }
+
+  .applyConfirm-leave-active {
+    
+    transition: transform 0.4s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.4s linear;
+  }
+
+  .applyConfirm-enter-from {
+    opacity: 0;
+    transform:translateY(-700px);
+    /*transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);*/
+  }
+
+  .applyConfirm-leave-to {
+    opacity: 0;
+    transform:translateY(-700px);
+    /*transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);*/
+  }
+
+  .modal-overlay {
+  content: '';
+  position: absolute;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  background: #2c3e50;
+  opacity: 0.6;
+  cursor: pointer;
+}
 
 </style>

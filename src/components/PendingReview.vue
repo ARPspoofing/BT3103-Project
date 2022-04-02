@@ -1,9 +1,9 @@
 <template>
-    <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoTaskDetails', params: {task:task,
+    <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
         taskId: task['id'], projectId:task['projectId'], projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
     <div class="pendingreview">
         <div class="top flex flex-row">
-            <div class="title">{{task['taskname']}}</div>
+            <div class="title"><strong>{{task['taskname']}}</strong></div>
             <div class="status-button flex todoButton">
                
                 <div>
@@ -57,13 +57,15 @@
 <style scoped>
 
     .pendingreview {
-        background-color: hsl(202, 54%, 56%);
+        background-color: #71AED1; /*hsl(202, 54%, 56%);*/
         border-radius: 20px;
         padding: 40px 20px;
-        margin-right:5px;
+        /*margin-right:5px;
         margin-left:5px;
-        margin-bottom: 4px;
+        margin-bottom: 4px;*/
         text-decoration: none;
+        margin: 15px 5px;
+        box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.15);
     }
 
     .flex {

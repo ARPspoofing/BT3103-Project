@@ -1,5 +1,5 @@
 <template>
-<NavBar :Heading="Heading" :header=true />
+<BusinessNavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
@@ -16,20 +16,169 @@
       </span>
     </h1>
     <hr/>
+    <div class="projectContainer">
+      <div :key="item.key" v-for="(item, key) in testCollection">
+        <Card
+          :apply="false"
+          :projectTitle="item.projectTitle"
+          :description="item.description"
+          @clickCard="indivproj(key)"
+          :picture="item.profilePicture"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import NavBar from '../../components/BusinessNavBar.vue'
+import BusinessNavBar from "../../components/BusinessNavBar.vue";
+import Card from "../../components/Card.vue";
+import firebaseApp from "../../firebase.js";
+import { getFirestore } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  setDoc,
+  deleteDoc,
+  getDocs,
+  updateDoc,
+  getDoc,
+  query,
+  orderBy,
+} from "firebase/firestore";
+import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
+import BusinessProfileForm from './BusinessProfileForm.vue'
+import {mapState} from "vuex"
+const db = getFirestore(firebaseApp);
+
 export default {
   name: 'BusinessInProgress',
   components: {
-    NavBar
+    BusinessNavBar,
+    Card,
+  },
+  computed: {
+    ...mapState(['userEmail']),
   },
   data() {
     return {
-      Heading: "MY PROJECTS"
+      Heading: "MY PROJECTS",
+      testCollection: [],  
+      businessEmail: "",
+      inProgProjects: [],
     }
+  },
+  methods: {
+    indivproj(key) {
+      console.log(JSON.stringify(this.testCollection[key].tasks))
+      console.log(JSON.stringify(this.testCollection[key].projectId))
+      this.$router.push({
+        name: "BusinessManagement",
+        params: {
+          projectId: JSON.stringify(this.testCollection[key].projectId),
+          projectTitle: JSON.stringify(this.testCollection[key].projectTitle),
+        },
+      });
+      //console.log(key);
+      //console.log(this.testCollection[key]);
+    },
+
+    isEqual(email) {
+      return email == this.businessEmail;
+    },
+  },
+  mounted() {
+    /*
+    const auth = getAuth();
+    this.businessEmail = auth.currentUser.email;
+    console.log("email: " + this.businessEmail);
+    */
+    var userEmail = this.userEmail
+    const that = this;
+
+    async function getInProgProjects() {
+      const ref = doc(db, "businesses", userEmail);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      that.inProgProjects = data.inProgProjects 
+      var inProgProjects = data.inProgProjects
+      console.log("inproglen",inProgProjects)
+      for (var i = 0; i < inProgProjects.length; i++) {
+        getProject(inProgProjects[i]).then((res) => {that.testCollection.push(res)})
+      }
+      console.log(that.inProgProjects)
+    }
+    getInProgProjects();
+
+    async function getProject(proj) {
+      const ref = doc(db, "Project", proj);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+
+      /*const docSnap2 = await getDoc(doc(db, "businesses", auth.currentUser.email));
+      let data1 = docSnap2.data();
+      var pictureprof = data1.finalProfile;
+      if (typeof pictureprof === "undefined") {
+        pictureprof =
+          "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png";
+      }
+      console.log(that.testCollection)*/
+
+      return {projectId: proj,
+          projectTitle: data.Project_Title,
+          description: data.Description,
+          vacancies: data.Num_Of_Vacancies,
+          allowance: data.Allowance,
+          position: data.Position,
+          projectStart: data.Project_Start,
+          projectEnd: data.Project_End,
+          tasks: data.Tasks,
+          tags: data.Tags,
+          newApplicants: data.New_Applicants,
+          accApplicants: data.Acc_Applicants,
+          rejApplicants: data.Rej_Applicants,
+          posterId: data.poster_id,
+          profilePicture: data.profPicture,}
+    }
+    console.log(that.testCollection)
+    
+    /*async function fetchProject(identity) {
+      let projects = collection(db, "Project", identity)
+      let snapshot = await getDocs(projects);
+      //const testCollection = [];
+      const docSnap = await getDoc(doc(db, "businesses", businessEmail));
+      let data1 = docSnap.data();
+      var pictureprof = data1.finalProfile;
+      if (typeof pictureprof === "undefined") {
+        pictureprof =
+          "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png";
+      }
+      return 
+      snapshot.forEach((docs) => {
+        let data = docs.data();
+        var id = docs.id;
+        testCollection.push({
+          projectId: id,
+          projectTitle: data.Project_Title,
+          description: data.Description,
+          vacancies: data.Num_Of_Vacancies,
+          allowance: data.Allowance,
+          position: data.Position,
+          projectStart: data.Project_Start,
+          projectEnd: data.Project_End,
+          tasks: data.Tasks,
+          tags: data.Tags,
+          newApplicants: data.New_Applicants,
+          accApplicants: data.Acc_Applicants,
+          rejApplicants: data.Rej_Applicants,
+          posterId: data.poster_id,
+          profilePicture: pictureprof,
+        });
+      });
+      that.testCollection = testCollection;
+      console.log(testCollection);
+    }
+    fetchProject();*/
   }
 }
 </script>
@@ -55,6 +204,15 @@ export default {
     width: 100%;
     height: 100%;
     position: fixed;
+    overflow-y: scroll;
+    padding-bottom: 550px;
+    /*
+    filter: blur(5px);
+    */
+  }
+
+  .projectContainer {
+    margin-left: 30px;
   }
 
   #interest {

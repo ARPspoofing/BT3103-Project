@@ -20,7 +20,7 @@
                     <h4>Email</h4>
                 </div>
                 <div class="input">
-                    <input type="text" v-model="email">
+                    <input type="text" v-model="email" placeholder="user@organization.com">
                     <img class="icon" src="../../assets/envelope.png">
                 </div>
                 <div class="errorMsg" v-if="emailErrorPresent">{{this.errorMessage}}</div>
@@ -59,6 +59,8 @@ import {useRouter} from "vue-router"
 import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../../firebase.js"
 import {getDoc, collection, doc} from "firebase/firestore"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 import ResetPassword from '../../components/ResetPassword.vue'
 import GoogleButton from '../../components/GoogleButton.vue'
 
@@ -84,6 +86,9 @@ export default {
         ResetPassword,
         GoogleButton,
     }, 
+    computed: {
+        ...mapState(['userEmail'])
+    },
     /*
     mounted() {
         async function checkVerified() {
@@ -95,6 +100,7 @@ export default {
     },  
     */ 
     methods: {
+    ...mapMutations(['SET_USEREMAIL']),
     forgot() {
         this.forgetPassword = true
     },
@@ -112,6 +118,7 @@ export default {
             const token = credential.accessToken;
             const user = result.user;
             alert(user.email)
+            this.SET_USEREMAIL(user.email)
             window.localStorage.setItem('emailForSignIn', user.email);
             this.$router.push({name:'businessLoading'})
                 // ...
@@ -158,6 +165,7 @@ export default {
             console.log(verifyEmail)
         signInWithEmailAndPassword(getAuth(), this.email,this.password)
         .then((data) => {
+            this.SET_USEREMAIL(this.email)
             window.localStorage.setItem('emailForSignIn', this.email);
             if(formFilled) {
                  this.$router.push({name:'BusinessHomePage',params:{'formFilled':true}})
@@ -312,7 +320,9 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-top:10px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        width: 400px;
     }
 
     .shake {
@@ -355,6 +365,11 @@ export default {
     .inputLabel {
         margin-bottom: 0px;
         text-align: left;
+    }
+
+    p {
+        width: 400px;
+        font-size: 13px;
     }
 
 </style>
