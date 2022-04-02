@@ -34,6 +34,12 @@ export default createStore({
     name: '',
     userEmail: '',
     cardItems: null,
+    recent: false,
+    oldest: false,
+    shortest: false,
+    longest: false,
+    highest: false,
+    lowest: false,
   },
   //getter for debugging
   getters: {
@@ -50,6 +56,29 @@ export default createStore({
       state.highestPriorityIds = [],
       state.secondPriorityIds = [],
       state.thirdPriorityIds = []
+    },
+    CLEAR_FILTER(state) {
+      state.recent = false,
+      state.oldest = false,
+      state.shortest = false,
+      state.longest = false,
+      state.highest = false,
+      state.lowest = false
+    },
+    SET_FILTER(state,payload) {
+      if (payload == "recent") {
+        state.recent = true
+      } else if (payload == "oldest") {
+        state.oldest = true
+      } else if (payload == "shortest") {
+        state.shortest = true
+      } else if (payload == "longest") {
+        state.longest = true
+      } else if (payload == "highest") {
+        state.highest = true
+      } else if (payload == "lowest") {
+        state.lowest = true
+      }
     },
     SET_SEARCH_DATA(state,payload) {
       state.searchData.push(...payload)

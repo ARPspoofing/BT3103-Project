@@ -23,12 +23,12 @@
         <li class="menu-item">
           <a>Sort By</a>
           <ol class="sub-menu">
-            <li class="menu-item"><a href="#0">Shishkabobs</a></li>
-            <li class="menu-item"><a href="#0">Shishkabobs</a></li>
-            <li class="menu-item"><a href="#0">Shishkabobs</a></li>
-            <li class="menu-item"><a href="#0">Shishkabobs</a></li>
-            <li class="menu-item"><a href="#0">BBQ kabobs</a></li>
-            <li class="menu-item"><a href="#0">Summer kabobs</a></li>
+            <li @click="fetchProjectOrder('recent')" class="menu-item"><a href="#0">Recent</a></li>
+            <li @click="fetchProjectOrder('oldest')" class="menu-item"><a href="#0">Oldest</a></li>
+            <li @click="fetchProjectOrder('shortest')" class="menu-item"><a href="#0">Shortest</a></li>
+            <li @click="fetchProjectOrder('longest')" class="menu-item"><a href="#0">Longest</a></li>
+            <li @click="fetchProjectOrder('highest')" class="menu-item"><a href="#0">Highest</a></li>
+            <li @click="fetchProjectOrder('lowest')" class="menu-item"><a href="#0">Lowest</a></li>
           </ol>
         </li>
       </ol>
@@ -65,7 +65,7 @@ import StudentNavBar from '../../components/StudentNavBar.vue'
 import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
+import { collection, query, orderBy, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
 import {signOut} from "firebase/auth"
 import {mapState} from "vuex"
 import {mapMutations} from "vuex"
@@ -83,7 +83,7 @@ export default {
   },
   
   computed: {
-    ...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds']),
+    ...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','recent','oldest','shortest','longest','highest','lowest']),
     ...mapGetters(['GET_SEARCH_DATA']),
     
   },
@@ -107,7 +107,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['TOGGLE_FILTER']),
+    ...mapMutations(['TOGGLE_FILTER','CLEAR_ALL','SET_HIGHEST_PRIORITYIDS']),
     
     toggleFilterMenu() {
       this.TOGGLE_FILTER()
@@ -155,7 +155,39 @@ export default {
       console.log(key)
       console.log(this.thirdPriority[key])
   },
-    
+    async fetchProjectOrder(order) {
+      //var businessEmail = auth.currentUser.email;
+      //var businessEmail = window.localStorage.getItem('emailForSignIn')
+      //order projects by posted date, from latest to oldest
+      alert(order)
+      if (order == "recent") {
+        alert("true!!")
+
+        let projects = query(collection(db, "Project"), orderBy("Posted_Date", "desc"));
+      } else if (order == "oldest") {
+        let projects = query(collection(db, "Project"), orderBy("Posted_Date", "asc"));
+      } else if (order == "highest") {
+        let projects = query(collection(db, "Project"), orderBy("Allowance", "desc"));
+      } else if (order == "lowest") {
+        let projects = query(collection(db, "Project"), orderBy("Allowance", "asc"));
+      } else if (order == "longest") {
+        let projects = query(collection(db, "Project"), orderBy("Project_End", "asc"));
+      } else if (order== "shortest") {
+        let projects = query(collection(db, "Project"), orderBy("Project_End", "desc"));
+      }
+      var temp = []
+      let snapshot = await getDocs(projects);
+      snapshot.forEach((docs) => {
+        let data = docs.data();
+        var id = docs.id;
+        if (this.searchData.includes(id)) {
+          temp.push(id)
+        }
+      });
+      this.CLEAR_ALL()
+      this.SET_HIGHEST_PRIORITYIDS(temp)
+      this.$route.push({name:'StudentSearchResult'})
+    },
   },
 
   mounted() {
