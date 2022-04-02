@@ -101,6 +101,8 @@ export default {
   },
 
   methods: {
+
+    
     viewTasks(id, title) {
       console.log("in method")
       console.log(title)
