@@ -14,9 +14,10 @@
     <ul class="navbar-nav ms-auto">
         <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Navigate
+            {{username}}
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          
             <router-link class="nav-item nav-link active" :to="{name:'BusinessHomePage'}" >Home</router-link>
             <div class="dropdown-divider"></div>
             <router-link class="nav-item nav-link active" :to="{name:'BusinessAbout'}">About</router-link>
@@ -26,12 +27,21 @@
             
         </div>
         </div>
+        <div class="profile-pic-outer">
+            <img id="profilepic" src="https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"/>
+        </div>
     </ul>
   </nav>
 </template>
 
 <script>
-import {signOut, getAuth} from "firebase/auth"
+import firebaseApp from '../firebase.js';
+import {signOut, getAuth, onAuthStateChanged} from "firebase/auth"
+import { getFirestore } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
+const db = getFirestore(firebaseApp);
 export default {
 
     props:{
@@ -39,16 +49,54 @@ export default {
         search: Boolean,
         header: Boolean,
     },
+    data() {
+      return {
+        username: '',
+      }
+    },
 
     methods:  {   
-    
     async logOut() {
         const auth = getAuth()
         await signOut(auth) 
         this.$router.push({"name":"BusinessLogin"})
-
       },
-
+    }, 
+    computed: {
+      ...mapState(['name','userEmail']),
+    },
+    mounted() {
+      
+      /*
+      const auth = getAuth();
+      var userEmail = auth.currentUser.email;
+      console.log(userEmail)
+      */
+      //const userEmail = window.localStorage.getItem('emailForSignIn')
+      this.username = this.userEmail
+      const userEmail = this.userEmail
+      alert(userEmail)
+      async function getApplicant(userEmail) {
+        const docSnap = await getDoc(doc(db, "businesses", userEmail));
+        console.log("doc: "+ docSnap)
+        let data = docSnap.data();
+        console.log(data)
+        //name =  data.name;
+        //console.log("name: "+ name)
+        //let result = await data.name
+        var name = data.name;
+        alert(name)
+        dropdownMenuButton.innerHTML = name
+        var picture = data.finalProfile;
+        console.log(typeof picture === 'undefined')
+        if (typeof picture === 'undefined') {
+          document.getElementById("profilepic").src = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
+        } else {
+          document.getElementById("profilepic").src = picture
+        }
+        return {name: data.name}
+      }
+      getApplicant(userEmail)
     }
 }
 </script>
@@ -72,6 +120,15 @@ export default {
 
   .btn {
     margin: 10px;
+    background-color: transparent;
+    text-decoration: underline;
+    border: none;
+  }
+
+  .btn:hover {
+    background-color: transparent;
+    border: none;
+    color: rgb(241, 184, 25);
   }
 
   #title {
@@ -86,5 +143,13 @@ export default {
     width: 100%;
     height: 100%;
     position: fixed;
+  }
+
+  #profilepic {
+    width: 40px;
+    height: 40px;
+    float: right;
+    margin: 10px 20px 10px 0px;
+    border-radius: 50%;
   }
 </style>

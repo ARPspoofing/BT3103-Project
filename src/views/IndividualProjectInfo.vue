@@ -4,6 +4,7 @@
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
+    <!-- <h3>{{items}}</h3> -->
     <h1 id="interest">
       <span class="options">
         <b>PROJECT INFO</b>
@@ -21,7 +22,7 @@
     <hr/>
     <div>
       <div class = "clogo">
-        <!-- <img src="../assets/google-logo.png" alt="Logo" class = "logo"> -->
+        <img src="../assets/google-logo.png" alt="Logo" class = "logo">
         <span>
           <div class="projTitle">
             {{items.projectTitle}}  <br>
@@ -37,11 +38,51 @@
         </span>
         <span>
           <div class="projButtons" >
-            <router-link :to="{name:'BusinessEditProject'}">
-              <button class="edit-proj">EDIT PROJECT DETAILS</button>
-            </router-link><br>
-            <button href="#" class="close-proj">CLOSE PROJECT</button> <br>
-            <button href="#" class="del-proj">DELETE PROJECT</button>
+            <button class="edit-proj" @click="editProject()">EDIT PROJECT DETAILS</button> <br>
+            <button href="#" class="close-proj" data-bs-toggle="modal" data-bs-target="#closeModal">CLOSE PROJECT</button> <br>
+            <div class="modal fade" id="closeModal" tabindex="-1" aria-labelledby="closeModalLabel" aria-hidden="true" 
+              data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <div class="words">
+                    <i class="fa-solid fa-triangle-exclamation" id="warningIcon"></i>
+                    <p>Are you sure you want to <br>
+                    <span style="color: red"> close </span> this project?<br>
+                    This action is not reversible. </p>
+                    </div>
+                    <span>
+                      <div class = "applybtns">
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal">Yes</button>
+                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button href="#" class="del-proj" data-bs-toggle="modal" data-bs-target="#delModal">DELETE PROJECT</button>
+            <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="delModalLabel" aria-hidden="true" 
+              data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <div class="words">
+                    <i class="fa-solid fa-triangle-exclamation" id="warningIcon"></i>
+                    <p>Are you sure you want to <br>
+                    <span style="color: red"> delete </span> this project?<br>
+                    This action is not reversible. </p>
+                    </div>
+                    <span>
+                      <div class = "applybtns">
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal">Yes</button>
+                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div> 
         </span>
       </div>
@@ -110,15 +151,21 @@ import Deliverable from '../components/Deliverable.vue'
 import * as moment from 'moment'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
+
 const db = getFirestore(firebaseApp);
 
 export default {
   name: 'IndividualProjectInfo',
-  props: ['items'],
+  //props: ['items'],
   components: {
     BusinessNavBar, 
     Deliverable
+  },
+  computed: {
+    ...mapState(['cardItems']),
   },
   data() {
     return {
@@ -134,6 +181,8 @@ export default {
     }
   },
   mounted() {
+    //Non Vuex version
+    /*
     this.tasks = JSON.parse(this.$route.params.items).tasks
     this.tags = JSON.parse(this.$route.params.items).tags
     this.items = JSON.parse(this.$route.params.items)
@@ -150,15 +199,40 @@ export default {
     if (this.$route.params.rejApplicants) {
       this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
     }
+    */
+    //Vuex version
+    this.tasks = JSON.parse(this.cardItems).tasks
+    this.tags = JSON.parse(this.cardItems).tags
+    this.items = JSON.parse(this.cardItems)
+    this.newApplicants = JSON.parse(this.cardItems).newApplicants
+    this.accApplicants = JSON.parse(this.cardItems).accApplicants
+    this.rejApplicants = JSON.parse(this.cardItems).rejApplicants
+
+    if (this.$route.params.newApplicants) {
+      this.newApplicants = JSON.parse(this.$route.params.newApplicants)
+    }
+    if (this.$route.params.accApplicants) {
+      this.accApplicants = JSON.parse(this.$route.params.accApplicants)
+    }
+    if (this.$route.params.rejApplicants) {
+      this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
+    }
   },
   methods: {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
+
+    editProject() {
+      console.log(this.items)
+      this.$router.push({
+        name:'BusinessEditProject',
+        params: {
+          items: JSON.stringify(this.items),
+        },
+      })
+    }
   },
-  /*params: {
-    items: this.items,
-  },*/
 }
 </script>
 
@@ -221,7 +295,7 @@ export default {
 
   .options {
     font-size: 15px;
-    padding: 10px 25px;
+    padding: 5px 25px;
     margin-left: 15px;
     border-radius: 30px; /* or 50% */
     background-color: #0E8044;
@@ -433,5 +507,53 @@ export default {
       width: 9px;
       content: "";
       top: 5px;
+  }
+
+  #closeModal, #delModal {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: #FFE9C8;
+    border: none;
+  }
+
+  .words {
+    width: max-content;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+  }
+
+  .applybtns {
+    width: max-content;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+
+  #yesbtn, #nobtn {
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: #FFC875;
+    color: #3f3f3f;
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+  }
+
+  #warningIcon {
+    height: 60px;
+    width: 60px;
+    color: #FFAB2C;
+    float: left;
+  }
+
+  .modal-body p {
+    text-align: center;
+    width: 300px;
   }
 </style>

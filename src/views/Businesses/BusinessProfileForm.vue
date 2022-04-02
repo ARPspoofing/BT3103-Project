@@ -2,6 +2,13 @@
     <PopUp @return="close" v-if="popUp" />
     <div @click="check" ref="formWrap" class="form-wrap flex flex-column">
         <form @submit.prevent="submitForm" class="content">
+            <div class="profile-pic-outer">
+                <img class="profile-pic" :src="finalProfile"/>
+            </div>
+            <div class="profile-icon">
+                <input style="display:none" ref="profileUpload" type="file" @change="onFileSelected">
+                <h6 @click="$refs.profileUpload.click()">Pick Profile</h6>
+            </div>
             <!--Personal Details-->
             <div class="personal-details flex flex-column">
                 <h4>Company name</h4>
@@ -45,6 +52,9 @@ import { doc,setDoc } from 'firebase/firestore';
 import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../../firebase.js"
 import {getAuth, signOut,onAuthStateChanged} from 'firebase/auth'
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 const router = useRouter()
 const db = getFirestore(firebaseApp)
 export default {
@@ -59,11 +69,15 @@ export default {
             industryErrorPresent:false,
             nameErrorPresent:false,
             user:false,
-            errorMessage:''
-            
+            completedProjects: [],
+            inProgressProjects: [],
+            errorMessage:'',
+            finalProfile: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",    
         }
     },
-
+    computed: {
+        ...mapState(['name'])
+    },
     mounted() {
         const auth = getAuth();
         onAuthStateChanged(auth, (user ) => {
@@ -74,6 +88,7 @@ export default {
     },
     //Change to remove from firebase later
     methods: {
+        ...mapMutations(['SET_NAME']),
          
          try() {
              console.log("testc")
@@ -109,6 +124,7 @@ export default {
                  this.industryErrorPresent = true;  
                  this.errorMessage = "Please fill in your company's industry"
              } else {
+                 this.SET_NAME(this.name)
                  //Previous version of retrieving email. Have some problem
                  /*
                  const auth = getAuth()
@@ -116,7 +132,7 @@ export default {
                  */
                 //New version
                 const email = window.localStorage.getItem('emailForSignIn')
-                 
+                window.localStorage.setItem('businessName',this.name)
                  
                  //accessing the current user and setting the elements
                  await setDoc(doc(db,'businesses',String(email)), {
@@ -124,14 +140,30 @@ export default {
                      industry: this.industry,
                      description: this.description,
                      profileFormCreated: true,
-                     verifyEmail:true
+                     verifyEmail:true,
+                     finalProfile:this.finalProfile,
+                     inProgressProjects: this.inProgressProjects,
+                     completedProjects: this.completedProjects,
+
                  })
                 this.$emit('success',true)
 
                 this.$router.push({name:"BusinessHomePage"})
 
              }
-         }
+         },
+         onFileSelected(event) {
+            this.profileImage = event.target.files[0]
+            const storage = getStorage();
+            const profileRef = ref(storage, this.profileImage.name);
+            const uploadTask = uploadBytesResumable(profileRef, this.profileImage)
+            uploadTask.on('state_changed', (snapshot) => {}, (error) => {}, () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log('File available at', this.finalProfile = downloadURL);
+                });
+            }
+            );
+         },
 
          //save method would go to the landing page of the business
 
@@ -192,6 +224,14 @@ export default {
         border-radius:20px;
     }
 
+    label {
+        text-align: left;
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 3px;
+    }
+
     .interest {
         gap:5px;
         div {
@@ -207,7 +247,6 @@ export default {
       color:black;
       border-radius:5%;
     }
-
     img {
         position: absolute;
         width:20px;
@@ -237,7 +276,7 @@ export default {
     cursor: pointer;
     padding: 16px 24px;
     border-radius: 30px;
-    borer: none;
+    border: none;
     font-size: 12px;
     margin-right: 8px;
     color: #fff;
@@ -299,6 +338,23 @@ export default {
         color: red;
         margin-top:5px;
     }
-    
-    
+
+    .profile-icon h6 {
+        display: grid;
+        place-items: center;
+        cursor:pointer;
+        color:blue;
+        margin-top: 130px;
+    }   
+
+    .profile-pic {
+        border-radius: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        width:120px;
+        height: 120px;
+
+    }
+
+  
 </style>

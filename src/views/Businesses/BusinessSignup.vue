@@ -14,7 +14,7 @@
                 <div class="input">
                     <h6>Signup with your Organization email</h6>
                 </div>
-                <div class="input">
+                <div class="inputLabel">
                     <h4>Email</h4>
                 </div>
                 <div class="input">
@@ -22,7 +22,7 @@
                     <img class="icon" src="../../assets/envelope.png">
                 </div>
                 <div class="errorMsg" v-if="emailErrorPresent">{{this.errorMessage}}</div>
-                <div class="input">
+                <div class="inputLabel">
                     <h4>Password</h4>
                 </div>
                 <div class="input">
@@ -30,7 +30,7 @@
                     <img class="icon" src="../../assets/lock.png">
                 </div>
                  <div class="errorMsg" v-if="passwordErrorPresent">{{this.errorMessage}}</div>
-                <div class="input">
+                <div class="inputLabel">
                     <h4>Confirm Password</h4>
                 </div>
                
@@ -67,6 +67,8 @@ import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
 import {ref} from "vue"
 import {getAuth,createUserWithEmailAndPassword,sendSignInLinkToEmail,isSignInWithEmailLink, signInWithEmailLink,GoogleAuthProvider,signInWithPopup} from "firebase/auth"
 import {useRouter} from "vue-router"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 import Loading from '../../components/Loading.vue'
 import VerifyEmail from '../../components/VerifyEmail.vue'
 import GoogleButton from '../../components/GoogleButton.vue'
@@ -94,8 +96,6 @@ const actionCodeSettings = {
   dynamicLinkDomain: 'example.page.link'
 };
 
-
-
 const db = getFirestore(firebaseApp)
 const router = useRouter()
 const that = this
@@ -120,7 +120,11 @@ export default {
         VerifyEmail,
         GoogleButton
     },
+    computed: {
+        ...mapState(['userEmail']),
+    },
     methods: {
+        ...mapMutations(['SET_USEREMAIL']),
         async google() {
             const auth = getAuth();
             const provider = new GoogleAuthProvider();
@@ -130,6 +134,7 @@ export default {
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
                 const user = result.user;
+                this.SET_USEREMAIL(user.email)
                 this.$router.push({name:'businessLoading'})
                 // ...
             }).catch((error) => {
@@ -219,8 +224,8 @@ export default {
                 
                 createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                 .then((data) => {
+                    this.SET_USEREMAIL(this.email)
                     console.log("in method")
-                    
                     setDoc(doc(db,"businesses",String(this.email)),{
                             profileFormCreated:false,
                             verifyEmail:false,
@@ -309,15 +314,11 @@ export default {
     }
 
     .form-wrap {
-        overflow:hidden;
         display:flex;
-        height:80vh;
-        justify-content: center;
-        align-self: center;
-        margin: 0 auto;
-        width:90%;
-        background-image:url("../../assets/signupBG.png");
-        background-repeat: no-repeat;
+        height:105%;
+        width:100%;
+        background: url("../../assets/signupBG.png") no-repeat center center fixed;
+        overflow:hidden;
     }
 
     form {
@@ -349,11 +350,11 @@ export default {
     }
 
     input {
-        width: 100%;
-        border: none;
-        background-color: aquamarine;
+        width: 80%;
+        border: 2px solid darkgreen;
+        background-color: white;
         padding: 4px 4px 4px 30px;
-        height: 25px;
+        height: 35px;
         border-top-left-radius: 25px;
         border-bottom-left-radius: 25px;
         border-top-right-radius: 25px;
@@ -368,23 +369,21 @@ export default {
     .icon {
         width:12px;
         position:absolute;
-        margin-left:15px;
+        margin-left:20px;
     }
 
     button {
         margin-top:5vh;
-        width: 100%;
+        margin-left: 10px;
+        width: 80%;
         border: none;
         display:flex;
         align-items: center;
         align-items: center;
         justify-content: center;
         background-color: green;
-        height: 30px;
-        border-top-left-radius: 25px;
-        border-bottom-left-radius: 25px;
-        border-top-right-radius: 25px;
-        border-bottom-right-radius: 25px;
+        height: 35px;
+        border-radius: 25px;
         color: white;
     }
 
@@ -422,15 +421,23 @@ export default {
         order: 2px solid red;
     }
 
+    h1 {
+        text-align: left;
+        margin-top: 20px;
+        margin-left: 15px;
+    }
     h4 {
-        margin-left:15px;
-        font-size:18px;
-        font-weight:bolder;
+        font-size: 16px;
+        margin-bottom: 0px;
+        margin-top: 5px;
+        margin-left: 15px;
+    }
+    .inputLabel {
+        margin-bottom: 0px;
+        text-align: left;
     }
 
     h6 {
-        font-size:14px;
-        font-weight:bolder;
-        color:grey;
+        margin-left: 15px;
     }
 </style>

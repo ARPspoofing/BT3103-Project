@@ -10,34 +10,59 @@
         <b>POSTED</b>
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'BusinessInProgress'}" ><b>IN PROGRESS</b></router-link>
+        <router-link class="optionsOff" :to="{ name: 'BusinessInProgress' }"
+          ><b>IN PROGRESS</b></router-link
+        >
       </span>
       <span>
-        <router-link class="optionsOff" :to="{name:'BusinessCompleted'}" ><b>COMPLETED</b></router-link>
+        <router-link class="optionsOff" :to="{ name: 'BusinessCompleted' }"
+          ><b>COMPLETED</b></router-link
+        >
       </span>
     </h1>
-    <hr/>
-      <div class="projectContainer">
-        <div :key="item.key" v-for="(item, key) in testCollection">
-          <Card :apply=false :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivproj(key)"/>
-        </div>
+    <hr />
+    <h1></h1>
+    <div class="projectContainer">
+      <div :key="item.key" v-for="(item, key) in testCollection">
+        <Card
+          v-if="isEqual(item.posterId)"
+          :apply="false"
+          :projectTitle="item.projectTitle"
+          :description="item.description"
+          @clickCard="indivproj(key)"
+          :picture="item.profilePicture"
+        />
       </div>
+    </div>
   </div>
 </template>
 
 <script>
-import BusinessNavBar from '../../components/BusinessNavBar.vue'
-import Card from '../../components/Card.vue'
-import firebaseApp from '../../firebase.js';
-import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
-import {getAuth, onAuthStateChanged} from "firebase/auth"
-import {signOut} from "firebase/auth"
+import BusinessNavBar from "../../components/BusinessNavBar.vue";
+import Card from "../../components/Card.vue";
+import firebaseApp from "../../firebase.js";
+import { getFirestore } from "firebase/firestore";
+import {useRouter} from "vue-router"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
+import {
+  collection,
+  doc,
+  setDoc,
+  deleteDoc,
+  getDocs,
+  updateDoc,
+  getDoc,
+  query,
+  orderBy,
+} from "firebase/firestore";
+import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
 import BusinessProfileForm from './BusinessProfileForm.vue'
 const db = getFirestore(firebaseApp);
+const router = useRouter();
 
 export default {
-  name: 'BusinessHomePage',
+  name: "BusinessHomePage",
   components: {
     BusinessNavBar,
     Card,
@@ -48,17 +73,26 @@ export default {
       Heading: "MY PROJECTS",
       testCollection: [],
       profileFormCreated: true,
-      foreverTrue: true,
-    }
+      foreverTrue: true,    
+      businessEmail: '',
+    };
   },
-
+  computed: {
+    ...mapState(['userEmail','cardItems']),
+  },
   methods: {
+    ...mapMutations(['CLEAR_CARDITEMS','SET_CARDITEMS']),
     close(e) {
       this.profileFormCreated = e
+      this.$router.push({name:'BusinessHomePage'})
     },
     indivproj(key) {
+      //vuex
+      this.CLEAR_CARDITEMS()
+      this.SET_CARDITEMS(JSON.stringify(this.testCollection[key]))
+      //Non-vuex
       this.$router.push({
-        name:'IndividualProjectInfo', 
+        name: "IndividualProjectInfo",
         params: {
           /*
           projectTitle: this.testCollection[key].projectTitle,
@@ -72,10 +106,14 @@ export default {
           tags: JSON.stringify(this.testCollection[key].tags),*/
           items: JSON.stringify(this.testCollection[key]),
         },
-      })
-      console.log(key)
-      console.log(this.testCollection[key])
-  }
+      });
+      console.log(key);
+      console.log(this.testCollection[key]);
+    },
+
+    isEqual(email) {
+      return email == this.businessEmail;
+    },
   },
 
   created() {
@@ -90,7 +128,8 @@ export default {
       }
     })
     */
-    var userEmail = window.localStorage.getItem('emailForSignIn')
+    var userEmail = this.userEmail
+    //var userEmail = window.localStorage.getItem('emailForSignIn')
      async function profileFormCreatedCheck() {
       var profileFormCreated = false;
       
@@ -119,30 +158,54 @@ export default {
     console.log("curr user",auth)
     */
     //console.log("auth",auth)
+    /*
+    const auth = getAuth();
+    this.businessEmail = auth.currentUser.email;
+    console.log("email: " + this.businessEmail);
+    */
     const that = this;
+    this.businessEmail = this.userEmail
   
     async function fetchProject() {
-      let snapshot = await getDocs(collection(db, "Project"))
+      //var businessEmail = auth.currentUser.email;
+      //var businessEmail = window.localStorage.getItem('emailForSignIn')
+      var businessEmail = that.userEmail
+      alert(businessEmail)
+      //order projects by posted date, from latest to oldest
+      let projects = query(collection(db, "Project"), orderBy("Posted_Date", "desc"));
+      let snapshot = await getDocs(projects);
       const testCollection = [];
+      const docSnap = await getDoc(doc(db, "businesses", businessEmail));
+      let data1 = docSnap.data();
+      var pictureprof = data1.finalProfile;
+      if (typeof pictureprof === "undefined") {
+        pictureprof =
+          "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png";
+      }
+
       snapshot.forEach((docs) => {
-        let data = docs.data()
-        testCollection.push({ 
-            projectTitle: data.Project_Title, 
-            description: data.Description, 
-            vacancies: data.Num_Of_Vacancies,
-            allowance: data.Allowance,
-            position: data.Position,
-            projectStart: data.Project_Start,
-            projectEnd: data.Project_End,
-            tasks: data.Tasks,
-            tags: data.Tags,
-            newApplicants: data.New_Applicants,
-            accApplicants: data.Acc_Applicants,
-            rejApplicants: data.Rej_Applicants,
+        let data = docs.data();
+        var id = docs.id;
+        testCollection.push({
+          projectId: id,
+          projectTitle: data.Project_Title,
+          description: data.Description,
+          vacancies: data.Num_Of_Vacancies,
+          allowance: data.Allowance,
+          position: data.Position,
+          projectStart: data.Project_Start,
+          projectEnd: data.Project_End,
+          tasks: data.Tasks,
+          tags: data.Tags,
+          newApplicants: data.New_Applicants,
+          accApplicants: data.Acc_Applicants,
+          rejApplicants: data.Rej_Applicants,
+          posterId: data.poster_id,
+          profilePicture: pictureprof,
         });
       });
-      that.testCollection = testCollection
-      console.log(testCollection)
+      that.testCollection = testCollection;
+      console.log(testCollection);
     }
     fetchProject();
     /*

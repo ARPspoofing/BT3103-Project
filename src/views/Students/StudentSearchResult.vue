@@ -25,8 +25,7 @@
     <hr/>
      <div v-if="noProjectsPresent" class = "noProject">
          <h1 class = "noProjectsText">Sorry, no projects matched your search {{receivedSearch}}. Please ensure that you have spelled your search correctly.</h1>
-          {{GET_SEARCH_DATA}}
-          HELLOOOOOOOOOOOOOOO
+         
          
      </div>
       <div v-else class="projectContainer">
@@ -106,7 +105,7 @@ export default {
     },
     */
     indivprojFirst(key) {
-      alert(key)
+     
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {
@@ -118,7 +117,7 @@ export default {
   },
 
   indivprojSecond(key) {
-      alert(key)
+      
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {
@@ -130,7 +129,7 @@ export default {
   },
 
   indivprojThird(key) {
-    alert(key)
+   
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {
@@ -273,9 +272,9 @@ export default {
 
   .projectContainer {
     margin-left: 30px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+    /*flex-grow: 1;
+    display: flex; */
+    flex-direction: row; 
   }
 
   /*

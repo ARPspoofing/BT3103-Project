@@ -1,0 +1,165 @@
+<template>
+  <StudentNavBar :header=true :Heading="Heading" />
+    <div class="mainBody">
+    <h1 id="status">
+      <span>
+        <router-link
+          class="optionsOff"
+          :to="{ name: 'StudentInProgressProjects' }"
+          ><b>IN PROGRESS</b></router-link
+        >
+      </span>
+      <span class="options">
+        <b>COMPLETED</b>
+      </span>
+    </h1>
+    <hr />
+    <h1></h1>
+    <div class="projectContainer">
+      <div :key="item.key" v-for="(item, key) in completedProjects">
+        <Card
+          :apply="false"
+          :projectTitle="item.projectTitle"
+          :description="item.description"
+          :picture="item.profilePicture"
+        />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import StudentNavBar from '../../components/StudentNavBar.vue'
+import Card from '../../components/Card.vue'
+import firebaseApp from '../../firebase.js';
+import { getFirestore, query, where } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
+const db = getFirestore(firebaseApp);
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {mapState} from 'vuex'
+import {mapMutations} from 'vuex'
+
+export default {
+name: 'StudentCompletedProjects',
+  components: {
+    StudentNavBar, 
+    Card
+  },
+  data() {
+    return {
+      Heading: "MY PROJECTS",
+        completedProjects: [],
+    };
+  },
+  computed: {
+    ...mapState(['userEmail']),
+  },
+    mounted() {
+    //non-vuex
+    /*
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+      }
+    });
+    this.userEmail = auth.currentUser.email;
+    */
+
+    const that = this
+    var userEmail = this.userEmail
+    alert('now')
+    alert(userEmail)
+    async function getinProgProjects() {
+      const ref = doc(db, "students", userEmail);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      //var projects = data.inProgProjects
+      //that.inProgProjects = data.inProgProjects
+      if (data) {
+        for(var i = 0; i < data.completedProjects.length; i++) {
+          getProject(data.completedProjects[i]).then((res)=>{that.completedProjects.push(res)})
+        }
+      }
+    }
+    getinProgProjects()
+    
+    async function getProject(proj) {
+      const ref = doc(db, "Project", proj);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      return {projectTitle: data.Project_Title, description: data.Description, profilePicture: data.profPicture}
+    }
+  }
+}
+</script>
+
+<style>
+#title {
+  color: white;
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-bottom: 0px;
+}
+
+.btn {
+  margin: 10px;
+}
+
+.mainBody {
+  background-color: #f5f5f5;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  overflow-y: scroll;
+  padding-bottom: 550px;
+}
+
+.projectContainer {
+  margin-left: 30px;
+}
+
+#status {
+  text-align: left;
+  font-size: 28px;
+  margin: 30px 30px 0px 30px;
+  color: #606060;
+}
+
+hr {
+  border: 0;
+  border-top: 2px solid #606060;
+  width: 90%;
+  margin: 5px 0px 16px 38px;
+}
+
+.options {
+  font-size: 15px;
+  padding: 5px 25px;
+  margin-left: 15px;
+  border-radius: 30px; /* or 50% */
+  background-color: #0e8044;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+}
+
+.options:hover {
+    color: white;
+}
+
+.optionsOff:hover {
+    color: #0e8044;
+}
+
+.optionsOff {
+  font-size: 15px;
+  padding: 10px 25px;
+  margin-left: 15px;
+  border-radius: 30px; /* or 50% */
+  background-color: F5F5F5;
+  text-align: center;
+  color: #606060;
+  text-decoration: none;
+}
+</style>

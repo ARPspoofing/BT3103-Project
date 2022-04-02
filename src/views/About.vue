@@ -25,6 +25,9 @@
     About
   </div>-->
   <StudentNavBar :search=true :Heading="Heading" :header=true />
+  <div>
+  {{items.projectTitle}}  
+  </div>
 </template>
 
 <script>
@@ -37,7 +40,12 @@ export default {
   data() {
     return {
       Heading: "PROFILE",
+      items: [],
     }
+  },
+  mounted() {
+    this.items = JSON.parse(this.$route.params.items)
+    console.log(this.items)
   }
 }
 </script>
