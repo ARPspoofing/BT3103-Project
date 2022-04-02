@@ -4,7 +4,7 @@
         <i class="fa-solid fa-circle-check" id="tickIcon"></i>
         <p>
         Apply for
-        <span style="color: #0e8044"><strong> {{ projectTitle }} yahoo </strong></span
+        <span style="color: #0e8044"><strong> {{ projectTitle }} </strong></span
         >?
         </p>
         <span>

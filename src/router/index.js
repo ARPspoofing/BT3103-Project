@@ -68,6 +68,11 @@ const routes = [
     component: () => import("../views/IndividualProjectRejApps.vue"),
   },
   {
+    path: "/project/student_profileInfo",
+    name: "BusinessViewStudentInfo",
+    component: () => import("../views/BusinessViewStudentInfo.vue")
+  },
+  {
     path: "/project/student_projectinfo",
     name: "StudentViewProjectInfo",
     component: () => import("../views/StudentViewProjectInfo.vue"),
@@ -137,7 +142,7 @@ const routes = [
   },
   {
     path: "/student/management/ToDo:taskId",
-    name: "ToDoTaskDetails",
+    name: "ToDoView",
     component: () => import("../views/Students/ToDoView.vue"),
   },
   {
@@ -210,6 +215,11 @@ const routes = [
     path: "/business/landingpage",
     name: "BusinessLandingPage",
     component: () => import("../views/Businesses/BusinessLandingPage.vue"),
+  },
+  {
+    path: "/business/management",
+    name: "BusinessManagement",
+    component: () => import("../views/Businesses/BusinessManagement.vue"),
   },
 
   {

@@ -4,11 +4,10 @@
     Loading
   </div>
   <div v-if="!loading" class="mainBody">   
-    <button @click="toggleFilterMenu"> Open filter menu </button>
-    <button @click="closeFilterMenu"> close filter menu </button>
+    <!-- <button class="purple button" @click="toggleFilterMenu">Filter</button> -->
 
   <transition name="filter">
-     <Filter v-if="filterModal"/>
+     <Filter v-if="filterModal"/> 
   </transition>
   
       
@@ -16,16 +15,33 @@
     
     </div> 
     <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
+      <button class="button" @click="toggleFilterMenu">Filter</button>
+      <button class="order" @click="toggleSortMenu">Sort</button>
+
+      <nav class="menu">
+      <ol>
+        <li class="menu-item">
+          <a>Sort By</a>
+          <ol class="sub-menu">
+            <li class="menu-item"><a href="#0">Shishkabobs</a></li>
+            <li class="menu-item"><a href="#0">Shishkabobs</a></li>
+            <li class="menu-item"><a href="#0">Shishkabobs</a></li>
+            <li class="menu-item"><a href="#0">Shishkabobs</a></li>
+            <li class="menu-item"><a href="#0">BBQ kabobs</a></li>
+            <li class="menu-item"><a href="#0">Summer kabobs</a></li>
+          </ol>
+        </li>
+      </ol>
+      </nav>
+
+
       Search results for {{receivedSearch}}:
-      
+      <hr/>
     </h1>
-   
-    <hr/>
+    
      <div v-if="noProjectsPresent" class = "noProject">
-         <h1 class = "noProjectsText">Sorry, no projects matched your search {{receivedSearch}}. Please ensure that you have spelled your search correctly.</h1>
-          {{GET_SEARCH_DATA}}
-          
-         
+         <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> Ensure that you have spelt your search correctly.</h1>
+          <!-- {{GET_SEARCH_DATA}} -->        
      </div>
       <div v-else class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
@@ -268,9 +284,15 @@ export default {
 
   .projectContainer {
     margin-left: 30px;
-    flex-grow: 1;
-    display: flex;
+    /* flex-grow: 1;
+    display: flex; */
     flex-direction: column;
+  }
+
+  .noProjectsText {
+    font-size: 24px;
+    color: rgb(0, 0, 0);
+    padding: 30px;
   }
 
   /*
@@ -297,15 +319,17 @@ export default {
   #status {
     text-align: left;
     font-size: 28px;
-    margin: 30px 30px 0px 30px;
+    margin: 30px 30px 0px 40px;
     color: #606060;
   }
 
   hr {
     border: 0;
     border-top: 2px solid #606060;
-    width: 90%;
-    margin: 5px 0px 16px 38px;
+    width: 83%;
+    margin: 5px 0px 16px 0px;
+    position: sticky;
+    z-index: -1;
   }
 
   .options {
@@ -353,6 +377,96 @@ export default {
     width: 70px;
     color: #004A23;
   }
+
+  button,
+    .button {
+    cursor: pointer;
+    padding: 8px 44px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    margin-right: 20px;
+    color:white;
+    float: right;
+    background-color: #ec9f39;
+    img {
+            margin-right: 4px;
+          }
+    }
+
+     .menu ol {
+	    list-style: none;
+	    padding: 0;
+	    margin: 0;
+      background-color: #ec9f39; 
+    }
+    .menu ol:first-child {
+      width: 10%;
+      max-width: 960px;
+      margin: 1rem auto 0 auto;
+      align-items: center;
+      box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+    }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 2px solid #16a085;
+      position: relative;
+      transition: background 0.3s ease-in-out;
+    }
+   
+    .menu-item:nth-child(1) > a::before {
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 1rem;
+      font-weight: 900;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
+      display: inline-block;
+      font-style: normal;
+      font-variant: normal;
+      text-rendering: auto;
+      line-height: 1;
+      color: #16a085;
+    }
+
+    .menu-item .sub-menu {
+      position: absolute;
+      top: 100%;
+      width: 100%;
+      transform-origin: top;
+      transform: rotateX(-90deg);
+      transition: transform 0.3s linear;
+      background-color: #ec9f39;
+    }
+    .menu-item .sub-menu .menu-item {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .menu-item:hover, .menu-item.active {
+      border-top: 2px solid #ec9f39;
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    .menu-item:hover a::before, .menu-item.active a::before {
+      color: #ec9f39;
+    }
+    .menu-item:hover .sub-menu {
+      transform: rotateX(0deg);
+    }
+    .menu-item a {
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: black;
+      text-decoration: none;
+      text-transform: uppercase;
+      height: 100%;
+      width: 100%;
+      padding: 1.5em 1em;
+    }
+
+
 </style>
 
 

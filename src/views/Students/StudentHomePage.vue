@@ -530,7 +530,7 @@ export default {
         //   if (typeof pictureprof === 'undefined') {
         //     pictureprof = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
         //   }
-        if (that.allApplied.includes(data.Project_Title)) {
+        if (that.allApplied.includes(id)) {
           wholeTestCollection.push({ 
             /*projectTitle: data.Project_Title, 
             description: data.Description,
@@ -631,7 +631,7 @@ export default {
     height: 100%;
     position: fixed;
     overflow-y: scroll;
-    padding-bottom: 550px;
+    padding-bottom: 250px;
   }
 
   .carouContainer {

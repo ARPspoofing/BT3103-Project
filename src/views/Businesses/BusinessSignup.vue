@@ -391,7 +391,9 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-top:10px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        width: 400px;
     }
 
     .shake {
@@ -439,5 +441,10 @@ export default {
 
     h6 {
         margin-left: 15px;
+    }
+
+    p {
+        width: 400px;
+        font-size: 13px;
     }
 </style>

@@ -18,6 +18,9 @@
               newApplicants: JSON.stringify(this.newApplicants),
               accApplicants: JSON.stringify(this.accApplicants),
               rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
             },
           }"
           ><b>PROJECT INFO</b></router-link
@@ -33,6 +36,9 @@
               newApplicants: JSON.stringify(this.newApplicants),
               accApplicants: JSON.stringify(this.accApplicants),
               rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
             },
           }"
           ><b>NEW APPLICANTS</b></router-link
@@ -51,6 +57,9 @@
               newApplicants: JSON.stringify(this.newApplicants),
               accApplicants: JSON.stringify(this.accApplicants),
               rejApplicants: JSON.stringify(this.rejApplicants),
+              offered: JSON.stringify(this.offered),
+              rejected: JSON.stringify(this.rejected),
+              applied: JSON.stringify(this.applied),
             },
           }"
           ><b>REJECTED APPLICANTS</b></router-link
@@ -67,6 +76,7 @@
             :applicantCourse="item.course"
             :accepted="true"
             :status="item.status"
+            @clickCard="indvApplicant(key)"
           />
         </div>
       </div>
@@ -114,7 +124,33 @@ export default {
       rejApplicants: [],
       applicant: [],
       projectId:"",
+      offered: [],
+      rejected: [],
+      applied: [],
     };
+  },
+
+  methods: {
+    indvApplicant(key) {
+      console.log(this.applicant[key])
+      console.log(this.offered)
+      this.$router.push({
+        name:'BusinessViewStudentInfo', 
+        params: {
+          applicants: JSON.stringify(this.applicant[key]),
+          allApplicants: JSON.stringify(this.applicant),
+          newApplicants: JSON.stringify(this.newApplicants),
+          accApplicants: JSON.stringify(this.accApplicants),
+          rejApplicants: JSON.stringify(this.rejApplicants),
+          offered: JSON.stringify(this.offered),
+          rejected: JSON.stringify(this.rejected),
+          applied: JSON.stringify(this.applied),
+          items: JSON.stringify(this.items),
+          key: JSON.stringify(key),
+          stat: JSON.stringify(""),
+        },
+      })
+    },
   },
 
   mounted() {
@@ -183,9 +219,15 @@ export default {
         stat = "declined"
       }
       //let result = await data.name
-      return { name: data.name, course: data.course, status: stat };
+      return { name: data.name, course: data.course, status: stat, email: data.email };
     }
-    console.log(this.applicant);
+    // console.log(this.newApplicants)
+    // console.log(this.rejApplicants)
+    console.log(this.applicant)
+    // console.log(this.accApplicants)
+    // console.log(this.offered)
+    // console.log(this.rejected)
+    // console.log(this.applied)
   },
 };
 </script>

@@ -1,8 +1,24 @@
 <template>
-    <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoTaskDetails', params: {taskId: task['id']}}">
+    <router-link style="text-decoration: none; color: inherit; " 
+        :to="{name:'ToDoView', 
+            params: {
+                projectId: task['projectId'],
+                projectTitle: task['projectTitle'],
+                taskId: task['taskId'],
+                shortdescription: task['shortdescription'],
+                duedate: task['duedate'],
+                taskname: task['taskname'],
+                status:task['status'],
+                todo: task['todo'],
+                inprogress: task['inprogress'],
+                pendingreview: task['pendingreview'],
+                completed: task['completed']
+            }
+        }"
+    >
     <div class="todo">
         <div class="top flex flex-row">
-            <div class="title">{{task['taskname']}}</div>
+            <div class="title"><strong>{{task['taskname']}}</strong></div>
             <div class="status-button flex" :class="{todoButton:task['todo'],inprogressButton:task['inprogress'],pendingreviewButton:task['pendingreview'],completedButton:task['completed']}">
                 <div v-if="task['todo']">
                     <p>Todo</p>
@@ -20,7 +36,7 @@
         </div>
         <div class="duedate">
             <p>
-                 Due date: {{duedate}}
+                 Due date: {{formatDate(task["duedate"])}}
             </p>
         </div>
        
@@ -36,32 +52,40 @@
 </template>
 
 <script>
+import * as moment from 'moment'
     export default {
         name: 'ToDo',
         props: {
             task:Object,
         },
         data() {
-            return {
-                duedate: new Date(this.task['duedate']['seconds']).toLocaleDateString('en-us',{year: "numeric", month: "short", day: "numeric"}),
-                dateOptions: {year: "numeric", month: "short", day: "numeric"},
-            }
+            // return {
+            //     duedate: new Date(this.task['duedate']['seconds']).toLocaleDateString('en-us',{year: "numeric", month: "short", day: "numeric"}),
+            //     dateOptions: {year: "numeric", month: "short", day: "numeric"},
+            // }
         },
         watch: {
         },
+        methods: {
+            formatDate(date) {
+                return moment(date).format("DD MMMM YYYY");
+            },
+        }
     }
 </script>
 
 <style scoped>
 
     .todo {
-        background-color: aquamarine;
+        /*background-color: aquamarine;*/
         border-radius: 20px;
         padding: 40px 20px;
-        margin-right:5px;
+        /*margin-right:5px;
         margin-left:5px;
-        margin-bottom: 4px;
+        margin-bottom: 4px;*/
         text-decoration: none;
+        margin: 15px 5px;
+        box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.15);
     }
 
     .flex {
@@ -82,7 +106,7 @@
 
     .todo {
         color: white;
-        background-color: rgb(54, 179, 110);
+        background-color: #73AD8E; /*rgb(54, 179, 110);*/
     }
 
     .inprogress {

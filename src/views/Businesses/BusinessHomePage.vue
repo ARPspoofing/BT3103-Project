@@ -35,7 +35,7 @@
       </div>
     </div>
   </div>
-</template>
+</template> 
 
 <script>
 import BusinessNavBar from "../../components/BusinessNavBar.vue";

@@ -4,7 +4,7 @@
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
-    <!-- <h3>{{items}}</h3> -->
+    <!-- <h3>{{items}}</h3> --> 
     <h1 id="interest">
       <span class="options">
         <b>PROJECT INFO</b>
@@ -39,7 +39,7 @@
         <span>
           <div class="projButtons" >
             <button class="edit-proj" @click="editProject()">EDIT PROJECT DETAILS</button> <br>
-            <button href="#" class="close-proj" data-bs-toggle="modal" data-bs-target="#closeModal">CLOSE PROJECT</button> <br>
+            <button href="#" class="close-proj" data-bs-toggle="modal" data-bs-target="#closeModal" @click="closeProject()">CLOSE PROJECT</button> <br>
             <div class="modal fade" id="closeModal" tabindex="-1" aria-labelledby="closeModalLabel" aria-hidden="true" 
               data-bs-backdrop="false">
               <div class="modal-dialog">
@@ -61,7 +61,7 @@
                 </div>
               </div>
             </div>
-            <button href="#" class="del-proj" data-bs-toggle="modal" data-bs-target="#delModal">DELETE PROJECT</button>
+            <!--<button href="#" class="del-proj" data-bs-toggle="modal" data-bs-target="#delModal">DELETE PROJECT</button>-->
             <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="delModalLabel" aria-hidden="true" 
               data-bs-backdrop="false">
               <div class="modal-dialog">
@@ -231,6 +231,10 @@ export default {
           items: JSON.stringify(this.items),
         },
       })
+    },
+
+    closeProject() {
+      
     }
   },
 }

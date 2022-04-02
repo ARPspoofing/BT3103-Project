@@ -89,6 +89,32 @@
                     Decline
                   </button>
       -->
+ <!--Ruth previous card version. Keeping incase new version is wrong 
+    <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">Rejected</p>
+
+    <button id="applybtns" v-show="apply" v-if="appstat == 'applied'" class="btn-applied">Applied</button>
+    <button id="applybtns" v-show="apply" v-else="appstat == 'apply'" class="btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal">Apply Now</button>
+    <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true" data-bs-backdrop="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="words">
+              <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+              <p>Apply for<span style="color: #0e8044"><strong>{{ projectTitle }} </strong></span>?</p>
+            </div>
+            <span>
+              <div class="applybtns">
+                <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="applicantbtn">Yes</button>
+                <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button id="acceptbtn" v-show="offered" @click="acceptBtn" class="btn-apply">Accept</button>
+    <button id="declinebtn" v-show="offered" @click="declineBtn" class="btn-apply">Decline</button>
+    -->
   </div>
 </template>
 

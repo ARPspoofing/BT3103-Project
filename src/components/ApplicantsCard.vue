@@ -1,12 +1,12 @@
 <template>
-  <div class="card-body">
+  <div class="card-body" @click.self="clickCard">
     <div class="clogo">
       <img src="../assets/google-logo.png" alt="Logo" class="logo" />
       <span>
         <div class="appDetails">
           {{ applicantName }} <br />
           {{ applicantCourse }}
-        </div>
+        </div> 
         <div
           id="pendingOffer"
           class="acceptedStat"
@@ -158,6 +158,10 @@ export default {
 
     rejectbtn() {
       this.$emit("rejectbtn");
+    },
+
+    clickCard() {
+      this.$emit("clickCard");
     },
   },
 };
