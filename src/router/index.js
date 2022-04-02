@@ -145,6 +145,11 @@ const routes = [
     name: "ToDoView",
     component: () => import("../views/Students/ToDoView.vue"),
   },
+  // {
+  //   path: "/student/management/ToDo:taskId",
+  //   name: "StudentToDoView",
+  //   component: () => import("../views/Students/StudentToDoView.vue"),
+  // },
 
   //Business routes
   {
@@ -216,7 +221,11 @@ const routes = [
     name: "BusinessManagement",
     component: () => import("../views/Businesses/BusinessManagement.vue"),
   },
-
+  // {
+  //   path: "/business/management/ToDo:taskId",
+  //   name: "BusinessToDoView",
+  //   component: () => import("../views/Businesses/BusinessToDoView.vue"),
+  // },
   {
     path: "/:catchall(.*)",
     name: "NotFound",
