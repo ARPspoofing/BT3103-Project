@@ -222,7 +222,7 @@ import * as moment from 'moment'
    .details {
        padding: 48px;
        margin-top:24px;
-       background-color:rgb(11, 167, 115);
+       background-color: #77c79e;
        border-radius:20px;
    }
  
