@@ -60,18 +60,14 @@ import {useRouter} from "vue-router"
 import Loading from '../../components/Loading.vue'
 const db = getFirestore(firebaseApp)
 const router = useRouter()
-
-
 export default {
     name: "StudentManagement",
     props: {
         //So that this page can easily access the project that it is clicked on
         projectName:String,
-
     },
     components: {
         StudentNavBar,
-
     },
     data() {
         return {
@@ -90,16 +86,11 @@ export default {
             this.$router.push({name:'StudentInProgressProjects'})
         }
     },
-
     computed: {
-
        
-
-
     },
     mounted() {
         const curr = this
-
         curr.projectId = curr.$route.params.projectId
         curr.projectTitle = curr.$route.params.projectTitle
         curr.fullTitle = "Tasks for " + curr.projectTitle 
@@ -177,9 +168,8 @@ export default {
                   })
               }
             })
-        console.log(pendingReviewTask)
+        console.log(inProgressTask)
         console.log(completedTask)
-
         console.log(pendingReviewTask)
         curr.toDoTask = toDoTask
         curr.inProgressTask = inProgressTask
@@ -194,7 +184,6 @@ export default {
         PendingReview,
         Completed
     },
-
 }
 </script>
 
@@ -214,22 +203,18 @@ export default {
         justify-items: center;
         margin-right:5px;
     }
-
     .empty {
         align-items: center;
     }   
-
     h3 {
         margin-top:-100px;
         font-size: 20px;  
     }
-
     p {
         text-align: center;
         font-size:12px;
         font-weight:300;
     }
-
     #backButton {
     background: #0e8044;
   /*width: 190px;
@@ -242,5 +227,4 @@ export default {
     padding: 10px 25px;
     font-size: 14px;
 }
-
 </style>

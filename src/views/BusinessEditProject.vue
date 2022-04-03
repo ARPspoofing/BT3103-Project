@@ -122,7 +122,7 @@ export default {
         //     }))
         //vuex 
         this.item = JSON.parse(this.cardItems)
-        var prevTitle = JSON.parse(this.cardItems).projectTitle
+        var prevTitle = JSON.parse(this.cardItems).projectId
         this.previousTitle = prevTitle
         console.log(this.item)
 
