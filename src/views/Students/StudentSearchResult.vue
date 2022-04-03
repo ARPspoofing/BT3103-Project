@@ -40,7 +40,8 @@
     
      <div v-if="noProjectsPresent" class = "noProject">
          <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> ensure that you have spelled your search correctly.</h1>
-          <!-- {{GET_SEARCH_DATA}} -->        
+          <!-- {{GET_SEARCH_DATA}} -->  
+          <PathfinderLoading/>      
      </div>
       <div v-else class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
@@ -70,6 +71,7 @@ import {mapState} from "vuex"
 import {mapMutations} from "vuex"
 import {mapGetters} from "vuex"
 import Filter from '../../components/Filter.vue'
+import PathfinderLoading from '../../components/PathfinderLoading.vue'
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -78,6 +80,7 @@ export default {
     StudentNavBar,
     Card,
     Filter,
+    PathfinderLoading,
   },
 
   computed: {

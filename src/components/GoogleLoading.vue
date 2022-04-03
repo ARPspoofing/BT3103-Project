@@ -1,5 +1,7 @@
 <template>
-    Loading please be patient ... 
+    <div class="loader">
+        PATHFINDERS
+    </div> 
 </template>
 
 <script>
@@ -33,7 +35,6 @@ export default {
         async function checkToRoute() {
             
             var userEmail = window.localStorage.getItem('emailForSignIn')
-            alert(userEmail)
             const docRef = doc(db,"businesses",String(userEmail))
             console.log("doccccccc",docRef)
             //console.log(await getDoc(docRef))
@@ -108,5 +109,25 @@ export default {
 </script>
 
 <style scoped>
-    
+
+    .loader {
+        font-size:40px;
+        color:palevioletred;
+
+    }
+
+    .loader::after {
+        content: '\2026 ';
+        display:inline-block;
+        overflow: hidden;
+        vertical-align: bottom;
+        animation: dots steps(4,end) 2s infinite;
+    }
+
+    @keyframes dots {
+        to {
+            width: 0.25em;
+        }
+    }
+
 </style>
