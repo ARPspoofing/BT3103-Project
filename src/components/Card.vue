@@ -282,11 +282,7 @@ export default {
 }
 
 #declinebtn {
-<<<<<<< HEAD
-  background-color: #f40000;
-=======
   background-color: #e83939;
->>>>>>> emily
   color: white;
   border-radius: 8px;
   border-width: 0px;
