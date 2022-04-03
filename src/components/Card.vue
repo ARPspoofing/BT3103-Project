@@ -120,7 +120,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
     <button
       id="acceptbtn"
       v-show="offered"
@@ -136,7 +136,7 @@
       class="btn-apply"
     >
       Decline
-    </button> -->
+    </button> 
 
     
   </div> 

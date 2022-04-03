@@ -231,7 +231,7 @@ export default {
       this.currKey = key
       if (event) {
         this.currProject = this.testCollection[key]["projectTitle"]
-        tbis.like = true
+        this.like = true
         this.latest = false
       } else {
         this.currProject = this.wholeTestCollection[key]["projectTitle"]
