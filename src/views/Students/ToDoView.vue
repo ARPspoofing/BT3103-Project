@@ -1,5 +1,8 @@
 <template>
 <div class="mainBody">
+    <router-link :to="{name:'StudentManagement', params:{projectId:this.$route.params.projectId,projectTitle:this.$route.params.projectTitle}}">
+           <img src='../../assets/back.png'> Go Back
+       </router-link>
     <button @click="goback" id="backButton">
         <i class="fa-solid fa-angles-left"></i>
         Back to Management</button>
