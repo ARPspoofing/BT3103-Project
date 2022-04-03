@@ -7,7 +7,7 @@ Back to Management</button>
       <div class="details flex flex-column">
            <div class="top flex">
                <div class="left flex">
-                   <p>#<span></span>{{task_id}} for {{projectTitle}}</p>
+                   <p><strong>{{task_id}}</strong></p>
                   
                </div>
                <div class="right flex flex-column">
@@ -179,6 +179,7 @@ import * as moment from 'moment'
        mounted() {
            const curr = this
            const taskId = curr.$route.params.taskId
+           console.log(curr.$route.params.taskId)
            const projectId = curr.$route.params.projectId
            const projectTitle = curr.$route.params.projectTitle
            console.log(curr.$route.params) 

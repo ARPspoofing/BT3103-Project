@@ -1,8 +1,11 @@
 <template>
 <div class="mainBody">
-    <button @click="goback" id="backButton">
-        <i class="fa-solid fa-angles-left"></i>
-        Back to Management</button>
+    <router-link :to="{name:'BusinessManagement', 
+    params:{projectId:this.$route.params.projectId, projectTitle:this.$route.params.projectTitle}
+    }">
+           <button id="backButton"><i class="fa-solid fa-angles-left"></i>
+Back to Management</button>
+       </router-link>
    <div class="view container">
 
        <!-- <router-link :to="{name:'BusinessManagement'}">
@@ -27,7 +30,7 @@
        <div class="details flex flex-column">
            <div class="top flex">
                <div class="left flex">
-                   <p>#<span></span><strong>{{taskIndex}} {{taskname}}</strong></p>
+                   <p><strong>{{task_id}}</strong></p>
                   
                </div>
                <div class="right flex flex-column">
@@ -40,13 +43,11 @@
                        </select>
                </div>
                <div class="right flex flex-column" id="rightmost">
-                       <label>Change Task Status</label>
-                       <select v-model="extend" id="input">
-                           <!-- change accordingly -->
-                           <option value="1 day">1 day</option>
-                           <option value="3 days">3 days</option>
-                           <option value="5 days">5 days</option>
-                           <option value="7 days">1 week</option>
+                       <label>Change status</label>
+                       <select v-model="status">                  
+                           <option value="To do">To Do</option>
+                           <option value="Pending review">Send for review</option>
+                           <option value="Completed">Completed</option>                          
                        </select>
                </div>
            </div>
@@ -59,7 +60,7 @@
            <div class="middle flex">
                <div id="description" class="description flex flex-column">
                    <p><b>Task Description</b></p>
-                   <p>{{this.shortdescription}}</p>
+                   <p>{{this.description}}</p>
                </div>
            </div>
            <div class="middle-bottom flex">
@@ -101,7 +102,8 @@
 <script>
 import firebaseApp from '../../firebase.js';
 import {getFirestore} from 'firebase/firestore';
-import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
+import {doc,setDoc,collection,getDocs,getDoc,deleteDoc, updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore';
+import {update} from 'firebase/database';
 import {ref} from "vue"
 import {useRouter} from "vue-router"
 import Loading from '../../components/Loading.vue'
@@ -111,26 +113,40 @@ import * as moment from 'moment'
 import { getStorage, uploadBytesResumable, getDownloadURL } from "firebase/storage";
  
    export default {
-       name: 'ToDoView',
+       name: 'BusinessToDoView',
        data() {
            return {
-               projectId: '',
-               projectTitle: '',
-               taskname: '',
-               taskId: '',
-               duedate: '',
-               shortdescription: '',
-               status: '',
-               todo: '',
-               inprogress: '',
-               pendingreview: '',
-               completed: '',
+               name: '',
+               task_id: this.$route.params.taskId,
+               projectId: this.$route.params.projectId,
+               projectTitle: this.$route.params.projectTitle,
+               duedate: this.$route.params.duedate,
+               task:this.$route.params.task,
+               description:this.$route.params.description,
+               number: this.$route.params.key,
                extend: '',
                documents: '',
                comments: '',
                long: '',
+               status: '',
                dateOptions: {year: "numeric", month: "short", day: "numeric"},
-               files: [],
+            //    projectId: '',
+            //    projectTitle: '',
+            //    taskname: '',
+            //    taskId: '',
+            //    duedate: '',
+            //    shortdescription: '',
+            //    status: '',
+            //    todo: '',
+            //    inprogress: '',
+            //    pendingreview: '',
+            //    completed: '',
+            //    extend: '',
+            //    documents: '',
+            //    comments: '',
+            //    long: '',
+            //    dateOptions: {year: "numeric", month: "short", day: "numeric"},
+            //    files: [],
            }
        },
        watch: {
@@ -138,48 +154,64 @@ import { getStorage, uploadBytesResumable, getDownloadURL } from "firebase/stora
                const extendedDate = new Date()
                this.duedate = extendedDate.setDate(extendedDate.getDate() + parseInt(this.extend))
                this.duedate = new Date(this.duedate).toLocaleDateString('en-us',this.dateOptions)
-           }
+           },
+           status() {
+               var self = this;
+               self.updateStatus()
+            },
        },
        computed: {
            taskIndex() {
-               return parseInt(this.taskId) + 1;
+               return parseInt(this.number) + 1;
            }
        },
 
        methods: {
-           addFile() {
-                this.files.push(
-                    ''
-                );
-            },
-            deleteFile(counter) {
-                this.files.splice(counter, 1);
-            },
-
            formatDate(date) {
                 return moment(date).format("DD MMMM YYYY");
             },
 
-            goback() {
-                console.log(JSON.stringify(this.projectId))
-                this.$router.push({
-                    name: "BusinessManagement",
-                    params: {
-                        projectId: JSON.stringify(this.projectId),
-                        projectTitle: JSON.stringify(this.projectTitle),
-                        taskname: JSON.stringify(this.taskname),
-                        taskId: JSON.stringify(this.taskId),
-                        duedate: JSON.stringify(this.duedate),
-                        issuedate: JSON.stringify(this.issuedate),
-                        shortdescription: JSON.stringify(this.shortdescription),
-                        status: JSON.stringify(this.status),
-                        todo: JSON.stringify(this.todo),
-                        inprogress: JSON.stringify(this.inprogress),
-                        pendingreview: JSON.stringify(this.pendingreview),
-                        completed: JSON.stringify(this.completed),
-                    },
-                });
-            },
+            async updateStatus() {
+               const currStatus = this.status;
+               console.log(currStatus)
+               console.log(this.projectId)
+               let ref = await doc(db,"Project", JSON.parse(this.projectId));
+               let project = await getDoc(ref);
+
+               var dat = await project.data()
+               console.log(dat)
+               var tasks = dat.Tasks
+               console.log("ok")
+               console.log(this.task)
+               console.log(tasks)
+               console.log(tasks.length)
+               var toRemove = {}
+
+              var newTask = {}
+
+               for(let i = 0; i < tasks.length; i++) {
+                   console.log(i)
+                   let currTask = tasks[i]; 
+                    console.log(this.task_id)
+                   if(currTask.taskName == this.task_id) {
+                       toRemove = { ...currTask }
+                       currTask.taskStatus = currStatus
+                       newTask = currTask
+                   }
+               }   
+               
+               console.log(tasks)
+               console.log(newTask)
+
+               await updateDoc(ref, {Tasks: arrayRemove(toRemove)
+               })
+
+               await updateDoc(ref, {Tasks: arrayUnion(newTask)})
+
+               this.task = newTask;
+           },
+
+            
 
             async updateTask() {
                 try {
@@ -192,37 +224,131 @@ import { getStorage, uploadBytesResumable, getDownloadURL } from "firebase/stora
                 } catch (error) {
                     console.error("Error updating document: ", error);
                 }
-            },
+            }
+        //    addFile() {
+        //         this.files.push(
+        //             ''
+        //         );
+        //     },
+        //     deleteFile(counter) {
+        //         this.files.splice(counter, 1);
+        //     },
 
-            uploadFiles(event) {
-             this.files = event.target.files[0]
-             const storage = getStorage();   
-             const filesRef = ref(storage, this.email +'/' + this.files.name )
-             const uploadTask = uploadBytesResumable(filesRef, this.files)
-             uploadTask.on('state_changed', (snapshot) => {}, (error)=> {
-                 console.log(error)
-             },() => {
-                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                     console.log("File available at", this.filesLink = url)
-                 })
-             })
-         },
+        //    formatDate(date) {
+        //         return moment(date).format("DD MMMM YYYY");
+        //     },
+
+        //     goback() {
+        //         console.log(JSON.stringify(this.projectId))
+        //         this.$router.push({
+        //             name: "BusinessManagement",
+        //             params: {
+        //                 projectId: JSON.stringify(this.projectId),
+        //                 projectTitle: JSON.stringify(this.projectTitle),
+        //                 taskname: JSON.stringify(this.taskname),
+        //                 taskId: JSON.stringify(this.taskId),
+        //                 duedate: JSON.stringify(this.duedate),
+        //                 issuedate: JSON.stringify(this.issuedate),
+        //                 shortdescription: JSON.stringify(this.shortdescription),
+        //                 status: JSON.stringify(this.status),
+        //                 todo: JSON.stringify(this.todo),
+        //                 inprogress: JSON.stringify(this.inprogress),
+        //                 pendingreview: JSON.stringify(this.pendingreview),
+        //                 completed: JSON.stringify(this.completed),
+        //             },
+        //         });
+        //     },
+
+        //     async updateTask() {
+        //         try {
+        //             const docRef = await updateDoc(doc(db, "Project", this.projectId), {
+                        
+        //             });
+
+        //             console.log(docRef);
+        //             this.$emit("updated");
+        //         } catch (error) {
+        //             console.error("Error updating document: ", error);
+        //         }
+        //     },
+
+        //     uploadFiles(event) {
+        //      this.files = event.target.files[0]
+        //      const storage = getStorage();   
+        //      const filesRef = ref(storage, this.email +'/' + this.files.name )
+        //      const uploadTask = uploadBytesResumable(filesRef, this.files)
+        //      uploadTask.on('state_changed', (snapshot) => {}, (error)=> {
+        //          console.log(error)
+        //      },() => {
+        //          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+        //              console.log("File available at", this.filesLink = url)
+        //          })
+        //      })
+        //  },
        },
 
        mounted() {
-           this.projectId = this.$route.params.projectId
-           this.projectTitle = this.$route.params.projectTitle
-           this.taskname = this.$route.params.taskname
-           this.taskId = this.$route.params.taskId
-           this.duedate = this.$route.params.duedate
-           this.issuedate = this.$route.params.issuedate
-           this.shortdescription = this.$route.params.shortdescription
-           this.status = this.$route.params.status
-           this.todo = this.$route.params.todo
-           this.inprogress = this.$route.params.inprogress
-           this.pendingreview = this.$route.params.pendingreview
-           this.completed = this.$route.params.completed
-           console.log(this.taskname)
+           const curr = this
+           const taskId = curr.$route.params.taskId
+           const projectId = curr.$route.params.projectId
+           console.log(curr.$route.params.key)
+           const projectTitle = curr.$route.params.projectTitle
+           console.log(curr.$route.params) 
+           async function getTasksDetails() {
+           //Change "To-Do" to props later
+           const docRef = await doc(db, "Project", projectId)
+           let project = await getDoc(docRef)
+           var tasks = await project.data().Tasks
+           console.log(tasks)
+           var currTask = {}
+
+           for(let i = 0; i < tasks.length; i++) {
+               let thisTask = tasks[i];
+               if(thisTask.taskName == taskId) {
+                   currTask = thisTask;
+                   break;
+               }
+
+           }
+
+          /* database.forEach((doc) => {
+               //Change to dynamic props later
+               if (doc.id == ("ToDo" + curr.task_id)) {
+                   var data = doc.data()
+                   console.log(data) 
+                   temp.push({
+                       name: data.taskname,
+                       duedate: data.duedate,
+                       documents: data.documents,
+                       comments: data.comments, 
+                       long: data.longdescription,
+                   })
+               }
+               }) */
+           curr.name = currTask.taskName
+           curr.duedate = currTask.taskDueDate
+           curr.projectTitle = projectTitle
+           console.log(projectTitle)
+          // curr.duedate = (new Date(temp[0]['duedate'].seconds * 1000)).toLocaleDateString('en-us',curr.dateOptions)
+           //curr.documents = temp[0]['documents']
+           curr.comments = "This is a test comment"
+           //Edit later once the task has a proper long description
+           curr.long = "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32."
+       }
+       getTasksDetails()
+        //    this.projectId = this.$route.params.projectId
+        //    this.projectTitle = this.$route.params.projectTitle
+        //    this.taskname = this.$route.params.taskname
+        //    this.taskId = this.$route.params.taskId
+        //    this.duedate = this.$route.params.duedate
+        //    this.issuedate = this.$route.params.issuedate
+        //    this.shortdescription = this.$route.params.shortdescription
+        //    this.status = this.$route.params.status
+        //    this.todo = this.$route.params.todo
+        //    this.inprogress = this.$route.params.inprogress
+        //    this.pendingreview = this.$route.params.pendingreview
+        //    this.completed = this.$route.params.completed
+        //    console.log(this.taskname)
 
     //        const curr = this
     //        async function getTasksDetails() {

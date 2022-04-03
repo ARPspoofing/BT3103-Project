@@ -272,18 +272,28 @@ export default {
 }
 
 #acceptbtn {
+  background-color: #0e8044;
   color: white;
   border-radius: 8px;
   border-width: 0px;
   height: 30px;
+  width: 90px;
+  font-size: 14px;
 }
 
 #declinebtn {
+<<<<<<< HEAD
   background-color: #f40000;
+=======
+  background-color: #e83939;
+>>>>>>> emily
   color: white;
   border-radius: 8px;
   border-width: 0px;
   height: 30px;
+  width: 90px;
+  margin-left: 10px;
+  font-size: 14px;
 }
 
 #studentManagementButton {
@@ -333,6 +343,8 @@ export default {
   margin-left: 10px;
   font-size: 18px;
   font-weight: bold;
+  width: max-content;
+  float: left;
 }
 
 .offered {

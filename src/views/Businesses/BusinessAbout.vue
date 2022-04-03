@@ -66,7 +66,7 @@ import {signOut, getAuth, onAuthStateChanged} from "firebase/auth"
 import firebaseApp from '../../firebase.js';
 import { getFirestore, collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc, update, query, where } from "firebase/firestore"
 import { writeBatch} from "firebase/firestore";
-const db = getFirestore(firebaseApp);
+const db = getFirestore(firebaseApp); 
 import { v4 as uuidv4 } from 'uuid';
 import {mapState} from "vuex"
 import {mapMutations} from "vuex"

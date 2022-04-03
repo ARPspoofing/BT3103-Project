@@ -7,7 +7,7 @@
 <div v-if="toDoTask.length > 0" class="wrapper-outer">
     <div class="wrapper">
         <h4>TO-DO</h4>
-        <ToDo v-if="toDoTask" v-for="(task,index) in toDoTask" :task="task" :key="index"/>
+        <ToDo v-if="toDoTask" v-for="(task,index) in toDoTask" :task="task" :key="index" :projectTitle="projectTitle" :projectId="projectId" :user="Business"/>
         <div v-else>
         <img src="../../assets/empty.png">   
         <h3>Congratulations, you do not have any tasks to do</h3>
@@ -16,7 +16,7 @@
     </div>
     <div class="wrapper">
         <h4>IN PROGRESS</h4>
-        <InProgress v-if="inProgressTask" v-for="(task,index) in inProgressTask" :task="task" :key="index"/>
+        <InProgress v-if="inProgressTask" v-for="(task,index) in inProgressTask" :task="task" :key="index" :user="Business"/>
          <div v-else>
          
         <h3>You currently do not have any in-progress tasks. Please update the status of To-Do tasks if you are working on anything</h3>
@@ -25,7 +25,7 @@
     </div>
     <div class="wrapper">
         <h4>PENDING REVIEW</h4>
-        <PendingReview v-if="pendingReviewTask" v-for="(task,index) in pendingReviewTask" :task="task" :key="index"/>
+        <PendingReview v-if="pendingReviewTask" v-for="(task,index) in pendingReviewTask" :task="task" :key="index" :user="Business"/>
         <div v-else>
          
         <h3>You do not have any tasks awaiting review. Please update the status of your tasks if you would like to send them for review.</h3>
@@ -34,7 +34,7 @@
     </div>
     <div class="wrapper">
         <h4>COMPLETED</h4>
-        <Completed v-if="completedTask" v-for="(task,index) in completedTask" :task="task" :key="index"/>
+        <Completed v-if="completedTask" v-for="(task,index) in completedTask" :task="task" :key="index" :user="Business"/>
         <div v-else>
           
         <h3>No task has been completed yet.</h3>
@@ -78,12 +78,13 @@ export default {
   },
   data() {
     return {
-      Heading: "",
+      projectTitle: "",
       toDoTask: [],
       inProgressTask: [],
       pendingReviewTask: [],
       completedTask: [],
       projectId: "",
+      Business: 'business',
     };
   },
   methods: {
@@ -95,15 +96,21 @@ export default {
     },
   },
   mounted() {
-    this.Heading = JSON.parse(this.$route.params.projectTitle);
-    this.projectId = JSON.parse(this.$route.params.projectId);
-    const curr = this;
+    const curr = this
+        // var email = auth.currentUser.email;
+        // console.log(email)
+        // this.username = this.userEmail
+        // const userEmail = this.userEmail
+        // console.log(userEmail)
+        curr.projectId = curr.$route.params.projectId
+        curr.projectTitle = curr.$route.params.projectTitle
+        console.log(curr.projectId)
     
     async function getTasks() {
           //Change "To-Do" to props later
           //Later, each project needs to have its list of tasks
           //The code here is just temporary
-          let docRef = await doc(db,"Project",curr.projectId)
+          let docRef = await doc(db,"Project",JSON.parse(curr.projectId))
           let project = await getDoc(docRef)
           let tasks = project.data().Tasks
           console.log(tasks)
@@ -161,14 +168,14 @@ export default {
               } else if (document.taskStatus == "Completed") {
                   console.log(document) 
                   completedTask.push({
-                    id: document.id,
+                    id: document.taskName,
                     projectId: curr.projectId,
-                    comments: document.comments,
                     projectTitle: curr.projectTitle,
+                    comments: document.comments,
                     documents: document.documents,
                     status: document.taskStatus,
                     duedate: document.taskDueDate,
-                    taskname: document.taskName,
+                    taskname: document.taskName,                   
                     shortdescription: document.taskDescription,                      
                   })
               }
@@ -210,7 +217,7 @@ export default {
         display: flex;
         flex-direction: row;
         /* position: fixed; */
-        overflow-y: scroll;
+        /* overflow-y: scroll; */
         padding-bottom: 100px;
         margin: 20px;
         width: 98%;

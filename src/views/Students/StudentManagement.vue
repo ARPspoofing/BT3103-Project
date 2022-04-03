@@ -1,11 +1,13 @@
 <template>
 <StudentNavBar :search ="false" :Heading="fullTitle" :header="true"/>
 <div class="mainBody">
-<button @click="goback" id="backButton">Back to Projects</button>
+<button @click="goback" id="backButton">
+    <i class="fa-solid fa-angles-left"></i>
+    Back to Projects</button>
 <div v-if="toDoTask.length > 0" class="wrapper-outer">
     <div class="wrapper">
         <h4>To-Do</h4>
-        <ToDo v-if ="toDoTask"  v-for="(task,index) in toDoTask" :task="task" :key="index" :projectTitle="projectTitle" :projectId="projectId"/>
+        <ToDo v-if ="toDoTask"  v-for="(task,index) in toDoTask" :task="task" :key="index" :projectTitle="projectTitle" :projectId="projectId" :user="Student"/>
        <div v-else>
            
         <h3>Congratulations, you do not have any tasks to do</h3>
@@ -14,7 +16,7 @@
     </div>
     <div class="wrapper">
         <h4>IN PROGRESS</h4>
-        <InProgress v-if="inProgressTask" v-for="(task,index) in inProgressTask" :task="task" :key="index"
+        <InProgress v-if="inProgressTask" v-for="(task,index) in inProgressTask" :task="task" :key="index" :user="Student"
         :projectTitle="projectTitle" :projectId = "projectId"/>
          <div v-else>
          
@@ -24,7 +26,7 @@
     </div>
     <div class="wrapper">
         <h4>PENDING REVIEW</h4>
-        <PendingReview v-if="pendingReviewTask" v-for="(task,index) in pendingReviewTask" :task="task" :key="index"
+        <PendingReview v-if="pendingReviewTask" v-for="(task,index) in pendingReviewTask" :task="task" :key="index" :user="Student"
         :projectTitle="projectTitle" :projectId = "projectId"/>
         <div v-else>
          
@@ -34,7 +36,7 @@
     </div>
     <div class="wrapper">
         <h4>COMPLETED</h4>
-        <Completed v-if="completedTask" v-for="(task,index) in completedTask" :task="task" :key="index"
+        <Completed v-if="completedTask" v-for="(task,index) in completedTask" :task="task" :key="index" :user="Student"
         :projectTitle="projectTitle" :projectId="projectId"/>
         <div v-else>
           
@@ -59,6 +61,8 @@ import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc,collection,getDocs,deleteDoc, getDoc} from 'firebase/firestore';
 import {ref} from "vue"
 import {useRouter} from "vue-router"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 import Loading from '../../components/Loading.vue'
 const db = getFirestore(firebaseApp)
 const router = useRouter()
@@ -79,7 +83,8 @@ export default {
             inProgressTask:[],  
             pendingReviewTask:[],
             completedTask:[],
-            fullTitle:''
+            fullTitle:'',
+            Student: 'student',
             
         }
     },
@@ -89,10 +94,15 @@ export default {
         }
     },
     computed: {
-       
+       ...mapState(['name','userEmail']),
     },
     mounted() {
         const curr = this
+        // var email = auth.currentUser.email;
+        // console.log(email)
+        // this.username = this.userEmail
+        // const userEmail = this.userEmail
+        // console.log(userEmail)
         curr.projectId = curr.$route.params.projectId
         curr.projectTitle = curr.$route.params.projectTitle
         curr.fullTitle = "Tasks for " + curr.projectTitle 
@@ -158,14 +168,14 @@ export default {
               } else if (document.taskStatus == "Completed") {
                   console.log(document) 
                   completedTask.push({
-                    id: document.id,
+                    id: document.taskName,
                     projectId: curr.projectId,
-                    comments: document.comments,
                     projectTitle: curr.projectTitle,
+                    comments: document.comments,
                     documents: document.documents,
                     status: document.taskStatus,
                     duedate: document.taskDueDate,
-                    taskname: document.taskName,
+                    taskname: document.taskName,                   
                     shortdescription: document.taskDescription,                      
                   })
               }
