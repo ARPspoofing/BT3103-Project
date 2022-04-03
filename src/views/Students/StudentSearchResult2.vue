@@ -1,14 +1,16 @@
 <template>
   <StudentNavBar :search=true :header=true />
-  <div v-if="loading">
-    Loading
-  </div>
-  <div v-if="!loading" class="mainBody">   
+  
+ 
+  <div v-if="!loading" class="mainBody"> 
+    
     <!-- <button class="purple button" @click="toggleFilterMenu">Filter</button> -->
 
+
   <transition name="filter">
-     <Filter v-if="filterModal"/> 
+     <Filter @submitFilter=closeFilterMenu v-if="filterModal"/>
   </transition>
+  
   
       
     <div @click="openFilter" ref="filterWrap" class="filter-wrap flex flex-column">
@@ -16,7 +18,7 @@
     </div> 
     <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
       <button class="button" @click="toggleFilterMenu">Filter</button>
-
+      <PathfinderLoading v-if="!stopLoader"/> 
       <nav class="menu">
       <ol>
         <li class="menu-item">
@@ -33,16 +35,17 @@
       </ol>
       </nav>
 
-
-      Search results for {{receivedSearch}}:
+      <div v-if="stopLoader">
+        Search results for {{receivedSearch}}:
+      </div>
+      
       <hr/>
     </h1>
-    
-     <div v-if="noProjectsPresent" class = "noProject">
-         <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> Ensure that you have spelt your search correctly.</h1>
-          <!-- {{GET_SEARCH_DATA}} -->        
+     <div v-if="stopLoader" class = "noProject">
+         <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> ensure that you have spelled your search correctly.</h1>
+          <!-- {{GET_SEARCH_DATA}} -->      
      </div>
-      <div v-else class="projectContainer">
+      <div v-if="stopLoader" class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
           <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key /*+ 2*6*/)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
         </div>
@@ -70,6 +73,7 @@ import {mapState} from "vuex"
 import {mapMutations} from "vuex"
 import {mapGetters} from "vuex"
 import Filter from '../../components/Filter.vue'
+import PathfinderLoading from '../../components/PathfinderLoading.vue'
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -78,7 +82,8 @@ export default {
 
     StudentNavBar,
     Card,
-    Filter
+    Filter,
+    PathfinderLoading,
   },
   
   computed: {
@@ -102,6 +107,8 @@ export default {
       highestPriority: null,
       secondPriority: null,
       thirdPriority: null,
+      stopLoader: false,
+      displayMsg: false,
     }
   },
 
@@ -228,6 +235,14 @@ export default {
 
   mounted() {
     const that = this;
+    setTimeout(() => {
+      this.stopLoader = true
+      if (this.noProjectsPresent) {
+        this.displayMsg = true
+      } else {
+        this.displayMsg = false
+      }
+    }, 2500)
     const gottenSearch = that.$route.params.searched;
     this.receivedSearch = gottenSearch;
     //data variable = state variable 
