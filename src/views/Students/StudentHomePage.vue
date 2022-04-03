@@ -53,7 +53,7 @@
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key + 6)" 
                 @clickCard="indivproj(key + 6)"
-                @applying="applying($event,key)"
+                @applying="applying($event,key + 6)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -70,7 +70,7 @@
               :appstat="item.appstat"
               @applicantbtn="addApplicant(key + 2*6)" 
               @clickCard="indivproj(key + 2*6)"
-              @applying="applying($event,key)"
+              @applying="applying($event,key + 2*6)"
               :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -132,7 +132,7 @@
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key + 6)" 
                 @clickCard="indivprojlatest(key + 6)"
-                @applying="applying($event,key)"
+                @applying="applying($event,key + 6)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -149,7 +149,7 @@
               :appstat="item.appstat"
               @applicantbtn="addApplicant(key + 2*6)" 
               @clickCard="indivprojlatest(key + 2*6)"
-              @applying="applying($event,key)"
+              @applying="applying($event,key + 2*6)"
               :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -454,9 +454,13 @@ export default {
       }
       console.log(returnArray)
 
-      const projects = query(collection(db, "Project"), where('Tags', 'array-contains-any', returnArray));
+      const projects = query(collection(db, "Project"), where('Tags', 'array-contains-any', returnArray), where('Status', "!=", "closed"))
+      //const projects = query(query, where('Status', "!=", "closed"))
       let snapshot = await getDocs(projects)
-      let wholeSnapshot = await getDocs(collection(db, "Project"))
+      const projects2 = query(collection(db, "Project"), where('Status', "!=", "closed"))
+      let wholeSnapshot = await getDocs(projects2)
+
+      //let wholeSnapshot = await getDocs(collection(db, "Project"))
       const wholeTestCollection = [];
       const testCollection = [];
       //console.log(that.applied)

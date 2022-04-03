@@ -1,62 +1,17 @@
 <template>
-<div class="mainBody">
-    <!-- <button @click="goback" id="backButton">
-        <i class="fa-solid fa-angles-left"></i>
-        Back to Management</button> -->
-        <router-link :to="{name:'StudentManagement', params:{projectId:this.$route.params.projectId, projectTitle:this.$route.params.projectTitle}}">
+       <router-link :to="{name:'StudentManagement', params:{projectId:this.$route.params.projectId, projectTitle:this.$route.params.projectTitle}}">
            <button id="backButton"><i class="fa-solid fa-angles-left"></i>
 Back to Management</button>
-       </router-link>
-   <div class="view container">
-
-       <!-- <router-link :to="{name:'BusinessManagement'}">
-           
-           <img src='../../assets/back.png'> Go Back
-       </router-link> -->
-       <!--
-       <div class="header flex">
-           <div class="left flex">
-               <Span>Status</Span>
-               <div class="status-button flex todo">
-                   ToDo
-               </div>
-           </div>
-           <div class="right flex">
-                <button @click="toggleState" class="dark-purple">Edit</button>
-               <button @click="Save" class="green">Save</button>
-               <button @click="Delete" class="red">Delete</button>
-           </div>
-       </div>
-       -->
-       <div class="details flex flex-column">
+       </router-link> 
+      <div class="details flex flex-column">
            <div class="top flex">
                <div class="left flex">
-                   <p>#<span></span><strong>{{task_id}} for {{projectTitle}}</strong></p>
+                   <p>#<span></span>{{task_id}} for {{projectTitle}}</p>
                   
                </div>
                <div class="right flex flex-column">
-                       <label>Extend Due Date</label>
-                       <select v-model="extend" id="input">                  
-                           <option value="1 day">1 day</option>
-                           <option value="3 days">3 days</option>
-                           <option value="5 days">5 days</option>
-                           <option value="7 days">1 week</option>
-                       </select>
-               </div>
-               <!--<div class="right flex flex-column" id="rightmost">
-                       <label>Change Task Status</label>
-                       <select v-model="extend" id="input">
-                            change accordingly 
-                           <option value="1 day">1 day</option>
-                           <option value="3 days">3 days</option>
-                           <option value="5 days">5 days</option>
-                           <option value="7 days">1 week</option>
-                           </select>
-                   <p>#<span></span>{{task_id}} for {{projectTitle}}</p>
-               </div>-->
-               <div class="right flex flex-column" id="rightmost">
-                       <label>Change Task Status</label>
-                       <select v-model="extend" id="input">                
+                       <label>Change status</label>
+                       <select v-model="status">                  
                            <option value="To do">To Do</option>
                            <option value="In progress">In Progress</option>
                            <option value="Pending review">Send for review</option>                          
@@ -65,16 +20,29 @@ Back to Management</button>
            </div>
            <div class="top-middle flex">
                 <div id="duedate" class="date flex flex-column">
+                    <!-- Task issue date necessary? -->
+                   <p><b>Task Issue Date: </b>  {{duedate}}</p>
+                   <p><b>Task Due Date:</b>  {{formatDate(duedate)}}</p>
+               </div>
+           </div>
+           <!--<div class="top-middle flex">
+                <div id="duedate" class="date flex flex-column">
                    <p><b>Task Issue Date :</b> {{formatDate(issuedate)}}</p>
                    <p><b>Due Date :</b> {{formatDate(duedate)}}</p>
                </div>
-           </div>
+           </div>-->
            <div class="middle flex">
                <div id="description" class="description flex flex-column">
                    <p><b>Task Description</b></p>
-                   <p>{{this.shortdescription}}</p>
+                   <p>{{this.description}}</p>
                </div>
            </div>
+           <!--<div class="middle-bottom flex">
+               <div class="documents flex flex-column">
+                   <p>Relevant Documents:</p>
+                   <img src="../../assets/document.jpeg">
+               </div>
+           </div>-->
            <div class="middle-bottom flex">
                <div class="documents flex flex-column">
                    <p><b>Submit Relevant Documents :</b></p>
@@ -101,14 +69,6 @@ Back to Management</button>
                </div>
            </div>
        </div>
-   </div>
-</div>
- 
-   <!-- {{task_id}}
-   {{taskname}}
-   {{formatDate(duedate)}}
-   {{documents}}
-   {{comments}} -->
 </template>
  
 <script>
@@ -122,7 +82,6 @@ import Loading from '../../components/Loading.vue'
 const db = getFirestore(firebaseApp)
 const router = useRouter()
 import * as moment from 'moment'
-import { getStorage, uploadBytesResumable, getDownloadURL } from "firebase/storage";
  
    export default {
        name: 'ToDoView',
@@ -134,14 +93,13 @@ import { getStorage, uploadBytesResumable, getDownloadURL } from "firebase/stora
                projectTitle: this.$route.params.projectTitle,
                duedate: this.$route.params.duedate,
                task:this.$route.params.task,
-               shortdescription: this.$route.params.shortdescription,
+               description:this.$route.params.description,
                extend: '',
                documents: '',
                comments: '',
                long: '',
                status: '',
                dateOptions: {year: "numeric", month: "short", day: "numeric"},
-               files: [],
            }
        },
 
@@ -158,22 +116,7 @@ import { getStorage, uploadBytesResumable, getDownloadURL } from "firebase/stora
                self.updateStatus()
             },
        },
-       computed: {
-           taskIndex() {
-               return parseInt(this.taskId) + 1;
-           }
-       },
-
        methods: {
-           addFile() {
-                this.files.push(
-                    ''
-                );
-            },
-            deleteFile(counter) {
-                this.files.splice(counter, 1);
-            },
-
            formatDate(date) {
                 return moment(date).format("DD MMMM YYYY");
             },
@@ -215,26 +158,7 @@ import { getStorage, uploadBytesResumable, getDownloadURL } from "firebase/stora
                this.task = newTask;
            },
 
-            goback() {
-                console.log(JSON.stringify(this.projectId))
-                this.$router.push({
-                    name: "BusinessManagement",
-                    params: {
-                        projectId: JSON.stringify(this.projectId),
-                        projectTitle: JSON.stringify(this.projectTitle),
-                        taskname: JSON.stringify(this.taskname),
-                        taskId: JSON.stringify(this.taskId),
-                        duedate: JSON.stringify(this.duedate),
-                        issuedate: JSON.stringify(this.issuedate),
-                        shortdescription: JSON.stringify(this.shortdescription),
-                        status: JSON.stringify(this.status),
-                        todo: JSON.stringify(this.todo),
-                        inprogress: JSON.stringify(this.inprogress),
-                        pendingreview: JSON.stringify(this.pendingreview),
-                        completed: JSON.stringify(this.completed),
-                    },
-                });
-            },
+            
 
             async updateTask() {
                 try {
@@ -247,21 +171,7 @@ import { getStorage, uploadBytesResumable, getDownloadURL } from "firebase/stora
                 } catch (error) {
                     console.error("Error updating document: ", error);
                 }
-            },
-
-            uploadFiles(event) {
-             this.files = event.target.files[0]
-             const storage = getStorage();   
-             const filesRef = ref(storage, this.email +'/' + this.files.name )
-             const uploadTask = uploadBytesResumable(filesRef, this.files)
-             uploadTask.on('state_changed', (snapshot) => {}, (error)=> {
-                 console.log(error)
-             },() => {
-                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                     console.log("File available at", this.filesLink = url)
-                 })
-             })
-         },
+            }
        },
 
        mounted() {
@@ -269,7 +179,7 @@ import { getStorage, uploadBytesResumable, getDownloadURL } from "firebase/stora
            const taskId = curr.$route.params.taskId
            const projectId = curr.$route.params.projectId
            const projectTitle = curr.$route.params.projectTitle
-           console.log(projectTitle) 
+           console.log(curr.$route.params) 
            async function getTasksDetails() {
            //Change "To-Do" to props later
            const docRef = await doc(db, "Project", projectId)
@@ -315,6 +225,7 @@ import { getStorage, uploadBytesResumable, getDownloadURL } from "firebase/stora
       
    }
 </script>
+
  
 <style scoped>
     .mainBody {

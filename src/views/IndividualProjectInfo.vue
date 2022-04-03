@@ -39,7 +39,7 @@
         <span>
           <div class="projButtons" >
             <button class="edit-proj" @click="editProject()">EDIT PROJECT DETAILS</button> <br>
-            <button href="#" class="close-proj" data-bs-toggle="modal" data-bs-target="#closeModal">CLOSE PROJECT</button> <br>
+            <button href="#" class="close-proj" @click="closeProject()" data-bs-toggle="modal" data-bs-target="#closeModal">CLOSE PROJECT</button> <br>
             <div class="modal fade" id="closeModal" tabindex="-1" aria-labelledby="closeModalLabel" aria-hidden="true" 
               data-bs-backdrop="false">
               <div class="modal-dialog">
@@ -61,7 +61,7 @@
                 </div>
               </div>
             </div>
-            <button href="#" class="del-proj" data-bs-toggle="modal" data-bs-target="#delModal">DELETE PROJECT</button>
+            <!--<button href="#" class="del-proj" data-bs-toggle="modal" data-bs-target="#delModal">DELETE PROJECT</button>
             <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="delModalLabel" aria-hidden="true" 
               data-bs-backdrop="false">
               <div class="modal-dialog">
@@ -82,7 +82,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div>-->
           </div> 
         </span>
       </div>
@@ -151,7 +151,7 @@ import Deliverable from '../components/Deliverable.vue'
 import * as moment from 'moment'
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore"
+import { collection, doc, setDoc, deleteDoc, getDocs, getDoc, updateDoc } from "firebase/firestore"
 import {mapState} from "vuex"
 import {mapMutations} from "vuex"
 
@@ -221,6 +221,46 @@ export default {
   methods: {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
+    },
+
+    async closeProject() {
+      //var accApplicant = this.newApplicants[key];
+      //var offered = this.offered[key];
+      //var name = this.applicant[key].name;
+      //var projTitle = this.items["projectTitle"];
+      var projId = this.items["projectId"];
+      /*var applied = this.applied[key];
+      //console.log("bef" + applied)
+
+      if (!this.accApplicants) {
+        var accApplicants = [];
+        accApplicants.push(accApplicant);
+        this.accApplicants = accApplicants;
+      } else {
+        this.accApplicants.push(accApplicant);
+      }
+
+      var index = applied.indexOf(projId)
+      applied.splice(index, 1)
+      //console.log("after" + applied)
+
+      offered.push(projId);
+      //console.log(offered);
+      this.newApplicants.splice(key, 1);
+      this.applicant.splice(key, 1);
+      this.offered.splice(key, 1);
+      this.applied.splice(key, 1);
+      alert("Accepting applicant: " + name);*/
+      try {
+        const docRef = await updateDoc(doc(db, "Project", projId), {
+          Status:"closed"
+        });
+
+        console.log(docRef);
+        this.$emit("updated"); 
+      } catch (error) {
+        console.error("Error updating document: ", error);
+      }
     },
 
     editProject() {
