@@ -29,12 +29,18 @@
 </template>
 
 <script>
+import * as moment from 'moment'
     export default {
-        name: 'InProgress',
+        name: 'ToDo',
         props: {
             task:Object,
             projectTitle:String,
             projectId:String
+
+        },
+        mounted() {
+            const curr = this 
+            console.log(curr.task)
 
         },
         data() {
@@ -46,7 +52,9 @@
         watch: {
         },
         methods: {
-            
+            formatDate(date) {
+                return moment(date).format("DD MMMM YYYY");
+            },
         }
     }
 </script>
