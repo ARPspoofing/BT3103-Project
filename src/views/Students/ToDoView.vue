@@ -1,4 +1,5 @@
 <template>
+<div class="mainBody">
        <router-link :to="{name:'StudentManagement', params:{projectId:this.$route.params.projectId, projectTitle:this.$route.params.projectTitle}}">
            <button id="backButton"><i class="fa-solid fa-angles-left"></i>
 Back to Management</button>
@@ -69,6 +70,7 @@ Back to Management</button>
                </div>
            </div>
        </div>
+    </div>
 </template>
  
 <script>
@@ -268,6 +270,8 @@ import * as moment from 'moment'
        /*background-color:rgb(11, 167, 115);*/
        background-color: #B3CABE;
        border-radius:20px;
+       margin-left: 60px;
+       margin-right: 60px;
    }
  
    .top div {
@@ -302,7 +306,6 @@ import * as moment from 'moment'
        color: black;
        gap:16px;
    }
-
    h4 {
        font-size:12px;
        font-weight: 400;
@@ -324,18 +327,14 @@ import * as moment from 'moment'
         text-justify: inter-word;
         color: #2C3E50;
    }
-
     textarea {
         -webkit-border-radius: 12px;
         -moz-border-radius: 12px;
         border-radius: 12px;
         outline: none;
     }
-
    .bottom {
-
    }
-
    #backButton {
     background: #0e8044;
     /*width: 190px;
@@ -347,32 +346,26 @@ import * as moment from 'moment'
     padding: 10px 25px;
     font-size: 14px;
    }
-
    #duedate {
     text-align: left;
    }
-
    label {
        font-size: 14px;
        font-weight: bold;
        margin-bottom: 7px;
    }
-
    #input {
        width: 150px;
        height: 25px;
    }
-
    .documents {
        text-align: left;
    }
-
    #files {
        background: #F5F5F5;
        width: 700px;
        margin-bottom: 10px;
    }
-
    #addFileButton {
        background: transparent;
        border: none;
@@ -380,7 +373,6 @@ import * as moment from 'moment'
        width: 120px;
        padding-bottom: 7px;
    }
-
    #deleteFile {
        background: transparent;
        border: none;
