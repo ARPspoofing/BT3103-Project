@@ -1,17 +1,20 @@
 <template>
+<StudentNavBar :search ="false" :Heading="fullTitle" :header="true"/>
+<button @click="goback" id="backButton">Back to Projects</button>
 <div v-if="toDoTask.length > 0" class="wrapper-outer">
     <div class="wrapper">
         <h4>To-Do</h4>
-        <ToDo v-if="toDoTask" v-for="(task,index) in toDoTask" :task="task" :key="index"/>
-        <div v-else>
-        <img src="../../assets/empty.png">   
+        <ToDo v-if ="toDoTask"  v-for="(task,index) in toDoTask" :task="task" :key="index" :projectTitle="projectTitle" :projectId="projectId"/>
+       <div v-else>
+           
         <h3>Congratulations, you do not have any tasks to do</h3>
         
-    </div>
+    </div> 
     </div>
     <div class="wrapper">
         <h4>IN PROGRESS</h4>
-        <InProgress v-if="inProgressTask" v-for="(task,index) in inProgressTask" :task="task" :key="index"/>
+        <InProgress v-if="inProgressTask" v-for="(task,index) in inProgressTask" :task="task" :key="index"
+        :projectTitle="projectTitle" :projectId = "projectId"/>
          <div v-else>
          
         <h3>You currently do not have any in-progress tasks. Please update the status of To-Do tasks if you are working on anything</h3>
@@ -20,7 +23,8 @@
     </div>
     <div class="wrapper">
         <h4>PENDING REVIEW</h4>
-        <PendingReview v-if="pendingReviewTask" v-for="(task,index) in pendingReviewTask" :task="task" :key="index"/>
+        <PendingReview v-if="pendingReviewTask" v-for="(task,index) in pendingReviewTask" :task="task" :key="index"
+        :projectTitle="projectTitle" :projectId = "projectId"/>
         <div v-else>
          
         <h3>You do not have any tasks awaiting review. Please update the status of your tasks if you would like to send them for review.</h3>
@@ -29,7 +33,8 @@
     </div>
     <div class="wrapper">
         <h4>COMPLETED</h4>
-        <Completed v-if="completedTask" v-for="(task,index) in completedTask" :task="task" :key="index"/>
+        <Completed v-if="completedTask" v-for="(task,index) in completedTask" :task="task" :key="index"
+        :projectTitle="projectTitle" :projectId="projectId"/>
         <div v-else>
           
         <h3>No task has been completed yet.</h3>
@@ -42,13 +47,14 @@
 </template>
 
 <script>
+import StudentNavBar from "../../components/StudentNavBar.vue"
 import ToDo from '../../components/ToDo.vue'
 import InProgress from "../../components/InProgress.vue" 
 import PendingReview from "../../components/PendingReview.vue" 
 import Completed from "../../components/Completed.vue"
 import firebaseApp from '../../firebase.js';
 import {getFirestore} from 'firebase/firestore';
-import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
+import {doc,setDoc,collection,getDocs,deleteDoc, getDoc} from 'firebase/firestore';
 import {ref} from "vue"
 import {useRouter} from "vue-router"
 import Loading from '../../components/Loading.vue'
@@ -63,94 +69,112 @@ export default {
         projectName:String,
 
     },
+    components: {
+        StudentNavBar,
+
+    },
     data() {
         return {
+            projectId:'',
+            projectTitle:'',
             toDoTask: [],
             inProgressTask:[],  
             pendingReviewTask:[],
-            completedTask:[]
+            completedTask:[],
+            fullTitle:''
+            
         }
     },
     methods: {
+        goback() {
+            this.$router.push({name:'StudentInProgressProjects'})
+        }
+    },
+
+    computed: {
+
+       
+
+
     },
     mounted() {
         const curr = this
+
+        curr.projectId = curr.$route.params.projectId
+        curr.projectTitle = curr.$route.params.projectTitle
+        curr.fullTitle = "Tasks for " + curr.projectTitle 
+        console.log(curr.fullTitle)
         async function getTasks() {
           //Change "To-Do" to props later
           //Later, each project needs to have its list of tasks
           //The code here is just temporary
-          let database = await getDocs(collection(db,"Tasks"))
+          let docRef = await doc(db,"Project",curr.projectId)
+          let project = await getDoc(docRef)
+          let tasks = project.data().Tasks
+          console.log(tasks)
           var toDoTask = []
           var inProgressTask = []
           var pendingReviewTask = []
           var completedTask = []
           
-          database.forEach((document) => {
+          tasks.forEach((document) => {
               //Change to dynamic props later
-              const data = document.data()
-              if (data.status == "ToDo") {
+             
+              if (document.taskStatus == "To do") {
                 
-                console.log(data)
+                console.log(document)
                 toDoTask.push({
-                    id: data.id,
-                    comments: data.comments,
-                    documents: data.documents,
-                    currState: data.currState,
-                    duedate: data.duedate,
-                    taskname: data.taskname,
-                    todo: data.todo,
-                    inprogress: data.inprogress,
-                    pendingreview: data.pendingreview,
-                    completed: data.completed,
-                    shortdescription: data.shortdescription,
+                    id: document.taskName,
+                    projectTitle: curr.projectTitle,
+                    projectId: curr.projectId,
+                    comments: document.comments,
+                    documents: document.documents,
+                    currStatus: document.taskStatus,
+                    duedate: document.taskDueDate,
+                    taskname: document.taskName,                    
+                    shortdescription: document.taskDescription,
                     
                 })
-              } else if (data.status == "InProgress") {
+              } else if (document.taskStatus == "In progress") {
                  
-                  console.log(data)
+                  console.log(document)
                   inProgressTask.push({
-                    id: data.id,
-                    comments: data.comments,
-                    documents: data.documents,
-                    currState: data.currState,
-                    duedate: data.duedate,
-                    taskname: data.taskname,
-                    todo: data.todo,
-                    inprogress: data.inprogress,
-                    pendingreview: data.pendingreview,
-                    completed: data.completed,
-                    shortdescription: data.shortdescription,
+                    id: document.taskName,
+                    projectId: curr.projectId,
+                    projectTitle: curr.projectTitle,
+                    comments: document.comments,
+                    documents: document.documents,
+                    status: document.taskStatus,
+                    duedate: document.taskDueDate,
+                    taskname: document.taskName,                  
+                    shortdescription: document.taskDescription,
                     
                 })
-              } else if (data.status == "PendingReview") {
-                  console.log(data) 
+              } else if (document.taskStatus == "Pending review") {
+                  console.log(document) 
                   pendingReviewTask.push({
-                      id: data.id,
-                    comments: data.comments,
-                    documents: data.documents,
-                    currState: data.currState,
-                    duedate: data.duedate,
-                    taskname: data.taskname,
-                    todo: data.todo,
-                    inprogress: data.inprogress,
-                    pendingreview: data.pendingreview,
-                    completed: data.completed,
-                    shortdescription: data.shortdescription,
+                    id: document.taskName,
+                    projectId: curr.projectId,
+                    projectTitle: curr.projectTitle,
+                    comments: document.comments,
+                    documents: document.documents,
+                    status: document.taskStatus,
+                    duedate: document.taskDueDate,
+                    taskname: document.taskName,                   
+                    shortdescription: document.taskDescription,
                   })
-              } else if (data.status == "Completed") {
-                  console.log(data) 
+              } else if (document.taskStatus == "Completed") {
+                  console.log(document) 
                   completedTask.push({
-                      id: data.id,
-                    comments: data.comments,
-                    documents: data.documents,
-                    currState: data.currState,
-                    duedate: data.duedate,
-                    taskname: data.taskname,
-                    todo: data.todo,
-                    inprogress: data.inprogress,
-                    pendingreview: data.pendingreview,
-                    completed: data.completed,
-                    shortdescription: data.shortdescription,                      
+                    id: document.id,
+                    projectId: curr.projectId,
+                    comments: document.comments,
+                    projectTitle: curr.projectTitle,
+                    documents: document.documents,
+                    status: document.taskStatus,
+                    duedate: document.taskDueDate,
+                    taskname: document.taskName,
+                    shortdescription: document.taskDescription,                      
                   })
               }
             })
@@ -206,5 +230,18 @@ export default {
         font-size:12px;
         font-weight:300;
     }
+
+    #backButton {
+    background: #0e8044;
+  /*width: 190px;
+        height: 30px;*/
+    color: white;
+    margin-top: 20px;
+    border: none;
+    border-radius: 15px;
+    border-radius: 30px;
+    padding: 10px 25px;
+    font-size: 14px;
+}
 
 </style>

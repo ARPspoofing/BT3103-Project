@@ -18,10 +18,12 @@
     
     </div> 
     <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
-      <button class="purple button" @click="toggleFilterMenu">Filter</button>
+      <button class="button" @click="toggleFilterMenu">Filter</button>
+      <button class="button" @click="toggleSortMenu">Sort</button>
       Search results for {{receivedSearch}}:
       <hr/>
     </h1>
+    
      <div v-if="noProjectsPresent" class = "noProject">
          <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> ensure that you have spelled your search correctly.</h1>
           <!-- {{GET_SEARCH_DATA}} -->        
@@ -287,12 +289,12 @@ export default {
   }
 
   .filter-enter-from {
-    transform:translateX(-700px);
+    transform:translateX(700px);
     /*transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);*/
   }
 
   .filter-leave-to {
-    transform:translateX(-700px);
+    transform:translateX(700px);
     /*transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);*/
   }
   

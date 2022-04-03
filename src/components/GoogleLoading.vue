@@ -31,6 +31,7 @@ export default {
         }
         })
         async function checkToRoute() {
+            
             var userEmail = window.localStorage.getItem('emailForSignIn')
             alert(userEmail)
             const docRef = doc(db,"businesses",String(userEmail))

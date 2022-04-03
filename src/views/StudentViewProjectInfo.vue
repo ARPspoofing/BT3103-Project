@@ -111,6 +111,8 @@ import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 
 export default {
   name: 'StudentViewProjectInfo',
@@ -128,14 +130,18 @@ export default {
       tasks: [],
       items: [],
       user: false, 
-      userEmail: "", 
+      userEmailData: "", 
       applied: [],
       appstat: "",
       companyEmail: "", 
       companyName: "",
     }
   },
+  computed: {
+    ...mapState(['userEmail','cardItems']),
+  },
   mounted() {
+    /*
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if(user) {
@@ -143,7 +149,11 @@ export default {
       }
     })
     this.userEmail = auth.currentUser.email;
+    */
+    this.userEmailData = this.userEmail
     //console.log(this.userEmail)
+    //Non-Vuex
+    /*
     this.tasks = JSON.parse(this.$route.params.items).tasks
     this.tags = JSON.parse(this.$route.params.items).tags
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
@@ -153,10 +163,24 @@ export default {
     this.projId = JSON.parse(this.$route.params.items).projectId
     this.appstat = JSON.parse(this.$route.params.items).appstat
     this.companyEmail = JSON.parse(this.$route.params.items).company
+    */
+
+    //Vuex
+    console.log("cardItems",this.cardItems)
+    this.tasks = JSON.parse(this.cardItems).tasks
+    this.tags = JSON.parse(this.cardItems).tags
+    this.newApplicants = JSON.parse(this.cardItems).newApplicants
+    this.projTitle = JSON.parse(this.cardItems).projectTitle
+    this.items = JSON.parse(this.cardItems)
+    console.log(JSON.parse(this.cardItems).projectId)
+    this.projId = JSON.parse(this.cardItems).projectId
+    this.appstat = JSON.parse(this.cardItems).appstat
+    this.companyEmail = JSON.parse(this.cardItems).company
+
 
     const that = this
     async function getAppliedProjects() {
-      const ref = doc(db, "students", auth.currentUser.email);
+      const ref = doc(db, "students", that.userEmailData);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       //console.log(data.id)
@@ -186,7 +210,7 @@ export default {
         var newApplicants = this.newApplicants
         console.log(newApplicants)
         var projTitle = this.projTitle
-        newApplicants.push(this.userEmail);
+        newApplicants.push(this.userEmailData);
         var projId = this.projId
         var applied = this.applied
         applied.push(projId);
@@ -198,7 +222,7 @@ export default {
                 New_Applicants: newApplicants
             })
 
-            const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
+            const docRef2 = await updateDoc(doc(db, "students", this.userEmailData), {
                 appliedProjects: applied
             })
             

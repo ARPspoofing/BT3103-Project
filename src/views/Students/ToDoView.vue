@@ -27,7 +27,7 @@
        <div class="details flex flex-column">
            <div class="top flex">
                <div class="left flex">
-                   <p>#<span></span><strong>{{taskIndex}} {{taskname}}</strong></p>
+                   <p>#<span></span><strong>{{task_id}} for {{projectTitle}}</strong></p>
                   
                </div>
                <div class="right flex flex-column">
@@ -39,14 +39,23 @@
                            <option value="7 days">1 week</option>
                        </select>
                </div>
-               <div class="right flex flex-column" id="rightmost">
+               <!--<div class="right flex flex-column" id="rightmost">
                        <label>Change Task Status</label>
                        <select v-model="extend" id="input">
-                           <!-- change accordingly -->
+                            change accordingly 
                            <option value="1 day">1 day</option>
                            <option value="3 days">3 days</option>
                            <option value="5 days">5 days</option>
                            <option value="7 days">1 week</option>
+                           </select>
+                   <p>#<span></span>{{task_id}} for {{projectTitle}}</p>
+               </div>-->
+               <div class="right flex flex-column" id="rightmost">
+                       <label>Change Task Status</label>
+                       <select v-model="extend" id="input">                
+                           <option value="To do">To Do</option>
+                           <option value="In progress">In Progress</option>
+                           <option value="Pending review">Send for review</option>                          
                        </select>
                </div>
            </div>
@@ -101,7 +110,8 @@
 <script>
 import firebaseApp from '../../firebase.js';
 import {getFirestore} from 'firebase/firestore';
-import {doc,setDoc,collection,getDocs,deleteDoc} from 'firebase/firestore';
+import {doc,setDoc,collection,getDocs,getDoc,deleteDoc, updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore';
+import {update} from 'firebase/database';
 import {ref} from "vue"
 import {useRouter} from "vue-router"
 import Loading from '../../components/Loading.vue'
@@ -114,31 +124,34 @@ import { getStorage, uploadBytesResumable, getDownloadURL } from "firebase/stora
        name: 'ToDoView',
        data() {
            return {
-               projectId: '',
-               projectTitle: '',
-               taskname: '',
-               taskId: '',
-               duedate: '',
-               shortdescription: '',
-               status: '',
-               todo: '',
-               inprogress: '',
-               pendingreview: '',
-               completed: '',
+               name: '',
+               task_id: this.$route.params.taskId,
+               projectId: this.$route.params.projectId,
+               projectTitle: this.$route.params.projectTitle,
+               duedate: this.$route.params.duedate,
+               task:this.$route.params.task,
                extend: '',
                documents: '',
                comments: '',
                long: '',
+               status: '',
                dateOptions: {year: "numeric", month: "short", day: "numeric"},
                files: [],
            }
        },
+
+       
        watch: {
            extend() {
                const extendedDate = new Date()
                this.duedate = extendedDate.setDate(extendedDate.getDate() + parseInt(this.extend))
                this.duedate = new Date(this.duedate).toLocaleDateString('en-us',this.dateOptions)
-           }
+           },
+
+           status() {
+               var self = this;
+               self.updateStatus()
+            },
        },
        computed: {
            taskIndex() {
@@ -159,6 +172,43 @@ import { getStorage, uploadBytesResumable, getDownloadURL } from "firebase/stora
            formatDate(date) {
                 return moment(date).format("DD MMMM YYYY");
             },
+
+            async updateStatus() {
+               const currStatus = this.status;
+               console.log(currStatus)
+               let ref = await doc(db,"Project", this.projectId);
+               let project = await getDoc(ref);
+
+               var tasks = await project.data().Tasks
+               console.log("ok")
+               console.log(this.task)
+               console.log(tasks)
+               console.log(tasks.length)
+               var toRemove = {}
+
+              var newTask = {}
+
+               for(let i = 0; i < tasks.length; i++) {
+                   console.log(i)
+                   let currTask = tasks[i]; 
+                    console.log(this.task_id)
+                   if(currTask.taskName == this.task_id) {
+                       toRemove = { ...currTask }
+                       currTask.taskStatus = currStatus
+                       newTask = currTask
+                   }
+               }   
+               
+               console.log(tasks)
+               console.log(newTask)
+
+               await updateDoc(ref, {Tasks: arrayRemove(toRemove)
+               })
+
+               await updateDoc(ref, {Tasks: arrayUnion(newTask)})
+
+               this.task = newTask;
+           },
 
             goback() {
                 console.log(JSON.stringify(this.projectId))
@@ -210,47 +260,52 @@ import { getStorage, uploadBytesResumable, getDownloadURL } from "firebase/stora
        },
 
        mounted() {
-           this.projectId = this.$route.params.projectId
-           this.projectTitle = this.$route.params.projectTitle
-           this.taskname = this.$route.params.taskname
-           this.taskId = this.$route.params.taskId
-           this.duedate = this.$route.params.duedate
-           this.issuedate = this.$route.params.issuedate
-           this.shortdescription = this.$route.params.shortdescription
-           this.status = this.$route.params.status
-           this.todo = this.$route.params.todo
-           this.inprogress = this.$route.params.inprogress
-           this.pendingreview = this.$route.params.pendingreview
-           this.completed = this.$route.params.completed
-           console.log(this.taskname)
+           const curr = this
+           const taskId = curr.$route.params.taskId
+           const projectId = curr.$route.params.projectId
+           const projectTitle = curr.$route.params.projectTitle
+           console.log(projectTitle) 
+           async function getTasksDetails() {
+           //Change "To-Do" to props later
+           const docRef = await doc(db, "Project", projectId)
+           let project = await getDoc(docRef)
+           var tasks = await project.data().Tasks
+           console.log(tasks)
+           var currTask = {}
 
-    //        const curr = this
-    //        async function getTasksDetails() {
-    //        //Change "To-Do" to props later
-    //        let database = await getDocs(collection(db,"Tasks"))
-    //        var temp = []
-    //        database.forEach((doc) => {
-    //            //Change to dynamic props later
-    //            if (doc.id == ("ToDo" + curr.taskId)) {
-    //                var data = doc.data()
-    //                console.log(data) 
-    //                temp.push({
-    //                    taskname: data.taskname,
-    //                    duedate: data.duedate,
-    //                    documents: data.documents,
-    //                    comments: data.comments, 
-    //                    long: data.longdescription,
-    //                })
-    //            }
-    //            })
-    //        curr.taskname = temp[0]['taskname']
-    //        curr.duedate = temp[0]['duedate']
-    //        curr.duedate = (new Date(temp[0]['duedate'].seconds * 1000)).toLocaleDateString('en-us',curr.dateOptions)
-    //        curr.documents = temp[0]['documents']
-    //        curr.comments = temp[0]['comments']
-    //        curr.long = temp[0]['long']
-    //    }
-    //    getTasksDetails()
+           for(let i = 0; i < tasks.length; i++) {
+               let thisTask = tasks[i];
+               if(thisTask.taskName == taskId) {
+                   currTask = thisTask;
+                   break;
+               }
+
+           }
+
+          /* database.forEach((doc) => {
+               //Change to dynamic props later
+               if (doc.id == ("ToDo" + curr.task_id)) {
+                   var data = doc.data()
+                   console.log(data) 
+                   temp.push({
+                       name: data.taskname,
+                       duedate: data.duedate,
+                       documents: data.documents,
+                       comments: data.comments, 
+                       long: data.longdescription,
+                   })
+               }
+               }) */
+           curr.name = currTask.taskName
+           curr.duedate = currTask.taskDueDate
+           curr.projectTitle = projectTitle
+          // curr.duedate = (new Date(temp[0]['duedate'].seconds * 1000)).toLocaleDateString('en-us',curr.dateOptions)
+           //curr.documents = temp[0]['documents']
+           curr.comments = "This is a test comment"
+           //Edit later once the task has a proper long description
+           curr.long = "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32."
+       }
+       getTasksDetails()
    },
       
    }

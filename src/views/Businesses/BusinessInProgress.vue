@@ -48,6 +48,7 @@ import {
 } from "firebase/firestore";
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
 import BusinessProfileForm from './BusinessProfileForm.vue'
+import {mapState} from "vuex"
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -55,6 +56,9 @@ export default {
   components: {
     BusinessNavBar,
     Card,
+  },
+  computed: {
+    ...mapState(['userEmail']),
   },
   data() {
     return {
@@ -84,18 +88,21 @@ export default {
     },
   },
   mounted() {
+    /*
     const auth = getAuth();
     this.businessEmail = auth.currentUser.email;
     console.log("email: " + this.businessEmail);
-
+    */
+    var userEmail = this.userEmail
     const that = this;
 
     async function getInProgProjects() {
-      const ref = doc(db, "businesses", auth.currentUser.email);
+      const ref = doc(db, "businesses", userEmail);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       that.inProgProjects = data.inProgProjects 
       var inProgProjects = data.inProgProjects
+      console.log("inproglen",inProgProjects)
       for (var i = 0; i < inProgProjects.length; i++) {
         getProject(inProgProjects[i]).then((res) => {that.testCollection.push(res)})
       }

@@ -2,13 +2,103 @@
   <div class="card-body" @click.self="clickCard">
     <div class="clogo">
       <img v-bind:src=picture alt="Logo" class="logo" />
-      <span class="card-title"> {{ projectTitle }} <br /> </span>
+      <span class="card-title"> {{ currProjectTitle }} <br /> </span>
     </div>
     <div class="card-content">
       <p class="card-text">{{ description }}</p>
     </div>
     <p id="appstatus" class="offered" v-if="stat == 'offered'">Offered</p>
     <p id="appstatus" class="pending" v-else-if="stat == 'pending'">Pending</p>
+    <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">
+      Rejected
+    </p>
+<div v-show=false>NO</div>
+    <button
+      id="applybtns"
+      v-show="apply"
+      v-if="appstat == 'applied'"
+      class="btn-applied"
+    >
+      Applied
+    </button>
+    <button
+      id="applybtns"
+      v-show="apply"
+      v-else="appstat == 'apply'"
+      class="btn-apply"
+      data-bs-toggle="modal"
+      data-bs-target="#applyModal"
+      @click="applying"
+    >
+      Apply Now
+    </button>   
+
+    <button
+      id="studentManagementButton"
+      v-show="inProgress"
+      @click="viewTasksBtn"
+      class="btn-apply"
+    >
+      View tasks
+    </button> 
+        <!--
+                  <div 
+                    class="modal fade"
+                    id="applyModal"
+                    tabindex="-1"
+                    aria-labelledby="applyModalLabel"
+                    aria-hidden="true"
+                    data-bs-backdrop="false"
+                  >
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-body">
+                          <div class="words">
+                            <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+                            <p>
+                              Apply for
+                              <span style="color: #0e8044"
+                                ><strong> {{ projectTitle }} </strong></span
+                              >?
+                            </p>
+                          </div>
+                          <span>
+                            <div class="applybtns">
+                              <button
+                                type="button"
+                                id="yesbtn"
+                                data-bs-dismiss="modal"
+                                @click="applicantbtn"
+                              >
+                                Yes
+                              </button>
+                              <button type="button" id="nobtn" data-bs-dismiss="modal">
+                                No
+                              </button>
+                            </div>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    id="acceptbtn"
+                    v-show="offered"
+                    @click="acceptBtn"
+                    class="btn-apply"
+                  >
+                    Accept
+                  </button>
+                  <button
+                    id="declinebtn"
+                    v-show="offered"
+                    @click="declineBtn"
+                    class="btn-apply"
+                  >
+                    Decline
+                  </button>
+      -->
+ <!--Ruth previous card version. Keeping incase new version is wrong 
     <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">Rejected</p>
 
     <button id="applybtns" v-show="apply" v-if="appstat == 'applied'" class="btn-applied">Applied</button>
@@ -31,9 +121,25 @@
         </div>
       </div>
     </div>
-    <button id="acceptbtn" v-show="offered" @click="acceptBtn" class="btn-apply">Accept</button>
-    <button id="declinebtn" v-show="offered" @click="declineBtn" class="btn-apply">Decline</button>
-  </div>
+    <button
+      id="acceptbtn"
+      v-show="offered"
+      @click="acceptBtn"
+      class="btn-apply"
+    >
+      Accept
+    </button>
+    <button
+      id="declinebtn"
+      v-show="offered"
+      @click="declineBtn"
+      class="btn-apply"
+    >
+      Decline
+    </button> -->
+
+    
+  </div> 
 </template>
 
 <script>
@@ -43,9 +149,12 @@ export default {
       testCollection: [],
       stat: "",
       appstat: "",
+      currProjectTitle: "",
     };
   },
-
+  mounted() {
+    this.currProjectTitle = this.projectTitle
+  },
   props: {
     projectTitle: String,
     description: String,
@@ -53,7 +162,11 @@ export default {
     stat: String,
     appstat: String,
     offered: Boolean,
-    picture: String
+    picture: String,
+    inProgress: Boolean,
+    projectId: String,
+    like:false,
+    latest:false,
     //applicantbtn: Function,
   },
   methods: {
@@ -72,6 +185,22 @@ export default {
     declineBtn() {
       this.$emit("declineBtn");
     },
+
+    viewTasksBtn() {
+      this.$emit("viewTasks");
+    },
+    applying() {
+      //emit true if Projects you may like
+      //emit false if latest
+
+      //If like == true and latest == false, emit true. Then use testCollection in StudentHomePage "applying()"
+      //If like == false and latest == true, emit false. Then use wholeCollection in StudentHomePage "applying()"
+      if (this.like == true && this.latest == false) {
+        this.$emit("applying",true)
+      } else {
+        this.$emit("applying",false)
+      }
+    }
   },
 };
 </script>
@@ -146,6 +275,16 @@ export default {
   border-width: 0px;
   height: 30px;
 }
+
+#studentManagementButton {
+  background-color: orange;
+  color: white;
+  border-radius: 8px;
+  border-width: 0px;
+  height: 30px;
+}
+
+
 
 .btn-apply {
   background-color: #0e8044;

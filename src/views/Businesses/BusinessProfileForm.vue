@@ -53,6 +53,8 @@ import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../../firebase.js"
 import {getAuth, signOut,onAuthStateChanged} from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 const router = useRouter()
 const db = getFirestore(firebaseApp)
 export default {
@@ -73,7 +75,9 @@ export default {
             finalProfile: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",    
         }
     },
-
+    computed: {
+        ...mapState(['name'])
+    },
     mounted() {
         const auth = getAuth();
         onAuthStateChanged(auth, (user ) => {
@@ -84,6 +88,7 @@ export default {
     },
     //Change to remove from firebase later
     methods: {
+        ...mapMutations(['SET_NAME']),
          
          try() {
              console.log("testc")
@@ -119,6 +124,7 @@ export default {
                  this.industryErrorPresent = true;  
                  this.errorMessage = "Please fill in your company's industry"
              } else {
+                 this.SET_NAME(this.name)
                  //Previous version of retrieving email. Have some problem
                  /*
                  const auth = getAuth()
@@ -126,7 +132,7 @@ export default {
                  */
                 //New version
                 const email = window.localStorage.getItem('emailForSignIn')
-                 
+                window.localStorage.setItem('businessName',this.name)
                  
                  //accessing the current user and setting the elements
                  await setDoc(doc(db,'businesses',String(email)), {

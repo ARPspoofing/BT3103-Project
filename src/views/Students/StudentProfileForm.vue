@@ -203,6 +203,8 @@ import {getAuth,createUserWithEmailAndPassword,signOut,onAuthStateChanged} from 
 import { v4 as uuidv4 } from 'uuid';
 import PopUp from '../../components/PopUp.vue'
 import {useRouter} from "vue-router"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 //import axios from 'axios'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
@@ -246,7 +248,7 @@ export default {
             interests: [],
             popUp:false,
             menu:false,
-            //change to default later
+
             profileImage: null,
             resume:null,
             transcript:null,
@@ -262,7 +264,6 @@ export default {
             transcriptPresent: false,
             resumePresent: false,
 
-            //change to firebase later
             finalProfile: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",
             errorMessage:"",
             resumeLink:'',
@@ -271,13 +272,16 @@ export default {
             offeredProjects:[],
             rejectedProjects:[],
             inProgProjects: [],
-            compledProjects:[],
+            completedProjects:[],
             declinedProjects:[],
 
         }
     },
-    //Change to remove from firebase later
+    computed: {
+        ...mapState(['name','userEmail']),
+    },
     methods: {
+        ...mapMutations(['SET_NAME']),
          add() {
              const maxSize = 3
              if (this.interests.length + 1 <= 3) {
@@ -430,6 +434,7 @@ export default {
                 const auth = getAuth()
                 const email = auth.currentUser.email;
                 console.log(email)
+                this.SET_NAME(this.name)
             await setDoc(doc(db,"students",String(email)),{
                 email: email,
                 name:this.name,
@@ -447,7 +452,8 @@ export default {
                 rejectedProjects: this.rejectedProjects,
                 inProgProjects: this.inProgProjects,
                 declinedProjects: this.declinedProjects,
-                completedProjects: this.completedProjects
+                completedProjects: this.completedProjects,
+                description: this.description,
             })
             this.$emit('success',true)
             this.$router.push({name:'StudentHomePage'})

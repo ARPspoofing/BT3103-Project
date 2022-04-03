@@ -76,12 +76,17 @@ import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
 import { getAuth } from 'firebase/auth';
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 
 export default {
     name: 'BusinessEditProject',
     props: ['items'],
     components: {
         BusinessNavBar,
+    },
+    computed: {
+        ...mapState(['cardItems']),
     },
     data() {
         return {
@@ -102,16 +107,25 @@ export default {
         }
     },
     mounted() {
+        //Non-vuex
         //this.items = JSON.parse(this.$route.params.items)
+        /*
         this.item = JSON.parse(this.$route.params.items)
         var prevTitle = JSON.parse(this.$route.params.items).projectId
         this.previousTitle = prevTitle
-        console.log(prevTitle)
+        console.log(this.item)
+        */
         // console.log(this.item.tasks.push({
         //         taskName:'hi',
         //         taskDescription: 'hi', 
         //         taskDueDate: ''
         //     }))
+        //vuex 
+        this.item = JSON.parse(this.cardItems)
+        var prevTitle = JSON.parse(this.cardItems).projectTitle
+        this.previousTitle = prevTitle
+        console.log(this.item)
+
     },
     methods: {
         addTaskEdit(){
