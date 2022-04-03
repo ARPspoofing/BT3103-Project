@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <BusinessNavBar :Heading="Heading" :header="true" />
   <div class="mainBody">
       <button @click="goback" id="backButton">
@@ -63,50 +62,6 @@
         </div>
       </div>
   </div>
-=======
-<BusinessNavBar :Heading="Heading" :header=true />
-<button @click="goback" id="backButton">Back to Projects</button>
-<div v-if="toDoTask.length > 0" class="wrapper-outer">
-    <div class="wrapper">
-        <h4>TO-DO</h4>
-        <ToDo v-if="toDoTask" v-for="(task,index) in toDoTask" :task="task" :key="index"/>
-        <div v-else>
-        <img src="../../assets/empty.png">   
-        <h3>Congratulations, you do not have any tasks to do</h3>
-        
-    </div>
-    </div>
-    <div class="wrapper">
-        <h4>IN PROGRESS</h4>
-        <InProgress v-if="inProgressTask" v-for="(task,index) in inProgressTask" :task="task" :key="index"/>
-         <div v-else>
-         
-        <h3>You currently do not have any in-progress tasks. Please update the status of To-Do tasks if you are working on anything</h3>
-        
-    </div>
-    </div>
-    <div class="wrapper">
-        <h4>PENDING REVIEW</h4>
-        <PendingReview v-if="pendingReviewTask" v-for="(task,index) in pendingReviewTask" :task="task" :key="index"/>
-        <div v-else>
-         
-        <h3>You do not have any tasks awaiting review. Please update the status of your tasks if you would like to send them for review.</h3>
-        
-    </div>
-    </div>
-    <div class="wrapper">
-        <h4>COMPLETED</h4>
-        <Completed v-if="completedTask" v-for="(task,index) in completedTask" :task="task" :key="index"/>
-        <div v-else>
-          
-        <h3>No task has been completed yet.</h3>
-        
-        </div>
-    </div>
-    
-</div>
-   
->>>>>>> parent of c79c2c8 (project management ui)
 </template>
 
 <script>
@@ -126,7 +81,6 @@ import BusinessNavBar from "../../components/BusinessNavBar.vue";
 
 
 export default {
-<<<<<<< HEAD
   name: "BusinessManagement",
   components: {
     BusinessNavBar,
@@ -155,18 +109,13 @@ export default {
         name: "BusinessInProgress",
         params: {},
       });
-=======
-    name: "BusinessManagement",
-    components: {
-        BusinessNavBar,
->>>>>>> parent of c79c2c8 (project management ui)
     },
-    props: {
-        //So that this page can easily access the project that it is clicked on
-        projectName:String,
-
-<<<<<<< HEAD
+  },
+  mounted() {
+    this.Heading = JSON.parse(this.$route.params.projectTitle);
+    this.projectId = JSON.parse(this.$route.params.projectId);
     const curr = this;
+    
     async function getTasks() {
       //Change "To-Do" to props later
       //Later, each project needs to have its list of tasks
@@ -176,7 +125,6 @@ export default {
       var inProgressTask = [];
       var pendingReviewTask = [];
       var completedTask = [];
-
       const docSnap = await getDoc(doc(db, "Project", curr.projectId));
       let data = docSnap.data();
       var tasks = data.Tasks;
@@ -243,113 +191,12 @@ export default {
             pendingreview: false,
             completed: false,
           });
-=======
-    },
-    data() {
-        return {
-            Heading: "",
-            toDoTask: [],
-            inProgressTask:[],  
-            pendingReviewTask:[],
-            completedTask:[],
-            projectId: "",
->>>>>>> parent of c79c2c8 (project management ui)
         }
-    },
-    methods: {
-        goback() {
-            this.$router.push({
-                name: "BusinessInProgress",
-                params: {
-                },
-            });
-        },
-    },
-    mounted() {
-        this.Heading = JSON.parse(this.$route.params.projectTitle)
-        this.projectId = JSON.parse(this.$route.params.projectId)
-
-        const curr = this
-        async function getTasks() {
-
-          //Change "To-Do" to props later
-          //Later, each project needs to have its list of tasks
-          //The code here is just temporary
-        //   let database = await getDocs(collection(db,"Tasks"))
-          var toDoTask = []
-          var inProgressTask = []
-          var pendingReviewTask = []
-          var completedTask = []
-
-          const docSnap = await getDoc(doc(db, "Project", curr.projectId));
-          let data = docSnap.data();
-          var tasks = data.Tasks
-        //   console.log(curr.tasks.length)
-          for (var i = 0; i < tasks.length; i++) {
-            let taskstatus = tasks[i]["taskStatus"]
-            if (taskstatus == "To do") {
-                toDoTask.push({
-                    projectId: curr.projectId,
-                    projectTitle: curr.Heading,
-                    taskId: i,
-                    shortdescription: tasks[i]["taskDescription"],
-                    duedate: tasks[i]["taskDueDate"],
-                    taskname: tasks[i]["taskName"],
-                    status:tasks[i]["taskStatus"],
-                    todo: true,
-                    inprogress: false,
-                    pendingreview: false,
-                    completed: false,
-                })
-            } else if (taskstatus == "InProgress") {
-                inProgressTask.push({
-                    projectId: curr.projectId,
-                    projectTitle: curr.Heading,
-                    taskId: i,
-                    shortdescription: tasks[i]["taskDescription"],
-                    duedate: tasks[i]["taskDueDate"],
-                    taskname: tasks[i]["taskName"],
-                    status:tasks[i]["taskStatus"],
-                    todo: true,
-                    inprogress: false,
-                    pendingreview: false,
-                    completed: false,
-                })
-            } else if (taskstatus == "PendingReview") {
-                pendingReviewTask.push({
-                    projectId: curr.projectId,
-                    projectTitle: curr.Heading,
-                    taskId: i,
-                    shortdescription: tasks[i]["taskDescription"],
-                    duedate: tasks[i]["taskDueDate"],
-                    taskname: tasks[i]["taskName"],
-                    status:tasks[i]["taskStatus"],
-                    todo: true,
-                    inprogress: false,
-                    pendingreview: false,
-                    completed: false,
-                })
-            } else {
-                completedTask.push({
-                    projectId: curr.projectId,
-                    projectTitle: curr.Heading,
-                    taskId: i,
-                    shortdescription: tasks[i]["taskDescription"],
-                    duedate: tasks[i]["taskDueDate"],
-                    taskname: tasks[i]["taskName"],
-                    status:tasks[i]["taskStatus"],
-                    todo: true,
-                    inprogress: false,
-                    pendingreview: false,
-                    completed: false,
-                })
-            }
-          }
-
-          curr.toDoTask = toDoTask
-          curr.inProgressTask = inProgressTask
-          curr.pendingReviewTask = pendingReviewTask
-          curr.completedTask = completedTask
+      }
+      curr.toDoTask = toDoTask;
+      curr.inProgressTask = inProgressTask;
+      curr.pendingReviewTask = pendingReviewTask;
+      curr.completedTask = completedTask;
           
         //   database.forEach((document) => {
         //       //Change to dynamic props later
@@ -424,18 +271,6 @@ export default {
         // console.log(completedTask)
 
         // console.log(pendingReviewTask)
-      }
-      getTasks()
-    },
-    components: {
-        ToDo,
-        InProgress,
-        PendingReview,
-        Completed
-    },
-
-<<<<<<< HEAD
-      // console.log(pendingReviewTask)
     }
     getTasks();
   },
@@ -454,8 +289,6 @@ export default {
     filter: blur(5px);
    */
 }
-
-
 .wrapper-outer {
   display: flex;
   flex-direction: row;
@@ -468,7 +301,6 @@ export default {
   padding: 20px;
   padding-bottom: 150px;
 }
-
 .wrapper {
   background-color: #dbebe3; /* rgb(195, 238, 197);*/
   /* height:100vh; */
@@ -480,61 +312,32 @@ export default {
   margin-right: 5px;
   padding: 15px;
 }
-=======
+.empty {
+  align-items: center;
 }
-</script>
-
-<style scoped>
-    .wrapper-outer {
-        display: flex;
-        flex-direction: row;
-        position: fixed;
-        overflow-y: scroll;
-        padding-bottom: 100px;
-        margin: 20px;
-        width: 98%;
-        padding: 20px;
-    }
-    
-    .wrapper {
-        background-color:#DBEBE3; /* rgb(195, 238, 197);*/
-        /* height:100vh; */
-        flex:1;
-        align-items: center;
-        justify-content: center;
-        align-content: center;
-        justify-items: center;
-        margin-right:5px;
-        padding: 15px;
-    }
->>>>>>> parent of c79c2c8 (project management ui)
-
-    .empty {
-        align-items: center;
-    }   
-
-    h3 {
-        margin-top:-100px;
-        font-size: 20px;  
-    }
-
-    p {
-        text-align: center;
-        font-size:12px;
-        font-weight:300;
-    }
-
-<<<<<<< HEAD
-    h4 {
-        font-weight: bold;
-=======
-    #backButton {
-        background: #0e8044;
-        width: 190px;
-        height: 30px;
-        color: white;
-        margin: 20px;
->>>>>>> ruth
-    }
-
+h3 {
+  margin-top: -100px;
+  font-size: 20px;
+}
+p {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 300;
+  width: 20px;
+}
+h4 {
+  font-weight: bold;
+}
+#backButton {
+  background: #0e8044;
+  /*width: 190px;
+        height: 30px;*/
+  color: white;
+  margin-top: 20px;
+  border: none;
+  border-radius: 15px;
+  border-radius: 30px;
+  padding: 10px 25px;
+  font-size: 14px;
+}
 </style>
