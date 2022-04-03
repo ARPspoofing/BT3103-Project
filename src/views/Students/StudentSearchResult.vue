@@ -20,8 +20,7 @@
     
     </div> 
     <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
-      <button class="button" @click="toggleFilterMenu">Filter</button>
-      <PathfinderLoading v-if="!stopLoader"/>  
+      <button class="button" @click="toggleFilterMenu">Filter</button> 
       <nav class="menu">
       <ol>
         <li class="menu-item">
@@ -37,29 +36,29 @@
         </li>
       </ol>
       </nav>
+      
       <div v-if="stopLoader">
         Search results for {{receivedSearch}}:
       </div>
       <hr/>
     </h1>
-
-      
-     <div v-if="stopLoader" class = "noProject">
-         <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> ensure that you have spelled your search correctly.</h1>
-          <!-- {{GET_SEARCH_DATA}} -->  
-              
+      <div v-if="noProjectsPresent" class = "noProject">
+        <PathfinderLoading v-if="!stopLoader"/> 
+        <h1 v-if="stopLoader" class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> ensure that you have spelled your search correctly.</h1>
+          <!-- {{GET_SEARCH_DATA}} -->      
      </div>
+     <PathfinderLoading v-if="!stopLoader"/> 
       <div v-if="stopLoader" class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key + 2*6)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :picture = "item.profPicture" :description="item.description" @clickCard="indivprojFirst(key + 2*6)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
         </div>
 
         <div :key="item.key" v-for="(item, key) in secondPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojSecond(key)" @applicantbtn="addApplicantSecond(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :picture = "item.profPicture" :description="item.description" @clickCard="indivprojSecond(key)" @applicantbtn="addApplicantSecond(key + 2*6)"/>
         </div>
 
         <div :key="item.key" v-for="(item, key) in thirdPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojThird(key)" @applicantbtn="addApplicantThird(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :picture = "item.profPicture" :description="item.description" @clickCard="indivprojThird(key)" @applicantbtn="addApplicantThird(key + 2*6)"/>
         </div>
         </div>
       </div>
@@ -108,7 +107,6 @@ export default {
       //store all id in one array
       searchId: null,
       stopLoader: false,
-      displayMsg: false,
       //store all id in separate arrays
     }
   },
@@ -242,11 +240,6 @@ export default {
     const that = this;
     setTimeout(() => {
       this.stopLoader = true
-      if (this.noProjectsPresent) {
-        this.displayMsg = true
-      } else {
-        this.displayMsg = false
-      }
     }, 2500)
     const gottenSearch = that.$route.params.searched;
     this.receivedSearch = gottenSearch;
@@ -381,6 +374,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
         });
         } else if (secondPriorityIds.includes(docs.id)) {
           secondPriority.push({ 
@@ -396,6 +390,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
         });
 
         } else if (thirdPriorityIds.includes(docs.id)) {
@@ -412,6 +407,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
         });
 
         }

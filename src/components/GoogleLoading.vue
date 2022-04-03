@@ -1,7 +1,5 @@
 <template>
-    <div class="loader">
-        PATHFINDERS
-    </div> 
+    <PathfinderLoading/>
 </template>
 
 <script>
@@ -11,6 +9,7 @@ import {doc,setDoc,collection,getDoc,deleteDoc} from 'firebase/firestore';
 import {ref} from "vue"
 import {getAuth,createUserWithEmailAndPassword,sendSignInLinkToEmail,isSignInWithEmailLink, signInWithEmailLink,GoogleAuthProvider,signInWithPopup} from "firebase/auth"
 import {useRouter} from "vue-router"
+import PathfinderLoading from '../components/PathfinderLoading.vue'
 const db = getFirestore(firebaseApp)
 const router = useRouter()
 
@@ -20,6 +19,9 @@ export default {
         return {
             userEmail: '',
         }
+    },
+    components: {
+        PathfinderLoading,
     },
     created() {
         var that = this
@@ -109,25 +111,4 @@ export default {
 </script>
 
 <style scoped>
-
-    .loader {
-        font-size:40px;
-        color:palevioletred;
-
-    }
-
-    .loader::after {
-        content: '\2026 ';
-        display:inline-block;
-        overflow: hidden;
-        vertical-align: bottom;
-        animation: dots steps(4,end) 2s infinite;
-    }
-
-    @keyframes dots {
-        to {
-            width: 0.25em;
-        }
-    }
-
 </style>

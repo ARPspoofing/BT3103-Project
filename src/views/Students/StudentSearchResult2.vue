@@ -16,10 +16,11 @@
     <div @click="openFilter" ref="filterWrap" class="filter-wrap flex flex-column">
     
     </div> 
-    <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
-      <button class="button" @click="toggleFilterMenu">Filter</button>
-      <PathfinderLoading v-if="!stopLoader"/> 
-      <nav class="menu">
+    
+    
+    <div id="status" class="searchDisplay" v-if = "!noProjectsPresent">
+      <button class="button" @click="toggleFilterMenu">Filter</button>  
+      <div class="menu">
       <ol>
         <li class="menu-item">
           <a>Sort By</a>
@@ -33,18 +34,18 @@
           </ol>
         </li>
       </ol>
-      </nav>
-
+      </div>
       <div v-if="stopLoader">
         Search results for {{receivedSearch}}:
       </div>
-      
       <hr/>
-    </h1>
-     <div v-if="stopLoader" class = "noProject">
-         <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> ensure that you have spelled your search correctly.</h1>
+    </div>
+     <div v-if="noProjectsPresent" class = "noProject">
+        <PathfinderLoading v-if="!stopLoader"/> 
+        <h1 v-if="stopLoader" class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> ensure that you have spelled your search correctly.</h1>
           <!-- {{GET_SEARCH_DATA}} -->      
      </div>
+     <PathfinderLoading v-if="!stopLoader"/> 
       <div v-if="stopLoader" class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
           <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key /*+ 2*6*/)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
@@ -108,7 +109,6 @@ export default {
       secondPriority: null,
       thirdPriority: null,
       stopLoader: false,
-      displayMsg: false,
     }
   },
 
@@ -236,12 +236,7 @@ export default {
   mounted() {
     const that = this;
     setTimeout(() => {
-      this.stopLoader = true
-      if (this.noProjectsPresent) {
-        this.displayMsg = true
-      } else {
-        this.displayMsg = false
-      }
+      this.stopLoader = true     
     }, 2500)
     const gottenSearch = that.$route.params.searched;
     this.receivedSearch = gottenSearch;
@@ -570,9 +565,10 @@ export default {
 	    padding: 0;
 	    margin: 0;
       background-color: #ec9f39; 
-      font-size: 16px;    
+      font-size: 16px;  
+      
     }
-    .menu ol:first-child {
+    .menu ol {
       width: 10%;
       max-width: 960px;
       margin: 1rem auto 0 auto;
