@@ -52,7 +52,7 @@ export default {
         //searchResult: String,
     },
     computed: {
-      ...mapState(['searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','name','userEmail'])
+      ...mapState(['searchString','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','name','userEmail'])
     },
     data() {
       return {
@@ -62,7 +62,7 @@ export default {
       }
     },
     methods:  {   
-    ...mapMutations(['SET_SEARCH_DATA','SET_HIGHEST_PRIORITYIDS','SET_SECOND_PRIORITYIDS','SET_THIRD_PRIORITYIDS','CLEAR_ALL']),
+    ...mapMutations(['SET_SEARCH_STRING','SET_SEARCH_DATA','SET_HIGHEST_PRIORITYIDS','SET_SECOND_PRIORITYIDS','SET_THIRD_PRIORITYIDS','CLEAR_ALL']),
     async logOut() {
         const auth = getAuth()
         await signOut(auth) 
@@ -135,6 +135,7 @@ export default {
         //strip leading and ending white spaces
 
         currSearch = currSearch.trim()
+        this.SET_SEARCH_STRING(currSearch)
         //get all the current existing projects posted by businesses    
         const projects = await getDocs(collection(db, "Project"))
         

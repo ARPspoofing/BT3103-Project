@@ -80,9 +80,10 @@
     export default {
       name:'Filter',
       components: { Datepicker, Slider },
-      created() {
+      mounted() {
         this.searchId = this.searchData
-        const userEmail = window.localStorage.getItem('emailForSignIn')
+        const userEmail = this.userEmail
+        //const userEmail = window.localStorage.getItem('emailForSignIn')
         console.log("testtesttesttest",userEmail)
         var that = this
         var temp = []
@@ -98,7 +99,7 @@
     
         },
         computed: {
-          ...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds']),
+          ...mapState(['userEmail','filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds']),
           ...mapGetters(['GET_SEARCH_DATA']),
         },
       data() {
@@ -116,7 +117,7 @@
         }
       },
       methods: {
-        ...mapMutations(['SET_SEARCH_DATA','SET_HIGHEST_PRIORITYIDS','SET_SECOND_PRIORITYIDS','SET_THIRD_PRIORITYIDS','CLEAR_ALL']),
+        ...mapMutations(['SET_SEARCH_DATA','SET_HIGHEST_PRIORITYIDS','SET_SECOND_PRIORITYIDS','SET_THIRD_PRIORITYIDS','CLEAR_ALL','CLEAR_HIGHEST']),
         checkDate() {
           if (this.date[0] == null || this.date[1] == null) {
             this.rangeSelected = false
@@ -247,7 +248,7 @@
           */
 
 
-          this.CLEAR_ALL()
+          this.CLEAR_HIGHEST()
           this.SET_HIGHEST_PRIORITYIDS(allMatch)
           
           //Add company search to search bar 
