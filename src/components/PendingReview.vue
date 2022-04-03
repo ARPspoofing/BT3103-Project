@@ -4,10 +4,10 @@
     <div class="pendingreview">
         <div class="top flex flex-row">
             <div class="title"><strong>{{task['taskname']}}</strong></div>
-            <div class="status-button flex todoButton">
+            <div class="status-button flex pendingreviewButton">
                
                 <div>
-                    <p>Pending Review</p>
+                    <p id="status">Pending</p>
                 </div>
                 
             </div>
@@ -57,15 +57,29 @@
 <style scoped>
 
     .pendingreview {
-        background-color: #71AED1; /*hsl(202, 54%, 56%);*/
+        /* background-color: #FFAB2C; */
         border-radius: 20px;
-        padding: 40px 20px;
+        padding: 30px 20px;
         /*margin-right:5px;
         margin-left:5px;
         margin-bottom: 4px;*/
         text-decoration: none;
         margin: 15px 5px;
         box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.15);
+        height: 170px;
+        text-align: left;
+    }
+    p {
+        margin: 0px;
+    }
+    .title {
+        height: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1; /* number of lines to show */
+        line-clamp: 1;
+        -webkit-box-orient: vertical;
     }
 
     .flex {
@@ -96,7 +110,7 @@
 
     .pendingreview {
         color: white;
-        background-color: rgb(102, 117, 245);
+        background-color: #71AED1;
     }
 
     .completed {
@@ -104,7 +118,7 @@
         background-color: rgb(187, 111, 231);
     }
 
-     .status-button {
+      .status-button {
         width: 4px;
         height: 10px;
         font-size: 12px;
@@ -120,28 +134,54 @@
         margin-bottom: 15px;
         margin-top:-15px;
     }
-
+    
     
     .todoButton {
         background-color: rgb(230, 121, 139);
     }
 
     .inprogressButton {
+         background-color: rgb(230, 121, 139);
 
     }
 
     .pendingreviewButton {
+         background-color: rgb(230, 121, 139);
+         padding-top: 10px;
+        padding-bottom: 10px;
+        width: 70px;
 
     }
 
     .completedButton {
+         background-color: rgb(230, 121, 139);
 
     }
 
     .duedate {
-        font-size:12px;
-        margin-top:-15px;
+        font-size:13px;
+        margin-top:-7px;
     }
+    
+    .short {
+        font-size:13px;
+        margin-top:5px;
+        height: 63px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* number of lines to show */
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+    
+    #status {
+        width: max-content;
+        font-size: 12px;
+        margin: 0px;
+        color: white;
+    }
+    
     
 
 

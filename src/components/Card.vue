@@ -120,7 +120,11 @@
           </div>
         </div>
       </div>
+<<<<<<< HEAD
     </div>-->
+=======
+    </div>  -->
+>>>>>>> emily
     <button
       id="acceptbtn"
       v-show="offered"
@@ -136,7 +140,11 @@
       class="btn-apply"
     >
       Decline
+<<<<<<< HEAD
     </button> 
+=======
+    </button>
+>>>>>>> emily
 
     
   </div> 

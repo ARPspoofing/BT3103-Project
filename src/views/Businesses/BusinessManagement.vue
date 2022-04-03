@@ -1,6 +1,9 @@
 <template>
 <BusinessNavBar :Heading="Heading" :header=true />
-<button @click="goback" id="backButton">Back to Projects</button>
+<div class="mainBody">
+<button @click="goback" id="backButton">
+  <i class="fa-solid fa-angles-left"></i>
+  Back to Projects</button>
 <div v-if="toDoTask.length > 0" class="wrapper-outer">
     <div class="wrapper">
         <h4>TO-DO</h4>
@@ -37,6 +40,7 @@
         <h3>No task has been completed yet.</h3>
         
         </div>
+    </div>
     </div>
     
 </div>
@@ -96,160 +100,87 @@ export default {
     const curr = this;
     
     async function getTasks() {
-      //Change "To-Do" to props later
-      //Later, each project needs to have its list of tasks
-      //The code here is just temporary
-      //   let database = await getDocs(collection(db,"Tasks"))
-      var toDoTask = [];
-      var inProgressTask = [];
-      var pendingReviewTask = [];
-      var completedTask = [];
-      const docSnap = await getDoc(doc(db, "Project", curr.projectId));
-      let data = docSnap.data();
-      var tasks = data.Tasks;
-      //   console.log(curr.tasks.length)
-      for (var i = 0; i < tasks.length; i++) {
-        let taskstatus = tasks[i]["taskStatus"];
-        if (taskstatus == "To do") {
-          toDoTask.push({
-            projectId: curr.projectId,
-            projectTitle: curr.Heading,
-            taskId: i,
-            shortdescription: tasks[i]["taskDescription"],
-            duedate: tasks[i]["taskDueDate"],
-            taskname: tasks[i]["taskName"],
-            status: tasks[i]["taskStatus"],
-            issueDate: tasks[i]["taskIssueDate"],
-            todo: true,
-            inprogress: false,
-            pendingreview: false,
-            completed: false,
-          });
-        } else if (taskstatus == "InProgress") {
-          inProgressTask.push({
-            projectId: curr.projectId,
-            projectTitle: curr.Heading,
-            taskId: i,
-            shortdescription: tasks[i]["taskDescription"],
-            duedate: tasks[i]["taskDueDate"],
-            taskname: tasks[i]["taskName"],
-            status: tasks[i]["taskStatus"],
-            issueDate: tasks[i]["taskIssueDate"],
-            todo: true,
-            inprogress: false,
-            pendingreview: false,
-            completed: false,
-          });
-        } else if (taskstatus == "PendingReview") {
-          pendingReviewTask.push({
-            projectId: curr.projectId,
-            projectTitle: curr.Heading,
-            taskId: i,
-            shortdescription: tasks[i]["taskDescription"],
-            duedate: tasks[i]["taskDueDate"],
-            taskname: tasks[i]["taskName"],
-            status: tasks[i]["taskStatus"],
-            issueDate: tasks[i]["taskIssueDate"],
-            todo: true,
-            inprogress: false,
-            pendingreview: false,
-            completed: false,
-          });
-        } else {
-          completedTask.push({
-            projectId: curr.projectId,
-            projectTitle: curr.Heading,
-            taskId: i,
-            shortdescription: tasks[i]["taskDescription"],
-            duedate: tasks[i]["taskDueDate"],
-            taskname: tasks[i]["taskName"],
-            status: tasks[i]["taskStatus"],
-            issueDate: tasks[i]["taskIssueDate"],
-            todo: true,
-            inprogress: false,
-            pendingreview: false,
-            completed: false,
-          });
-        }
-      }
-      curr.toDoTask = toDoTask;
-      curr.inProgressTask = inProgressTask;
-      curr.pendingReviewTask = pendingReviewTask;
-      curr.completedTask = completedTask;
+          //Change "To-Do" to props later
+          //Later, each project needs to have its list of tasks
+          //The code here is just temporary
+          let docRef = await doc(db,"Project",curr.projectId)
+          let project = await getDoc(docRef)
+          let tasks = project.data().Tasks
+          console.log(tasks)
+          var toDoTask = []
+          var inProgressTask = []
+          var pendingReviewTask = []
+          var completedTask = []
           
-        //   database.forEach((document) => {
-        //       //Change to dynamic props later
-        //       const data = document.data()
-        //       if (data.status == "ToDo") {
+          tasks.forEach((document) => {
+              //Change to dynamic props later
+             
+              if (document.taskStatus == "To do") {
                 
-        //         console.log(data)
-        //         toDoTask.push({
-        //             id: data.id,
-        //             comments: data.comments,
-        //             documents: data.documents,
-        //             currState: data.currState,
-        //             duedate: data.duedate,
-        //             taskname: data.taskname,
-        //             todo: data.todo,
-        //             inprogress: data.inprogress,
-        //             pendingreview: data.pendingreview,
-        //             completed: data.completed,
-        //             shortdescription: data.shortdescription,
+                console.log(document)
+                toDoTask.push({
+                    id: document.taskName,
+                    projectTitle: curr.projectTitle,
+                    projectId: curr.projectId,
+                    comments: document.comments,
+                    documents: document.documents,
+                    currStatus: document.taskStatus,
+                    duedate: document.taskDueDate,
+                    taskname: document.taskName,                    
+                    shortdescription: document.taskDescription,
                     
-        //         })
-        //       } else if (data.status == "InProgress") {
+                })
+              } else if (document.taskStatus == "In progress") {
                  
-        //           console.log(data)
-        //           inProgressTask.push({
-        //             id: data.id,
-        //             comments: data.comments,
-        //             documents: data.documents,
-        //             currState: data.currState,
-        //             duedate: data.duedate,
-        //             taskname: data.taskname,
-        //             todo: data.todo,
-        //             inprogress: data.inprogress,
-        //             pendingreview: data.pendingreview,
-        //             completed: data.completed,
-        //             shortdescription: data.shortdescription,
+                  console.log(document)
+                  inProgressTask.push({
+                    id: document.taskName,
+                    projectId: curr.projectId,
+                    projectTitle: curr.projectTitle,
+                    comments: document.comments,
+                    documents: document.documents,
+                    status: document.taskStatus,
+                    duedate: document.taskDueDate,
+                    taskname: document.taskName,                  
+                    shortdescription: document.taskDescription,
                     
-        //         })
-        //       } else if (data.status == "PendingReview") {
-        //           console.log(data) 
-        //           pendingReviewTask.push({
-        //               id: data.id,
-        //             comments: data.comments,
-        //             documents: data.documents,
-        //             currState: data.currState,
-        //             duedate: data.duedate,
-        //             taskname: data.taskname,
-        //             todo: data.todo,
-        //             inprogress: data.inprogress,
-        //             pendingreview: data.pendingreview,
-        //             completed: data.completed,
-        //             shortdescription: data.shortdescription,
-        //           })
-        //       } else if (data.status == "Completed") {
-        //           console.log(data) 
-        //           completedTask.push({
-        //               id: data.id,
-        //             comments: data.comments,
-        //             documents: data.documents,
-        //             currState: data.currState,
-        //             duedate: data.duedate,
-        //             taskname: data.taskname,
-        //             todo: data.todo,
-        //             inprogress: data.inprogress,
-        //             pendingreview: data.pendingreview,
-        //             completed: data.completed,
-        //             shortdescription: data.shortdescription,                      
-        //           })
-        //       }
-        //     })
-        // console.log(pendingReviewTask)
-        // console.log(completedTask)
+                })
+              } else if (document.taskStatus == "Pending review") {
+                  console.log(document) 
+                  pendingReviewTask.push({
+                    id: document.taskName,
+                    projectId: curr.projectId,
+                    projectTitle: curr.projectTitle,
+                    comments: document.comments,
+                    documents: document.documents,
+                    status: document.taskStatus,
+                    duedate: document.taskDueDate,
+                    taskname: document.taskName,                   
+                    shortdescription: document.taskDescription,
+                  })
+              } else if (document.taskStatus == "Completed") {
+                  console.log(document) 
+                  completedTask.push({
+                    id: document.id,
+                    projectId: curr.projectId,
+                    comments: document.comments,
+                    projectTitle: curr.projectTitle,
+                    documents: document.documents,
+                    status: document.taskStatus,
+                    duedate: document.taskDueDate,
+                    taskname: document.taskName,
+                    shortdescription: document.taskDescription,                      
+                  })
+              }
+            })
+        console.log(pendingReviewTask)
+        console.log(completedTask)
 
-        // console.log(pendingReviewTask)
+        console.log(pendingReviewTask)
+        curr.toDoTask = toDoTask
+        curr.inProgressTask = inProgressTask
+        curr.pendingReviewTask = pendingReviewTask
+        curr.completedTask = completedTask
       }
       getTasks()
     },
@@ -264,10 +195,21 @@ export default {
 </script>
 
 <style scoped>
+  .mainBody {
+    background-color: #F5F5F5;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow-y: scroll;
+    padding-bottom: 150px;
+    /*
+    filter: blur(5px);
+   */
+}
     .wrapper-outer {
         display: flex;
         flex-direction: row;
-        position: fixed;
+        /* position: fixed; */
         overflow-y: scroll;
         padding-bottom: 100px;
         margin: 20px;
