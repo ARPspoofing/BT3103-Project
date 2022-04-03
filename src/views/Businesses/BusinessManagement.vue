@@ -60,119 +60,122 @@ import BusinessNavBar from "../../components/BusinessNavBar.vue";
 
 
 export default {
-    name: "BusinessManagement",
-    components: {
-        BusinessNavBar,
+  name: "BusinessManagement",
+  components: {
+    BusinessNavBar,
+    ToDo,
+    InProgress,
+    PendingReview,
+    Completed,
+  },
+  props: {
+    //So that this page can easily access the project that it is clicked on
+    projectName: String,
+  },
+  data() {
+    return {
+      Heading: "",
+      toDoTask: [],
+      inProgressTask: [],
+      pendingReviewTask: [],
+      completedTask: [],
+      projectId: "",
+    };
+  },
+  methods: {
+    goback() {
+      this.$router.push({
+        name: "BusinessInProgress",
+        params: {},
+      });
     },
-    props: {
-        //So that this page can easily access the project that it is clicked on
-        projectName:String,
-
-    },
-    data() {
-        return {
-            Heading: "",
-            toDoTask: [],
-            inProgressTask:[],  
-            pendingReviewTask:[],
-            completedTask:[],
-            projectId: "",
+  },
+  mounted() {
+    this.Heading = JSON.parse(this.$route.params.projectTitle);
+    this.projectId = JSON.parse(this.$route.params.projectId);
+    const curr = this;
+    
+    async function getTasks() {
+      //Change "To-Do" to props later
+      //Later, each project needs to have its list of tasks
+      //The code here is just temporary
+      //   let database = await getDocs(collection(db,"Tasks"))
+      var toDoTask = [];
+      var inProgressTask = [];
+      var pendingReviewTask = [];
+      var completedTask = [];
+      const docSnap = await getDoc(doc(db, "Project", curr.projectId));
+      let data = docSnap.data();
+      var tasks = data.Tasks;
+      //   console.log(curr.tasks.length)
+      for (var i = 0; i < tasks.length; i++) {
+        let taskstatus = tasks[i]["taskStatus"];
+        if (taskstatus == "To do") {
+          toDoTask.push({
+            projectId: curr.projectId,
+            projectTitle: curr.Heading,
+            taskId: i,
+            shortdescription: tasks[i]["taskDescription"],
+            duedate: tasks[i]["taskDueDate"],
+            taskname: tasks[i]["taskName"],
+            status: tasks[i]["taskStatus"],
+            issueDate: tasks[i]["taskIssueDate"],
+            todo: true,
+            inprogress: false,
+            pendingreview: false,
+            completed: false,
+          });
+        } else if (taskstatus == "InProgress") {
+          inProgressTask.push({
+            projectId: curr.projectId,
+            projectTitle: curr.Heading,
+            taskId: i,
+            shortdescription: tasks[i]["taskDescription"],
+            duedate: tasks[i]["taskDueDate"],
+            taskname: tasks[i]["taskName"],
+            status: tasks[i]["taskStatus"],
+            issueDate: tasks[i]["taskIssueDate"],
+            todo: true,
+            inprogress: false,
+            pendingreview: false,
+            completed: false,
+          });
+        } else if (taskstatus == "PendingReview") {
+          pendingReviewTask.push({
+            projectId: curr.projectId,
+            projectTitle: curr.Heading,
+            taskId: i,
+            shortdescription: tasks[i]["taskDescription"],
+            duedate: tasks[i]["taskDueDate"],
+            taskname: tasks[i]["taskName"],
+            status: tasks[i]["taskStatus"],
+            issueDate: tasks[i]["taskIssueDate"],
+            todo: true,
+            inprogress: false,
+            pendingreview: false,
+            completed: false,
+          });
+        } else {
+          completedTask.push({
+            projectId: curr.projectId,
+            projectTitle: curr.Heading,
+            taskId: i,
+            shortdescription: tasks[i]["taskDescription"],
+            duedate: tasks[i]["taskDueDate"],
+            taskname: tasks[i]["taskName"],
+            status: tasks[i]["taskStatus"],
+            issueDate: tasks[i]["taskIssueDate"],
+            todo: true,
+            inprogress: false,
+            pendingreview: false,
+            completed: false,
+          });
         }
-    },
-    methods: {
-        goback() {
-            this.$router.push({
-                name: "BusinessInProgress",
-                params: {
-                },
-            });
-        },
-    },
-    mounted() {
-        this.Heading = JSON.parse(this.$route.params.projectTitle)
-        this.projectId = JSON.parse(this.$route.params.projectId)
-
-        const curr = this
-        async function getTasks() {
-
-          //Change "To-Do" to props later
-          //Later, each project needs to have its list of tasks
-          //The code here is just temporary
-        //   let database = await getDocs(collection(db,"Tasks"))
-          var toDoTask = []
-          var inProgressTask = []
-          var pendingReviewTask = []
-          var completedTask = []
-
-          const docSnap = await getDoc(doc(db, "Project", curr.projectId));
-          let data = docSnap.data();
-          var tasks = data.Tasks
-        //   console.log(curr.tasks.length)
-          for (var i = 0; i < tasks.length; i++) {
-            let taskstatus = tasks[i]["taskStatus"]
-            if (taskstatus == "To do") {
-                toDoTask.push({
-                    projectId: curr.projectId,
-                    projectTitle: curr.Heading,
-                    taskId: i,
-                    shortdescription: tasks[i]["taskDescription"],
-                    duedate: tasks[i]["taskDueDate"],
-                    taskname: tasks[i]["taskName"],
-                    status:tasks[i]["taskStatus"],
-                    todo: true,
-                    inprogress: false,
-                    pendingreview: false,
-                    completed: false,
-                })
-            } else if (taskstatus == "InProgress") {
-                inProgressTask.push({
-                    projectId: curr.projectId,
-                    projectTitle: curr.Heading,
-                    taskId: i,
-                    shortdescription: tasks[i]["taskDescription"],
-                    duedate: tasks[i]["taskDueDate"],
-                    taskname: tasks[i]["taskName"],
-                    status:tasks[i]["taskStatus"],
-                    todo: true,
-                    inprogress: false,
-                    pendingreview: false,
-                    completed: false,
-                })
-            } else if (taskstatus == "PendingReview") {
-                pendingReviewTask.push({
-                    projectId: curr.projectId,
-                    projectTitle: curr.Heading,
-                    taskId: i,
-                    shortdescription: tasks[i]["taskDescription"],
-                    duedate: tasks[i]["taskDueDate"],
-                    taskname: tasks[i]["taskName"],
-                    status:tasks[i]["taskStatus"],
-                    todo: true,
-                    inprogress: false,
-                    pendingreview: false,
-                    completed: false,
-                })
-            } else {
-                completedTask.push({
-                    projectId: curr.projectId,
-                    projectTitle: curr.Heading,
-                    taskId: i,
-                    shortdescription: tasks[i]["taskDescription"],
-                    duedate: tasks[i]["taskDueDate"],
-                    taskname: tasks[i]["taskName"],
-                    status:tasks[i]["taskStatus"],
-                    todo: true,
-                    inprogress: false,
-                    pendingreview: false,
-                    completed: false,
-                })
-            }
-          }
-
-          curr.toDoTask = toDoTask
-          curr.inProgressTask = inProgressTask
-          curr.pendingReviewTask = pendingReviewTask
-          curr.completedTask = completedTask
+      }
+      curr.toDoTask = toDoTask;
+      curr.inProgressTask = inProgressTask;
+      curr.pendingReviewTask = pendingReviewTask;
+      curr.completedTask = completedTask;
           
         //   database.forEach((document) => {
         //       //Change to dynamic props later

@@ -23,7 +23,7 @@
             <div class="status-button flex todoButton">
                
                 <div>
-                    <p>To Do</p>
+                    <p id="status">To Do</p>
                 </div>
                 
             </div>
@@ -194,5 +194,8 @@ import * as moment from 'moment'
         line-clamp: 3;
         -webkit-box-orient: vertical;
     }
-
+    
+    #status {
+        width: max-content
+    }
 </style>
