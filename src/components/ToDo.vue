@@ -17,38 +17,69 @@
             }
         }"
     >-->
-    <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
-        taskId: task['id'], projectId:task['projectId'], description: task['shortdescription'],projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
-    <div class="todo">
-        <div class="top flex flex-row">
-            <div class="title"><strong>{{task['taskname']}}</strong></div>
-            <div class="status-button flex todoButton">
-               
-                <div>
-                    <p id="status">To Do</p>
-                </div>
+    <div v-if="user == 'student'">
+        <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
+            taskId: task['id'], projectId:task['projectId'], description: task['shortdescription'],projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
+        <div class="todo">
+            <div class="top flex flex-row">
+                <div class="title"><strong>{{task['taskname']}}</strong></div>
+                <div class="status-button flex todoButton">
                 
+                    <div>
+                        <p id="status">To Do</p>
+                    </div>
+                    
+                </div>
             </div>
-        </div>
-        <div class="duedate">
+            <div class="duedate">
+                <p>
+                    Due date: {{formatDate(task["duedate"])}}
+                </p>
+            </div>
+        
+            <div class="short">
             <p>
-                 Due date: {{formatDate(task["duedate"])}}
+                Short Description: {{task['shortdescription']}}
             </p>
-        </div>
-       
-        <div class="short">
-        <p>
-            Short Description: {{task['shortdescription']}}
-        </p>
-        </div>          
-    </div>  
-    </router-link>  
+            </div>          
+        </div>  
+        </router-link> 
+    </div>
+     <div v-else>
+        <router-link style="text-decoration: none; color: inherit; " :to="{name:'BusinessToDoView', params: {task:task,
+            taskId: task['id'], projectId:task['projectId'], description: task['shortdescription'],projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
+        <div class="todo">
+            <div class="top flex flex-row">
+                <div class="title"><strong>{{task['taskname']}}</strong></div>
+                <div class="status-button flex todoButton">
+                
+                    <div>
+                        <p id="status">To Do</p>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="duedate">
+                <p>
+                    Due date: {{formatDate(task["duedate"])}}
+                </p>
+            </div>
+        
+            <div class="short">
+            <p>
+                Short Description: {{task['shortdescription']}}
+            </p>
+            </div>          
+        </div>  
+        </router-link> 
+    </div>
 
     
 </template>
 
 <script>
 import * as moment from 'moment'
+
     export default {
         name: 'ToDo',
         props: {
@@ -56,6 +87,7 @@ import * as moment from 'moment'
             projectTitle:String,
             projectId:String,
             description: String,
+            user: String,
         },
         mounted() {
             const curr = this 

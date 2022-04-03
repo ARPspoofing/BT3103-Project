@@ -1,5 +1,6 @@
 <template>
-     <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
+<div v-if="user == 'student'">
+        <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
         taskId: task['id'], projectId:task['projectId'], description: task['shortdescription'],projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
     <div class="inProgress">
         <div class="top flex flex-row">
@@ -24,6 +25,59 @@
         </div>          
     </div>  
     </router-link>  
+    </div>
+     <div v-else>
+        <router-link style="text-decoration: none; color: inherit; " :to="{name:'BusinessToDoView', params: {task:task,
+        taskId: task['id'], projectId:task['projectId'], description: task['shortdescription'],projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
+    <div class="inProgress">
+        <div class="top flex flex-row">
+            <div class="title"><strong>{{task['taskname']}}</strong></div>
+            <div class="status-button flex inprogressButton">                
+                <div >
+                    <p id="status">In-Progress</p>
+                </div>
+                
+            </div>
+        </div>
+        <div class="duedate">
+            <p>
+                 Due date: {{duedate}}
+            </p>
+        </div>
+       
+        <div class="short">
+        <p>
+            Short Description: {{task['shortdescription']}}
+        </p>
+        </div>          
+    </div>  
+    </router-link>   
+    </div>
+     <!-- <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
+        taskId: task['id'], projectId:task['projectId'], description: task['shortdescription'],projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
+    <div class="inProgress">
+        <div class="top flex flex-row">
+            <div class="title"><strong>{{task['taskname']}}</strong></div>
+            <div class="status-button flex inprogressButton">                
+                <div >
+                    <p id="status">In-Progress</p>
+                </div>
+                
+            </div>
+        </div>
+        <div class="duedate">
+            <p>
+                 Due date: {{duedate}}
+            </p>
+        </div>
+       
+        <div class="short">
+        <p>
+            Short Description: {{task['shortdescription']}}
+        </p>
+        </div>          
+    </div>  
+    </router-link>   -->
 
     
 </template>
@@ -35,7 +89,8 @@ import * as moment from 'moment'
         props: {
             task:Object,
             projectTitle:String,
-            projectId:String
+            projectId:String,
+            user: String,
 
         },
         mounted() {
