@@ -1,6 +1,7 @@
 <template>
-       <router-link :to="{name:'StudentManagement', params:{projectId:this.$route.params.projectId,projectTitle:this.$route.params.projectTitle}}">
-           <img src='../../assets/back.png'> Go Back
+       <router-link :to="{name:'StudentManagement', params:{projectId:this.$route.params.projectId, projectTitle:this.$route.params.projectTitle}}">
+           <button id="backButton"><i class="fa-solid fa-angles-left"></i>
+Back to Management</button>
        </router-link> 
       <div class="details flex flex-column">
            <div class="top flex">
@@ -18,22 +19,47 @@
                </div>
            </div>
            <div class="top-middle flex">
-                <div class="date flex flex-column">
+                <div id="duedate" class="date flex flex-column">
                     <!-- Task issue date necessary? -->
-                   <h4>Task Issue Date: {{duedate}}</h4>
-                   <h4>Task Due Date: {{duedate}}</h4>
+                   <p><b>Task Issue Date: </b>  {{duedate}}</p>
+                   <p><b>Task Due Date:</b>  {{formatDate(duedate)}}</p>
                </div>
            </div>
+           <!--<div class="top-middle flex">
+                <div id="duedate" class="date flex flex-column">
+                   <p><b>Task Issue Date :</b> {{formatDate(issuedate)}}</p>
+                   <p><b>Due Date :</b> {{formatDate(duedate)}}</p>
+               </div>
+           </div>-->
            <div class="middle flex">
                <div id="description" class="description flex flex-column">
-                   <p>Full Task Description</p>
-                   <p>{{this.shortdescription}}</p>
+                   <p><b>Task Description</b></p>
+                   <p>{{this.description}}</p>
                </div>
            </div>
-           <div class="middle-bottom flex">
+           <!--<div class="middle-bottom flex">
                <div class="documents flex flex-column">
                    <p>Relevant Documents:</p>
                    <img src="../../assets/document.jpeg">
+               </div>
+           </div>-->
+           <div class="middle-bottom flex">
+               <div class="documents flex flex-column">
+                   <p><b>Submit Relevant Documents :</b></p>
+                   <button id="addFileButton" @click="addFile">
+                    <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
+                    Add Files
+                    </button>
+                    <div
+                    class="previous"
+                    v-for="(task, counter) in files"
+                    v-bind:key="counter"
+                    >
+                    <button id="deleteFile" @click="deleteFile(counter)">
+                        <i class="fa fa-times" id="crossIcon"></i>
+                    </button>
+                   <input type="file" multiple name="files[]" id="files" v-on:change="uploadFiles">
+                   </div>
                </div>
            </div>
            <div class="bottom flex flex-column">
@@ -67,6 +93,7 @@ import * as moment from 'moment'
                projectTitle: this.$route.params.projectTitle,
                duedate: this.$route.params.duedate,
                task:this.$route.params.task,
+               description:this.$route.params.description,
                extend: '',
                documents: '',
                comments: '',
@@ -157,7 +184,7 @@ import * as moment from 'moment'
            const taskId = curr.$route.params.taskId
            const projectId = curr.$route.params.projectId
            const projectTitle = curr.$route.params.projectTitle
-           console.log(projectTitle) 
+           console.log(curr.$route.params) 
            async function getTasksDetails() {
            //Change "To-Do" to props later
            const docRef = await doc(db, "Project", projectId)

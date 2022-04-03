@@ -133,7 +133,6 @@ export default {
                     duedate: document.taskDueDate,
                     taskname: document.taskName,                    
                     shortdescription: document.taskDescription,
-                    
                 })
               } else if (document.taskStatus == "In progress") {
                  
