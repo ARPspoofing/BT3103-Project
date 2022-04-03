@@ -217,7 +217,7 @@ export default {
         display: flex;
         flex-direction: row;
         /* position: fixed; */
-        overflow-y: scroll;
+        /* overflow-y: scroll; */
         padding-bottom: 100px;
         margin: 20px;
         width: 98%;

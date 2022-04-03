@@ -16,7 +16,7 @@
             <div class="title"><strong>{{task['taskname']}}</strong></div>
             <div class="status-button flex completedButton">                
                 <div >
-                    <p>Completed</p>
+                    <p id="status">Completed</p>
                 </div>
                 
             </div>
@@ -52,7 +52,7 @@
             <div class="title"><strong>{{task['taskname']}}</strong></div>
             <div class="status-button flex completedButton">                
                 <div >
-                    <p>Completed</p>
+                    <p id="status">Completed</p>
                 </div>
                 
             </div>
