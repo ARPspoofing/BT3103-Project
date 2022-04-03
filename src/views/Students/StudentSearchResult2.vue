@@ -16,7 +16,6 @@
     </div> 
     <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
       <button class="button" @click="toggleFilterMenu">Filter</button>
-      <button class="order" @click="toggleSortMenu">Sort</button>
 
       <nav class="menu">
       <ol>
@@ -107,7 +106,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['TOGGLE_FILTER','CLEAR_ALL','SET_HIGHEST_PRIORITYIDS','CLEAR_FILTER','SET_FILTER']),
+    ...mapMutations(['TOGGLE_FILTER','CLEAR_ALL','SET_HIGHEST_PRIORITYIDS','CLEAR_FILTER','SET_FILTER','CLEAR_HIGHEST']),
     
     toggleFilterMenu() {
       this.TOGGLE_FILTER()
@@ -186,6 +185,10 @@ export default {
         this.CLEAR_FILTER()
         this.SET_FILTER("shortest")
         projects = query(collection(db, "Project"), orderBy("Project_End", "desc"));
+      } else {
+        this.CLEAR_FILTER()
+        this.SET_FILTER("shortest")
+        projects = query(collection(db, "Project"), orderBy("Project_End", "desc"));
       }
       var temp = []
       //searchData is a dictionary of {0:projectId,1:projectId...}
@@ -213,7 +216,7 @@ export default {
         }
       });
       console.log("searchDataValues",this.newValues)
-      this.CLEAR_ALL()
+      this.CLEAR_HIGHEST()
       this.SET_HIGHEST_PRIORITYIDS(temp)
       console.log("temp",temp)
       this.$router.push({name:'StudentSearchResult',params:{searched:this.searchString}})
@@ -248,16 +251,98 @@ export default {
       const secondPriorityIds = that.secondPriority
       const thirdPriorityIds = that.thirdPriority
       //const highestPriorityIds = that.searchData
-      
-
       const highestPriority = [];
       const secondPriority = [];  
-      const thirdPriority = []
+      const thirdPriority = [];
       console.log(highestPriorityIds)
-      let snapshot = await getDocs(collection(db, "Project"))
+      //let snapshot = await getDocs(collection(db, "Project"))
+      if (that.recent == true) {
+        alert("recent")
+        var snapshot = query(collection(db, "Project"), orderBy("Posted_Date","desc"));
+      } else if (that.oldest == true) {
+        alert("oldest")
+        var snapshot = query(collection(db, "Project"), orderBy("Posted_Date"));
+      } else if (that.highest == true) {
+        alert("highest")
+        var snapshot = query(collection(db, "Project"), orderBy("Allowance","desc"));
+      } else if (that.lowest == true) {
+        alert("lowest")
+        var snapshot = query(collection(db, "Project"), orderBy("Allowance"));
+      } else if (that.longest == true) {
+        alert("longest")
+        var snapshot = query(collection(db, "Project"), orderBy("Project_End"));
+      } else if (that.shortest == true) {
+        alert("shortest")
+        var snapshot = query(collection(db, "Project"), orderBy("Project_End","desc"));
+      //Just Order by project end date if no filter 
+      } else {
+        alert("else")
+        var snapshot = query(collection(db, "Project"), orderBy("Project_End","desc"));
+      }
+      snapshot = await getDocs(snapshot)
+      /*
+      highestPriorityIds.forEach(async (docId) => {
+        const currSnapshot = await getDoc(doc(db, 'Project', docId))  
+        let data = currSnapshot.data()
+        highestPriority.push({ 
+            projectTitle: data.Project_Title, 
+            description: data.Description, 
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
+        });
+      })
+      secondPriorityIds.forEach(async (docId) => {
+        const currSnapshot = await getDoc(doc(db, 'Project', docId))  
+        let data = currSnapshot.data()
+        highestPriority.push({ 
+            projectTitle: data.Project_Title, 
+            description: data.Description, 
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
+        });
+      })
+      thirdPriorityIds.forEach(async (docId) => {
+        const currSnapshot = await getDoc(doc(db, 'Project', docId))  
+        let data = currSnapshot.data()
+        highestPriority.push({ 
+            projectTitle: data.Project_Title, 
+            description: data.Description, 
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
+        });
+      })
+      */
+      
       const testCollection = [];
+
+      console.log("passed the query")
       snapshot.forEach((docs) => {
         let data = docs.data()
+        console.log("searchResultone",highestPriorityIds)
         if (highestPriorityIds.includes(docs.id)) {
         highestPriority.push({ 
             projectTitle: data.Project_Title, 
@@ -306,8 +391,10 @@ export default {
         });
 
         }
+
         
       });
+      
 
 
       that.highestPriority = highestPriority
@@ -465,6 +552,7 @@ export default {
 	    padding: 0;
 	    margin: 0;
       background-color: #ec9f39; 
+      font-size: 16px;    
     }
     .menu ol:first-child {
       width: 10%;

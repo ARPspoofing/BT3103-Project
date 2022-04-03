@@ -19,7 +19,21 @@
     </div> 
     <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
       <button class="button" @click="toggleFilterMenu">Filter</button>
-      <button class="button" @click="toggleSortMenu">Sort</button>
+      <nav class="menu">
+      <ol>
+        <li class="menu-item">
+          <a>Sort By</a>
+          <ol class="sub-menu">
+            <li @click="fetchProjectOrder('recent')" class="menu-item"><a href="#0">Recent</a></li>
+            <li @click="fetchProjectOrder('oldest')" class="menu-item"><a href="#0">Oldest</a></li>
+            <li @click="fetchProjectOrder('shortest')" class="menu-item"><a href="#0">Shortest</a></li>
+            <li @click="fetchProjectOrder('longest')" class="menu-item"><a href="#0">Longest</a></li>
+            <li @click="fetchProjectOrder('highest')" class="menu-item"><a href="#0">Highest</a></li>
+            <li @click="fetchProjectOrder('lowest')" class="menu-item"><a href="#0">Lowest</a></li>
+          </ol>
+        </li>
+      </ol>
+      </nav>
       Search results for {{receivedSearch}}:
       <hr/>
     </h1>
@@ -67,7 +81,8 @@ export default {
   },
 
   computed: {
-    ...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','recent','oldest','highest','lowest','longest','shortest']),
+    ...mapState(['searchString','filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','recent','oldest','shortest','longest','highest','lowest']),
+    //...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','recent','oldest','highest','lowest','longest','shortest']),
     ...mapGetters(['GET_SEARCH_DATA']),
     
   },
@@ -88,7 +103,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['TOGGLE_FILTER']),
+    ...mapMutations(['TOGGLE_FILTER','CLEAR_ALL','SET_HIGHEST_PRIORITYIDS','CLEAR_FILTER','SET_FILTER','CLEAR_HIGHEST']),
     alertFunc() {
       this.$refs.toggle.$el.click()
     },
@@ -139,6 +154,73 @@ export default {
       console.log(key)
       console.log(this.thirdPriority[key])
   },
+  async fetchProjectOrder(order) {
+      //var businessEmail = auth.currentUser.email;
+      //var businessEmail = window.localStorage.getItem('emailForSignIn')
+      //order projects by posted date, from latest to oldest
+      alert(order)
+      var projects = null
+      if (order == "recent") {
+        alert("true!!")
+        this.CLEAR_FILTER()
+        this.SET_FILTER("recent")
+        projects = query(collection(db, "Project"), orderBy("Posted_Date", "desc"));
+      } else if (order == "oldest") {
+        this.CLEAR_FILTER()
+        this.SET_FILTER("oldest")
+        projects = query(collection(db, "Project"), orderBy("Posted_Date"));
+      } else if (order == "highest") {
+        this.CLEAR_FILTER()
+        this.SET_FILTER("highest")
+        projects = query(collection(db, "Project"), orderBy("Allowance", "desc"));
+      } else if (order == "lowest") {
+        this.CLEAR_FILTER()
+        this.SET_FILTER("lowest")
+        projects = query(collection(db, "Project"), orderBy("Allowance"));
+      } else if (order == "longest") {
+        this.CLEAR_FILTER()
+        this.SET_FILTER("longest")
+        projects = query(collection(db, "Project"), orderBy("Project_End"));
+      } else if (order== "shortest") {
+        this.CLEAR_FILTER()
+        this.SET_FILTER("shortest")
+        projects = query(collection(db, "Project"), orderBy("Project_End", "desc"));
+      } else {
+        this.CLEAR_FILTER()
+        this.SET_FILTER("shortest")
+        projects = query(collection(db, "Project"), orderBy("Project_End", "desc"));
+      }
+      var temp = []
+      //searchData is a dictionary of {0:projectId,1:projectId...}
+      //convert values into an array
+      var searchDataCopy = this.searchData
+      console.log("copyyy",searchDataCopy)
+      
+      var values = Object.keys(searchDataCopy).map(function(key){
+        return searchDataCopy[key];
+      });
+      
+      //But the values arr is 2d
+      //To flatten use ES6 spread
+      var newValues = []
+      console.log("searchData",this.searchData)
+      console.log("values",values)
+      newValues = newValues.concat(...values)
+      console.log("newValues",newValues)
+      let snapshot = await getDocs(projects);
+      snapshot.forEach((docs) => {
+        let data = docs.data();
+        var id = docs.id;
+        if (newValues.includes(id)) {
+          temp.push(id)
+        }
+      });
+      console.log("searchDataValues",this.newValues)
+      this.CLEAR_HIGHEST()
+      this.SET_HIGHEST_PRIORITYIDS(temp)
+      console.log("temp",temp)
+      this.$router.push({name:'StudentSearchResult2',params:{searched:this.searchString}})
+    },
     
   },
 
@@ -374,12 +456,12 @@ export default {
   }
 
   .filter-enter-from {
-    transform:translateX(700px);
+    transform:translateX(-700px);
     /*transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);*/
   }
 
   .filter-leave-to {
-    transform:translateX(700px);
+    transform:translateX(-700px);
     /*transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);*/
   }
   
@@ -492,6 +574,76 @@ button,
 
     .right {
         margin-left:80%;
+    }
+
+    .menu ol {
+	    list-style: none;
+	    padding: 0;
+	    margin: 0;
+      background-color: #ec9f39; 
+    }
+    .menu ol:first-child {
+      width: 10%;
+      max-width: 960px;
+      margin: 1rem auto 0 auto;
+      align-items: right;
+      box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+    }
+    .menu-item {
+      border-top: 2px solid #16a085;
+      position: relative;
+      transition: background 0.3s ease-in-out; 
+    }
+   
+    .menu-item:nth-child(1) > a::before {
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 1rem;
+      font-weight: 900;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
+      display: inline-block;
+      font-style: normal;
+      font-variant: normal;
+      text-rendering: auto;
+      line-height: 1;
+      color: #16a085;
+ 
+    }
+
+    .menu-item .sub-menu {
+      position: absolute;
+      top: 100%;
+      width: 100%;
+      transform-origin: top;
+      transform: rotateX(-90deg);
+      transition: transform 0.3s linear;
+      background-color: #ec9f39;
+    }
+    .menu-item .sub-menu .menu-item {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .menu-item:hover, .menu-item.active {
+      border-top: 2px solid #ec9f39;
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    .menu-item:hover a::before, .menu-item.active a::before {
+      color: #ec9f39;
+    }
+    .menu-item:hover .sub-menu {
+      transform: rotateX(0deg);
+    }
+    .menu-item a {
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+      text-transform: uppercase;
+      height: 100%;
+      width: 100%;
+      padding: 1.5em 1em;
     }
 
     

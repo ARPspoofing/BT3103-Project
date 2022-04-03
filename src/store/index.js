@@ -58,6 +58,9 @@ export default createStore({
       state.secondPriorityIds = [],
       state.thirdPriorityIds = []
     },
+    CLEAR_HIGHEST(state) {
+      state.highestPriorityIds = []
+    },
     CLEAR_FILTER(state) {
       state.recent = false,
       state.oldest = false,

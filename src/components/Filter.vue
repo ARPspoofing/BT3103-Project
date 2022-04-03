@@ -80,9 +80,10 @@
     export default {
       name:'Filter',
       components: { Datepicker, Slider },
-      created() {
+      mounted() {
         this.searchId = this.searchData
-        const userEmail = window.localStorage.getItem('emailForSignIn')
+        const userEmail = this.userEmail
+        //const userEmail = window.localStorage.getItem('emailForSignIn')
         console.log("testtesttesttest",userEmail)
         var that = this
         var temp = []
@@ -98,7 +99,7 @@
     
         },
         computed: {
-          ...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds']),
+          ...mapState(['userEmail','filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds']),
           ...mapGetters(['GET_SEARCH_DATA']),
         },
       data() {
