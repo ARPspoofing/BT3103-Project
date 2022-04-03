@@ -173,7 +173,7 @@ import * as moment from 'moment'
 
     .completed {
         color: white;
-        background-color: rgb(187, 111, 231);
+        background-color: #BD9DCC;
     }
 
      .status-button {
