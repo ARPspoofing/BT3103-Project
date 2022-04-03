@@ -68,6 +68,8 @@ import { getFirestore, collection, doc, setDoc, deleteDoc, getDocs, updateDoc, g
 import { writeBatch} from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 import { v4 as uuidv4 } from 'uuid';
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 import PopUp from '../../components/PopUp.vue'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
@@ -77,7 +79,9 @@ export default {
   components: {
     BusinessNavBar,
   },
-
+  computed: {
+    ...mapState(['userEmail'])
+  },
   data() {
     return {
         name:'',
@@ -176,7 +180,9 @@ export default {
     const auth = getAuth();
     var userEmail = auth.currentUser.email;
     */
-    var userEmail = window.localStorage.getItem('emailForSignIn')
+    
+    //var userEmail = window.localStorage.getItem('emailForSignIn')
+    var userEmail = this.userEmail
     console.log(userEmail)
     const that = this;
     async function getApplicant(email) {

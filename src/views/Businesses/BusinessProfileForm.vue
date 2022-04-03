@@ -76,7 +76,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['name'])
+        ...mapState(['name','userEmail'])
     },
     mounted() {
         const auth = getAuth();
@@ -131,8 +131,9 @@ export default {
                  const email = auth.currentUser.email;
                  */
                 //New version
-                const email = window.localStorage.getItem('emailForSignIn')
-                window.localStorage.setItem('businessName',this.name)
+                var email = this.userEmail
+                //const email = window.localStorage.getItem('emailForSignIn')
+                //window.localStorage.setItem('businessName',this.name)
                  
                  //accessing the current user and setting the elements
                  await setDoc(doc(db,'businesses',String(email)), {

@@ -119,7 +119,7 @@ export default {
             const user = result.user;
             alert(user.email)
             this.SET_USEREMAIL(user.email)
-            window.localStorage.setItem('emailForSignIn', user.email);
+            //window.localStorage.setItem('emailForSignIn', user.email);
             this.$router.push({name:'businessLoading'})
                 // ...
         }).catch((error) => {
@@ -166,7 +166,7 @@ export default {
         signInWithEmailAndPassword(getAuth(), this.email,this.password)
         .then((data) => {
             this.SET_USEREMAIL(this.email)
-            window.localStorage.setItem('emailForSignIn', this.email);
+            //window.localStorage.setItem('emailForSignIn', this.email);
             if(formFilled) {
                  this.$router.push({name:'BusinessHomePage',params:{'formFilled':true}})
 

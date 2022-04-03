@@ -117,7 +117,7 @@
         }
       },
       methods: {
-        ...mapMutations(['SET_SEARCH_DATA','SET_HIGHEST_PRIORITYIDS','SET_SECOND_PRIORITYIDS','SET_THIRD_PRIORITYIDS','CLEAR_ALL']),
+        ...mapMutations(['SET_SEARCH_DATA','SET_HIGHEST_PRIORITYIDS','SET_SECOND_PRIORITYIDS','SET_THIRD_PRIORITYIDS','CLEAR_ALL','CLEAR_HIGHEST']),
         checkDate() {
           if (this.date[0] == null || this.date[1] == null) {
             this.rangeSelected = false
@@ -248,7 +248,7 @@
           */
 
 
-          this.CLEAR_ALL()
+          this.CLEAR_HIGHEST()
           this.SET_HIGHEST_PRIORITYIDS(allMatch)
           
           //Add company search to search bar 

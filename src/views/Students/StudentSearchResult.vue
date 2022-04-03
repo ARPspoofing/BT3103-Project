@@ -44,7 +44,7 @@
      </div>
       <div v-else class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key /*+ 2*6*/)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key + 2*6)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
         </div>
 
         <div :key="item.key" v-for="(item, key) in secondPriority">
@@ -81,7 +81,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['searchString','filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','recent','oldest','shortest','longest','highest','lowest']),
+    ...mapState(['searchString','filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','recent','oldest','shortest','longest','highest','lowest','cardItems']),
     //...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','recent','oldest','highest','lowest','longest','shortest']),
     ...mapGetters(['GET_SEARCH_DATA']),
     
@@ -103,7 +103,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['TOGGLE_FILTER','CLEAR_ALL','SET_HIGHEST_PRIORITYIDS','CLEAR_FILTER','SET_FILTER','CLEAR_HIGHEST']),
+    ...mapMutations(['TOGGLE_FILTER','CLEAR_ALL','SET_HIGHEST_PRIORITYIDS','CLEAR_FILTER','SET_FILTER','CLEAR_HIGHEST','SET_CARDITEMS','CLEAR_CARDITEMS']),
     alertFunc() {
       this.$refs.toggle.$el.click()
     },
@@ -120,7 +120,8 @@ export default {
     },
     */
     indivprojFirst(key) {
-     
+      this.CLEAR_CARDITEMS()
+      this.SET_CARDITEMS(JSON.stringify(this.highestPriority[key]))
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {
@@ -132,7 +133,8 @@ export default {
   },
 
   indivprojSecond(key) {
-      
+      this.CLEAR_CARDITEMS()
+      this.SET_CARDITEMS(JSON.stringify(this.secondPriority[key]))
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {
@@ -144,7 +146,8 @@ export default {
   },
 
   indivprojThird(key) {
-   
+      this.CLEAR_CARDITEMS()
+      this.SET_CARDITEMS(JSON.stringify(this.thirdPriority[key]))
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {
