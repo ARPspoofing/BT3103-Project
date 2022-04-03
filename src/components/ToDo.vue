@@ -207,6 +207,7 @@ import * as moment from 'moment'
     }
     
     #status {
-        width: max-content
+        width: max-content;
+        font-size: 12px;
     }
 </style>

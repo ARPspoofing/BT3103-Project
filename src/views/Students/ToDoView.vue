@@ -1,8 +1,12 @@
 <template>
 <div class="mainBody">
-    <button @click="goback" id="backButton">
+    <!-- <button @click="goback" id="backButton">
         <i class="fa-solid fa-angles-left"></i>
-        Back to Management</button>
+        Back to Management</button> -->
+        <router-link :to="{name:'StudentManagement', params:{projectId:this.$route.params.projectId, projectTitle:this.$route.params.projectTitle}}">
+           <button id="backButton"><i class="fa-solid fa-angles-left"></i>
+Back to Management</button>
+       </router-link>
    <div class="view container">
 
        <!-- <router-link :to="{name:'BusinessManagement'}">

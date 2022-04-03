@@ -1,6 +1,9 @@
 <template>
 <BusinessNavBar :Heading="Heading" :header=true />
-<button @click="goback" id="backButton">Back to Projects</button>
+<div class="mainBody">
+<button @click="goback" id="backButton">
+  <i class="fa-solid fa-angles-left"></i>
+  Back to Projects</button>
 <div v-if="toDoTask.length > 0" class="wrapper-outer">
     <div class="wrapper">
         <h4>TO-DO</h4>
@@ -37,6 +40,7 @@
         <h3>No task has been completed yet.</h3>
         
         </div>
+    </div>
     </div>
     
 </div>
@@ -191,10 +195,21 @@ export default {
 </script>
 
 <style scoped>
+  .mainBody {
+    background-color: #F5F5F5;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow-y: scroll;
+    padding-bottom: 150px;
+    /*
+    filter: blur(5px);
+   */
+}
     .wrapper-outer {
         display: flex;
         flex-direction: row;
-        position: fixed;
+        /* position: fixed; */
         overflow-y: scroll;
         padding-bottom: 100px;
         margin: 20px;
