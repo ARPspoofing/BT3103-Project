@@ -24,6 +24,7 @@
           :description="item.description"
           @clickCard="indivproj(key)"
           :picture="item.profilePicture"
+          :stat="item.status"
         />
       </div>
     </div>
@@ -138,7 +139,8 @@ export default {
           accApplicants: data.Acc_Applicants,
           rejApplicants: data.Rej_Applicants,
           posterId: data.poster_id,
-          profilePicture: data.profPicture,}
+          profilePicture: data.profPicture,
+          status: data.Status}
     }
     console.log(that.testCollection)
     

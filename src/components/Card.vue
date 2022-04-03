@@ -1,7 +1,7 @@
 <template>
   <div class="card-body" @click.self="clickCard">
     <div class="clogo">
-      <img v-bind:src=picture alt="Logo" class="logo" />
+      <img v-bind:src="picture" alt="Logo" class="logo" />
       <span class="card-title"> {{ currProjectTitle }} <br /> </span>
     </div>
     <div class="card-content">
@@ -12,7 +12,8 @@
     <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">
       Rejected
     </p>
-<div v-show=false>NO</div>
+    <p id="closed" v-if="stat == 'closed'">Application Closed</p>
+    <div v-show="false">NO</div>
     <button
       id="applybtns"
       v-show="apply"
@@ -31,7 +32,7 @@
       @click="applying"
     >
       Apply Now
-    </button>   
+    </button>
 
     <button
       id="studentManagementButton"
@@ -40,8 +41,8 @@
       class="btn-apply"
     >
       View tasks
-    </button> 
-        <!--
+    </button>
+    <!--
                   <div 
                     class="modal fade"
                     id="applyModal"
@@ -98,7 +99,7 @@
                     Decline
                   </button>
       -->
- <!--Ruth previous card version. Keeping incase new version is wrong 
+    <!--Ruth previous card version. Keeping incase new version is wrong 
     <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">Rejected</p>
 
     <button id="applybtns" v-show="apply" v-if="appstat == 'applied'" class="btn-applied">Applied</button>
@@ -120,11 +121,7 @@
           </div>
         </div>
       </div>
-<<<<<<< HEAD
     </div>-->
-=======
-    </div>  -->
->>>>>>> emily
     <button
       id="acceptbtn"
       v-show="offered"
@@ -140,14 +137,8 @@
       class="btn-apply"
     >
       Decline
-<<<<<<< HEAD
-    </button> 
-=======
     </button>
->>>>>>> emily
-
-    
-  </div> 
+  </div>
 </template>
 
 <script>
@@ -161,7 +152,7 @@ export default {
     };
   },
   mounted() {
-    this.currProjectTitle = this.projectTitle
+    this.currProjectTitle = this.projectTitle;
   },
   props: {
     projectTitle: String,
@@ -173,8 +164,9 @@ export default {
     picture: String,
     inProgress: Boolean,
     projectId: String,
-    like:false,
-    latest:false,
+    closed: String,
+    like: false,
+    latest: false,
     //applicantbtn: Function,
   },
   methods: {
@@ -204,11 +196,11 @@ export default {
       //If like == true and latest == false, emit true. Then use testCollection in StudentHomePage "applying()"
       //If like == false and latest == true, emit false. Then use wholeCollection in StudentHomePage "applying()"
       if (this.like == true && this.latest == false) {
-        this.$emit("applying",true)
+        this.$emit("applying", true);
       } else {
-        this.$emit("applying",false)
+        this.$emit("applying", false);
       }
-    }
+    },
   },
 };
 </script>
@@ -247,6 +239,7 @@ export default {
   -webkit-line-clamp: 1; /* number of lines to show */
   line-clamp: 1;
   -webkit-box-orient: vertical;
+  /* font-weight: bold; */
   /* display: inline-block; */
 }
 
@@ -259,6 +252,15 @@ export default {
 .clogo {
   text-align: left;
   font-size: 22px;
+}
+
+#closed {
+  background-color: #ecf0f3;
+  width: 180px;
+  font-size: 15px;
+  border-radius: 12px;
+  color: #ec5c5c;
+  /*font-weight: bold;*/
 }
 
 #applybtns {
@@ -277,7 +279,7 @@ export default {
 }
 
 #declinebtn {
-  background-color: #F40000;
+  background-color: #f40000;
   color: white;
   border-radius: 8px;
   border-width: 0px;
@@ -291,8 +293,6 @@ export default {
   border-width: 0px;
   height: 30px;
 }
-
-
 
 .btn-apply {
   background-color: #0e8044;

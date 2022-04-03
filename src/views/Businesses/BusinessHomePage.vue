@@ -31,6 +31,7 @@
           :description="item.description"
           @clickCard="indivproj(key)"
           :picture="item.profilePicture"
+          :stat="item.status"
         />
       </div>
     </div>
@@ -75,6 +76,7 @@ export default {
       profileFormCreated: true,
       foreverTrue: true,    
       businessEmail: '',
+      //closed: "closed"
     };
   },
   computed: {
@@ -202,6 +204,7 @@ export default {
           rejApplicants: data.Rej_Applicants,
           posterId: data.poster_id,
           profilePicture: pictureprof,
+          status: data.Status
         });
       });
       that.testCollection = testCollection;
