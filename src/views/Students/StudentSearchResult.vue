@@ -50,7 +50,7 @@ import StudentNavBar from '../../components/StudentNavBar.vue'
 import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
+import {orderBy, query, collection, doc, setDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore"
 import {signOut} from "firebase/auth"
 import {mapState} from "vuex"
 import {mapMutations} from "vuex"
@@ -65,9 +65,9 @@ export default {
     Card,
     Filter,
   },
-  
+
   computed: {
-    ...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds']),
+    ...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','recent','oldest','highest','lowest','longest','shortest']),
     ...mapGetters(['GET_SEARCH_DATA']),
     
   },
@@ -148,9 +148,10 @@ export default {
     this.receivedSearch = gottenSearch;
     //data variable = state variable 
     this.searchId = this.searchData
+    console.log("searchData",this.searchData)
     this.highestPriority = this.highestPriorityIds
     this.secondPriority = this.secondPriorityIds
-    this.thirdPriority = this.thirdPriorityIds
+    this.thirdPriority = this.thirdPriorityIds  
     /*
     alert(this.highestPriority)
     alert(this.secondPriority)
@@ -170,16 +171,98 @@ export default {
       const secondPriorityIds = that.secondPriority
       const thirdPriorityIds = that.thirdPriority
       //const highestPriorityIds = that.searchData
-      
-
       const highestPriority = [];
       const secondPriority = [];  
       const thirdPriority = [];
       console.log(highestPriorityIds)
-      let snapshot = await getDocs(collection(db, "Project"))
+      //let snapshot = await getDocs(collection(db, "Project"))
+      if (that.recent == true) {
+        alert("recent")
+        var snapshot = query(collection(db, "Project"), orderBy("Posted_Date","desc"));
+      } else if (that.oldest == true) {
+        alert("oldest")
+        var snapshot = query(collection(db, "Project"), orderBy("Posted_Date"));
+      } else if (that.highest == true) {
+        alert("highest")
+        var snapshot = query(collection(db, "Project"), orderBy("Allowance","desc"));
+      } else if (that.lowest == true) {
+        alert("lowest")
+        var snapshot = query(collection(db, "Project"), orderBy("Allowance"));
+      } else if (that.longest == true) {
+        alert("longest")
+        var snapshot = query(collection(db, "Project"), orderBy("Project_End"));
+      } else if (that.shortest == true) {
+        alert("shortest")
+        var snapshot = query(collection(db, "Project"), orderBy("Project_End","desc"));
+      //Just Order by project end date if no filter 
+      } else {
+        alert("else")
+        var snapshot = query(collection(db, "Project"), orderBy("Project_End","desc"));
+      }
+      snapshot = await getDocs(snapshot)
+      /*
+      highestPriorityIds.forEach(async (docId) => {
+        const currSnapshot = await getDoc(doc(db, 'Project', docId))  
+        let data = currSnapshot.data()
+        highestPriority.push({ 
+            projectTitle: data.Project_Title, 
+            description: data.Description, 
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
+        });
+      })
+      secondPriorityIds.forEach(async (docId) => {
+        const currSnapshot = await getDoc(doc(db, 'Project', docId))  
+        let data = currSnapshot.data()
+        highestPriority.push({ 
+            projectTitle: data.Project_Title, 
+            description: data.Description, 
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
+        });
+      })
+      thirdPriorityIds.forEach(async (docId) => {
+        const currSnapshot = await getDoc(doc(db, 'Project', docId))  
+        let data = currSnapshot.data()
+        highestPriority.push({ 
+            projectTitle: data.Project_Title, 
+            description: data.Description, 
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
+        });
+      })
+      */
+      
       const testCollection = [];
+
+      console.log("passed the query")
       snapshot.forEach((docs) => {
         let data = docs.data()
+        console.log("searchResultone",highestPriorityIds)
         if (highestPriorityIds.includes(docs.id)) {
         highestPriority.push({ 
             projectTitle: data.Project_Title, 
@@ -228,8 +311,10 @@ export default {
         });
 
         }
+
         
       });
+      
 
 
       that.highestPriority = highestPriority

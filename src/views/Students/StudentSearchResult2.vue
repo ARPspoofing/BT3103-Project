@@ -83,7 +83,7 @@ export default {
   },
   
   computed: {
-    ...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','recent','oldest','shortest','longest','highest','lowest']),
+    ...mapState(['searchString','filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','recent','oldest','shortest','longest','highest','lowest']),
     ...mapGetters(['GET_SEARCH_DATA']),
     
   },
@@ -107,7 +107,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['TOGGLE_FILTER','CLEAR_ALL','SET_HIGHEST_PRIORITYIDS']),
+    ...mapMutations(['TOGGLE_FILTER','CLEAR_ALL','SET_HIGHEST_PRIORITYIDS','CLEAR_FILTER','SET_FILTER']),
     
     toggleFilterMenu() {
       this.TOGGLE_FILTER()
@@ -160,33 +160,63 @@ export default {
       //var businessEmail = window.localStorage.getItem('emailForSignIn')
       //order projects by posted date, from latest to oldest
       alert(order)
+      var projects = null
       if (order == "recent") {
         alert("true!!")
-
-        let projects = query(collection(db, "Project"), orderBy("Posted_Date", "desc"));
+        this.CLEAR_FILTER()
+        this.SET_FILTER("recent")
+        projects = query(collection(db, "Project"), orderBy("Posted_Date", "desc"));
       } else if (order == "oldest") {
-        let projects = query(collection(db, "Project"), orderBy("Posted_Date", "asc"));
+        this.CLEAR_FILTER()
+        this.SET_FILTER("oldest")
+        projects = query(collection(db, "Project"), orderBy("Posted_Date"));
       } else if (order == "highest") {
-        let projects = query(collection(db, "Project"), orderBy("Allowance", "desc"));
+        this.CLEAR_FILTER()
+        this.SET_FILTER("highest")
+        projects = query(collection(db, "Project"), orderBy("Allowance", "desc"));
       } else if (order == "lowest") {
-        let projects = query(collection(db, "Project"), orderBy("Allowance", "asc"));
+        this.CLEAR_FILTER()
+        this.SET_FILTER("lowest")
+        projects = query(collection(db, "Project"), orderBy("Allowance"));
       } else if (order == "longest") {
-        let projects = query(collection(db, "Project"), orderBy("Project_End", "asc"));
+        this.CLEAR_FILTER()
+        this.SET_FILTER("longest")
+        projects = query(collection(db, "Project"), orderBy("Project_End"));
       } else if (order== "shortest") {
-        let projects = query(collection(db, "Project"), orderBy("Project_End", "desc"));
+        this.CLEAR_FILTER()
+        this.SET_FILTER("shortest")
+        projects = query(collection(db, "Project"), orderBy("Project_End", "desc"));
       }
       var temp = []
+      //searchData is a dictionary of {0:projectId,1:projectId...}
+      //convert values into an array
+      var searchDataCopy = this.searchData
+      console.log("copyyy",searchDataCopy)
+      
+      var values = Object.keys(searchDataCopy).map(function(key){
+        return searchDataCopy[key];
+      });
+      
+      //But the values arr is 2d
+      //To flatten use ES6 spread
+      var newValues = []
+      console.log("searchData",this.searchData)
+      console.log("values",values)
+      newValues = newValues.concat(...values)
+      console.log("newValues",newValues)
       let snapshot = await getDocs(projects);
       snapshot.forEach((docs) => {
         let data = docs.data();
         var id = docs.id;
-        if (this.searchData.includes(id)) {
+        if (newValues.includes(id)) {
           temp.push(id)
         }
       });
+      console.log("searchDataValues",this.newValues)
       this.CLEAR_ALL()
       this.SET_HIGHEST_PRIORITYIDS(temp)
-      this.$route.push({name:'StudentSearchResult'})
+      console.log("temp",temp)
+      this.$router.push({name:'StudentSearchResult',params:{searched:this.searchString}})
     },
   },
 
@@ -196,6 +226,10 @@ export default {
     this.receivedSearch = gottenSearch;
     //data variable = state variable 
     this.searchId = this.searchData
+    console.log("searchData",this.searchData)
+    console.log("highestPriorityIds",this.highestPriorityIds)
+    console.log("secondPriorityIds",this.secondPriorityIds)
+    console.log("thirdPriorityIds",this.thirdPriorityIds)
     this.highestPriority = this.highestPriorityIds
     this.secondPriority = this.secondPriorityIds
     this.thirdPriority = this.thirdPriorityIds

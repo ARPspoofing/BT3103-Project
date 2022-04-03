@@ -40,6 +40,7 @@ export default createStore({
     longest: false,
     highest: false,
     lowest: false,
+    searchString: "",
   },
   //getter for debugging
   getters: {
@@ -85,10 +86,12 @@ export default createStore({
       state.searchData = state.searchData.filter((x, i, a) => a.indexOf(x) === i)
       console.log("searchData",state.searchData)
     },
+    SET_SEARCH_STRING(state,payload) {
+      state.searchString = payload
+    },
     SET_HIGHEST_PRIORITYIDS(state,payload) {
       state.highestPriorityIds.push(...payload)
       state.highestPriorityIds = state.highestPriorityIds.filter((x, i, a) => a.indexOf(x) === i)
-
     },
     SET_SECOND_PRIORITYIDS(state,payload) {
       state.secondPriorityIds.push(...payload)
