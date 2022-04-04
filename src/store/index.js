@@ -34,6 +34,13 @@ export default createStore({
     name: '',
     userEmail: '',
     cardItems: null,
+    recent: false,
+    oldest: false,
+    shortest: false,
+    longest: false,
+    highest: false,
+    lowest: false,
+    searchString: "",
   },
   //getter for debugging
   getters: {
@@ -51,15 +58,48 @@ export default createStore({
       state.secondPriorityIds = [],
       state.thirdPriorityIds = []
     },
+    CLEAR_HIGHEST(state) {
+      state.highestPriorityIds = []
+    },
+    CLEAR_TOP_THREE(state) {
+      state.highestPriorityIds = []
+      state.secondPriorityIds = []
+      state.thirdPriorityIds = []
+    },
+    CLEAR_FILTER(state) {
+      state.recent = false,
+      state.oldest = false,
+      state.shortest = false,
+      state.longest = false,
+      state.highest = false,
+      state.lowest = false
+    },
+    SET_FILTER(state,payload) {
+      if (payload == "recent") {
+        state.recent = true
+      } else if (payload == "oldest") {
+        state.oldest = true
+      } else if (payload == "shortest") {
+        state.shortest = true
+      } else if (payload == "longest") {
+        state.longest = true
+      } else if (payload == "highest") {
+        state.highest = true
+      } else if (payload == "lowest") {
+        state.lowest = true
+      }
+    },
     SET_SEARCH_DATA(state,payload) {
       state.searchData.push(...payload)
       state.searchData = state.searchData.filter((x, i, a) => a.indexOf(x) === i)
       console.log("searchData",state.searchData)
     },
+    SET_SEARCH_STRING(state,payload) {
+      state.searchString = payload
+    },
     SET_HIGHEST_PRIORITYIDS(state,payload) {
       state.highestPriorityIds.push(...payload)
       state.highestPriorityIds = state.highestPriorityIds.filter((x, i, a) => a.indexOf(x) === i)
-
     },
     SET_SECOND_PRIORITYIDS(state,payload) {
       state.secondPriorityIds.push(...payload)

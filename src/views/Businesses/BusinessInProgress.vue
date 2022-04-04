@@ -100,8 +100,8 @@ export default {
       const ref = doc(db, "businesses", userEmail);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      that.inProgProjects = data.inProgProjects 
-      var inProgProjects = data.inProgProjects
+      that.inProgProjects = data.inProgressProjects 
+      var inProgProjects = data.inProgressProjects
       console.log("inproglen",inProgProjects)
       for (var i = 0; i < inProgProjects.length; i++) {
         getProject(inProgProjects[i]).then((res) => {that.testCollection.push(res)})

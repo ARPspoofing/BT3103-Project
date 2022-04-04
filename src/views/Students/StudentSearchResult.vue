@@ -1,9 +1,9 @@
 <template>
   <StudentNavBar :search=true :header=true />
-  <div v-if="loading">
-    Loading
-  </div>
-  <div v-if="!loading" class="mainBody">   
+  
+
+  <div v-if="!loading" class="mainBody">
+  
     <!-- <button class="purple button" @click="toggleFilterMenu">Filter</button> -->
     <!--
     <button @click="closeFilterMenu"> close filter menu </button>
@@ -12,33 +12,53 @@
   <transition name="filter">
      <Filter @submitFilter=closeFilterMenu v-if="filterModal"/>
   </transition>
+
+
   
       
     <div @click="openFilter" ref="filterWrap" class="filter-wrap flex flex-column">
     
     </div> 
     <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
-      <button class="button" @click="toggleFilterMenu">Filter</button>
-      <button class="button" @click="toggleSortMenu">Sort</button>
-      Search results for {{receivedSearch}}:
+      <button class="button" @click="toggleFilterMenu">Filter</button> 
+      <nav class="menu">
+      <ol>
+        <li class="menu-item">
+          <a>Sort By</a>
+          <ol class="sub-menu">
+            <li @click="fetchProjectOrder('recent')" class="menu-item"><a href="#0">Recent</a></li>
+            <li @click="fetchProjectOrder('oldest')" class="menu-item"><a href="#0">Oldest</a></li>
+            <li @click="fetchProjectOrder('shortest')" class="menu-item"><a href="#0">Shortest</a></li>
+            <li @click="fetchProjectOrder('longest')" class="menu-item"><a href="#0">Longest</a></li>
+            <li @click="fetchProjectOrder('highest')" class="menu-item"><a href="#0">Highest</a></li>
+            <li @click="fetchProjectOrder('lowest')" class="menu-item"><a href="#0">Lowest</a></li>
+          </ol>
+        </li>
+      </ol>
+      </nav>
+      
+      <div v-if="stopLoader">
+        Search results for {{receivedSearch}}:
+      </div>
       <hr/>
     </h1>
-    
-     <div v-if="noProjectsPresent" class = "noProject">
-         <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> ensure that you have spelled your search correctly.</h1>
-          <!-- {{GET_SEARCH_DATA}} -->        
+      <div v-if="noProjectsPresent" class = "noProject">
+        <PathfinderLoading v-if="!stopLoader"/> 
+        <h1 v-if="stopLoader" class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> ensure that you have spelled your search correctly.</h1>
+          <!-- {{GET_SEARCH_DATA}} -->      
      </div>
-      <div v-else class="projectContainer">
+     <PathfinderLoading v-if="!stopLoader"/> 
+      <div v-if="stopLoader" class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key /*+ 2*6*/)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :picture = "item.profPicture" :description="item.description" @clickCard="indivprojFirst(key + 2*6)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
         </div>
 
         <div :key="item.key" v-for="(item, key) in secondPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojSecond(key)" @applicantbtn="addApplicantSecond(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :picture = "item.profPicture" :description="item.description" @clickCard="indivprojSecond(key)" @applicantbtn="addApplicantSecond(key + 2*6)"/>
         </div>
 
         <div :key="item.key" v-for="(item, key) in thirdPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojThird(key)" @applicantbtn="addApplicantThird(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :picture = "item.profPicture" :description="item.description" @clickCard="indivprojThird(key)" @applicantbtn="addApplicantThird(key + 2*6)"/>
         </div>
         </div>
       </div>
@@ -50,12 +70,13 @@ import StudentNavBar from '../../components/StudentNavBar.vue'
 import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore"
+import {orderBy, query, collection, doc, setDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore"
 import {signOut} from "firebase/auth"
 import {mapState} from "vuex"
 import {mapMutations} from "vuex"
 import {mapGetters} from "vuex"
 import Filter from '../../components/Filter.vue'
+import PathfinderLoading from '../../components/PathfinderLoading.vue'
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -64,10 +85,12 @@ export default {
     StudentNavBar,
     Card,
     Filter,
+    PathfinderLoading,
   },
-  
+
   computed: {
-    ...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds']),
+    ...mapState(['searchString','filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','recent','oldest','shortest','longest','highest','lowest','cardItems']),
+    //...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','recent','oldest','highest','lowest','longest','shortest']),
     ...mapGetters(['GET_SEARCH_DATA']),
     
   },
@@ -83,12 +106,13 @@ export default {
       loading:false,
       //store all id in one array
       searchId: null,
+      stopLoader: false,
       //store all id in separate arrays
     }
   },
 
   methods: {
-    ...mapMutations(['TOGGLE_FILTER']),
+    ...mapMutations(['TOGGLE_FILTER','CLEAR_ALL','SET_HIGHEST_PRIORITYIDS','CLEAR_FILTER','SET_FILTER','CLEAR_HIGHEST','SET_CARDITEMS','CLEAR_CARDITEMS']),
     alertFunc() {
       this.$refs.toggle.$el.click()
     },
@@ -105,7 +129,8 @@ export default {
     },
     */
     indivprojFirst(key) {
-     
+      this.CLEAR_CARDITEMS()
+      this.SET_CARDITEMS(JSON.stringify(this.highestPriority[key]))
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {
@@ -117,7 +142,8 @@ export default {
   },
 
   indivprojSecond(key) {
-      
+      this.CLEAR_CARDITEMS()
+      this.SET_CARDITEMS(JSON.stringify(this.secondPriority[key]))
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {
@@ -129,7 +155,8 @@ export default {
   },
 
   indivprojThird(key) {
-   
+      this.CLEAR_CARDITEMS()
+      this.SET_CARDITEMS(JSON.stringify(this.thirdPriority[key]))
       this.$router.push({
         name:'StudentViewProjectInfo', 
         params: {
@@ -139,18 +166,89 @@ export default {
       console.log(key)
       console.log(this.thirdPriority[key])
   },
+  async fetchProjectOrder(order) {
+      //var businessEmail = auth.currentUser.email;
+      //var businessEmail = window.localStorage.getItem('emailForSignIn')
+      //order projects by posted date, from latest to oldest
+      alert(order)
+      var projects = null
+      if (order == "recent") {
+        alert("true!!")
+        this.CLEAR_FILTER()
+        this.SET_FILTER("recent")
+        projects = query(collection(db, "Project"), orderBy("Posted_Date", "desc"));
+      } else if (order == "oldest") {
+        this.CLEAR_FILTER()
+        this.SET_FILTER("oldest")
+        projects = query(collection(db, "Project"), orderBy("Posted_Date"));
+      } else if (order == "highest") {
+        this.CLEAR_FILTER()
+        this.SET_FILTER("highest")
+        projects = query(collection(db, "Project"), orderBy("Allowance", "desc"));
+      } else if (order == "lowest") {
+        this.CLEAR_FILTER()
+        this.SET_FILTER("lowest")
+        projects = query(collection(db, "Project"), orderBy("Allowance"));
+      } else if (order == "longest") {
+        this.CLEAR_FILTER()
+        this.SET_FILTER("longest")
+        projects = query(collection(db, "Project"), orderBy("Project_End"));
+      } else if (order== "shortest") {
+        this.CLEAR_FILTER()
+        this.SET_FILTER("shortest")
+        projects = query(collection(db, "Project"), orderBy("Project_End", "desc"));
+      } else {
+        this.CLEAR_FILTER()
+        this.SET_FILTER("shortest")
+        projects = query(collection(db, "Project"), orderBy("Project_End", "desc"));
+      }
+      var temp = []
+      //searchData is a dictionary of {0:projectId,1:projectId...}
+      //convert values into an array
+      var searchDataCopy = this.searchData
+      console.log("copyyy",searchDataCopy)
+      
+      var values = Object.keys(searchDataCopy).map(function(key){
+        return searchDataCopy[key];
+      });
+      
+      //But the values arr is 2d
+      //To flatten use ES6 spread
+      var newValues = []
+      console.log("searchData",this.searchData)
+      console.log("values",values)
+      newValues = newValues.concat(...values)
+      console.log("newValues",newValues)
+      let snapshot = await getDocs(projects);
+      snapshot.forEach((docs) => {
+        let data = docs.data();
+        var id = docs.id;
+        if (newValues.includes(id)) {
+          temp.push(id)
+        }
+      });
+      console.log("searchDataValues",this.newValues)
+      this.CLEAR_HIGHEST()
+      this.SET_HIGHEST_PRIORITYIDS(temp)
+      console.log("temp",temp)
+      this.$router.push({name:'StudentSearchResult2',params:{searched:this.searchString}})
+    },
     
   },
 
   mounted() {
     const that = this;
+    setTimeout(() => {
+      this.stopLoader = true
+    }, 2500)
     const gottenSearch = that.$route.params.searched;
     this.receivedSearch = gottenSearch;
     //data variable = state variable 
     this.searchId = this.searchData
+    console.log("searchData",this.searchData)
     this.highestPriority = this.highestPriorityIds
     this.secondPriority = this.secondPriorityIds
-    this.thirdPriority = this.thirdPriorityIds
+    this.thirdPriority = this.thirdPriorityIds  
     /*
     alert(this.highestPriority)
     alert(this.secondPriority)
@@ -170,16 +268,98 @@ export default {
       const secondPriorityIds = that.secondPriority
       const thirdPriorityIds = that.thirdPriority
       //const highestPriorityIds = that.searchData
-      
-
       const highestPriority = [];
       const secondPriority = [];  
       const thirdPriority = [];
       console.log(highestPriorityIds)
-      let snapshot = await getDocs(collection(db, "Project"))
+      //let snapshot = await getDocs(collection(db, "Project"))
+      if (that.recent == true) {
+        alert("recent")
+        var snapshot = query(collection(db, "Project"), orderBy("Posted_Date","desc"));
+      } else if (that.oldest == true) {
+        alert("oldest")
+        var snapshot = query(collection(db, "Project"), orderBy("Posted_Date"));
+      } else if (that.highest == true) {
+        alert("highest")
+        var snapshot = query(collection(db, "Project"), orderBy("Allowance","desc"));
+      } else if (that.lowest == true) {
+        alert("lowest")
+        var snapshot = query(collection(db, "Project"), orderBy("Allowance"));
+      } else if (that.longest == true) {
+        alert("longest")
+        var snapshot = query(collection(db, "Project"), orderBy("Project_End"));
+      } else if (that.shortest == true) {
+        alert("shortest")
+        var snapshot = query(collection(db, "Project"), orderBy("Project_End","desc"));
+      //Just Order by project end date if no filter 
+      } else {
+        alert("else")
+        var snapshot = query(collection(db, "Project"), orderBy("Project_End","desc"));
+      }
+      snapshot = await getDocs(snapshot)
+      /*
+      highestPriorityIds.forEach(async (docId) => {
+        const currSnapshot = await getDoc(doc(db, 'Project', docId))  
+        let data = currSnapshot.data()
+        highestPriority.push({ 
+            projectTitle: data.Project_Title, 
+            description: data.Description, 
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
+        });
+      })
+      secondPriorityIds.forEach(async (docId) => {
+        const currSnapshot = await getDoc(doc(db, 'Project', docId))  
+        let data = currSnapshot.data()
+        highestPriority.push({ 
+            projectTitle: data.Project_Title, 
+            description: data.Description, 
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
+        });
+      })
+      thirdPriorityIds.forEach(async (docId) => {
+        const currSnapshot = await getDoc(doc(db, 'Project', docId))  
+        let data = currSnapshot.data()
+        highestPriority.push({ 
+            projectTitle: data.Project_Title, 
+            description: data.Description, 
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
+        });
+      })
+      */
+      
       const testCollection = [];
+
+      console.log("passed the query")
       snapshot.forEach((docs) => {
         let data = docs.data()
+        console.log("searchResultone",highestPriorityIds)
         if (highestPriorityIds.includes(docs.id)) {
         highestPriority.push({ 
             projectTitle: data.Project_Title, 
@@ -194,6 +374,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
         });
         } else if (secondPriorityIds.includes(docs.id)) {
           secondPriority.push({ 
@@ -209,6 +390,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
         });
 
         } else if (thirdPriorityIds.includes(docs.id)) {
@@ -225,11 +407,14 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
         });
 
         }
+
         
       });
+      
 
 
       that.highestPriority = highestPriority
@@ -289,12 +474,12 @@ export default {
   }
 
   .filter-enter-from {
-    transform:translateX(700px);
+    transform:translateX(-700px);
     /*transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);*/
   }
 
   .filter-leave-to {
-    transform:translateX(700px);
+    transform:translateX(-700px);
     /*transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);*/
   }
   
@@ -407,6 +592,76 @@ button,
 
     .right {
         margin-left:80%;
+    }
+
+    .menu ol {
+	    list-style: none;
+	    padding: 0;
+	    margin: 0;
+      background-color: #ec9f39; 
+    }
+    .menu ol:first-child {
+      width: 10%;
+      max-width: 960px;
+      margin: 1rem auto 0 auto;
+      align-items: right;
+      box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+    }
+    .menu-item {
+      border-top: 2px solid #16a085;
+      position: relative;
+      transition: background 0.3s ease-in-out; 
+    }
+   
+    .menu-item:nth-child(1) > a::before {
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 1rem;
+      font-weight: 900;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
+      display: inline-block;
+      font-style: normal;
+      font-variant: normal;
+      text-rendering: auto;
+      line-height: 1;
+      color: #16a085;
+ 
+    }
+
+    .menu-item .sub-menu {
+      position: absolute;
+      top: 100%;
+      width: 100%;
+      transform-origin: top;
+      transform: rotateX(-90deg);
+      transition: transform 0.3s linear;
+      background-color: #ec9f39;
+    }
+    .menu-item .sub-menu .menu-item {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .menu-item:hover, .menu-item.active {
+      border-top: 2px solid #ec9f39;
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    .menu-item:hover a::before, .menu-item.active a::before {
+      color: #ec9f39;
+    }
+    .menu-item:hover .sub-menu {
+      transform: rotateX(0deg);
+    }
+    .menu-item a {
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+      text-transform: uppercase;
+      height: 100%;
+      width: 100%;
+      padding: 1.5em 1em;
     }
 
     
