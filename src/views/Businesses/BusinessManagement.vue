@@ -4,7 +4,7 @@
 <button @click="goback" id="backButton">
   <i class="fa-solid fa-angles-left"></i>
   Back to Projects</button>
-<div v-if="toDoTask.length > 0" class="wrapper-outer">
+<div class="wrapper-outer">
     <div class="wrapper">
         <h4>TO-DO</h4>
         <ToDo v-if="toDoTask" v-for="(task,index) in toDoTask" :task="task" :key="index" :projectTitle="projectTitle" :projectId="projectId" :user="Business"/>
@@ -110,7 +110,7 @@ export default {
           //Change "To-Do" to props later
           //Later, each project needs to have its list of tasks
           //The code here is just temporary
-          let docRef = await doc(db,"Project",JSON.parse(curr.projectId))
+          let docRef = await doc(db,"Project",curr.projectId)
           let project = await getDoc(docRef)
           let tasks = project.data().Tasks
           console.log(tasks)
