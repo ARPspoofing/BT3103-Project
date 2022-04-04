@@ -22,7 +22,8 @@
           :apply="false"
           :projectTitle="item.projectTitle"
           :description="item.description"
-          @clickCard="indivproj(key)"
+          :inProgress='true'
+          @viewTasks ="viewTasks(item.projectId, item.projectTitle)"
           :picture="item.profilePicture"
           :stat="item.status"
         />
@@ -86,6 +87,20 @@ export default {
 
     isEqual(email) {
       return email == this.businessEmail;
+    },
+
+    viewTasks(projectId, projectTitle) {
+      console.log(projectId)
+      console.log(projectTitle)
+      this.$router.push({
+        name: "BusinessManagement",
+        params: {
+          projectId: projectId,
+          projectTitle: projectTitle,
+        },
+      });
+      //console.log(key);
+      //console.log(this.testCollection[key]);
     },
   },
   mounted() {
