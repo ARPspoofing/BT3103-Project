@@ -47,7 +47,7 @@
     </div>
      <div v-else>
         <router-link style="text-decoration: none; color: inherit; " :to="{name:'BusinessToDoView', params: {task:task,
-            taskId: task['id'], projectId:task['projectId'], description: task['shortdescription'],projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
+            taskId: task['id'], projectId:task['projectId'], description: task['shortdescription'],projectTitle:this.task['projectTitle'], duedate:this.duedate, comments:this.comments}}">
         <div class="todo">
             <div class="top flex flex-row">
                 <div class="title"><strong>{{task['taskname']}}</strong></div>
@@ -83,21 +83,36 @@ import * as moment from 'moment'
     export default {
         name: 'ToDo',
         props: {
-            task:Object,
+            task: Object,
             projectTitle:String,
             projectId:String,
             description: String,
             user: String,
+            comments: Array, 
         },
         mounted() {
             const curr = this 
+            //this.comments = JSON.parse(curr.task.comments)
+            console.log(curr.task.comments)
+            let c = curr.task.comments;
             console.log(curr.task)
-
+            for (let i = 0; i < c.length; i++){
+                this.comments.push({
+                    user: c[i].user, 
+                    //name: curr.task[i].name,
+                    comment: c[i].comment,  
+                    date: c[i].date,  
+                    //profPic: curr.task[i].profPic,  
+                })
+                console.log(curr.comments)
+            }
+            console.log(curr.comments)
         },
         data() {
             return {
                 duedate: this.task.duedate,
                 dateOptions: {year: "numeric", month: "short", day: "numeric"},
+                comments: []
             }
         },
         watch: {

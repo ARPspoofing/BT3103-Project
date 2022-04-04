@@ -258,6 +258,7 @@ export default {
         taskDueDate: "",
         taskStatus: "To do",
         taskIssueDate: new Date().toISOString().split('T')[0],
+        comments: [],
       });
     },
     deleteTask(counter) {

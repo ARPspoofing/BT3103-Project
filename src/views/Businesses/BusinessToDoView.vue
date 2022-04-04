@@ -110,15 +110,19 @@
             <!--<textarea required type="text" id="comments" rows="4" cols="50" maxlength="500" v-model="comments"></textarea>-->
           </div>
         </div>
+        <div
+          class="projectContainer"
+          :key="item.key"
+          v-for="(item, key) in comment"
+        >
+        <div id="eachComment">
+        <img v-bind:src="item.profPic" alt="Logo" class="logo" />
+          <p><strong>{{ item["name"] }}</strong>: {{ item["comment"] }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
-  <!-- {{task_id}}
-   {{taskname}}
-   {{formatDate(duedate)}}
-   {{documents}}
-   {{comments}} -->
 </template>
 
 <script>
@@ -147,6 +151,10 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
+import { getAuth } from "firebase/auth";
+const auth = getAuth();
+var email = auth.currentUser.email;
+console.log(email);
 
 export default {
   name: "BusinessToDoView",
@@ -162,10 +170,11 @@ export default {
       number: this.$route.params.key,
       extend: "",
       documents: "",
-      comments: "",
+      comment: [],
       long: "",
       status: "",
       dateOptions: { year: "numeric", month: "short", day: "numeric" },
+      email: auth.currentUser.email,
     };
   },
   watch: {
@@ -213,20 +222,46 @@ export default {
           newTask = currTask;
         }
       }
-      console.log(toRemove)
-      console.log(newTask)
+      console.log(toRemove);
+      console.log(newTask);
+      console.log(this.email);
+
+      let ref2 = doc(db, "businesses", this.email);
+      let biz = await getDoc(ref2);
+      var da = biz.data();
+      console.log(da);
 
       await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
+      if (newTask.comments) {
         newTask.comments.push({
-                  user: "wassup@gmail.com", 
-                  comment: a,
-                  date: new Date(),
-              })
+          user: this.email,
+          comment: a,
+          date: new Date(),
+          name: da.name,
+          profPic: da.finalProfile,
+        });
+      } else {
+        newTask.comments = [];
+        newTask.comments.push({
+          user: this.email,
+          comment: a,
+          date: new Date(),
+          name: da.name,
+          profPic: da.finalProfile,
+        });
+      }
+      this.comment.unshift({
+        user: this.email,
+        comment: a,
+        date: new Date(),
+        name: da.name,
+        profPic: da.finalProfile,
+      });
 
       await updateDoc(ref, { Tasks: arrayUnion(newTask) });
 
       this.task = newTask;
-      document.getElementById("comments").reset();
+      document.getElementById("comments").value = "";
     },
 
     async updateStatus() {
@@ -266,7 +301,6 @@ export default {
       await updateDoc(ref, { Tasks: arrayUnion(newTask) });
 
       this.task = newTask;
-      document.getElementById("comments").reset();
     },
 
     async updateTask() {
@@ -345,13 +379,32 @@ export default {
     const curr = this;
     const taskId = curr.$route.params.taskId;
     const projectId = curr.$route.params.projectId;
-    console.log(curr.$route.params.key);
+    console.log(curr.$route.params);
+    console.log(curr.$route.params.comments);
     const projectTitle = curr.$route.params.projectTitle;
-    async function getTasksDetails() {
-      //Change "To-Do" to props later
-      const docRef = await doc(db, "Project", projectId);
+
+    async function getComments() {
+      const docRef = doc(db, "Project", JSON.parse(projectId));
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;
+      var currTask = {};
+      for (let i = 0; i < tasks.length; i++) {
+        let thisTask = tasks[i];
+        if (thisTask.taskName == taskId) {
+          currTask = thisTask;
+          curr.comment = currTask.comments.reverse();
+          break;
+        }
+      }
+      console.log(curr.comment);
+    }
+
+    async function getTasksDetails() {
+      //Change "To-Do" to props later
+      const docRef = await doc(db, "Project", JSON.parse(projectId));
+      let project = await getDoc(docRef);
+      var tasks = await project.data().Tasks;
+      console.log(project.data());
       console.log(tasks);
       var currTask = {};
 
@@ -383,11 +436,12 @@ export default {
       console.log(projectTitle);
       // curr.duedate = (new Date(temp[0]['duedate'].seconds * 1000)).toLocaleDateString('en-us',curr.dateOptions)
       //curr.documents = temp[0]['documents']
-      curr.comments = "This is a test comment";
+      //curr.comments = "This is a test comment";
       //Edit later once the task has a proper long description
       curr.long =
         "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.";
     }
+    getComments();
     getTasksDetails();
     //    this.projectId = this.$route.params.projectId
     //    this.projectTitle = this.$route.params.projectTitle
@@ -602,5 +656,24 @@ label {
   font-size: 14px;
   width: 180px;
   position: right;
+}
+
+.logo {
+  vertical-align: left;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-left: 10px;
+  margin-right: 10px;
+  float: left;
+}
+
+#eachComment {
+  text-align: left;
+  position: centre;
+  margin: 10px;
+  padding: 5px;
+  background-color: lightgoldenrodyellow;
+  border-radius: 30px;
 }
 </style>
