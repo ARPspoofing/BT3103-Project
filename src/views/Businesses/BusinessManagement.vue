@@ -168,14 +168,14 @@ export default {
               } else if (document.taskStatus == "Completed") {
                   console.log(document) 
                   completedTask.push({
-                    id: document.id,
+                    id: document.taskName,
                     projectId: curr.projectId,
-                    comments: document.comments,
                     projectTitle: curr.projectTitle,
+                    comments: document.comments,
                     documents: document.documents,
                     status: document.taskStatus,
                     duedate: document.taskDueDate,
-                    taskname: document.taskName,
+                    taskname: document.taskName,                   
                     shortdescription: document.taskDescription,                      
                   })
               }
@@ -217,7 +217,7 @@ export default {
         display: flex;
         flex-direction: row;
         /* position: fixed; */
-        overflow-y: scroll;
+        /* overflow-y: scroll; */
         padding-bottom: 100px;
         margin: 20px;
         width: 98%;

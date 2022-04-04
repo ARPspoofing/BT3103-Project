@@ -1,7 +1,9 @@
 <template>
 <StudentNavBar :search ="false" :Heading="fullTitle" :header="true"/>
 <div class="mainBody">
-<button @click="goback" id="backButton">Back to Projects</button>
+<button @click="goback" id="backButton">
+    <i class="fa-solid fa-angles-left"></i>
+    Back to Projects</button>
 <div v-if="toDoTask.length > 0" class="wrapper-outer">
     <div class="wrapper">
         <h4>To-Do</h4>
@@ -166,14 +168,14 @@ export default {
               } else if (document.taskStatus == "Completed") {
                   console.log(document) 
                   completedTask.push({
-                    id: document.id,
+                    id: document.taskName,
                     projectId: curr.projectId,
-                    comments: document.comments,
                     projectTitle: curr.projectTitle,
+                    comments: document.comments,
                     documents: document.documents,
                     status: document.taskStatus,
                     duedate: document.taskDueDate,
-                    taskname: document.taskName,
+                    taskname: document.taskName,                   
                     shortdescription: document.taskDescription,                      
                   })
               }
