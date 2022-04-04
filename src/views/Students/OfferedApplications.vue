@@ -177,13 +177,24 @@ export default {
     async function getOfferedProjects() {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
-      const data = docSnap.data();
-      that.offered = data.offeredProjects
+      //const data = docSnap.data();
+      //that.offered = data.offeredProjects
+      const response = await Promise.all(
+        docSnap.data().offeredProjects.map(async item => {
+          console.log("nested",item)
+          const finalResult = await getDoc(doc(db,"Project",item))
+          console.log(finalResult.data())
+          that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description})
+        }
+        )
+      )
+      /*
       if (data.offeredProjects) {
         for(var i = 0; i < data.offeredProjects.length; i++) {
           getProject(data.offeredProjects[i]).then((res)=>{that.projects.push(res)})
         }
       }
+      */
     }
     getOfferedProjects()
 
@@ -206,12 +217,13 @@ export default {
     getDeclinedProjects()
 
     async function getBizProjects(email) {
-      const ref = doc(db, "businesses", email);
+      const ref = doc(db, "businesses", this.userEmail);
       const docSnap = await getDoc(ref);
-      const data = docSnap.data();
-      return data.inProgProjects;
+      
+      //const data = docSnap.data();
+      //return data.inProgProjects;
     }
-    getBizProjects()
+   //getBizProjects(this.userEmail)
     
     async function getProject(proj) {
       const ref = doc(db, "Project", proj);

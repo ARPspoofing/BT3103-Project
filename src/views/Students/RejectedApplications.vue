@@ -80,15 +80,14 @@ export default {
     async function getRejectedProjects() {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
+      //For some reason if have for loop and the array is empty got error so I changed to this
       const response = await Promise.all(
         docSnap.data().rejectedProjects.map(async item => {
           console.log("nested",item)
           const finalResult = await getDoc(doc(db,"Project",item))
           console.log(finalResult.data())
           that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description})
-
         }
-
         )
       )
       //const data = docSnap.data();
