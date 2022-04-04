@@ -75,7 +75,6 @@ export default {
       //const userEmail = window.localStorage.getItem('emailForSignIn')
       this.username = this.userEmail
       const userEmail = this.userEmail
-      alert(userEmail)
       async function getApplicant(userEmail) {
         const docSnap = await getDoc(doc(db, "businesses", userEmail));
         console.log("doc: "+ docSnap)
@@ -85,7 +84,6 @@ export default {
         //console.log("name: "+ name)
         //let result = await data.name
         var name = data.name;
-        alert(name)
         dropdownMenuButton.innerHTML = name
         var picture = data.finalProfile;
         console.log(typeof picture === 'undefined')

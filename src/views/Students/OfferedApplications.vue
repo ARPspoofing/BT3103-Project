@@ -74,6 +74,7 @@ export default {
     async acceptProj(key) {
       var projId = this.offered[key]
       var projName = this.projects[key].projectTitle
+      alert(projName)
       var business = this.projects[key].business
       var biz = this.bizProjects[key]
 
@@ -95,7 +96,9 @@ export default {
       for(var i = 0; i < this.projects.length; i++) {
         console.log(business, this.projects[i].business === business )
         if (this.projects[i].business === business) {
-          this.bizProjects[i].push(projId)
+          console.log('projId',projId)
+          //this.bizProjects[i].push(projId)
+          this.bizProjects.push(projId)
         }
       }
       //this.bizProjects[key] = biz
@@ -170,7 +173,6 @@ export default {
     //this.userEmail = auth.currentUser.email;
     //console.log(this.userEmail)
     var userEmail = this.userEmail
-    alert(this.userEmail)
     const that = this
     async function getOfferedProjects() {
       const ref = doc(db, "students", userEmail);

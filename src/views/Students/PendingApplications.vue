@@ -74,7 +74,6 @@ export default {
     this.userEmail = auth.currentUser.email;
     */
     var userEmail = this.userEmail
-    alert(this.userEmail)
     const that = this
     async function getAppliedProjects() {
       const ref = doc(db, "students", userEmail);
@@ -83,16 +82,18 @@ export default {
       that.applied = data.appliedProjects
       for(var i = 0; i < data.appliedProjects.length; i++) {
         getProject(data.appliedProjects[i]).then((res)=>{that.projects.push(res)})
+        //currProject.then((res) => that.projects.push({projectTitle: res.Project_Title, description: res.Description}))
+        //getProject(data.appliedProjects[i]).then((res)=>{that.projects.push(res)})
       }
       console.log(that.projects)
     }
     getAppliedProjects()
     
     async function getProject(proj) {
-      const ref = doc(db, "Project", proj);
-      const docSnap = await getDoc(ref);
-      const data = docSnap.data();
-      return {projectTitle: data.Project_Title, description: data.Description}
+        const ref = doc(db, "Project", proj);
+        const docSnap = await getDoc(ref);
+        const data = docSnap.data();
+        return {projectTitle: data.Project_Title, description: data.Description}
     }
   }
 }
