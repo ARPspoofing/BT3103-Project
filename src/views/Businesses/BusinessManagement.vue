@@ -4,7 +4,7 @@
 <button @click="goback" id="backButton">
   <i class="fa-solid fa-angles-left"></i>
   Back to Projects</button>
-<div v-if="toDoTask.length > 0" class="wrapper-outer">
+<div class="wrapper-outer">
     <div class="wrapper">
         <h4>TO-DO</h4>
         <ToDo v-if="toDoTask" v-for="(task,index) in toDoTask" :task="task" :key="index" :projectTitle="projectTitle" :projectId="projectId" :user="Business"/>
