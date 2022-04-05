@@ -130,7 +130,8 @@ export default {
   height: 100%;
   position: fixed;
   overflow-y: scroll;
-  padding-bottom: 550px;
+  padding-bottom: 1000px;
+  margin: 100px;
 }
 
 .projectContainer {

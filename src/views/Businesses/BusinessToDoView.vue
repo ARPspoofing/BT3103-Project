@@ -105,6 +105,7 @@
               rows="4"
               cols="60"
               placeholder="Comments"
+              maxlength="500"
             ></textarea>
             <button id="commentButton" @click="addComment">Add Comment</button>
             <!--<textarea required type="text" id="comments" rows="4" cols="50" maxlength="500" v-model="comments"></textarea>-->
@@ -268,7 +269,7 @@ export default {
       const currStatus = this.status;
       console.log(currStatus);
       console.log(this.projectId);
-      let ref = await doc(db, "Project", JSON.parse(this.projectId));
+      let ref = await doc(db, "Project", this.projectId);
       let project = await getDoc(ref);
 
       var dat = await project.data();
@@ -384,7 +385,6 @@ export default {
     const projectTitle = curr.$route.params.projectTitle;
 
     async function getComments() {
-        console.log(projectId)
       const docRef = doc(db, "Project", projectId);
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;
@@ -399,6 +399,7 @@ export default {
       }
       console.log(curr.comment);
     }
+    console.log(curr.comment);
 
     async function getTasksDetails() {
       //Change "To-Do" to props later
