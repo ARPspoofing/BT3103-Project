@@ -126,6 +126,21 @@ export default createStore({
     CLEAR_CARDITEMS(state) {
       state.cardItems = null
     },
+    SET_NEW_CARD(state,payload) {
+      state.cardItems = payload
+    },
+  },
+  actions: {
+    async GET_NEW_CARD({commit,state}) {
+      forEach(doc => {
+        const data = {
+          a:"a",
+          b:"b",
+          c:"c",
+        }
+        commit('SET_NEW_CARD',data)
+      })
+    }
   },
   modules: {
   }
