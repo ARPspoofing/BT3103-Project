@@ -131,7 +131,7 @@ export default createStore({
       state.cardItems = null
     },
     SET_NEW_CARD(state,payload) {
-      state.cardItems = payload[state.key]
+      state.cardItems = JSON.stringify(payload[state.key])
     },
   },
   actions: {

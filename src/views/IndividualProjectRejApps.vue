@@ -136,6 +136,7 @@ export default {
 
   mounted() {
     console.log("mounted")
+    console.log("rej",this.cardItems['rejApplicants'])
     this.items = JSON.parse(this.cardItems);
     console.log("test",this.items['rejApplicants'])
     //non-vuex
