@@ -14,7 +14,7 @@
     <ul class="navbar-nav ms-auto">
         <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{username}}
+            {{name}}
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" >Home</router-link>
@@ -49,6 +49,7 @@ export default {
         Heading: String,
         search: Boolean,
         header: Boolean,
+        key: Number,
         //searchResult: String,
     },
     computed: {

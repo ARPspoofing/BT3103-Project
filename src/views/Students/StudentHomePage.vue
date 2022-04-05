@@ -1,5 +1,5 @@
 <template>
-  <StudentNavBar :search=true :header=false />
+  <StudentNavBar :search=true :header=false :key="componentKey"/>
   <!--div class="modal-overlay" v-if="applyConfirm"></div>-->
   <StudentProfileForm @cancel='cancel' @success='close' v-if='!profileFormCreated'/>
   <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
@@ -213,13 +213,18 @@ export default {
       currKey:null,
       like:false,
       latest:false,
+      componentKey:0,
     }
   },
   
   methods: {
     ...mapMutations(['SET_CARDITEMS','CLEAR_CARDITEMS']),
+    forceRender() {
+      this.componentKey += 1
+    },
     close(e) {
       this.profileFormCreated = true;
+      this.forceRender();
     },
     cancel(e) {
       this.cancel = e;
