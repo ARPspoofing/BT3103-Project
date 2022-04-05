@@ -1,5 +1,5 @@
 <template>
-  <BusinessNavBar :search=true :header=false />
+  <BusinessNavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
@@ -169,7 +169,7 @@ export default {
   },
   data() {
     return {
-      Heading: "MY PROJECTS",
+      Heading: "PROJECT INFORMATION",
       testCollection: [],
       props: ['items'],
       tags: [],

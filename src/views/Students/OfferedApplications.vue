@@ -170,7 +170,7 @@ export default {
     //this.userEmail = auth.currentUser.email;
     //console.log(this.userEmail)
     var userEmail = this.userEmail
-    alert(this.userEmail)
+    //alert(this.userEmail)
     const that = this
     async function getOfferedProjects() {
       const ref = doc(db, "students", userEmail);
