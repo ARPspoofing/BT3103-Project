@@ -210,7 +210,7 @@ export default {
       */
      var userEmail = this.userEmail
      this.username = this.name
-     alert(userEmail)
+     //alert(userEmail)
       //console.log(userEmail)
 
       async function getApplicant(userEmail) {

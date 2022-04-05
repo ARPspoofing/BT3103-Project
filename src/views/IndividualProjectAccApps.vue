@@ -185,7 +185,7 @@ export default {
     console.log("below carditems",this.items['accApplicants'])
     this.projectId = JSON.parse(this.cardItems).projectId;
     if (this.items["accApplicants"]) {
-      alert('There is an accepted applicant')
+      // alert('There is an accepted applicant')
       this.accApplicants = this.items['accApplicants'];
       for (var i = 0; i < this.accApplicants.length; i++) {
         getApplicant(this.accApplicants[i]).then((res) => {
