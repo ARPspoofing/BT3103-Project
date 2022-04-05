@@ -102,6 +102,7 @@ import {
 } from "firebase/firestore";
 import {mapState} from "vuex"
 import {mapMutations} from "vuex"
+import {mapActions} from "vuex"
 const db = getFirestore(firebaseApp);
 import { getAuth } from "firebase/auth";
 
@@ -131,6 +132,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(['GET_NEW_CARD']),
     indvApplicant(key) {
       console.log(this.applicant[key])
       console.log(this.offered)
@@ -182,6 +184,7 @@ export default {
     //vuex
     this.items = JSON.parse(this.cardItems);
     console.log(this.cardItems)
+    console.log(this.cardItems)
     console.log("below carditems",this.items['accApplicants'])
     this.projectId = JSON.parse(this.cardItems).projectId;
     if (this.items["accApplicants"]) {
@@ -200,9 +203,10 @@ export default {
       const ref = doc(db, "students", app);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
+      console.log("studata",data.declineProjects)
       var stat = "pending";
       var inProg = data.inProgProjects;
-      var declined = data.declinedProjects;
+      var declined = data.rejectedProjects;
       if (data.inProgProjects) {
         inProg = data.inProgProjects;
       }

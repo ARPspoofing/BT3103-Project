@@ -63,6 +63,7 @@
                             </p>
                           </div>
                           <span>
+                            
                             <div class="applybtns">
                               <button
                                 type="button"
@@ -76,11 +77,13 @@
                                 No
                               </button>
                             </div>
+                            
                           </span>
                         </div>
                       </div>
                     </div>
                   </div>
+                  -->
                   <button
                     id="acceptbtn"
                     v-show="offered"
@@ -97,7 +100,7 @@
                   >
                     Decline
                   </button>
-      -->
+      
  <!--Ruth previous card version. Keeping incase new version is wrong 
     <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">Rejected</p>
 

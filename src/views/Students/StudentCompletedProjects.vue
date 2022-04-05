@@ -68,8 +68,6 @@ name: 'StudentCompletedProjects',
 
     const that = this
     var userEmail = this.userEmail
-    alert('now')
-    alert(userEmail)
     async function getinProgProjects() {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
