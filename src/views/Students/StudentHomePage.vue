@@ -3,7 +3,6 @@
   <div>
 
    <div class="right">
-      <button type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
       </div>
       <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
         <div class="modal-dialog">
@@ -11,11 +10,11 @@
             <div class="modal-body">
               <div class="words">
                 <i class="fa-solid fa-circle-check" id="tickIcon"></i>
-                  <p>Apply to {{project}}?</p>
+                  <p>Apply to {{currProject}}?</p>
               </div>
               <span>
                 <div class = "applybtns">
-                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="save">Yes</button>
+                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="confirmYes(true)">Yes</button>
                   <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
                 </div>
               </span>
@@ -29,9 +28,11 @@
   <div v-if='profileFormCreated' :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
   
     <h1 id="interest">Projects You May Like</h1>
+    <!--
     <transition name="applyConfirm" mode="out-in">
     <ApplyConfirm @confirmYes="confirmYes" v-if="applyConfirm" :projectTitle='currProject'/>
     </transition>
+    -->
 
     <!--
     <div v-if="isLoading">
@@ -189,6 +190,7 @@
       </button>
     </div>
   </div>  
+  <button style = "visibility:hidden" type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
 </template>
 
 <script>
@@ -258,12 +260,13 @@ export default {
       console.log("eeeeeeeeeeeeeeee")
     },
     applying(event,key) {
+      this.$refs.confirmModal.click();
       alert(key)
       this.applyConfirm = true
       this.currKey = key
       if (event) {
         this.currProject = this.testCollection[key]["projectTitle"]
-        tbis.like = true
+        this.like = true
         this.latest = false
       } else {
         this.currProject = this.wholeTestCollection[key]["projectTitle"]
