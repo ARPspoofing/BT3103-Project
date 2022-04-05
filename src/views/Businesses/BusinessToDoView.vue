@@ -662,11 +662,12 @@ label {
 
 .logo {
   vertical-align: left;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  margin-left: 10px;
+  margin-left: 0px;
   margin-right: 10px;
+  margin-top: -2.5px;
   float: left;
 }
 
