@@ -47,14 +47,14 @@
                                     <label class = "labelTag" for="interest">Interest</label>                            
                                     <select class="inputTag" id="interest" v-model="item.value" >   
                                         <option value="Artificial Intelligence">Artificial Intelligence</option>
-                                        <option value="Scientific Computing">Scientific Computing</option>
-                                        <option value="Data Structures">Data Structures</option>
+                                        <option value="Scientific Computing">Scientific Computing Applications</option>
+                                        <option value="Data Structures">Data Structures and Algorithms</option>
                                         <option value="Computer Architecture">Computer Architecture</option>
                                         <option value="Computer Networks">Computer Networks</option>
                                         <option value="Computer Database">Computer Database</option>
                                         <option value="Database Mining">Database Mining</option>
                                         <option value="Data Analytics">Data Analytics</option>
-                                        <option value="Computer Graphics">Computer Graphics</option>
+                                        <option value="Computer Graphics">Computer Graphics and Visualisation</option>
                                         <option value="Image/Sound Processing">Image/Sound Processing</option>
                                         <option value="Distributed Computing">Distributed Computing</option>
                                         <option value="Human Computer Interaction">Human Computer Interaction</option>
