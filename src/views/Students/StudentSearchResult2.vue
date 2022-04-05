@@ -42,7 +42,7 @@
     </div>
      <div v-if="noProjectsPresent" class = "noProject">
         <PathfinderLoading v-if="!stopLoader"/> 
-        <h1 v-if="stopLoader" class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> ensure that you have spelled your search correctly.</h1>
+        <h1 v-if="stopLoader" class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> Ensure that you have spelled your search correctly.</h1>
           <!-- {{GET_SEARCH_DATA}} -->      
      </div>
      <PathfinderLoading v-if="!stopLoader"/> 
