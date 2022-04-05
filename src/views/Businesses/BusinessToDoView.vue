@@ -206,7 +206,7 @@ export default {
 
     async addComment() {
       var a = document.getElementById("comments").value;
-      let ref = await doc(db, "Project", JSON.parse(this.projectId));
+      let ref = await doc(db, "Project", this.projectId);
       let project = await getDoc(ref);
 
       var dat = await project.data();
@@ -384,7 +384,8 @@ export default {
     const projectTitle = curr.$route.params.projectTitle;
 
     async function getComments() {
-      const docRef = doc(db, "Project", JSON.parse(projectId));
+        console.log(projectId)
+      const docRef = doc(db, "Project", projectId);
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;
       var currTask = {};
@@ -401,7 +402,7 @@ export default {
 
     async function getTasksDetails() {
       //Change "To-Do" to props later
-      const docRef = await doc(db, "Project", JSON.parse(projectId));
+      const docRef = await doc(db, "Project", projectId);
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;
       console.log(project.data());
