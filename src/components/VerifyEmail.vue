@@ -48,7 +48,6 @@ export default {
         async function check() {
             const auth = getAuth()
             let email = window.localStorage.getItem('emailForSignIn');
-            alert(email)
             that.email = email
             const docRef = doc(db,"businesses",String(email))
             const docs = await getDoc(docRef)

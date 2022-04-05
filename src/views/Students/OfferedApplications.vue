@@ -43,7 +43,10 @@ import {
   deleteDoc,
   getDocs,
   updateDoc,
-  getDoc
+  getDoc,
+  arrayUnion,
+  arrayRemove,
+  writeBatch,
 } from "firebase/firestore";
 import {mapState} from "vuex"
 const db = getFirestore(firebaseApp);
@@ -74,6 +77,7 @@ export default {
     async acceptProj(key) {
       var projId = this.offered[key]
       var projName = this.projects[key].projectTitle
+      alert(projName)
       var business = this.projects[key].business
       var biz = this.bizProjects[key]
 
@@ -95,7 +99,9 @@ export default {
       for(var i = 0; i < this.projects.length; i++) {
         console.log(business, this.projects[i].business === business )
         if (this.projects[i].business === business) {
-          this.bizProjects[i].push(projId)
+          console.log('projId',projId)
+          //this.bizProjects[i].push(projId)
+          this.bizProjects.push(projId)
         }
       }
       //this.bizProjects[key] = biz
@@ -132,6 +138,7 @@ export default {
     async declineProj(key) {
       var projId = this.offered[key]
       var projName = this.projects[key].projectTitle
+      console.log('projId',projId,"projName",projName,"key",key)
       
       if (!this.declined) {
         var declined = [];
@@ -140,18 +147,34 @@ export default {
       } else {
         this.declined.push(projId);
       }
-      
+      console.log("declineee",this.declined)
       this.projects.splice(key,1);
       this.offered.splice(key,1);
 
       alert("Declining Project: " + projName);
       try {
+        
+        /*
+        const docRef = doc(db,"students",this.userEmail)
+        const batch = writeBatch(db);
+        console.log("before array union",this.declined)
+        batch.update(docRef, {rejectedProjects: arrayUnion(...this.declined)});
+        batch.update(docRef, {offeredProjects: arrayUnion(...this.offered)});
+
+        batch.commit()
+          .then(() => console.log('Success!'))
+          .catch(err => console.error('Failed!', err));
+        this.$emit("updated")
+        */
+
+          
           const docRef = await updateDoc(doc(db, "students", this.userEmail), {
-              declinedProjects: this.declined,
+              rejectedProjects: this.declined,
               offeredProjects: this.offered,
           })
           //console.log(docRef)
           this.$emit("updated")
+          
       }
         catch(error) {
           console.error("Error updating document: ", error);
@@ -170,18 +193,28 @@ export default {
     //this.userEmail = auth.currentUser.email;
     //console.log(this.userEmail)
     var userEmail = this.userEmail
-    //alert(this.userEmail)
     const that = this
     async function getOfferedProjects() {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
-      const data = docSnap.data();
-      that.offered = data.offeredProjects
+      that.offered = docSnap.data().offeredProjects
+      //const data = docSnap.data();
+      const response = await Promise.all(
+        docSnap.data().offeredProjects.map(async item => {
+          console.log("nested",item)
+          const finalResult = await getDoc(doc(db,"Project",item))
+          console.log(finalResult.data())
+          that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description})
+        }
+        )
+      )
+      /*
       if (data.offeredProjects) {
         for(var i = 0; i < data.offeredProjects.length; i++) {
           getProject(data.offeredProjects[i]).then((res)=>{that.projects.push(res)})
         }
       }
+      */
     }
     getOfferedProjects()
 
@@ -204,12 +237,13 @@ export default {
     getDeclinedProjects()
 
     async function getBizProjects(email) {
-      const ref = doc(db, "businesses", email);
+      const ref = doc(db, "businesses", that.userEmail);
       const docSnap = await getDoc(ref);
-      const data = docSnap.data();
-      return data.inProgProjects;
+      
+      //const data = docSnap.data();
+      //return data.inProgProjects;
     }
-    getBizProjects()
+   getBizProjects(this.userEmail)
     
     async function getProject(proj) {
       const ref = doc(db, "Project", proj);

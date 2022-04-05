@@ -104,7 +104,7 @@
               name="comments"
               rows="4"
               cols="60"
-              placeholder="Comments"
+              placeholder="Please enter your comment"
               maxlength="500"
             ></textarea>
             <button id="commentButton" @click="addComment">Add Comment</button>
@@ -273,12 +273,12 @@ export default {
       let project = await getDoc(ref);
 
       var dat = await project.data();
-      console.log(dat);
+      //console.log(dat);
       var tasks = dat.Tasks;
-      console.log("ok");
-      console.log(this.task);
-      console.log(tasks);
-      console.log(tasks.length);
+      //console.log("ok");
+      //console.log(this.task);
+      //console.log(tasks);
+      //console.log(tasks.length);
       var toRemove = {};
 
       var newTask = {};

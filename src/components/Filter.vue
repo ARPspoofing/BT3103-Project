@@ -16,14 +16,14 @@
                 <div class="interest-flex">                            
                   <select class="inputTag" id="interest" v-model="item.value" >   
                     <option value="Artificial Intelligence">Artificial Intelligence</option>
-                    <option value="Scientific Computing">Scientific Computing</option>
-                    <option value="Data Structures">Data Structures</option>
+                    <option value="Scientific Computing">Scientific Computing Applications</option>
+                    <option value="Data Structures">Data Structures and Algorithms</option>
                     <option value="Computer Architecture">Computer Architecture</option>
                     <option value="Computer Networks">Computer Networks</option>
                     <option value="Computer Database">Computer Database</option>
                     <option value="Database Mining">Database Mining</option>
                     <option value="Data Analytics">Data Analytics</option>
-                    <option value="Computer Graphics">Computer Graphics</option>
+                    <option value="Computer Graphics">Computer Graphics and Visualisation</option>
                     <option value="Image/Sound Processing">Image/Sound Processing</option>
                     <option value="Distributed Computing">Distributed Computing</option>
                     <option value="Human-Computer Interaction">Human-Computer Interaction</option>
@@ -88,6 +88,7 @@
         var that = this
         var temp = []
         async function fetchInterests() {
+          console.log("filter user email",userEmail)
           const docRef = doc(db,"students",String(userEmail))
           const docs = await getDoc(docRef)
           for (var i=0;i<docs.data()['interests'].length;i++) {
@@ -104,7 +105,6 @@
         },
       data() {
         return {
-          userEmail: '',
           date: null,
           rangeSelected: true,
           rangeErrorMsg: 'You have to select the start date and end date of the project',
@@ -117,7 +117,7 @@
         }
       },
       methods: {
-        ...mapMutations(['SET_SEARCH_DATA','SET_HIGHEST_PRIORITYIDS','SET_SECOND_PRIORITYIDS','SET_THIRD_PRIORITYIDS','CLEAR_ALL','CLEAR_HIGHEST']),
+        ...mapMutations(['SET_SEARCH_DATA','SET_HIGHEST_PRIORITYIDS','SET_SECOND_PRIORITYIDS','SET_THIRD_PRIORITYIDS','CLEAR_ALL','CLEAR_HIGHEST','CLEAR_TOP_THREE']),
         checkDate() {
           if (this.date[0] == null || this.date[1] == null) {
             this.rangeSelected = false
@@ -206,7 +206,12 @@
           var allMatch = []
           var noneMatch = []
           const projects = await getDocs(collection(db, "Project"))
-        
+          var searchDataCopy = this.searchData
+          var values = Object.keys(searchDataCopy).map(function(key){
+            return searchDataCopy[key];
+          });
+          var newValues = []
+          newValues = newValues.concat(...values)
         projects.forEach(doc => {
           const id = doc.id;
           const name = doc.data().Project_Title;
@@ -222,7 +227,7 @@
           console.log("filterprice",this.value,"projectprice",price)
           if (this.date == null || this.includesDate(this.date,[projectStart,projectEnd])) {
             if (this.includesPrice(this.value,price)) {
-              if (this.includesTags(this.interests,projectTags)) {
+              if (this.includesTags(this.interests,projectTags) && newValues.includes(id)) {
                 allMatch.push(id)
                 allMatch = allMatch.filter((x, i, a) => a.indexOf(x) === i)
               }
@@ -248,7 +253,8 @@
           */
 
 
-          this.CLEAR_HIGHEST()
+          this.CLEAR_TOP_THREE()
+          console.log("allmatchid",allMatch)
           this.SET_HIGHEST_PRIORITYIDS(allMatch)
           
           //Add company search to search bar 

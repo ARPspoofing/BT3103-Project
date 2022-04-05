@@ -1,5 +1,5 @@
 <template>
-    Loading please be patient ... 
+    <PathfinderLoading/>
 </template>
 
 <script>
@@ -9,6 +9,7 @@ import {doc,setDoc,collection,getDoc,deleteDoc} from 'firebase/firestore';
 import {ref} from "vue"
 import {getAuth,createUserWithEmailAndPassword,sendSignInLinkToEmail,isSignInWithEmailLink, signInWithEmailLink,GoogleAuthProvider,signInWithPopup} from "firebase/auth"
 import {useRouter} from "vue-router"
+import PathfinderLoading from '../components/PathfinderLoading.vue'
 const db = getFirestore(firebaseApp)
 const router = useRouter()
 
@@ -18,6 +19,9 @@ export default {
         return {
             userEmail: '',
         }
+    },
+    components: {
+        PathfinderLoading,
     },
     created() {
         var that = this
@@ -33,7 +37,6 @@ export default {
         async function checkToRoute() {
             
             var userEmail = window.localStorage.getItem('emailForSignIn')
-            //alert(userEmail)
             const docRef = doc(db,"businesses",String(userEmail))
             console.log("doccccccc",docRef)
             //console.log(await getDoc(docRef))
@@ -108,5 +111,4 @@ export default {
 </script>
 
 <style scoped>
-    
 </style>
