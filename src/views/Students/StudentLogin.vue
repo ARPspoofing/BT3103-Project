@@ -108,6 +108,7 @@ export default {
         this.SET_USEREMAIL(this.email)
         //window.localStorage.setItem('emailForSignIn', this.email);
         if(!formFilled) {
+            alert("form not filled")
             this.$router.push({name:'StudentHomePage'})
             //this.$router.push({name:'StudentProfileForm'})
         } else {

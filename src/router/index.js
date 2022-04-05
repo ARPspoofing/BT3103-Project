@@ -149,8 +149,7 @@ const routes = [
     path: "/student/applyconfirm",
     name:"ApplyConfirm",
     component: () => import("../components/ApplyConfirm.vue")
-  },
-
+  }, 
   //Business routes
   {
     path: "/business/inprogress",

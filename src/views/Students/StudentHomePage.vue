@@ -1,8 +1,42 @@
 <template>
   <StudentNavBar :search=true :header=false :key="componentKey"/>
+  <div>
+  <button type="button" @click="submitTest">Submittttttttt</button>
+
+
+
+
+   <div class="right">
+                  <button type="submit" ref="submitBtn" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
+                </div>
+                <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" 
+                  data-bs-backdrop="false">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        <div class="words">
+                        <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+                        <p>Save changes?</p>
+                        </div>
+                        <span>
+                          <div class = "applybtns">
+                            <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="save">Yes</button>
+                            <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                          </div>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+
+
+
+
+
+  </div>
   <!--div class="modal-overlay" v-if="applyConfirm"></div>-->
   <StudentProfileForm @cancel='cancel' @success='close' v-if='!profileFormCreated'/>
-  <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
+  <div v-if='profileFormCreated' :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
   
     <h1 id="interest">Projects You May Like</h1>
     <transition name="applyConfirm" mode="out-in">
@@ -164,7 +198,7 @@
         <span class="visually-hidden">Next</span>
       </button>
     </div>
-  </div>
+  </div>  
 </template>
 
 <script>
@@ -219,6 +253,9 @@ export default {
   
   methods: {
     ...mapMutations(['SET_CARDITEMS','CLEAR_CARDITEMS']),
+    submitTest() {  
+      this.$refs.submitBtn.click();
+    },
     forceRender() {
       this.componentKey += 1
     },
