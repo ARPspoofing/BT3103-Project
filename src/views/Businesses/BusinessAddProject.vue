@@ -211,10 +211,12 @@ import firebaseApp from "../../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import { collection, doc, setDoc, addDoc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import {mapState} from "vuex";
+import {mapMutations} from "vuex";
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
 console.log(auth.currentUser);
-var email = auth.currentUser.email;
+
 
 export default {
   data() {
@@ -248,6 +250,12 @@ export default {
       deliverableTaskErrorErrorMessage: "", 
       deliverableDueDateErrorErrorMessage: "", 
     };
+  },
+  computed: {
+    ...mapState(['userEmail']),
+  },
+  mounted() {
+    var email = this.userEmail
   },
   methods: {
     addTask() {
@@ -350,7 +358,7 @@ export default {
         !this.tagsErrorPresent &&
         !this.allowanceErrorPresent
       ) {
-        const docSnap1 = await getDoc(doc(db, "businesses", email));
+        const docSnap1 = await getDoc(doc(db, "businesses", this.userEmail));
         let data1 = docSnap1.data();
         var pictureprof = data1.finalProfile;
         if (typeof pictureprof === "undefined") {
@@ -360,7 +368,7 @@ export default {
 
         try {
           const docRef = await addDoc(collection(db, "Project"), {
-            poster_id: email,
+            poster_id: this.userEmail,
             Project_Title: a,
             Position: b,
             Num_Of_Vacancies: c,

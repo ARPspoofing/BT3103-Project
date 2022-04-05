@@ -223,7 +223,7 @@ export default {
       //const data = docSnap.data();
       //return data.inProgProjects;
     }
-   //getBizProjects(this.userEmail)
+   getBizProjects(this.userEmail)
     
     async function getProject(proj) {
       const ref = doc(db, "Project", proj);
