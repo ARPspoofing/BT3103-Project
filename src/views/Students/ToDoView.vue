@@ -80,29 +80,33 @@
         </div>
       </div>
       <div class="bottom flex flex-column">
+        <label for="comments">Comments</label>
         <h4>Please limit additional comments to 500 characters</h4>
         <div class="input flex flex-column">
           <textarea
-            required
-            type="text"
             id="comments"
+            name="comments"
             rows="4"
-            cols="50"
+            cols="60"
+            placeholder="Please enter your comment"
             maxlength="500"
-            v-model="comments"
           ></textarea>
+          <button id="commentButton" @click="addComment">Add Comment</button>
         </div>
       </div>
       <div
-          class="projectContainer"
-          :key="item.key"
-          v-for="(item, key) in comment"
-        >
+        class="projectContainer"
+        :key="item.key"
+        v-for="(item, key) in comment"
+      >
         <div id="eachComment">
-        <img v-bind:src="item.profPic" alt="Logo" class="logo" />
-          <p><strong>{{ item["name"] }}</strong>: {{ item["comment"] }}</p>
-          </div>
+          <img v-bind:src="item.profPic" alt="Logo" class="logo" />
+          <p>
+            <strong>{{ item["name"] }}</strong
+            >: {{ item["comment"] }}
+          </p>
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -128,6 +132,10 @@ import Loading from "../../components/Loading.vue";
 const db = getFirestore(firebaseApp);
 const router = useRouter();
 import * as moment from "moment";
+import { getAuth } from "firebase/auth";
+const auth = getAuth();
+var email = auth.currentUser.email;
+console.log(email);
 
 export default {
   name: "ToDoView",
@@ -146,6 +154,7 @@ export default {
       long: "",
       status: "",
       dateOptions: { year: "numeric", month: "short", day: "numeric" },
+      email: auth.currentUser.email,
     };
   },
 
@@ -169,6 +178,66 @@ export default {
   methods: {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
+    },
+
+    async addComment() {
+      var a = document.getElementById("comments").value;
+      let ref = await doc(db, "Project", this.projectId);
+      let project = await getDoc(ref);
+
+      var dat = await project.data();
+      var tasks = dat.Tasks;
+      var toRemove = {};
+      var newTask = {};
+
+      for (let i = 0; i < tasks.length; i++) {
+        let currTask = tasks[i];
+        console.log(this.task_id);
+        if (currTask.taskName == this.task_id) {
+          toRemove = { ...currTask };
+          newTask = currTask;
+        }
+      }
+      console.log(toRemove);
+      console.log(newTask);
+      console.log(this.email);
+
+      let ref2 = doc(db, "students", this.email);
+      let biz = await getDoc(ref2);
+      var da = biz.data();
+      console.log(da);
+
+      await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
+      if (newTask.comments) {
+        newTask.comments.push({
+          user: this.email,
+          comment: a,
+          date: new Date(),
+          name: da.name,
+          profPic: da.finalProfile,
+        });
+      } else {
+        newTask.comments = [];
+        newTask.comments.push({
+          user: this.email,
+          comment: a,
+          date: new Date(),
+          name: da.name,
+          profPic: da.finalProfile,
+        });
+      }
+      this.comment.unshift({
+        user: this.email,
+        comment: a,
+        date: new Date(),
+        name: da.name,
+        profPic: da.finalProfile,
+      });
+
+      await updateDoc(ref, { Tasks: arrayUnion(newTask) });
+
+      this.task = newTask;
+      document.getElementById("comments").value = "";
     },
 
     async updateStatus() {
@@ -243,7 +312,7 @@ export default {
       console.log(curr.comment);
     }
     getComments();
-     console.log(curr.comment);
+    console.log(curr.comment);
 
     async function getTasksDetails() {
       //Change "To-Do" to props later
@@ -446,4 +515,26 @@ label {
   background-color: lightgoldenrodyellow;
   border-radius: 30px;
 }
+#commentButton {
+  background: #0e8044;
+  color: white;
+  margin: 20px;
+  border-radius: 30px;
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+  width: 180px;
+  position: right;
+}
+
+.logo {
+  vertical-align: left;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-left: 10px;
+  margin-right: 10px;
+  float: left;
+}
+
 </style>

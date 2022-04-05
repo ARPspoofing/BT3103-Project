@@ -105,6 +105,7 @@
               rows="4"
               cols="60"
               placeholder="Comments"
+              maxlength="500"
             ></textarea>
             <button id="commentButton" @click="addComment">Add Comment</button>
             <!--<textarea required type="text" id="comments" rows="4" cols="50" maxlength="500" v-model="comments"></textarea>-->
