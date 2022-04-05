@@ -161,10 +161,10 @@ export default {
       //var businessEmail = auth.currentUser.email;
       //var businessEmail = window.localStorage.getItem('emailForSignIn')
       //order projects by posted date, from latest to oldest
-      //alert(order)
+      alert(order)
       var projects = null
       if (order == "recent") {
-        //alert("true!!")
+        alert("true!!")
         this.CLEAR_FILTER()
         this.SET_FILTER("recent")
         projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date", "desc"));
@@ -260,26 +260,26 @@ export default {
       console.log(highestPriorityIds)
       //let snapshot = await getDocs(collection(db, "Project"))
       if (that.recent == true) {
-        //("recent")
+        alert("recent")
         var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date","desc"));
       } else if (that.oldest == true) {
-        //alert("oldest")
+        alert("oldest")
         var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date"));
       } else if (that.highest == true) {
-        //alert("highest")
+        alert("highest")
         var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance","desc"));
       } else if (that.lowest == true) {
-        //alert("lowest")
+        alert("lowest")
         var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance"));
       } else if (that.longest == true) {
-        //alert("longest")
+        alert("longest")
         var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End"));
       } else if (that.shortest == true) {
-        //alert("shortest")
+        alert("shortest")
         var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End","desc"));
       //Just Order by project end date if no filter 
       } else {
-        //alert("else")
+        alert("else")
         var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End","desc"));
       }
       snapshot = await getDocs(snapshot)
