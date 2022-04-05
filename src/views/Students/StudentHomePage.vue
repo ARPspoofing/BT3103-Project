@@ -78,7 +78,7 @@
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key + 6)" 
                 @clickCard="indivproj(key + 6)"
-                @applying="applying($event,key)"
+                @applying="applying($event,key + 6)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -95,7 +95,7 @@
               :appstat="item.appstat"
               @applicantbtn="addApplicant(key + 2*6)" 
               @clickCard="indivproj(key + 2*6)"
-              @applying="applying($event,key)"
+              @applying="applying($event,key + 2*6)"
               :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -157,7 +157,7 @@
                 :appstat="item.appstat"
                 @applicantbtn="addApplicant(key + 6)" 
                 @clickCard="indivprojlatest(key + 6)"
-                @applying="applying($event,key)"
+                @applying="applying($event,key + 6)"
                 :picture = "item.profilePicture"/>
             </div>
           </div>
@@ -174,7 +174,7 @@
               :appstat="item.appstat"
               @applicantbtn="addApplicant(key + 2*6)" 
               @clickCard="indivprojlatest(key + 2*6)"
-              @applying="applying($event,key)"
+              @applying="applying($event,key + 2*6)"
               :picture = "item.profilePicture"/>
             </div>
           </div>
