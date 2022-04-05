@@ -43,7 +43,10 @@ import {
   deleteDoc,
   getDocs,
   updateDoc,
-  getDoc
+  getDoc,
+  arrayUnion,
+  arrayRemove,
+  writeBatch,
 } from "firebase/firestore";
 import {mapState} from "vuex"
 const db = getFirestore(firebaseApp);
@@ -135,6 +138,7 @@ export default {
     async declineProj(key) {
       var projId = this.offered[key]
       var projName = this.projects[key].projectTitle
+      console.log('projId',projId,"projName",projName,"key",key)
       
       if (!this.declined) {
         var declined = [];
@@ -143,18 +147,34 @@ export default {
       } else {
         this.declined.push(projId);
       }
-      
+      console.log("declineee",this.declined)
       this.projects.splice(key,1);
       this.offered.splice(key,1);
 
       alert("Declining Project: " + projName);
       try {
+        
+        /*
+        const docRef = doc(db,"students",this.userEmail)
+        const batch = writeBatch(db);
+        console.log("before array union",this.declined)
+        batch.update(docRef, {rejectedProjects: arrayUnion(...this.declined)});
+        batch.update(docRef, {offeredProjects: arrayUnion(...this.offered)});
+
+        batch.commit()
+          .then(() => console.log('Success!'))
+          .catch(err => console.error('Failed!', err));
+        this.$emit("updated")
+        */
+
+          
           const docRef = await updateDoc(doc(db, "students", this.userEmail), {
-              declinedProjects: this.declined,
+              rejectedProjects: this.declined,
               offeredProjects: this.offered,
           })
           //console.log(docRef)
           this.$emit("updated")
+          
       }
         catch(error) {
           console.error("Error updating document: ", error);
@@ -177,8 +197,8 @@ export default {
     async function getOfferedProjects() {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
+      that.offered = docSnap.data().offeredProjects
       //const data = docSnap.data();
-      //that.offered = data.offeredProjects
       const response = await Promise.all(
         docSnap.data().offeredProjects.map(async item => {
           console.log("nested",item)
@@ -217,7 +237,7 @@ export default {
     getDeclinedProjects()
 
     async function getBizProjects(email) {
-      const ref = doc(db, "businesses", this.userEmail);
+      const ref = doc(db, "businesses", that.userEmail);
       const docSnap = await getDoc(ref);
       
       //const data = docSnap.data();

@@ -200,9 +200,10 @@ export default {
       const ref = doc(db, "students", app);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
+      console.log("studata",data.declineProjects)
       var stat = "pending";
       var inProg = data.inProgProjects;
-      var declined = data.declinedProjects;
+      var declined = data.rejectedProjects;
       if (data.inProgProjects) {
         inProg = data.inProgProjects;
       }
