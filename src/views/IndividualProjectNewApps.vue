@@ -101,6 +101,7 @@ import {
 } from "firebase/firestore";
 import {mapState} from "vuex"
 import {mapMutations} from "vuex"
+import {mapActions} from "vuex"
 
 const db = getFirestore(firebaseApp);
 import { getAuth } from "firebase/auth";
@@ -113,7 +114,7 @@ export default {
     BusinessViewStudentInfo,
   },
   computed: {
-    ...mapState(['cardItems','userEmail']),
+    ...mapState(['cardItems','userEmail','key']),
   },
   data() {
     return {
@@ -131,6 +132,8 @@ export default {
   },
 
   methods: {
+    ...mapActions(['GET_NEW_CARD',]),
+    //...mapMutations(['SET_KEY',]),
     indvApplicant(key) {
       console.log(this.applicant[key])
       console.log(this.offered[key])
@@ -153,6 +156,8 @@ export default {
     },
 
     async accApplicant(key) {
+      //this.SET_KEY(key)
+      //this.GET_NEW_CARD()
       var accApplicant = this.newApplicants[key];
       var offered = this.offered[key];
       var name = this.applicant[key].name;
@@ -191,13 +196,17 @@ export default {
           appliedProjects: applied
         });
         console.log(docRef);
+        this.GET_NEW_CARD()
         this.$emit("updated"); 
+
       } catch (error) {
         console.error("Error updating document: ", error);
       }
     },
 
     async rejApplicant(key) {
+      //this.SET_KEY(key)
+      //this.GET_NEW_CARD()
       var rejApplicant = this.newApplicants[key];
       var rejected = this.rejected[key];
       var name = this.applicant[key].name;
@@ -237,7 +246,7 @@ export default {
           rejectedProjects: rejected,
           appliedProjects: applied
         });
-
+        this.GET_NEW_CARD()
         console.log(docRef);
         this.$emit("updated");
       } catch (error) {
