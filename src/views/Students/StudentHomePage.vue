@@ -1,38 +1,28 @@
 <template>
   <StudentNavBar :search=true :header=false :key="componentKey"/>
   <div>
-  <button type="button" @click="submitTest">Submittttttttt</button>
-
-
-
 
    <div class="right">
-                  <button type="submit" ref="submitBtn" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
-                </div>
-                <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" 
-                  data-bs-backdrop="false">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-body">
-                        <div class="words">
-                        <i class="fa-solid fa-circle-check" id="tickIcon"></i>
-                        <p>Save changes?</p>
-                        </div>
-                        <span>
-                          <div class = "applybtns">
-                            <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="save">Yes</button>
-                            <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
-                          </div>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+      <button type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
+      </div>
+      <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="words">
+                <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+                  <p>Apply to {{project}}?</p>
               </div>
-
-
-
-
-
+              <span>
+                <div class = "applybtns">
+                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="save">Yes</button>
+                  <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                </div>
+              </span>
+              </div>
+            </div>
+          </div>
+        </div>
   </div>
   <!--div class="modal-overlay" v-if="applyConfirm"></div>-->
   <StudentProfileForm @cancel='cancel' @success='close' v-if='!profileFormCreated'/>
@@ -742,5 +732,58 @@ export default {
   opacity: 0.6;
   cursor: pointer;
 }
+
+
+#applyModal {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: #BBDFCC;
+    border: none;
+  }
+
+  .words {
+    width: max-content;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    height: 50px;
+  }
+
+  .applybtns {
+    width: max-content;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+
+  #yesbtn, #nobtn {
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color:#89ca9a;
+    color: #3f3f3f;
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+  }
+
+  #tickIcon {
+    height: 38px;
+    width: 38px;
+    color: #3D9956;
+    float: left;
+  }
+
+  .modal-body p {
+    font-size: 18px;
+    text-align: center;
+    width: 180px;
+    margin-left: 48px;
+    color: #3f3f3f;
+  }
 
 </style>
