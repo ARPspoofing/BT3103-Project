@@ -78,10 +78,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(['userEmail','cardItems']),
+    ...mapState(['userEmail','cardItems','key']),
   },
   methods: {
-    ...mapMutations(['CLEAR_CARDITEMS','SET_CARDITEMS']),
+    ...mapMutations(['CLEAR_CARDITEMS','SET_CARDITEMS','SET_KEY']),
     close(e) {
       this.profileFormCreated = e
       this.$router.push({name:'BusinessHomePage'})
@@ -89,6 +89,7 @@ export default {
     indivproj(key) {
       //vuex
       this.CLEAR_CARDITEMS()
+      this.SET_KEY(key)
       this.SET_CARDITEMS(JSON.stringify(this.testCollection[key]))
       //Non-vuex
       this.$router.push({

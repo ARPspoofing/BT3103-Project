@@ -41,6 +41,7 @@ export default createStore({
     highest: false,
     lowest: false,
     searchString: "",
+    key: null,
   },
   //getter for debugging
   getters: {
@@ -73,6 +74,9 @@ export default createStore({
       state.longest = false,
       state.highest = false,
       state.lowest = false
+    },
+    SET_KEY(state,payload) {
+      state.key = payload
     },
     SET_FILTER(state,payload) {
       if (payload == "recent") {
@@ -127,21 +131,49 @@ export default createStore({
       state.cardItems = null
     },
     SET_NEW_CARD(state,payload) {
-      state.cardItems = payload
+      state.cardItems = payload[state.key]
     },
   },
   actions: {
     async GET_NEW_CARD({commit,state}) {
-      forEach(doc => {
-        const data = {
-          a:"a",
-          b:"b",
-          c:"c",
+    
+        var businessEmail = state.userEmail
+        var testCollectionItems = []
+        //order projects by posted date, from latest to oldest
+        let projects = query(collection(db, "Project"), orderBy("Posted_Date", "desc"));
+        let snapshot = await getDocs(projects);
+        const testCollection = [];
+        const docSnap = await getDoc(doc(db, "businesses", businessEmail));
+        let data1 = docSnap.data();
+        var pictureprof = data1.finalProfile;
+        if (typeof pictureprof === "undefined") {
+          pictureprof =
+            "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png";
         }
-        commit('SET_NEW_CARD',data)
-      })
-    }
-  },
+        snapshot.forEach((docs) => {
+          let data = docs.data();
+          var id = docs.id;
+          testCollectionItems.push({
+            projectId: id,
+            projectTitle: data.Project_Title,
+            description: data.Description,
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
+            posterId: data.poster_id,
+            profilePicture: pictureprof,
+          });
+        });
+        commit('SET_NEW_CARD',testCollectionItems)
+      }
+    },
   modules: {
   }
 })
