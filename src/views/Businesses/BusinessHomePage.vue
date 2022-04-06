@@ -31,7 +31,7 @@
           :description="item.description"
           @clickCard="indivproj(key)"
           :picture="item.profilePicture"
-          :stat="item.status"
+          :stat="item.application"
         />
       </div>
     </div>
@@ -56,6 +56,7 @@ import {
   getDoc,
   query,
   orderBy,
+  where
 } from "firebase/firestore";
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
 import BusinessProfileForm from './BusinessProfileForm.vue'
@@ -174,7 +175,7 @@ export default {
       //var businessEmail = window.localStorage.getItem('emailForSignIn')
       var businessEmail = that.userEmail
       //order projects by posted date, from latest to oldest
-      let projects = query(collection(db, "Project"), orderBy("Posted_Date", "desc"));
+      let projects = query(collection(db, "Project"), where("Status", "!=", "completed"), orderBy("Status", "asc"), orderBy("Posted_Date", "desc"));
       let snapshot = await getDocs(projects);
       const testCollection = [];
       const docSnap = await getDoc(doc(db, "businesses", businessEmail));
@@ -204,7 +205,8 @@ export default {
           rejApplicants: data.Rej_Applicants,
           posterId: data.poster_id,
           profilePicture: pictureprof,
-          status: data.Status
+          status: data.Status, 
+          application: data.Application, 
         });
       });
       that.testCollection = testCollection;
@@ -287,6 +289,10 @@ export default {
     text-align: center;
     color: #606060;
     text-decoration: none;
+  }
+
+  .optionsOff:hover {
+    color: #0E8044;
   }
 
   .floating-right-bottom-btn {

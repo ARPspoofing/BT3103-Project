@@ -285,4 +285,9 @@ export default {
     width: 70px;
     color: #004A23;
   }
+
+  .optionsOff:hover {
+    color: #0E8044;
+  }
+
 </style>

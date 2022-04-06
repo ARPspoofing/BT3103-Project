@@ -22,7 +22,6 @@
           :apply="false"
           :projectTitle="item.projectTitle"
           :description="item.description"
-          :inProgress='true'
           :picture="item.profilePicture"
           :stat="item.status"
         />
@@ -134,11 +133,18 @@ export default {
   }
 
   .mainBody {
-    background-color: #F5F5F5;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-  }
+  background-color: #f5f5f5;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  overflow-y: scroll;
+  padding-bottom: 1000px;
+  margin-bottom: 100px;
+}
+
+.projectContainer {
+  margin-left: 30px;
+}
 
   #interest {
     text-align: left;
@@ -173,6 +179,10 @@ export default {
     text-align: center;
     color: #606060;
     text-decoration: none;
+  }
+
+  .optionsOff:hover {
+    color: #0E8044;
   }
 
   .floating-right-bottom-btn {

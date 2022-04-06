@@ -12,6 +12,7 @@
     <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">
       Rejected
     </p>
+    <p id="closed" v-if="stat == 'closed'">Application Closed</p>
 <div v-show=false>NO</div>
     <button
       id="applybtns"
@@ -292,7 +293,14 @@ export default {
   border-width: 0px;
   height: 30px;
 }
-
+#closed {
+  background-color: #ecf0f3;
+  width: 180px;
+  font-size: 15px;
+  border-radius: 12px;
+  color: #ec5c5c;
+  /*font-weight: bold;*/
+}
 
 
 .btn-apply {
