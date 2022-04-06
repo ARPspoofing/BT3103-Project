@@ -84,7 +84,6 @@ export default {
       //console.log(key);
       //console.log(this.testCollection[key]);
     },
-
     isEqual(email) {
       return email == this.businessEmail;
     },
@@ -116,13 +115,14 @@ export default {
       const ref = doc(db, "businesses", userEmail);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      that.inProgProjects = data.inProgressProjects 
-      var inProgProjects = data.inProgressProjects
-      console.log("inproglen",inProgProjects)
+      //console.log(data)
+      that.inProgProjects = data.inProgProjects 
+      var inProgProjects = data.inProgProjects
+      //console.log("inproglen",inProgProjects)
       for (var i = 0; i < inProgProjects.length; i++) {
         getProject(inProgProjects[i]).then((res) => {that.testCollection.push(res)})
       }
-      console.log(that.inProgProjects)
+      //console.log(that.inProgProjects)
     }
     getInProgProjects();
 
@@ -130,7 +130,7 @@ export default {
       const ref = doc(db, "Project", proj);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-
+      console.log(data)
       /*const docSnap2 = await getDoc(doc(db, "businesses", auth.currentUser.email));
       let data1 = docSnap2.data();
       var pictureprof = data1.finalProfile;
@@ -139,7 +139,7 @@ export default {
           "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png";
       }
       console.log(that.testCollection)*/
-
+      
       return {projectId: proj,
           projectTitle: data.Project_Title,
           description: data.Description,

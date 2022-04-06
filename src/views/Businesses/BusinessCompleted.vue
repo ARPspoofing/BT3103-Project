@@ -1,5 +1,5 @@
 <template>
-  <NavBar :Heading="Heading" :header=true />
+  <BusinessNavBar :Heading="Heading" :header=true />
   <div class="mainBody">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
@@ -16,22 +16,99 @@
       </span>
     </h1>
     <hr>
+    <div class="projectContainer">
+      <div :key="item.key" v-for="(item, key) in testCollection">
+        <Card
+          :apply="false"
+          :projectTitle="item.projectTitle"
+          :description="item.description"
+          :inProgress='true'
+          :picture="item.profilePicture"
+          :stat="item.status"
+        />
+      </div>
+    </div>
 </div>
 </template>
 
 <script>
-import Multiselect from '@vueform/multiselect'
-import NavBar from '../../components/BusinessNavBar.vue'
+import BusinessNavBar from "../../components/BusinessNavBar.vue";
+import Card from "../../components/Card.vue";
+import firebaseApp from "../../firebase.js";
+import { getFirestore } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  setDoc,
+  deleteDoc,
+  getDocs,
+  updateDoc,
+  getDoc,
+  query,
+  orderBy,
+} from "firebase/firestore";
+import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
+import BusinessProfileForm from './BusinessProfileForm.vue'
+import {mapState} from "vuex"
+const db = getFirestore(firebaseApp);
+
 export default {
   name: 'BusinessCompleted',
   components: {
-    Multiselect, 
-    NavBar
+    BusinessNavBar,
+    Card,
+  },
+  computed: {
+    ...mapState(['userEmail']),
   },
   data() {
     return {
-      Heading: "MY PROJECTS"
+      Heading: "MY PROJECTS", 
+      testCollection: [],  
+      businessEmail: "",
+      completedProjects: [],
     }
+  },
+  mounted() {
+    var userEmail = this.userEmail
+    const that = this;
+
+    async function getCompletedProjects() {
+      const ref = doc(db, "businesses", userEmail);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      that.completedProjects = data.completedProjects 
+      var completedProjects = data.completedProjects
+      for (var i = 0; i < completedProjects.length; i++) {
+        getProject(completedProjects[i]).then((res) => {that.testCollection.push(res)})
+      }
+    }
+    getCompletedProjects();
+
+    async function getProject(proj) {
+      const ref = doc(db, "Project", proj);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      console.log(data)
+      
+      return {projectId: proj,
+          projectTitle: data.Project_Title,
+          description: data.Description,
+          vacancies: data.Num_Of_Vacancies,
+          allowance: data.Allowance,
+          position: data.Position,
+          projectStart: data.Project_Start,
+          projectEnd: data.Project_End,
+          tasks: data.Tasks,
+          tags: data.Tags,
+          newApplicants: data.New_Applicants,
+          accApplicants: data.Acc_Applicants,
+          rejApplicants: data.Rej_Applicants,
+          posterId: data.poster_id,
+          profilePicture: data.profPicture,
+          status: data.Status}
+    }
+    console.log(that.testCollection)
   }
 }
 </script>

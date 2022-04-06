@@ -13,6 +13,7 @@
         <i class="fa-solid fa-angles-left"></i> Back to Management
       </button>
     </router-link>
+
     <div class="view container">
       <!-- <router-link :to="{name:'BusinessManagement'}">
            
@@ -204,6 +205,8 @@ export default {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
+
+    
 
     async addComment() {
       var a = document.getElementById("comments").value;
