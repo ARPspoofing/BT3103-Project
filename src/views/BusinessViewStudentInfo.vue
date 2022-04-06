@@ -48,7 +48,7 @@
             <ul style="display: grid; grid-template-columns: repeat(5, 1fr)">
               <li
                 v-for="(item, index) in interests"
-                style="width: 20%; display: inline"
+                :key=index style="width: 20%; display: inline"
               >
                 <div class="interest-flex">
                   <label class="labelTag" for="interest">Interest</label>
@@ -141,6 +141,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
+import {mapState} from "vuex"
 const db = getFirestore(firebaseApp);
 const router = useRouter();
 export default {
@@ -322,7 +323,7 @@ export default {
   },
   mounted() {
     const auth = getAuth();
-    var userEmail = auth.currentUser.email;
+    var userEmail = this.userEmail;
     this.applicant = JSON.parse(this.$route.params.applicants);
     this.allApplicant = JSON.parse(this.$route.params.allApplicants);
     // this.showButton = JSON.parse(this.$route.params.buttonShow);
@@ -453,9 +454,6 @@ label {
 
 .interest {
   gap: 10px;
-  div {
-    flex: 1;
-  }
 }
 
 img {
@@ -495,16 +493,13 @@ button,
   margin-right: 8px;
   margin-left: 20px;
   color: #fff;
-  img {
-    margin-right: 4px;
-  }
 }
 
-.save {
-  div {
-    flex: 1;
-  }
+/*
+.save div {
+  flex: 1;
 }
+*/
 
 .right {
   width: max-content;
