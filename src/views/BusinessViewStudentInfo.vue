@@ -149,6 +149,9 @@ export default {
   components: {
     BusinessNavBar,
   },
+  computed: {
+    ...mapState(['userEmail','studentInfo',]),
+  },
   created() {
     this.interests.push({
       id: uuidv4(),
@@ -322,8 +325,32 @@ export default {
     };
   },
   mounted() {
-    const auth = getAuth();
     var userEmail = this.userEmail;
+    console.log("studentInfo",JSON.parse(this.studentInfo))
+    //vuex
+    this.applicant = JSON.parse(this.studentInfo['applicants']);
+    this.allApplicant = JSON.parse(this.studentInfo['allApplicants']);
+    // this.showButton = JSON.parse(this.$route.params.buttonShow);
+    this.newApplicant = JSON.parse(this.studentInfo['newApplicants']);
+    this.accApplicant = JSON.parse(this.studentInfo['accApplicants']);
+    this.rejApplicant = JSON.parse(this.studentInfo['rejApplicants']);
+    this.offer = JSON.parse(this.studentInfo['offered']);
+    this.reject = JSON.parse(this.studentInfo['rejected']);
+    this.apply = JSON.parse(this.studentInfo['applied']);
+    this.item = JSON.parse(this.studentInfo['items']);
+    this.theKey = JSON.parse(this.studentInfo['key']);
+    this.stat = JSON.parse(this.studentInfo['stat'])
+    console.log(this.accApplicant);
+    this.items = JSON.parse(this.studentInfo['items']);
+    this.projectId = JSON.parse(this.studentInfoitems['projectId']);
+    this.newApplicants = JSON.parse(this.studentInfo.items)['newApplicants'];
+    this.accApplicants = JSON.parse(this.studentInfo.items)['accApplicants'];
+    this.rejApplicants = JSON.parse(this.studentInfo.items)['rejApplicants'];
+
+
+
+    //Non vuex
+    /*
     this.applicant = JSON.parse(this.$route.params.applicants);
     this.allApplicant = JSON.parse(this.$route.params.allApplicants);
     // this.showButton = JSON.parse(this.$route.params.buttonShow);
@@ -342,8 +369,9 @@ export default {
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants;
     this.accApplicants = JSON.parse(this.$route.params.items).accApplicants;
     this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants;
+    */
 
-    var email = JSON.parse(this.$route.params.applicants).email;
+    var email = JSON.parse(this.studentInfo.applicants).email;
     console.log(email)
     const that = this;
     async function getApplicant(email) {

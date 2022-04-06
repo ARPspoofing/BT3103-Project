@@ -185,6 +185,13 @@ export default {
                     setTimeout(() => {
                         this.emailErrorPresent = false
                     }, 1500)
+                } else if(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(this.password) == false) {
+                    this.passwordErrorPresent = true
+                    this.loading = false
+                    this.errorMessage = "Weak Password"
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500)
                 } else {
                     this.loading = true               
                     createUserWithEmailAndPassword(getAuth(),this.email,this.password)

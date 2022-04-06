@@ -41,6 +41,7 @@ export default createStore({
     lowest: false,
     searchString: "",
     key: null,
+    studentInfo: {},
   },
   //getter for debugging
   getters: {
@@ -129,9 +130,13 @@ export default createStore({
     CLEAR_CARDITEMS(state) {
       state.cardItems = null
     },
+    SET_STUDENT_INFO(state,payload) {
+      state.studentInfo = payload
+    },
     SET_NEW_CARD(state,payload) {
       state.cardItems = JSON.stringify(payload[state.key])
     },
+    
   },
   actions: {
     async GET_NEW_CARD({commit,state}) {

@@ -184,6 +184,13 @@ export default {
                     setTimeout(() => {
                         this.confirmPasswordErrorPresent = false
                     }, 1500)
+                } else if(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(this.password) == false) {
+                    this.passwordErrorPresent = true
+                    this.loading = false
+                    this.errorMessage = "Weak Password"
+                    setTimeout(() => {
+                        this.passwordErrorPresent = false
+                    }, 1500)
                 } else if(this.password == this.confirmPassword) {  
                 
                 /*

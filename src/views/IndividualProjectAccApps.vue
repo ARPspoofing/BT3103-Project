@@ -113,7 +113,7 @@ export default {
     ApplicantsCard,
   },
   computed: {
-    ...mapState(['cardItems']),
+    ...mapState(['cardItems','studentInfo']),
   },
   data() {
     return {
@@ -132,10 +132,40 @@ export default {
   },
 
   methods: {
-    ...mapActions(['GET_NEW_CARD']),
+    ...mapActions(['GET_NEW_CARD',]),
+    ...mapMutations(['SET_STUDENT_INFO',]),
     indvApplicant(key) {
       console.log(this.applicant[key])
       console.log(this.offered)
+      /*
+      this.SET_STUDENT_INFO('applicants',JSON.stringify(this.applicant[key]))
+      this.SET_STUDENT_INFO('allApplicants', JSON.stringify(this.applicant))
+      this.SET_STUDENT_INFO('newApplicants', JSON.stringify(this.newApplicants))
+      this.SET_STUDENT_INFO('accApplicants',JSON.stringify(this.accApplicants))
+      this.SET_STUDENT_INFO('rejApplicants', JSON.stringify(this.rejApplicants))
+      this.SET_STUDENT_INFO('offered', JSON.stringify(this.offered))
+      this.SET_STUDENT_INFO('rejected', JSON.stringify(this.rejected))
+      this.SET_STUDENT_INFO('applied',JSON.stringify(this.applied))
+      this.SET_STUDENT_INFO('items', JSON.stringify(this.items))
+      this.SET_STUDENT_INFO('key', JSON.stringify(key))
+      this.SET_STUDENT_INFO('stat', JSON.stringify(""))
+      */
+      this.SET_STUDENT_INFO({
+          applicants: JSON.stringify(this.applicant[key]),
+          allApplicants: JSON.stringify(this.applicant),
+          newApplicants: JSON.stringify(this.newApplicants),
+          accApplicants: JSON.stringify(this.accApplicants),
+          rejApplicants: JSON.stringify(this.rejApplicants),
+          offered: JSON.stringify(this.offered),
+          rejected: JSON.stringify(this.rejected),
+          applied: JSON.stringify(this.applied),
+          items: JSON.stringify(this.items),
+          key: JSON.stringify(key),
+          stat: JSON.stringify(""),
+        })
+      console.log("currStudentInfo", this.studentInfo)
+
+      //Non vuex
       this.$router.push({
         name:'BusinessViewStudentInfo', 
         params: {
