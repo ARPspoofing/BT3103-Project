@@ -50,12 +50,6 @@
                 </div> 
             </div>
         </form>
-        
-        <!--
-        <button @click="googleSignIn">google</button>
-         <div id="firebaseui-auth-container"></div>
-         -->
-         
     </div>
   
 </template>
@@ -72,12 +66,6 @@ import {mapMutations} from "vuex"
 import Loading from '../../components/Loading.vue'
 import VerifyEmail from '../../components/VerifyEmail.vue'
 import GoogleButton from '../../components/GoogleButton.vue'
-/*
-import firebase from '../../uifire'
-import 'firebase/compat/auth'
-import * as firebaseui from 'firebaseui'
-import 'firebaseui/dist/firebaseui.css'
-*/
 
 const actionCodeSettings = {
   // URL you want to redirect back to. The domain (www.example.com) for this
@@ -252,17 +240,16 @@ export default {
                     // Save the email locally so you don't need to ask the user for it again
                     // if they open the link on the same device.
                     this.SET_USEREMAIL(this.email)
-                    //window.localStorage.setItem('emailForSignIn', this.email);
                     
                     this.$router.push({name:'BusinessVerify'})
-                    // ...
+ 
                 })
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.log(errorMessage)
                     console.log("email",this.email)
-                    // ...
+      
                 });
                 console.log('uploaded to firebase')
                     //this.$router.push({name:'BusinessProfileForm',params: {email}})

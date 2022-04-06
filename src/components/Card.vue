@@ -24,7 +24,7 @@
     <button
       id="applybtns"
       v-show="apply"
-      v-else="appstat == 'apply'"
+      v-else-if="appstat == 'apply'"
       class="btn-apply"
       data-bs-toggle="modal"
       data-bs-target="#applyModal"
@@ -150,8 +150,10 @@ export default {
   data() {
     return {
       testCollection: [],
+      /*
       stat: "",
       appstat: "",
+      */
       currProjectTitle: "",
     };
   },

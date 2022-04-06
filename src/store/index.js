@@ -1,6 +1,5 @@
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import  VuexPersistence from 'vuex-persistedstate'
 import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../firebase.js"
 

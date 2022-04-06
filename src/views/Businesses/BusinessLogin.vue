@@ -118,7 +118,6 @@ export default {
             const token = credential.accessToken;
             const user = result.user;
             this.SET_USEREMAIL(user.email)
-            //window.localStorage.setItem('emailForSignIn', user.email);
             this.$router.push({name:'businessLoading'})
                 // ...
         }).catch((error) => {

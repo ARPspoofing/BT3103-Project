@@ -66,23 +66,12 @@ export default {
       ...mapState(['name','userEmail']),
     },
     mounted() {
-      
-      /*
-      const auth = getAuth();
-      var userEmail = auth.currentUser.email;
-      console.log(userEmail)
-      */
-      //const userEmail = window.localStorage.getItem('emailForSignIn')
       this.username = this.userEmail
       const userEmail = this.userEmail
       async function getApplicant(userEmail) {
         const docSnap = await getDoc(doc(db, "businesses", userEmail));
         console.log("doc: "+ docSnap)
         let data = docSnap.data();
-        console.log(data)
-        //name =  data.name;
-        //console.log("name: "+ name)
-        //let result = await data.name
         var name = data.name;
         dropdownMenuButton.innerHTML = name
         var picture = data.finalProfile;
