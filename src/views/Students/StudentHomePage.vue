@@ -463,22 +463,8 @@ export default {
       that.profileFormCreated = profileFormCreated;
     }
     profileFormCreatedCheck();
-
-    /*
-    var currUser = getAuth().currentUser
-    this.profileFormCreated = currUser.email
-    */
   },
   mounted() {
-    /*
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if(user) {
-        this.user = user;
-      }
-    })
-    this.userEmail = auth.currentUser.email;
-    */
     this.userEmailData = this.userEmail;
 
     const that = this;
@@ -496,7 +482,6 @@ export default {
       const ref = doc(db, "students", that.userEmailData);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      //console.log(data.appliedProjects)
       that.allApplied = data.appliedProjects;
       that.allApplied = that.allApplied.concat(data.completedProjects);
       that.allApplied = that.allApplied.concat(data.inProgProjects);

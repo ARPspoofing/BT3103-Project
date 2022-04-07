@@ -50,37 +50,37 @@ const routes = [
   {
     path: "/project",
     name: "IndividualProjectInfo",
-    component: () => import("../views/IndividualProjectInfo.vue"),
+    component: () => import("../views/Businesses/IndividualProjectInfo.vue"),
   },
   {
     path: "/project/new_apps",
     name: "IndividualProjectNewApps",
-    component: () => import("../views/IndividualProjectNewApps.vue"),
+    component: () => import("../views/Businesses/IndividualProjectNewApps.vue"),
   },
   {
     path: "/project/acc_apps",
     name: "IndividualProjectAccApps",
-    component: () => import("../views/IndividualProjectAccApps.vue"),
+    component: () => import("../views/Businesses/IndividualProjectAccApps.vue"),
   },
   {
     path: "/project/rej_apps",
     name: "IndividualProjectRejApps",
-    component: () => import("../views/IndividualProjectRejApps.vue"),
+    component: () => import("../views/Businesses/IndividualProjectRejApps.vue"),
   },
   {
     path: "/project/student_profileInfo",
     name: "BusinessViewStudentInfo",
-    component: () => import("../views/BusinessViewStudentInfo.vue")
+    component: () => import("../views/Businesses/BusinessViewStudentInfo.vue")
   },
   {
     path: "/project/student_projectinfo",
     name: "StudentViewProjectInfo",
-    component: () => import("../views/StudentViewProjectInfo.vue"),
+    component: () => import("../views/Students/StudentViewProjectInfo.vue"),
   },
   {
     path: "/project/business_editproj",
     name: "BusinessEditProject",
-    component: () => import("../views/BusinessEditProject.vue"),
+    component: () => import("../views/Businesses/BusinessEditProject.vue"),
   },
   {
     path: "/student/login",

@@ -85,10 +85,10 @@
 </template>
 
 <script>
-import BusinessNavBar from "../components/BusinessNavBar.vue";
-import ApplicantsCard from "../components/ApplicantsCard.vue";
+import BusinessNavBar from "../../components/BusinessNavBar.vue";
+import ApplicantsCard from "../../components/ApplicantsCard.vue";
 import BusinessViewStudentInfo from "./BusinessViewStudentInfo.vue";
-import firebaseApp from "../firebase.js";
+import firebaseApp from "../../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
   collection,
@@ -164,7 +164,6 @@ export default {
       var projTitle = this.items["projectTitle"];
       var projId = this.items["projectId"];
       var applied = this.applied[key];
-      //console.log("bef" + applied)
 
       if (!this.accApplicants) {
         var accApplicants = [];
@@ -176,10 +175,8 @@ export default {
 
       var index = applied.indexOf(projId)
       applied.splice(index, 1)
-      //console.log("after" + applied)
 
       offered.push(projId);
-      //console.log(offered);
       this.newApplicants.splice(key, 1);
       this.applicant.splice(key, 1);
       this.offered.splice(key, 1);
@@ -247,13 +244,10 @@ export default {
           appliedProjects: applied
         });
         this.GET_NEW_CARD()
-        console.log(docRef);
         this.$emit("updated");
       } catch (error) {
         console.error("Error updating document: ", error);
       }
-      console.log(this.rejApplicants);
-      console.log(key);
     },
   },
 
@@ -273,10 +267,6 @@ export default {
     this.newApplicants = JSON.parse(this.cardItems).newApplicants;
     this.accApplicants = JSON.parse(this.cardItems).accApplicants;
     this.rejApplicants = JSON.parse(this.cardItems).rejApplicants;
-    //console.log(this.newApplicants)
-    //console.log(this.accApplicants)
-    //console.log(this.rejApplicants)
-    //console.log(this.rejApplicants)
     //Non-vuex
     /*
     if (this.$route.params.newApplicants) {
@@ -328,7 +318,6 @@ export default {
       const ref = doc(db, "students", app);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      //let result = await data.name
       return { name: data.name, course: data.course, email: data.email };
     }
 
@@ -352,9 +341,6 @@ export default {
       const data = docSnap.data();
       return data.appliedProjects;
     }
-
-    console.log(this.newApplicants);
-    console.log(this.applied);
   },
 };
 </script>
@@ -422,6 +408,10 @@ hr {
   color: #606060;
   text-decoration: none;
 }
+
+.optionsOff:hover {
+    color: #0E8044;
+  }
 
 .floating-right-bottom-btn {
   position: fixed;

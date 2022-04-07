@@ -1,13 +1,32 @@
 <template>
-  <StudentNavBar :search=true :header=false />
+  <BusinessNavBar :Heading="Heading" :header=true />
   <div class="mainBody">
+    <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
+      <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
+    </router-link>
+    <!-- <h3>{{items}}</h3> --> 
+    <h1 id="interest">
+      <span class="options">
+        <b>PROJECT INFO</b>
+      </span>
+      <span>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectNewApps', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>NEW APPLICANTS</b></router-link>
+      </span>
+      <span>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectAccApps', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>ACCEPTED APPLICANTS</b></router-link>
+      </span>
+      <span>
+        <router-link class="optionsOff" :to="{name:'IndividualProjectRejApps', params:{items: JSON.stringify(this.items), newApplicants: JSON.stringify(this.newApplicants), accApplicants: JSON.stringify(this.accApplicants), rejApplicants: JSON.stringify(this.rejApplicants)}}" ><b>REJECTED APPLICANTS</b></router-link>
+      </span>
+    </h1>
+    <hr/>
     <div>
       <div class = "clogo">
-        <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+        <img src="../../assets/google-logo.png" alt="Logo" class = "logo">
         <span>
           <div class="projTitle">
             {{items.projectTitle}}  <br>
-            {{companyName}} <br>
+            Company Name <br>
             <!--Tags-->
             <div id="tagsbox">
             <div id="tags" :key="item.key" v-for="(item, index) in tags">
@@ -19,21 +38,22 @@
         </span>
         <span>
           <div class="projButtons" >
-            <button id="applybtns" v-if="appstat == 'applied'" class="btn-applied">APPLIED</button>
-            <button id="applybtns" v-if="appstat == 'apply'" class="btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal" >APPLY NOW</button> <br>
-          </div> 
-          <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true" 
+            <button class="edit-proj" @click="editProject()">EDIT PROJECT DETAILS</button> <br>
+            <button href="#" class="close-proj" @click="closeProject()" data-bs-toggle="modal" data-bs-target="#closeModal">CLOSE PROJECT</button> <br>
+            <div class="modal fade" id="closeModal" tabindex="-1" aria-labelledby="closeModalLabel" aria-hidden="true" 
               data-bs-backdrop="false">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-body">
                     <div class="words">
-                    <i class="fa-solid fa-circle-check" id="tickIcon"></i>
-                    <p>Apply for <span style="color: #0E8044"><strong>{{ items.projectTitle }} </strong></span>?</p>
+                    <i class="fa-solid fa-triangle-exclamation" id="warningIcon"></i>
+                    <p>Are you sure you want to <br>
+                    <span style="color: red"> close </span> this project?<br>
+                    This action is not reversible. </p>
                     </div>
                     <span>
                       <div class = "applybtns">
-                        <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="addApplicant()">Yes</button>
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal">Yes</button>
                         <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
                       </div>
                     </span>
@@ -41,6 +61,29 @@
                 </div>
               </div>
             </div>
+            <!--<button href="#" class="del-proj" data-bs-toggle="modal" data-bs-target="#delModal">DELETE PROJECT</button>
+            <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="delModalLabel" aria-hidden="true" 
+              data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <div class="words">
+                    <i class="fa-solid fa-triangle-exclamation" id="warningIcon"></i>
+                    <p>Are you sure you want to <br>
+                    <span style="color: red"> delete </span> this project?<br>
+                    This action is not reversible. </p>
+                    </div>
+                    <span>
+                      <div class = "applybtns">
+                        <button type="button" id="yesbtn" data-bs-dismiss="modal">Yes</button>
+                        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>-->
+          </div> 
         </span>
       </div>
     </div>
@@ -96,146 +139,116 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
     </div>
     <br><br>
   </div>
 </template>
 
 <script>
-import StudentNavBar from '../components/StudentNavBar.vue'
-import Deliverable from '../components/Deliverable.vue'
+import BusinessNavBar from '../../components/BusinessNavBar.vue'
+import Deliverable from '../../components/Deliverable.vue'
 import * as moment from 'moment'
-import firebaseApp from '../firebase.js';
+import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
-const db = getFirestore(firebaseApp);
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { collection, doc, setDoc, deleteDoc, getDocs, getDoc, updateDoc } from "firebase/firestore"
 import {mapState} from "vuex"
 import {mapMutations} from "vuex"
 
+const db = getFirestore(firebaseApp);
+
 export default {
-  name: 'StudentViewProjectInfo',
+  name: 'IndividualProjectInfo',
   //props: ['items'],
   components: {
-    StudentNavBar,
+    BusinessNavBar, 
     Deliverable
+  },
+  computed: {
+    ...mapState(['cardItems']),
   },
   data() {
     return {
-      Heading: "MY PROJECTS",
+      Heading: "PROJECT INFORMATION",
       testCollection: [],
-      //props: ['items'],
+      props: ['items'],
       tags: [],
       tasks: [],
       items: [],
-      user: false, 
-      userEmailData: "", 
-      applied: [],
-      appstat: "",
-      companyEmail: "", 
-      companyName: "",
+      newApplicants: [],
+      accApplicants: [],
+      rejApplicants: [],
     }
   },
-  computed: {
-    ...mapState(['userEmail','cardItems']),
-  },
   mounted() {
-    /*
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if(user) {
-        this.user = user;
-      }
-    })
-    this.userEmail = auth.currentUser.email;
-    */
-    this.userEmailData = this.userEmail
-    //console.log(this.userEmail)
-    //Non-Vuex
+    //Non Vuex version
     /*
     this.tasks = JSON.parse(this.$route.params.items).tasks
     this.tags = JSON.parse(this.$route.params.items).tags
-    this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
-    this.projTitle = JSON.parse(this.$route.params.items).projectTitle
     this.items = JSON.parse(this.$route.params.items)
-    console.log(JSON.parse(this.$route.params.items).projectId)
-    this.projId = JSON.parse(this.$route.params.items).projectId
-    this.appstat = JSON.parse(this.$route.params.items).appstat
-    this.companyEmail = JSON.parse(this.$route.params.items).company
-    */
+    this.newApplicants = JSON.parse(this.$route.params.items).newApplicants
+    this.accApplicants = JSON.parse(this.$route.params.items).accApplicants
+    this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants
 
-    //Vuex
-    console.log("cardItems",this.cardItems)
+    if (this.$route.params.newApplicants) {
+      this.newApplicants = JSON.parse(this.$route.params.newApplicants)
+    }
+    if (this.$route.params.accApplicants) {
+      this.accApplicants = JSON.parse(this.$route.params.accApplicants)
+    }
+    if (this.$route.params.rejApplicants) {
+      this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
+    }
+    */
+    //Vuex version
     this.tasks = JSON.parse(this.cardItems).tasks
     this.tags = JSON.parse(this.cardItems).tags
-    this.newApplicants = JSON.parse(this.cardItems).newApplicants
-    this.projTitle = JSON.parse(this.cardItems).projectTitle
     this.items = JSON.parse(this.cardItems)
-    console.log(JSON.parse(this.cardItems).projectId)
-    this.projId = JSON.parse(this.cardItems).projectId
-    this.appstat = JSON.parse(this.cardItems).appstat
-    this.companyEmail = JSON.parse(this.cardItems).company
+    this.newApplicants = JSON.parse(this.cardItems).newApplicants
+    this.accApplicants = JSON.parse(this.cardItems).accApplicants
+    this.rejApplicants = JSON.parse(this.cardItems).rejApplicants
 
-
-    const that = this
-    async function getAppliedProjects() {
-      const ref = doc(db, "students", that.userEmailData);
-      const docSnap = await getDoc(ref);
-      const data = docSnap.data();
-      //console.log(data.id)
-      that.applied = data.appliedProjects
+    if (this.$route.params.newApplicants) {
+      this.newApplicants = JSON.parse(this.$route.params.newApplicants)
     }
-    getAppliedProjects()
-
-    async function getCompanyName() {
-      const ref = doc(db, "businesses", that.companyEmail);
-      const docSnap = await getDoc(ref);
-      const data = docSnap.data();
-      //console.log(data.id)
-      that.companyName = data.name
+    if (this.$route.params.accApplicants) {
+      this.accApplicants = JSON.parse(this.$route.params.accApplicants)
     }
-    getCompanyName()
-
-    /*console.log(JSON.parse(this.$route.params.tasks))*/
-    //console.log(this.projTitle)
-    //console.log(this.tags);
-    //console.log(this.newApplicants);
+    if (this.$route.params.rejApplicants) {
+      this.rejApplicants = JSON.parse(this.$route.params.rejApplicants)
+    }
   },
   methods: {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
-    async addApplicant() {
-        var newApplicants = this.newApplicants
-        console.log(newApplicants)
-        var projTitle = this.projTitle
-        newApplicants.push(this.userEmailData);
-        var projId = this.projId
-        var applied = this.applied
-        applied.push(projId);
-        // applied.push(projTitle);
-        this.appstat = "applied"
 
-        try {
-            const docRef = await updateDoc(doc(db, "Project", projId), {
-                New_Applicants: newApplicants
-            })
+    async closeProject() {
+      var projId = this.items["projectId"];
 
-            const docRef2 = await updateDoc(doc(db, "students", this.userEmailData), {
-                appliedProjects: applied
-            })
-            
-            console.log(docRef)
-            this.$emit("updated")
-        }
-        catch(error) {
-            console.error("Error updating document: ", error);
-        }
-        console.log(newApplicants);
-        // var applicants = testCollection[key]["Applicants"]
+      try {
+        const docRef = await updateDoc(doc(db, "Project", projId), {
+          Status:"closed", 
+          Application: "closed"
+        });
+
+        console.log(docRef);
+        this.$emit("updated"); 
+      } catch (error) {
+        console.error("Error updating document: ", error);
+      }
     },
-}
+
+    editProject() {
+      console.log(this.items)
+      this.$router.push({
+        name:'BusinessEditProject',
+        params: {
+          items: JSON.stringify(this.items),
+        },
+      })
+    }
+  },
 }
 </script>
 
@@ -298,7 +311,7 @@ export default {
 
   .options {
     font-size: 15px;
-    padding: 10px 25px;
+    padding: 5px 25px;
     margin-left: 15px;
     border-radius: 30px; /* or 50% */
     background-color: #0E8044;
@@ -315,6 +328,10 @@ export default {
     text-align: center;
     color: #606060;
     text-decoration: none;
+  }
+
+  .optionsOff:hover {
+    color: #0E8044;
   }
 
   .floating-right-bottom-btn {
@@ -359,7 +376,8 @@ export default {
     margin-left: 20px;
   }
 
-  #applybtns {
+  .edit-proj {
+    background-color: #0E8044;
     color: white;
     border-radius: 15px;
     width: 250px;
@@ -367,19 +385,28 @@ export default {
     font-size: 18px;
   }
 
-  .btn-apply {
-    background-color: #0E8044;
+  .close-proj {
+    background-color: #E58686;
+    color: white;
+    border-radius: 15px;
+    width: 250px;
+    border-width: 0px;
+    font-size: 18px;
   }
 
-  .btn-applied {
-    background-color: #888888;
+  .del-proj {
+    background-color: #D23333;
+    color: white;
+    border-radius: 15px;
+    width: 250px;
+    border-width: 0px;
+    font-size: 18px;
   }
 
   .projButtons {
     width: max-content;
     float: right;
     margin-right: 200px;
-    margin-top: 50px;
   }
 
   .projInfo {
@@ -502,12 +529,12 @@ export default {
       top: 5px;
   }
 
-   #applyModal {
+  #closeModal, #delModal {
     background-color: rgba(0, 0, 0, 0.5);
   }
 
   .modal-content {
-    background-color: #BBDFCC;
+    background-color: #FFE9C8;
     border: none;
   }
 
@@ -517,7 +544,6 @@ export default {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 10px;
-    height: 50px;
   }
 
   .applybtns {
@@ -532,25 +558,22 @@ export default {
     margin: 10px;
     border: none;
     border-radius: 10px;
-    background-color:#89ca9a;
+    background-color: #FFC875;
     color: #3f3f3f;
     width: 120px;
     height: 30px;
     font-size: 18px;
   }
 
-
-
-  #tickIcon {
-    height: 38px;
-    width: 38px;
-    color: #3D9956;
+  #warningIcon {
+    height: 60px;
+    width: 60px;
+    color: #FFAB2C;
     float: left;
   }
 
   .modal-body p {
     text-align: center;
-    width: 180px;
-    margin-left: 48px;
+    width: 300px;
   }
 </style>

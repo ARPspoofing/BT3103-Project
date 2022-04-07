@@ -69,9 +69,9 @@
 </template>
 
 <script>
-import BusinessNavBar from '../components/BusinessNavBar.vue'
+import BusinessNavBar from '../../components/BusinessNavBar.vue'
 import * as moment from 'moment'
-import firebaseApp from '../firebase.js';
+import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);

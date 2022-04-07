@@ -1,8 +1,8 @@
 <template>
   <div class="home">
       <div id="nav" v-if="navigation">
-       <router-link :to="{name:'StudentLogin'}">Student</router-link> 
-        <router-link :to="{name:'BusinessLogin'}">Business</router-link>        
+       <router-link id="role" :to="{name:'StudentLogin'}">Student</router-link> 
+        <router-link id="role" :to="{name:'BusinessLogin'}">Business</router-link>        
       </div>
       <router-view/>
   </div>
@@ -11,7 +11,7 @@
 
 <script>
 import Home from './views/Home.vue'
-//import ProfileForm from './views/Students/StudentProfilePage/StudentProfileForm.vue'
+
 export default {
     components: {
       Home,
@@ -85,6 +85,10 @@ export default {
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease-out;
+}
+
+#role:hover {
+  color: #0E8044;
 }
 
 </style>

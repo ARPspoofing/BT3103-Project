@@ -65,7 +65,23 @@
               </li>
             </ul>
           </div>
+          
         </div>
+        <!--Description-->
+      <div class="description flex flex-column">
+        <div class="input flex flex-column">
+          <label for="description">Description</label>
+          <textarea
+            type="text"
+            id="description"
+            rows="4"
+            cols="50"
+            maxlength="500"
+            v-model="description"
+            readonly
+          ></textarea>
+        </div>
+      </div>
       </div>
 
       <!--Contact Details-->
@@ -106,9 +122,8 @@
         </div>
       </div>
 
-      <!--Description-->
+      <!--Description
       <div class="description flex flex-column">
-        <h4>Please limit your description to 500 characters</h4>
         <div class="input flex flex-column">
           <label for="description">Description</label>
           <textarea
@@ -121,17 +136,17 @@
             readonly
           ></textarea>
         </div>
-      </div>
+      </div>-->
     </form>
   </div>
 </template>
 
 <script>
-import BusinessNavBar from "../components/BusinessNavBar.vue";
+import BusinessNavBar from "../../components/BusinessNavBar.vue";
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "vue-router";
 import * as moment from "moment";
-import firebaseApp from "../firebase.js";
+import firebaseApp from "../../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
   collection,
@@ -576,6 +591,10 @@ ul {
   color: blue;
 }
 
+h4 {
+  margin-top: 15px;
+}
+
 #applyModal {
   background-color: rgba(0, 0, 0, 0.5);
 }
@@ -638,6 +657,7 @@ ul {
   width: 180px;
   margin-left: 15%;
   margin-right: auto;
+  margin-bottom: 20px;
 }
 
 #backButton {

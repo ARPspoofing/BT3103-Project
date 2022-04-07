@@ -78,9 +78,9 @@
 </template>
 
 <script>
-import BusinessNavBar from '../components/BusinessNavBar.vue'
-import ApplicantsCard from '../components/ApplicantsCard.vue'
-import firebaseApp from '../firebase.js';
+import BusinessNavBar from '../../components/BusinessNavBar.vue'
+import ApplicantsCard from '../../components/ApplicantsCard.vue'
+import firebaseApp from '../../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 const db = getFirestore(firebaseApp);
@@ -253,6 +253,10 @@ export default {
     text-align: center;
     color: #606060;
     text-decoration: none;
+  }
+
+  .optionsOff:hover {
+    color: #0E8044;
   }
 
   .floating-right-bottom-btn {
