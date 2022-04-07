@@ -174,31 +174,31 @@ export default {
         alert("true!!")
         this.CLEAR_FILTER()
         this.SET_FILTER("recent")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date", "desc"));
       } else if (order == "oldest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("oldest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date"));
       } else if (order == "highest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("highest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance", "desc"));
       } else if (order == "lowest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("lowest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance"));
       } else if (order == "longest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("longest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]),  orderBy('Status', "asc"), orderBy("Project_End"));
       } else if (order== "shortest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("shortest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]),  orderBy('Status', "asc"), orderBy("Project_End", "desc"));
       } else {
         this.CLEAR_FILTER()
         this.SET_FILTER("shortest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]),  orderBy('Status', "asc"), orderBy("Project_End", "desc"));
       }
       var temp = []
       //searchData is a dictionary of {0:projectId,1:projectId...}
@@ -271,26 +271,25 @@ export default {
       //let snapshot = await getDocs(collection(db, "Project"))
       if (that.recent == true) {
         alert("recent")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date","desc"));
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]),  orderBy('Status', "asc"), orderBy("Posted_Date","desc"));
       } else if (that.oldest == true) {
         alert("oldest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date"));
+        var snapshot = query(collection(db, "Project"),  where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date"));
       } else if (that.highest == true) {
         alert("highest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance","desc"));
+        var snapshot = query(collection(db, "Project"),  where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance","desc"));
       } else if (that.lowest == true) {
         alert("lowest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance"));
+        var snapshot = query(collection(db, "Project"),  where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance"));
       } else if (that.longest == true) {
         alert("longest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End"));
-      } else if (that.shortest == true) {
+        var snapshot = query(collection(db, "Project"),  where('Status', "not-in", ["closed", "completed"]), orderBy("Project_End"));
         alert("shortest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End","desc"));
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End","desc"));
       //Just Order by project end date if no filter 
       } else {
         alert("else")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End","desc"));
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End","desc"));
       }
       snapshot = await getDocs(snapshot)
       /*
@@ -548,7 +547,7 @@ export default {
     .button {
     cursor: pointer;
     padding: 8px 44px;
-    border-radius: 0px;
+    border-radius: 8px;
     border: none;
     font-size: 16px;
     margin-right: 20px;
@@ -558,16 +557,6 @@ export default {
     img {
             margin-right: 4px;
           }
-    }
-
-    .save {
-        div {
-            flex:1;
-        }
-    }
-
-    .right {
-        margin-left:80%;
     }
 
     .menu ol {
@@ -582,11 +571,11 @@ export default {
       width: 10%;
       max-width: 960px;
       margin: 1rem auto 0 auto;
-      margin-left: 75%;
       align-items: right;
+      box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
     }
     .menu-item {
-      border-top: 2px solid #de8614;
+      border-top: 2px solid #16a085;
       position: relative;
       transition: background 0.3s ease-in-out; 
     }
@@ -603,8 +592,7 @@ export default {
       font-variant: normal;
       text-rendering: auto;
       line-height: 1;
-      color: #de8614;
- 
+      color: #16a085;
     }
 
     .menu-item .sub-menu {
@@ -630,16 +618,16 @@ export default {
       transform: rotateX(0deg);
     }
     .menu-item a {
-      font-size: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
-    text-decoration: none;
-    text-transform: uppercase;
-    height: 35.2px;
-    width: 125px;
-    padding: 8px 6px;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+      text-transform: uppercase;
+      height: 100%;
+      width: 100%;
+      padding: 1.5em 1em;
     }
 
 

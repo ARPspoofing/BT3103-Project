@@ -176,31 +176,31 @@ export default {
         alert("true!!")
         this.CLEAR_FILTER()
         this.SET_FILTER("recent")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date", "desc"));
       } else if (order == "oldest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("oldest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date"));
       } else if (order == "highest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("highest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance", "desc"));
       } else if (order == "lowest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("lowest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance"));
       } else if (order == "longest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("longest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End"));
       } else if (order== "shortest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("shortest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End", "desc"));
       } else {
         this.CLEAR_FILTER()
         this.SET_FILTER("shortest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End", "desc"));
       }
       var temp = []
       //searchData is a dictionary of {0:projectId,1:projectId...}
@@ -274,27 +274,27 @@ export default {
       console.log(highestPriorityIds)
       //let snapshot = await getDocs(collection(db, "Project"))
       if (that.recent == true) {
-        alert("recent")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date","desc"));
+        //alert("recent")
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date","desc"));
       } else if (that.oldest == true) {
-        alert("oldest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date"));
+        //alert("oldest")
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date"));
       } else if (that.highest == true) {
-        alert("highest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance","desc"));
+        //alert("highest")
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance","desc"));
       } else if (that.lowest == true) {
-        alert("lowest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance"));
+        //alert("lowest")
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance"));
       } else if (that.longest == true) {
-        alert("longest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End"));
+        //alert("longest")
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End"));
       } else if (that.shortest == true) {
-        alert("shortest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End","desc"));
+        //alert("shortest")
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End","desc"));
       //Just Order by project end date if no filter 
       } else {
-        alert("else")
-        var snapshot = query(collection(db, "Project"), orderBy("Project_End","desc"));
+        //alert("else")
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End","desc"));
       }
       snapshot = await getDocs(snapshot)
       /*

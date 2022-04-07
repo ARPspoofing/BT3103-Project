@@ -224,36 +224,12 @@ export default {
     },
 
     async closeProject() {
-      //var accApplicant = this.newApplicants[key];
-      //var offered = this.offered[key];
-      //var name = this.applicant[key].name;
-      //var projTitle = this.items["projectTitle"];
       var projId = this.items["projectId"];
-      /*var applied = this.applied[key];
-      //console.log("bef" + applied)
 
-      if (!this.accApplicants) {
-        var accApplicants = [];
-        accApplicants.push(accApplicant);
-        this.accApplicants = accApplicants;
-      } else {
-        this.accApplicants.push(accApplicant);
-      }
-
-      var index = applied.indexOf(projId)
-      applied.splice(index, 1)
-      //console.log("after" + applied)
-
-      offered.push(projId);
-      //console.log(offered);
-      this.newApplicants.splice(key, 1);
-      this.applicant.splice(key, 1);
-      this.offered.splice(key, 1);
-      this.applied.splice(key, 1);
-      alert("Accepting applicant: " + name);*/
       try {
         const docRef = await updateDoc(doc(db, "Project", projId), {
-          Status:"closed"
+          Status:"closed", 
+          Application: "closed"
         });
 
         console.log(docRef);
