@@ -14,9 +14,9 @@
                 
             </div>
         </div>
-        <div class="duedate">
+        <div class="top flex flex-row">
             <p>
-                 Due date: {{formatDate(task["duedate"])}}
+              Due date: {{formatDate(task["duedate"])}}
             </p>
         </div>
        

@@ -39,33 +39,34 @@ Proxy {id: 'hi jack', projectTitle: 'hijack place', projectId: 'BoI9Ie13dAUjtq9
         <ToDo @getData="capture" v-for="(task,index) in toDoTask" :task="task" :key="index" :projectTitle="projectTitle" :projectId="projectId"/>    </div>
     <div class="wrapper">
         <h4>IN PROGRESS</h4>
-        <InProgress @getData="capture" v-if="inProgressTask" v-for="(task,index) in inProgressTask" :task="task" :key="index"
+        <InProgress @getData="capture"  v-for="(task,index) in inProgressTask" :task="task" :key="index"
         :projectTitle="projectTitle" :projectId = "projectId"/>
-         <div v-else>
-         
-        <h3>You currently do not have any in-progress tasks. Please update the status of To-Do tasks if you are working on anything</h3>
-        
-    </div>
+         <!--
+         <div v-else> 
+            <h3>You currently do not have any in-progress tasks. Please update the status of To-Do tasks if you are working on anything</h3>
+        </div>
+        -->
     </div>
     <div class="wrapper">
         <h4>PENDING REVIEW</h4>
-        <PendingReview @getData="capture" v-if="pendingReviewTask" v-for="(task,index) in pendingReviewTask" :task="task" :key="index"
+        <PendingReview @getData="capture" v-for="(task,index) in pendingReviewTask" :task="task" :key="index"
         :projectTitle="projectTitle" :projectId = "projectId"/>
-        <div v-else>
-         
-        <h3>You do not have any tasks awaiting review. Please update the status of your tasks if you would like to send them for review.</h3>
         
-    </div>
+        <!--
+        <div v-else>
+            <h3>You do not have any tasks awaiting review. Please update the status of your tasks if you would like to send them for review.</h3>
+        </div>
+        -->
     </div>
     <div class="wrapper">
         <h4>COMPLETED</h4>
-        <Completed v-if="completedTask" v-for="(task,index) in completedTask" :task="task" :key="index"
+        <Completed v-for="(task,index) in completedTask" :task="task" :key="index"
         :projectTitle="projectTitle" :projectId="projectId"/>
+        <!--
         <div v-else>
-          
         <h3>No task has been completed yet.</h3>
-        
         </div>
+        -->
     </div>    
 </div>
 </div>

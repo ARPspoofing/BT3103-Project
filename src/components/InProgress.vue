@@ -13,7 +13,7 @@
                 
             </div>
         </div>
-        <div class="duedate">
+        <div class="top flex flex-row">
             <p>
                  Due date: {{formatDate(task["duedate"])}}
             </p>
@@ -109,7 +109,7 @@ import * as moment from 'moment'
     }
 
      .status-button {
-        width: 4px;
+        width: 100px;
         height: 10px;
         font-size: 12px;
         justify-self: start;

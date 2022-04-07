@@ -7,14 +7,10 @@
         <div class="top flex flex-row">
             <div class="title"><strong>{{task['taskname']}}</strong></div>
             <div class="status-button flex todoButton">
-               
-                <div>
-                    <p>Pending Review</p>
-                </div>
-                
+                    Pending
             </div>
         </div>
-        <div class="duedate">
+        <div class="top flex flex-row">
             <p>
                  Due date: {{duedate}}
             </p>
@@ -119,7 +115,7 @@ import * as moment from 'moment'
     }
 
      .status-button {
-        width: 4px;
+        width: 100px;
         height: 10px;
         font-size: 12px;
         justify-self: start;

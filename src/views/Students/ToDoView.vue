@@ -101,7 +101,7 @@
       <div
         class="projectContainer"
         :key="item.key"
-        v-for="(item, key) in comment"
+        v-for="(item) in comment"
       >
         <div id="eachComment">
           <img v-bind:src="item.profPic" alt="Logo" class="logo" />
