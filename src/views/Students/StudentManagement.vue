@@ -2,8 +2,6 @@
 <!--
 <ToDoViewTest/>
 -->
-
-
 <StudentNavBar :search ="false" :Heading="fullTitle" :header="true"/>
 <!-- Modal -->
   <button @click="blurBg" style = "visibility:hidden" type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
@@ -83,6 +81,8 @@ import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc,collection,getDocs,deleteDoc, getDoc} from 'firebase/firestore';
 import {ref} from "vue"
 import {useRouter} from "vue-router"
+import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 import Loading from '../../components/Loading.vue'
 import ToDoView from '../Students/ToDoView.vue'
 const db = getFirestore(firebaseApp)
@@ -91,10 +91,12 @@ const router = useRouter()
 
 export default {
     name: "StudentManagement",
+    computed: {
+      ...mapState(['studentToDo','studentInProgress','studentPendingReview','studentCompleted',]),
+    },
     props: {
         //So that this page can easily access the project that it is clicked on
         projectName:String,
-
     },
     data() {
         return {
@@ -116,6 +118,7 @@ export default {
         }
     },
     methods: {
+        ...mapMutations(['SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED',]),
         goback() {
             this.$router.push({name:'StudentInProgressProjects'})
         },

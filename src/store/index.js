@@ -42,6 +42,19 @@ export default createStore({
     searchString: "",
     key: null,
     studentInfo: {},
+    studentToDo: null,
+    studentInProgress:null,
+    studentPendingReview:null,
+    studentCompleted:null,
+    studentProjectId:null,
+    studentProjectTitle:null,
+    businessToDo: null,
+    businessInProgress:null,
+    businessPendingReview:null,
+    businessCompleted:null,
+    businessProjectId:null,
+    businessProjectTitle:null,
+    
   },
   //getter for debugging
   getters: {
@@ -136,11 +149,46 @@ export default createStore({
     SET_NEW_CARD(state,payload) {
       state.cardItems = JSON.stringify(payload[state.key])
     },
+    SET_STUDENT_PROJECT_ID(state,payload) {
+      state.studentProjectId = payload
+    },
+    SET_STUDENT_PROJECT_TITLE(state,payload) {
+      state.studentProjectTitle = payload
+    },
+    SET_STUDENT_TO_DO(state,payload) {
+      state.studentToDo = payload
+    },
+    SET_STUDENT_IN_PROGRESS(state,payload) {
+      state.studentInProgress = payload
+    },
+    SET_STUDENT_PENDING_REVIEW(state,payload) {
+      state.studentPendingReview = payload
+    },
+    SET_STUDENT_COMPLETED(state,payload) {
+      state.studentCompleted = payload
+    },
+    SET_BUSINESS_PROJECT_ID(state,payload) {
+      state.businessProjectId = payload
+    },
+    SET_BUSINESS_PROJECT_TITLE(state,payload) {
+      state.businessProjectTitle = payload
+    },
+    SET_BUSINESS_TO_DO(state,payload) {
+      state.businessToDo = payload
+    },
+    SET_BUSINESS_IN_PROGRESS(state,payload) {
+      state.businessInProgress = payload
+    },
+    SET_BUSINESS_PENDING_REVIEW(state,payload) {
+      state.businessPendingReview = payload
+    },
+    SET_BUSINESS_COMPLETED(state,payload) {
+      state.businessCompleted = payload
+    },
     
   },
   actions: {
     async GET_NEW_CARD({commit,state}) {
-    
         var businessEmail = state.userEmail
         var testCollectionItems = []
         //order projects by posted date, from latest to oldest
