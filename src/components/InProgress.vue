@@ -1,7 +1,9 @@
 <template>
+<!--
      <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
         taskId: task['id'], projectId:task['projectId'], projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
-    <div class="inProgress">
+        -->
+    <div class="inProgress" @click="getData">
         <div class="top flex flex-row">
             <div class="title"><strong>{{task['taskname']}}</strong></div>
             <div class="status-button flex inprogressButton">                
@@ -13,7 +15,7 @@
         </div>
         <div class="duedate">
             <p>
-                 Due date: {{duedate}}
+                 Due date: {{formatDate(task["duedate"])}}
             </p>
         </div>
        
@@ -23,12 +25,15 @@
         </p>
         </div>          
     </div>  
+    <!--
     </router-link>  
+    -->
 
     
 </template>
 
 <script>
+import * as moment from 'moment'
     export default {
         name: 'InProgress',
         props: {
@@ -46,7 +51,12 @@
         watch: {
         },
         methods: {
-            
+            formatDate(date) {
+                return moment(date).format("DD MMMM YYYY");
+            },
+            getData() {
+              this.$emit('getData',this.task)
+            }
         }
     }
 </script>

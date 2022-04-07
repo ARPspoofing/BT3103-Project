@@ -33,8 +33,10 @@
       </div>
       <div class="top-middle flex">
         <div id="duedate" class="date flex flex-column">
-          <!-- Task issue date necessary? -->
+          <!-- Task issue date necessary? Nope -->
+          <!--
           <p><b>Task Issue Date: </b> {{ duedate }}</p>
+          -->
           <p><b>Task Due Date:</b> {{ formatDate(duedate) }}</p>
         </div>
       </div>
@@ -404,16 +406,9 @@ img {
 }
 
 .details {
-
-  margin-top: 24px;
   /*background-color:rgb(11, 167, 115);*/
   background-color: #b3cabe;
   border-radius: 20px;
-  margin-left: 60px;
-  margin-right: 60px;
-  width:100%;
-  height:100%;
-
 }
 
 .top div {

@@ -6,18 +6,19 @@
 
 <StudentNavBar :search ="false" :Heading="fullTitle" :header="true"/>
 <!-- Modal -->
-  <button type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
+  <button style = "visibility:hidden" type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
 
 
 <!-- Modal -->
 <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body">
           <!--
         <ToDoView :task="task" :task_id="task['id']" :projectId="task['projectId']" :projectTitle="task['projectTitle']"/>
         -->
-        <ToDoView :description="this.longdescription" :duedate="this.duedate" c:task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId"/>
+        <ToDoView :description="this.longdescription" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId"/>
+        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
       </div>
     </div>
   </div>
@@ -38,7 +39,7 @@ Proxy {id: 'hi jack', projectTitle: 'hijack place', projectId: 'BoI9Ie13dAUjtq9
         <ToDo @getData="capture" v-for="(task,index) in toDoTask" :task="task" :key="index" :projectTitle="projectTitle" :projectId="projectId"/>    </div>
     <div class="wrapper">
         <h4>IN PROGRESS</h4>
-        <InProgress v-if="inProgressTask" v-for="(task,index) in inProgressTask" :task="task" :key="index"
+        <InProgress @getData="capture" v-if="inProgressTask" v-for="(task,index) in inProgressTask" :task="task" :key="index"
         :projectTitle="projectTitle" :projectId = "projectId"/>
          <div v-else>
          
@@ -48,7 +49,7 @@ Proxy {id: 'hi jack', projectTitle: 'hijack place', projectId: 'BoI9Ie13dAUjtq9
     </div>
     <div class="wrapper">
         <h4>PENDING REVIEW</h4>
-        <PendingReview v-if="pendingReviewTask" v-for="(task,index) in pendingReviewTask" :task="task" :key="index"
+        <PendingReview @getData="capture" v-if="pendingReviewTask" v-for="(task,index) in pendingReviewTask" :task="task" :key="index"
         :projectTitle="projectTitle" :projectId = "projectId"/>
         <div v-else>
          
@@ -127,6 +128,7 @@ export default {
             console.log("task emit full",task_emit)
             console.log("task emit",task_emit['id'])
             this.openModal = true
+            this.$refs.confirmModal.click();
         },
         attempt() {
             this.openModal = true
@@ -291,8 +293,64 @@ export default {
     font-size: 14px;
 }
 
-.modal-content {
-    width:100%;
+
+
+.modal-overlay {
+  content: '';
+  position: absolute;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  background: #2c3e50;
+  opacity: 0.6;
+  cursor: pointer;
 }
+
+
+#applyModal {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: #b3cabe;
+    border: none;
+  }
+
+  .words {
+    width: max-content;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    height: 50px;
+  }
+
+  .applybtns {
+    width: max-content;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+
+  #yesbtn, #nobtn {
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color:#89ca9a;
+    color: #3f3f3f;
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+  }
+
+  .modal-body p {
+    font-size: 18px;
+    text-align: center;
+    color: #3f3f3f;
+  }
 
 </style>
