@@ -307,8 +307,8 @@ export default {
     },
 
     allInterestsEmpty() {
-        console.log(this.interests)
-        console.log(this.interests.length)
+        //console.log(this.interests)
+        //console.log(this.interests.length)
         for(let i = 0; i < this.interests.length; i++) {
             if(this.interests[i].value != "") {
                 return false
