@@ -1,5 +1,5 @@
 <template>
-
+<!--
     <router-link
       :to="{
         name: 'StudentManagement',
@@ -9,10 +9,12 @@
         },
       }"
     >
+    
       <button id="backButton">
         <i class="fa-solid fa-angles-left"></i> Back to Management
       </button>
     </router-link>
+    -->
     <div class="details flex flex-column">
       <div class="top flex">
         <div class="left flex">
@@ -407,8 +409,8 @@ img {
   border-radius: 20px;
   margin-left: 60px;
   margin-right: 60px;
-  width:50%;
-  height:50%;
+  width:100%;
+  height:100%;
 
 }
 

@@ -13,18 +13,8 @@
 <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
       <div class="modal-body">
-        <ToDoView task_id="hi jack" projectTitle="hijack place" projectId="BoI9Ie13dAUjtq95A0LM"/>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <ToDoView :taskId:"task['id']" :projectId:"task['projectId']" :projectTitle:"this.task['projectTitle']"/>
       </div>
     </div>
   </div>
@@ -124,7 +114,6 @@ export default {
         capture(task_emit) {
             this.task = task_emit
             this.openModal = true
-            console.log("emittedtask",task_emit)
         },
         attempt() {
             this.openModal = true
@@ -289,8 +278,8 @@ export default {
     font-size: 14px;
 }
 
-.modal {
-    z-index:9999999
+.modal-content {
+    width:100%;
 }
 
 </style>
