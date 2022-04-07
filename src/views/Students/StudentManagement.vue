@@ -1,16 +1,24 @@
 <template>
+<!--
+<ToDoViewTest/>
+-->
 <StudentNavBar :search ="false" :Heading="fullTitle" :header="true"/>
+<ToDoView v-if="openModal" task_id="hi jack" projectTitle="hijack place" projectId="BoI9Ie13dAUjtq95A0LM"/>
+
+<!--
+<ToDoView v-if="openModal" :task_id="task['id']" :task=task :projectTitle="this.task['projectTitle']" :projectId="task['projectId']" :duedate="this.duedate"/>
+-->
+
+<!--
+Proxy {id: 'hi jack', projectTitle: 'hijack place', projectId: 'BoI9Ie13dAUjtq95A0LM', comments: Array(3), documents: undefined, …}
+-->
+
+<button @click="attempt">Button</button>
 <button @click="goback" id="backButton">Back to Projects</button>
-<div v-if="toDoTask.length > 0" class="wrapper-outer">
+<div v-if="toDoTask.length >= 0" class="wrapper-outer">
     <div class="wrapper">
         <h4>To-Do</h4>
-        <ToDo v-if ="toDoTask"  v-for="(task,index) in toDoTask" :task="task" :key="index" :projectTitle="projectTitle" :projectId="projectId"/>
-       <div v-else>
-           
-        <h3>Congratulations, you do not have any tasks to do</h3>
-        
-    </div> 
-    </div>
+        <ToDo @getData="capture" v-for="(task,index) in toDoTask" :task="task" :key="index" :projectTitle="projectTitle" :projectId="projectId"/>    </div>
     <div class="wrapper">
         <h4>IN PROGRESS</h4>
         <InProgress v-if="inProgressTask" v-for="(task,index) in inProgressTask" :task="task" :key="index"
@@ -58,6 +66,7 @@ import {doc,setDoc,collection,getDocs,deleteDoc, getDoc} from 'firebase/firestor
 import {ref} from "vue"
 import {useRouter} from "vue-router"
 import Loading from '../../components/Loading.vue'
+import ToDoView from '../Students/ToDoView.vue'
 const db = getFirestore(firebaseApp)
 const router = useRouter()
 
@@ -69,10 +78,6 @@ export default {
         projectName:String,
 
     },
-    components: {
-        StudentNavBar,
-
-    },
     data() {
         return {
             projectId:'',
@@ -81,13 +86,24 @@ export default {
             inProgressTask:[],  
             pendingReviewTask:[],
             completedTask:[],
-            fullTitle:''
+            fullTitle:'',
+            task:null,
+            duedate:null,
+            openModal:false,
             
         }
     },
     methods: {
         goback() {
             this.$router.push({name:'StudentInProgressProjects'})
+        },
+        capture(task_emit) {
+            this.task = task_emit
+            this.openModal = true
+            console.log("emittedtask",task_emit)
+        },
+        attempt() {
+            this.openModal = true
         }
     },
 
@@ -193,7 +209,9 @@ export default {
         ToDo,
         InProgress,
         PendingReview,
-        Completed
+        Completed,
+        StudentNavBar,
+        ToDoView,
     },
 
 }

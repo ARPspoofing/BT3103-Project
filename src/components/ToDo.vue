@@ -1,7 +1,9 @@
 <template>
+<!--
     <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
         taskId: task['id'], projectId:task['projectId'], projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
-    <div class="todo">
+        -->
+    <div class="todo" @click="getData">
         <div class="top flex flex-row">
             <div class="title">{{task['taskname']}}</div>
             <div class="status-button flex todoButton">
@@ -24,13 +26,16 @@
         </p>
         </div>          
     </div>  
+    <!--
     </router-link>  
+    -->
 
     
 </template>
 
 <script>
 import * as moment from 'moment'
+import ToDoView from '../views/Students/ToDoView.vue'
     export default {
         name: 'ToDo',
         props: {
@@ -38,6 +43,9 @@ import * as moment from 'moment'
             projectTitle:String,
             projectId:String
 
+        },
+        components: {
+          ToDoView,
         },
         mounted() {
             const curr = this 
@@ -56,6 +64,10 @@ import * as moment from 'moment'
             formatDate(date) {
                 return moment(date).format("DD MMMM YYYY");
             },
+            getData() {
+              this.$emit('getData',this.task)
+            }
+
         }
     }
 </script>
