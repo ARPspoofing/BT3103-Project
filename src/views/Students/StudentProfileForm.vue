@@ -397,7 +397,7 @@ export default {
 
             if(this.name == "") {
                 this.nameErrorPresent = true;
-                this.errorMessage = "Please fill out your name"
+                this.errorMessage = "Please fill in your name"
                 
             } else if(this.course == '') {
                 this.courseErrorPresent = true;
