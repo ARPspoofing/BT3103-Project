@@ -30,6 +30,8 @@ export default createStore({
     highestPriorityIds: [],
     secondPriorityIds: [],
     thirdPriorityIds: [],
+    counter:0,
+    businessCounter:0,
     name: null,
     userEmail: '',
     cardItems: null,
@@ -63,6 +65,12 @@ export default createStore({
     },
   },
   mutations: {
+    SET_COUNTER(state) {
+      state.counter = 1
+    },
+    SET_BUSINESS_COUNTER(state) {
+      state.businessCounter = 1
+    },
     TOGGLE_FILTER(state) {
       state.filterModal = !state.filterModal
     },

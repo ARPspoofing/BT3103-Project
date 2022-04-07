@@ -197,7 +197,6 @@ export default {
                     createUserWithEmailAndPassword(getAuth(),this.email,this.password)
                     .then((data) => {
                         this.SET_USEREMAIL(this.email)
-                        //window.localStorage.setItem('emailForSignIn', this.email);
                          setDoc(doc(db,"students",this.email),{
                             email:this.email,
                             //password:this.password,

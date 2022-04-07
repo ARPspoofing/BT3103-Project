@@ -37,7 +37,7 @@
                 </div>
                 
                 <div class="input">
-                    <button @click="login"><b>Log In</b></button>
+                    <button ref="refresh" @click="login"><b>Log In</b></button>
                 </div>
             </div>
         </form>
@@ -73,14 +73,19 @@ export default {
             passwordError:false,
         }
     },
+    mounted() {
+        if (this.counter == 0) {
+            this.$refs.refresh.click()
+        }
+    },
     components: {
         ResetPassword,
     },
     computed: {
-    ...mapState(['userEmail']),
+    ...mapState(['userEmail','counter']),
     },
     methods: {
-        ...mapMutations(['SET_USEREMAIL']),
+        ...mapMutations(['SET_USEREMAIL','SET_COUNTER']),
         forgot() {
             this.forgetPassword = true
         },
@@ -91,14 +96,16 @@ export default {
     
     async login() {   
         if (this.email == '') {
-            this.emailError = true
-            this.errorMessage = "Please fill in your email"  
+            if (this.counter != 0) {
+                this.emailError = true
+                this.errorMessage = "Please fill in your email"  
+            }
             setTimeout(() => {
                 this.emailError = false
             },1500)
         } else if (this.password == '') {
             this.passwordError = true
-            this.errorMessage = "Please fill in your email"  
+            this.errorMessage = "Please fill in your password"  
             setTimeout(() => {
                 this.emailError = false
             },1500)
@@ -118,7 +125,6 @@ export default {
                 .then((data) => {
                 this.SET_USEREMAIL(this.email)
                 if(!formFilled) {
-                alert("form not filled")
                 this.$router.push({name:'StudentHomePage'})
                 } else {
                     this.$router.push({name:'StudentHomePage'})
@@ -140,7 +146,8 @@ export default {
        
                 })
             }
-        }    
+        }
+        this.SET_COUNTER()   
     },
   }
 }

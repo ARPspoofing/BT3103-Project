@@ -191,7 +191,7 @@ export default {
       var pendingReviewTask = []
       var completedTask = []
       tasks.forEach((document) => {  
-        console.log('hello')   
+        console.log('document',document)   
         if (document.taskStatus == "To do") {
             toDoTask.push({
               id: document.taskName,
