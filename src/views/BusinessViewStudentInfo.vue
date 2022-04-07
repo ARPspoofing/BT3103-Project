@@ -200,13 +200,6 @@ export default {
       // this.allApplicant.splice(this.theKey, 1);
       // this.offer.splice(this.theKey, 1);
       // this.apply.splice(this.theKey, 1);
-      console.log(this.accApplicant);
-      console.log(this.newApplicant);
-      console.log(offered);
-      console.log(this.offer);
-      console.log(applied);
-      console.log(this.apply);
-      console.log(this.theKey);
 
       alert("Accepting applicant: " + name);
       try {

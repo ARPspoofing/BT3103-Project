@@ -65,15 +65,6 @@ export default {
     };
   },
   mounted() {
-    /*
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        this.user = user;
-      }
-    });
-    this.userEmail = auth.currentUser.email;
-    */
     var userEmail = this.userEmail
     const that = this
     async function getinProgProjects() {
@@ -131,7 +122,7 @@ export default {
   position: fixed;
   overflow-y: scroll;
   padding-bottom: 1000px;
-  margin: 100px;
+  margin-bottom: 100px;
 }
 
 .projectContainer {

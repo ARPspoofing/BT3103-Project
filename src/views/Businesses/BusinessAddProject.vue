@@ -386,7 +386,8 @@ export default {
             Rej_Applicants: l,
             Posted_Date: m,
             profPicture: pictureprof,
-            Status: "open"
+            Status: "open",
+            Application: "open"
           });
 
           console.log(docRef);

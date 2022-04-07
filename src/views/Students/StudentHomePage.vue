@@ -328,7 +328,7 @@ export default {
     
     indivproj(key) {
       //Vuex Version
-      alert(key)
+      //alert(key)
       this.CLEAR_CARDITEMS()
       this.SET_CARDITEMS(JSON.stringify(this.testCollection[key]))
       this.$router.push({
@@ -343,7 +343,7 @@ export default {
     }, 
 
     indivprojlatest(key) {
-      alert(key)
+      //alert(key)
       //Vuex version
       this.CLEAR_CARDITEMS()
       this.SET_CARDITEMS(JSON.stringify(this.wholeTestCollection[key]))
@@ -454,10 +454,8 @@ export default {
       }
       console.log(returnArray)
 
-      const projects = query(collection(db, "Project"), where('Tags', 'array-contains-any', returnArray), where('Status', "!=", "closed"))
-      //const projects = query(query, where('Status', "!=", "closed"))
-      let snapshot = await getDocs(projects)
-      const projects2 = query(collection(db, "Project"), where('Status', "!=", "closed"))
+      const projects = query(collection(db, "Project"), where('Tags', 'array-contains-any', returnArray), where('Status', "==", "open"));      let snapshot = await getDocs(projects)
+      const projects2 = query(collection(db, "Project"), where('Status', "==", "open"))
       let wholeSnapshot = await getDocs(projects2)
 
       //let wholeSnapshot = await getDocs(collection(db, "Project"))
