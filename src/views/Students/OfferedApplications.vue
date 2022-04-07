@@ -17,13 +17,17 @@
       </span>
     </h1>
     <hr />
-    <div class="projectContainer" :key="item.key" v-for="(item, key) in projects">
+    <div
+      class="projectContainer"
+      :key="item.key"
+      v-for="(item, key) in projects"
+    >
       <Card
-        :apply=false
+        :apply="false"
         :projectTitle="item.projectTitle"
         :description="item.description"
         :stat="stat2"
-        :offered=true
+        :offered="true"
         @acceptBtn="acceptProj(key)"
         @declineBtn="declineProj(key)"
       />
@@ -48,7 +52,7 @@ import {
   arrayRemove,
   writeBatch,
 } from "firebase/firestore";
-import {mapState} from "vuex"
+import { mapState } from "vuex";
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -65,21 +69,21 @@ export default {
       //userEmail: "",
       offered: [],
       projects: [],
-      accepted:[],
-      declined:[],
+      accepted: [],
+      declined: [],
       bizProjects: [],
     };
   },
   computed: {
-    ...mapState(['userEmail']),
+    ...mapState(["userEmail"]),
   },
   methods: {
     async acceptProj(key) {
-      var projId = this.offered[key]
-      var projName = this.projects[key].projectTitle
-      alert(projName)
-      var business = this.projects[key].business
-      var biz = this.bizProjects[key]
+      var projId = this.offered[key];
+      var projName = this.projects[key].projectTitle;
+      alert(projName);
+      var business = this.projects[key].business;
+      var biz = this.bizProjects[key];
 
       if (!this.accepted) {
         var accepted = [];
@@ -95,21 +99,21 @@ export default {
       } else {
         biz.push(projId);
       }
-      biz = [... new Set(biz)]
-      for(var i = 0; i < this.projects.length; i++) {
-        console.log(business, this.projects[i].business === business )
+      biz = [...new Set(biz)];
+      for (var i = 0; i < this.projects.length; i++) {
+        console.log(business, this.projects[i].business === business);
         if (this.projects[i].business === business) {
-          console.log('projId',projId)
+          console.log("projId", projId);
           //this.bizProjects[i].push(projId)
-          this.bizProjects.push(projId)
+          this.bizProjects.push(projId);
         }
       }
       //this.bizProjects[key] = biz
-      console.log(this.bizProjects)
-      
-      this.projects.splice(key,1);
-      this.offered.splice(key,1);
-      this.bizProjects.splice(key,1);
+      console.log(this.bizProjects);
+
+      this.projects.splice(key, 1);
+      this.offered.splice(key, 1);
+      this.bizProjects.splice(key, 1);
       /*for(var i = 0; i < this.projects.length; i++) {
         if (this.projects[i].business === business) {
           this.bizProjects[i].push(projId)
@@ -118,28 +122,27 @@ export default {
 
       alert("Accepting Project: " + projName);
       try {
-          const docRef = await updateDoc(doc(db, "students", this.userEmail), {
-              inProgProjects: this.accepted,
-              offeredProjects: this.offered,
-          })
+        const docRef = await updateDoc(doc(db, "students", this.userEmail), {
+          inProgProjects: this.accepted,
+          offeredProjects: this.offered,
+        });
 
-          const docRef2 = await updateDoc(doc(db, "businesses", business), {
-              inProgProjects: biz,
-          })
+        const docRef2 = await updateDoc(doc(db, "businesses", business), {
+          inProgProjects: biz,
+        });
 
-          //console.log(docRef)
-          this.$emit("updated")
-      }
-        catch(error) {
-          console.error("Error updating document: ", error);
+        //console.log(docRef)
+        this.$emit("updated");
+      } catch (error) {
+        console.error("Error updating document: ", error);
       }
     },
 
     async declineProj(key) {
-      var projId = this.offered[key]
-      var projName = this.projects[key].projectTitle
-      console.log('projId',projId,"projName",projName,"key",key)
-      
+      var projId = this.offered[key];
+      var projName = this.projects[key].projectTitle;
+      console.log("projId", projId, "projName", projName, "key", key);
+
       if (!this.declined) {
         var declined = [];
         declined.push(projId);
@@ -147,13 +150,12 @@ export default {
       } else {
         this.declined.push(projId);
       }
-      console.log("declineee",this.declined)
-      this.projects.splice(key,1);
-      this.offered.splice(key,1);
+      console.log("declineee", this.declined);
+      this.projects.splice(key, 1);
+      this.offered.splice(key, 1);
 
       alert("Declining Project: " + projName);
       try {
-        
         /*
         const docRef = doc(db,"students",this.userEmail)
         const batch = writeBatch(db);
@@ -167,17 +169,14 @@ export default {
         this.$emit("updated")
         */
 
-          
-          const docRef = await updateDoc(doc(db, "students", this.userEmail), {
-              rejectedProjects: this.declined,
-              offeredProjects: this.offered,
-          })
-          //console.log(docRef)
-          this.$emit("updated")
-          
-      }
-        catch(error) {
-          console.error("Error updating document: ", error);
+        const docRef = await updateDoc(doc(db, "students", this.userEmail), {
+          rejectedProjects: this.declined,
+          offeredProjects: this.offered,
+        });
+        //console.log(docRef)
+        this.$emit("updated");
+      } catch (error) {
+        console.error("Error updating document: ", error);
       }
     },
   },
@@ -192,22 +191,24 @@ export default {
     */
     //this.userEmail = auth.currentUser.email;
     //console.log(this.userEmail)
-    var userEmail = this.userEmail
-    const that = this
+    var userEmail = this.userEmail;
+    const that = this;
     async function getOfferedProjects() {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
-      that.offered = docSnap.data().offeredProjects
+      that.offered = docSnap.data().offeredProjects;
       //const data = docSnap.data();
       const response = await Promise.all(
-        docSnap.data().offeredProjects.map(async item => {
-          console.log("nested",item)
-          const finalResult = await getDoc(doc(db,"Project",item))
-          console.log(finalResult.data())
-          that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description})
-        }
-        )
-      )
+        docSnap.data().offeredProjects.map(async (item) => {
+          console.log("nested", item);
+          const finalResult = await getDoc(doc(db, "Project", item));
+          console.log(finalResult.data());
+          that.projects.push({
+            projectTitle: finalResult.data().Project_Title,
+            description: finalResult.data().Description,
+          });
+        })
+      );
       /*
       if (data.offeredProjects) {
         for(var i = 0; i < data.offeredProjects.length; i++) {
@@ -216,7 +217,7 @@ export default {
       }
       */
     }
-    getOfferedProjects()
+    getOfferedProjects();
 
     async function getInProgProjects() {
       const ref = doc(db, "students", userEmail);
@@ -225,7 +226,7 @@ export default {
       that.accepted = data.inProgProjects;
       //console.log(that.accepted)
     }
-    getInProgProjects()
+    getInProgProjects();
 
     async function getDeclinedProjects() {
       const ref = doc(db, "students", userEmail);
@@ -234,23 +235,29 @@ export default {
       that.declined = data.declinedProjects;
       //console.log(that.accepted)
     }
-    getDeclinedProjects()
+    getDeclinedProjects();
 
     async function getBizProjects(email) {
       const ref = doc(db, "businesses", that.userEmail);
       const docSnap = await getDoc(ref);
-      
+
       //const data = docSnap.data();
       //return data.inProgProjects;
     }
-   getBizProjects(this.userEmail)
-    
+    getBizProjects(this.userEmail);
+
     async function getProject(proj) {
       const ref = doc(db, "Project", proj);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      getBizProjects(data.poster_id).then((res)=>{that.bizProjects.push(res)})
-      return {projectTitle: data.Project_Title, description: data.Description, business: data.poster_id}
+      getBizProjects(data.poster_id).then((res) => {
+        that.bizProjects.push(res);
+      });
+      return {
+        projectTitle: data.Project_Title,
+        description: data.Description,
+        business: data.poster_id,
+      };
     }
   },
 };
@@ -278,21 +285,21 @@ export default {
 }
 
 hr {
-    border: 0;
-    border-top: 2px solid #606060;
-    width: 90%;
-    margin: 5px 0px 16px 38px;
-  }
+  border: 0;
+  border-top: 2px solid #606060;
+  width: 90%;
+  margin: 5px 0px 16px 38px;
+}
 
 .options {
-    font-size: 15px;
-    padding: 5px 25px;
-    margin-left: 15px;
-    border-radius: 30px; /* or 50% */
-    background-color: #0E8044;
-    color: white;
-    text-align: center;
-  }
+  font-size: 15px;
+  padding: 5px 25px;
+  margin-left: 15px;
+  border-radius: 30px; /* or 50% */
+  background-color: #0e8044;
+  color: white;
+  text-align: center;
+}
 
 .optionsOff {
   font-size: 15px;

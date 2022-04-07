@@ -13,7 +13,7 @@ const firebaseConfig = {
   storageBucket: "pathfinder-69914.appspot.com",
   messagingSenderId: "1088667373664",
   appId: "1:1088667373664:web:d882cf0e40a962f1a2f305",
-  measurementId: "G-XN3NSK8T51"
+  measurementId: "G-XN3NSK8T51",
 };
 
 // Initialize Firebase

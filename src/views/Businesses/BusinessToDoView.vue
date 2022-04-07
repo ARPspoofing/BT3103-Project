@@ -41,7 +41,7 @@
               <strong>{{ task_id }}</strong>
             </p>
           </div>
-          <div class="right flex flex-column">
+          <!--<div class="right flex flex-column">
             <label>Extend Due Date</label>
             <select v-model="extend" id="input">
               <option value="1 day">1 day</option>
@@ -49,7 +49,7 @@
               <option value="5 days">5 days</option>
               <option value="7 days">1 week</option>
             </select>
-          </div>
+          </div>-->
           <div class="right flex flex-column" id="rightmost">
             <label>Change status</label>
             <select v-model="status">

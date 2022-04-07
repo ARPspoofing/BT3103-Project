@@ -1,6 +1,6 @@
 <template>
-  <StudentNavBar :header=true :Heading="Heading" />
-    <div class="mainBody">
+  <StudentNavBar :header="true" :Heading="Heading" />
+  <div class="mainBody">
     <h1 id="status">
       <span>
         <router-link
@@ -29,32 +29,40 @@
 </template>
 
 <script>
-import StudentNavBar from '../../components/StudentNavBar.vue'
-import Card from '../../components/Card.vue'
-import firebaseApp from '../../firebase.js';
-import { getFirestore, query, where } from "firebase/firestore"
-import { collection, doc, setDoc, deleteDoc, getDocs, updateDoc, getDoc } from "firebase/firestore"
+import StudentNavBar from "../../components/StudentNavBar.vue";
+import Card from "../../components/Card.vue";
+import firebaseApp from "../../firebase.js";
+import { getFirestore, query, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  setDoc,
+  deleteDoc,
+  getDocs,
+  updateDoc,
+  getDoc,
+} from "firebase/firestore";
 const db = getFirestore(firebaseApp);
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import {mapState} from 'vuex'
-import {mapMutations} from 'vuex'
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { mapState } from "vuex";
+import { mapMutations } from "vuex";
 
 export default {
-name: 'StudentCompletedProjects',
+  name: "StudentCompletedProjects",
   components: {
-    StudentNavBar, 
-    Card
+    StudentNavBar,
+    Card,
   },
   data() {
     return {
       Heading: "MY PROJECTS",
-        completedProjects: [],
+      completedProjects: [],
     };
   },
   computed: {
-    ...mapState(['userEmail']),
+    ...mapState(["userEmail"]),
   },
-    mounted() {
+  mounted() {
     //non-vuex
     /*
     const auth = getAuth();
@@ -66,8 +74,8 @@ name: 'StudentCompletedProjects',
     this.userEmail = auth.currentUser.email;
     */
 
-    const that = this
-    var userEmail = this.userEmail
+    const that = this;
+    var userEmail = this.userEmail;
     async function getinProgProjects() {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
@@ -75,21 +83,27 @@ name: 'StudentCompletedProjects',
       //var projects = data.inProgProjects
       //that.inProgProjects = data.inProgProjects
       if (data) {
-        for(var i = 0; i < data.completedProjects.length; i++) {
-          getProject(data.completedProjects[i]).then((res)=>{that.completedProjects.push(res)})
+        for (var i = 0; i < data.completedProjects.length; i++) {
+          getProject(data.completedProjects[i]).then((res) => {
+            that.completedProjects.push(res);
+          });
         }
       }
     }
-    getinProgProjects()
-    
+    getinProgProjects();
+
     async function getProject(proj) {
       const ref = doc(db, "Project", proj);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      return {projectTitle: data.Project_Title, description: data.Description, profilePicture: data.profPicture}
+      return {
+        projectTitle: data.Project_Title,
+        description: data.Description,
+        profilePicture: data.profPicture,
+      };
     }
-  }
-}
+  },
+};
 </script>
 
 <style>
@@ -143,11 +157,11 @@ hr {
 }
 
 .options:hover {
-    color: white;
+  color: white;
 }
 
 .optionsOff:hover {
-    color: #0e8044;
+  color: #0e8044;
 }
 
 .optionsOff {

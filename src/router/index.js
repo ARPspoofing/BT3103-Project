@@ -70,7 +70,7 @@ const routes = [
   {
     path: "/project/student_profileInfo",
     name: "BusinessViewStudentInfo",
-    component: () => import("../views/Businesses/BusinessViewStudentInfo.vue")
+    component: () => import("../views/Businesses/BusinessViewStudentInfo.vue"),
   },
   {
     path: "/project/student_projectinfo",
@@ -96,9 +96,9 @@ const routes = [
     },
   },
   {
-    path:"/student/navBar",
+    path: "/student/navBar",
     name: "StudentNavBar",
-    component: () => import ("../components/StudentNavBar.vue"),
+    component: () => import("../components/StudentNavBar.vue"),
   },
   {
     path: "/student/landingpage",
@@ -147,8 +147,8 @@ const routes = [
   },
   {
     path: "/student/applyconfirm",
-    name:"ApplyConfirm",
-    component: () => import("../components/ApplyConfirm.vue")
+    name: "ApplyConfirm",
+    component: () => import("../components/ApplyConfirm.vue"),
   },
 
   //Business routes
@@ -201,8 +201,8 @@ const routes = [
 
   {
     path: "/business/loading",
-    name:"businessLoading",
-    component: () => import("../components/GoogleLoading.vue")
+    name: "businessLoading",
+    component: () => import("../components/GoogleLoading.vue"),
   },
 
   {
