@@ -1,15 +1,15 @@
 <template>
   <div class="card-body" @click.self="clickCard">
-    <div class="clogo">
-      <img v-bind:src=picture alt="Logo" class="logo" />
+    <div class="clogo" @click.self="clickCard">
+      <img  @click.self="clickCard" v-bind:src=picture alt="Logo" class="logo" />
       <span class="card-title"> {{ currProjectTitle }} <br /> </span>
     </div>
-    <div class="card-content">
-      <p class="card-text">{{ description }}</p>
+    <div class="card-content" @click.self="clickCard">
+      <p class="card-text" @click.self="clickCard">{{ description }}</p>
     </div>
-    <p id="appstatus" class="offered" v-if="stat == 'offered'">Offered</p>
-    <p id="appstatus" class="pending" v-else-if="stat == 'pending'">Pending</p>
-    <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">
+    <p id="appstatus" class="offered" v-if="stat == 'offered'" @click.self="clickCard">Offered</p>
+    <p id="appstatus" class="pending" v-else-if="stat == 'pending'" @click.self="clickCard">Pending</p>
+    <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'" @click.self="clickCard">
       Rejected
     </p>
 <div v-show=false>NO</div>

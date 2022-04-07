@@ -1,5 +1,5 @@
 <template>
-  <BusinessNavBar :Heading="Heading" :header=true />
+  <BusinessNavBar :class="{blur:!profileFormCreated}" :Heading="Heading" :header=true />
   <BusinessProfileForm @success='close' v-if='!profileFormCreated'/>
   <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">

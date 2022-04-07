@@ -1,5 +1,5 @@
 <template>
-  <StudentNavBar :search=true :header=false :key="componentKey"/>
+  <StudentNavBar :class="{blur:!profileFormCreated}" :search=true :header=false :key="componentKey"/>
   <div>
 
    <div class="right">

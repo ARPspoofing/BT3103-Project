@@ -326,7 +326,7 @@ export default {
   },
   mounted() {
     var userEmail = this.userEmail;
-    console.log("studentInfo",JSON.parse(this.studentInfo))
+    console.log("studentInfo",this.studentInfo['applicants'])
     //vuex
     this.applicant = JSON.parse(this.studentInfo['applicants']);
     this.allApplicant = JSON.parse(this.studentInfo['allApplicants']);
@@ -342,10 +342,11 @@ export default {
     this.stat = JSON.parse(this.studentInfo['stat'])
     console.log(this.accApplicant);
     this.items = JSON.parse(this.studentInfo['items']);
-    this.projectId = JSON.parse(this.studentInfoitems['projectId']);
-    this.newApplicants = JSON.parse(this.studentInfo.items)['newApplicants'];
-    this.accApplicants = JSON.parse(this.studentInfo.items)['accApplicants'];
-    this.rejApplicants = JSON.parse(this.studentInfo.items)['rejApplicants'];
+    console.log('items',this.items)
+    this.projectId = this.items['projectId'];
+    this.newApplicants = this.items['newApplicants'];
+    this.accApplicants = this.items['accApplicants'];
+    this.rejApplicants = this.items['rejApplicants'];
 
 
 

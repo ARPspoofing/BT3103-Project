@@ -1,13 +1,14 @@
 <template>
   <div class="card-body" @click.self="clickCard">
-    <div class="clogo">
+    <div class="clogo" @click.self="clickCard">
       <img src="../assets/google-logo.png" alt="Logo" class="logo" />
       <span>
-        <div class="appDetails">
+        <div @click.self="clickCard" class="appDetails">
           {{ applicantName }} <br />
           {{ applicantCourse }}
         </div> 
-        <div
+        <div 
+          @click.self="clickCard"
           id="pendingOffer"
           class="acceptedStat"
           v-show="accepted"
@@ -16,6 +17,7 @@
           pending
         </div>
         <div
+          @click.self="clickCard"
           id="acceptedOffer"
           class="acceptedStat"
           v-show="accepted"
@@ -24,6 +26,7 @@
           accepted
         </div>
         <div
+          @click.self="clickCard"
           id="declinedOffer"
           class="acceptedStat"
           v-show="accepted"

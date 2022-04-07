@@ -30,7 +30,7 @@ export default createStore({
     highestPriorityIds: [],
     secondPriorityIds: [],
     thirdPriorityIds: [],
-    name: 'user',
+    name: null,
     userEmail: '',
     cardItems: null,
     recent: false,
