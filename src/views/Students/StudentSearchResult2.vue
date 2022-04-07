@@ -575,11 +575,8 @@ export default {
 	    padding: 0;
 	    margin: 0;
       background-color: #ec9f39; 
-<<<<<<< HEAD
-=======
       font-size: 16px;  
       
->>>>>>> jesslyn
     }
     .menu ol {
       width: 10%;
