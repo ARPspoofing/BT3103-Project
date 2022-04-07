@@ -132,7 +132,6 @@ export default {
         });
     },
     async login(){
-        console.log("In method")
         if(this.email == '') {
             this.emailErrorPresent = true
             this.errorMessage = "Please fill in your email"  

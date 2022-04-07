@@ -70,7 +70,7 @@ export default {
             forgetPassword: false,
             errorMessage:'',
             emailError: false,
-            passwordError:false
+            passwordError:false,
         }
     },
     components: {
@@ -90,48 +90,57 @@ export default {
         
     
     async login() {   
-    console.log(this.email)
-    const docRef = doc(db,"students",String(this.email))
-    const docs = await getDoc(docRef)
-    if(!docs.exists()) {
-        this.emailError = true
-        this.errorMessage = "Email not registered please sign up first"
-        setTimeout(() =>{
-            this.emailError = false
-        }, 1500)
-    }
-    else {
-    const formFilled = docs.data().profileFormCreated
-    console.log(formFilled)
-    await signInWithEmailAndPassword(auth, this.email,this.password)
-    .then((data) => {
-        this.SET_USEREMAIL(this.email)
-        //window.localStorage.setItem('emailForSignIn', this.email);
-        if(!formFilled) {
-            alert("form not filled")
-            this.$router.push({name:'StudentHomePage'})
-            //this.$router.push({name:'StudentProfileForm'})
-        } else {
-            this.$router.push({name:'StudentHomePage'})
-
-        }
-    } ).catch((error) => {
-            if(error.code === "auth/wrong-password") {
-                this.passwordError = true;
-                this.errorMessage = "You have entered an incorrect password"
-                setTimeout(() => {
-                    this.passwordError = false
-                }, 1500)
-            } else if (error.code === "auth/user-not-found") {
-                this.emailError = true  
-                this.errorMessage = "The email does not exist please sign up first"
-                 setTimeout(() => {
+        if (this.email == '') {
+            this.emailError = true
+            this.errorMessage = "Please fill in your email"  
+            setTimeout(() => {
+                this.emailError = false
+            },1500)
+        } else if (this.password == '') {
+            this.passwordError = true
+            this.errorMessage = "Please fill in your email"  
+            setTimeout(() => {
+                this.emailError = false
+            },1500)
+        } else if (this.email != '' && this.password != '') {
+            const docRef = doc(db,"students",String(this.email))
+            const docs = await getDoc(docRef)
+            if(!docs.exists()) {
+                this.emailError = true
+                this.errorMessage = "Email not registered please sign up first"
+                setTimeout(() =>{
                     this.emailError = false
                 }, 1500)
-            }
+            } else {
+                const formFilled = docs.data().profileFormCreated
+                console.log(formFilled)
+                signInWithEmailAndPassword(getAuth(), this.email,this.password)
+                .then((data) => {
+                this.SET_USEREMAIL(this.email)
+                if(!formFilled) {
+                alert("form not filled")
+                this.$router.push({name:'StudentHomePage'})
+                } else {
+                    this.$router.push({name:'StudentHomePage'})
+                }
+                } ).catch((error) => {
+                    if(error.code === "auth/wrong-password") {
+                        this.passwordError = true;
+                        this.errorMessage = "You have entered an incorrect password"
+                        setTimeout(() => {
+                            this.passwordError = false
+                        }, 1500)
+                    } else if (error.code === "auth/user-not-found") {
+                        this.emailError = true  
+                        this.errorMessage = "The email does not exist please sign up first"
+                        setTimeout(() => {
+                            this.emailError = false
+                        }, 1500)
+                    }
        
-    })
-    }
+                })
+            }
+        }    
     },
   }
 }
