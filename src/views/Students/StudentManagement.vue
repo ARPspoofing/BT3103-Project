@@ -14,7 +14,10 @@
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <ToDoView :taskId:"task['id']" :projectId:"task['projectId']" :projectTitle:"this.task['projectTitle']"/>
+          <!--
+        <ToDoView :task="task" :task_id="task['id']" :projectId="task['projectId']" :projectTitle="task['projectTitle']"/>
+        -->
+        <ToDoView :description="this.longdescription" :duedate="this.duedate" c:task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId"/>
       </div>
     </div>
   </div>
@@ -104,7 +107,10 @@ export default {
             task:null,
             duedate:null,
             openModal:false,
-            
+            id:null,
+            projectId:null,
+            projectTitle:null,
+            longdescription:null,
         }
     },
     methods: {
@@ -113,6 +119,13 @@ export default {
         },
         capture(task_emit) {
             this.task = task_emit
+            this.id = task_emit['id']
+            this.projectId = task_emit['projectId']
+            this.projectTitle = task_emit['projectTitle']
+            this.longdescription = task_emit['longdescription']
+            this.duedate = task_emit['duedate']
+            console.log("task emit full",task_emit)
+            console.log("task emit",task_emit['id'])
             this.openModal = true
         },
         attempt() {

@@ -143,12 +143,14 @@ export default {
   data() {
     return {
       name: "",
+      /*
       task_id: '1',
       projectId: '1',
       projectTitle: '1',
       duedate: '1',
       task: '1',
       description: '1',
+      */
       /*
       task_id: this.$route.params.taskId,
       projectId: this.$route.params.projectId,
