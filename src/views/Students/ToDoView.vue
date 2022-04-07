@@ -1,5 +1,5 @@
 <template>
-  <div class="mainBody">
+
     <router-link
       :to="{
         name: 'StudentManagement',
@@ -108,7 +108,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
