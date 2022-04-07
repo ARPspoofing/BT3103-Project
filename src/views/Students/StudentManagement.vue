@@ -13,7 +13,7 @@
           <!--
         <ToDoView :task="task" :task_id="task['id']" :projectId="task['projectId']" :projectTitle="task['projectTitle']"/>
         -->
-        <ToDoView :description="this.longdescription" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId"/>
+        <ToDoView :description="this.longdescription" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId" :task="this.studentTask"/>
         <button @click="unblurBg" type="button" id="nobtn" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>
@@ -87,7 +87,7 @@ const router = useRouter()
 export default {
     name: "StudentManagement",
     computed: {
-      ...mapState(['studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted',]),
+      ...mapState(['studentTask','studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted',]),
     },
     props: {
         //So that this page can easily access the project that it is clicked on
@@ -113,12 +113,13 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['SET_STUDENT_PROJECT_ID','SET_STUDENT_PROJECT_TITLE','SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED',]),
+        ...mapMutations(['SET_STUDENT_TASK','SET_STUDENT_PROJECT_ID','SET_STUDENT_PROJECT_TITLE','SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED',]),
         goback() {
             this.$router.push({name:'StudentInProgressProjects'})
         },
         capture(task_emit) {
             this.task = task_emit
+            this.SET_STUDENT_TASK(task_emit)
             this.id = task_emit['id']
             this.projectId = task_emit['projectId']
             this.projectTitle = task_emit['projectTitle']

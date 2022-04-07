@@ -49,6 +49,8 @@ export default createStore({
     studentPendingReview:null,
     studentCompleted:null,
     studentProjectId:null,
+    studentTaskId:null,
+    studentTask:null,
     studentProjectTitle:null,
     businessToDo: null,
     businessInProgress:null,
@@ -159,6 +161,12 @@ export default createStore({
     },
     SET_STUDENT_PROJECT_ID(state,payload) {
       state.studentProjectId = payload
+    },
+    SET_STUDENT_TASK_ID(state,payload) {
+      state.studentTaskId = payload
+    },
+    SET_STUDENT_TASK(state,payload) {
+      state.studentTask = payload
     },
     SET_STUDENT_PROJECT_TITLE(state,payload) {
       state.studentProjectTitle = payload

@@ -141,6 +141,11 @@ const routes = [
     component: () => import("../views/Students/StudentManagement.vue"),
   },
   {
+    path: "/student/managementloading",
+    name: "managementLoading",
+    component: () => import("../components/managementLoading.vue"),
+  },
+  {
     path: "/student/management/ToDo:taskId",
     name: "ToDoView",
     component: () => import("../views/Students/ToDoView.vue"),

@@ -16,7 +16,7 @@
     <hr />
     <h1></h1>
     <div class="projectContainer">
-      <div :key="item.key" v-for="(item, key) in inProgProjects">
+      <div :key="key" v-for="(item,key) in inProgProjects">
         <Card
           :apply="false"
           :projectTitle="item.projectTitle"
@@ -59,7 +59,7 @@ export default {
     Card,
   },
   computed: {
-    ...mapState(['userEmail','studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted']),
+    ...mapState(['studentTaskId','userEmail','studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted']),
   },
   data() {
     return {
@@ -175,7 +175,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['SET_STUDENT_PROJECT_ID','SET_STUDENT_PROJECT_TITLE','SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED',]),
+    ...mapMutations(['SET_STUDENT_TASK_ID','SET_STUDENT_PROJECT_ID','SET_STUDENT_PROJECT_TITLE','SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED',]),
     async viewTasks(id, title) {
       console.log("in method")
       console.log(title)

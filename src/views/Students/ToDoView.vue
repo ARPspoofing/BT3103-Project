@@ -132,6 +132,7 @@ import { update } from "firebase/database";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import {mapState} from 'vuex'
+import {mapMutations} from 'vuex'
 import Loading from "../../components/Loading.vue";
 const db = getFirestore(firebaseApp);
 const router = useRouter();
@@ -140,19 +141,20 @@ import * as moment from "moment";
 export default {
   name: "ToDoView",
   computed: {
-    ...mapState(['userEmail',]),
+    ...mapState(['studentTask','userEmail','studentTaskId','userEmail','studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted',]),   
   },
   data() {
     return {
       name: "",
       /*
-      task_id: '1',
-      projectId: '1',
-      projectTitle: '1',
-      duedate: '1',
-      task: '1',
-      description: '1',
+      task_id: '',
+      projectId: '',
+      projectTitle: '',
+      duedate: '',
+      task: '',
+      description: '',
       */
+      
       /*
       task_id: this.$route.params.taskId,
       projectId: this.$route.params.projectId,
@@ -189,13 +191,14 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(['SET_STUDENT_TASK',]),
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
 
     async addComment() {
       var a = document.getElementById("comments").value;
-      let ref = await doc(db, "Project", this.projectId);
+      let ref = await doc(db, "Project", this.studentProjectId);
       let project = await getDoc(ref);
 
       var dat = await project.data();
@@ -256,14 +259,15 @@ export default {
     async updateStatus() {
       const currStatus = this.status;
       console.log(currStatus);
-      let ref = await doc(db, "Project", this.projectId);
+      let ref = await doc(db, "Project", this.studentProjectId);
       let project = await getDoc(ref);
 
       var tasks = await project.data().Tasks;
+      console.log("tasks",tasks)
       console.log("ok");
-      console.log(this.task);
-      console.log(tasks);
-      console.log(tasks.length);
+      //console.log(this.task);
+      //console.log(tasks);
+      //console.log(tasks.length);
       var toRemove = {};
 
       var newTask = {};
@@ -285,13 +289,16 @@ export default {
       await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
 
       await updateDoc(ref, { Tasks: arrayUnion(newTask) });
-
-      this.task = newTask;
+      //non-vuex
+      //this.task = newTask;
+      //vuex
+      this.SET_STUDENT_TASK(newTask)
+      //this.$router.push({name:'managementLoading'})
     },
 
     async updateTask() {
       try {
-        const docRef = await updateDoc(doc(db, "Project", this.projectId), {});
+        const docRef = await updateDoc(doc(db, "Project", this.studentProjectId), {});
 
         console.log(docRef);
         this.$emit("updated");
@@ -303,11 +310,18 @@ export default {
 
   mounted() {
     const curr = this;
-    const taskId = curr.$route.params.taskId;
-    console.log(curr.$route.params.taskId);
-    const projectId = curr.$route.params.projectId;
-    const projectTitle = curr.$route.params.projectTitle;
-    console.log(curr.$route.params);
+
+    //Non vuex
+    //const taskId = curr.$route.params.taskId;
+    //console.log(curr.$route.params.taskId);
+    //const projectId = curr.$route.params.projectId;
+    //const projectTitle = curr.$route.params.projectTitle;
+    //vuex
+    const projectId = this.studentProjectId
+    const taskId = this.task_id
+    const projectTitle = this.projectTitle
+    
+    //console.log(curr.$route.params);
 
     async function getComments() {
       const docRef = doc(db, "Project", projectId);
@@ -357,6 +371,7 @@ export default {
                    })
                }
                }) */
+      console.log("currTask",currTask)
       curr.name = currTask.taskName;
       curr.duedate = currTask.taskDueDate;
       curr.projectTitle = projectTitle;

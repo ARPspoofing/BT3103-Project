@@ -138,7 +138,7 @@ export default {
     },
     async login() {
         if(this.email == '') {
-            if (this.counter != 0) {
+            if (this.businessCounter != 0) {
                 this.emailErrorPresent = true
                 this.errorMessage = "Please fill in your email"  
             }

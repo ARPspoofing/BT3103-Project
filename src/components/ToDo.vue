@@ -143,19 +143,6 @@ import ToDoView from '../views/Students/ToDoView.vue'
     .todoButton {
         background-color: rgb(230, 121, 139);
     }
-
-    .inprogressButton {
-
-    }
-
-    .pendingreviewButton {
-
-    }
-
-    .completedButton {
-
-    }
-
     .duedate {
         font-size:12px;
         margin-top:-15px;
