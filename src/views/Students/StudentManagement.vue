@@ -92,7 +92,7 @@ const router = useRouter()
 export default {
     name: "StudentManagement",
     computed: {
-      ...mapState(['studentToDo','studentInProgress','studentPendingReview','studentCompleted',]),
+      ...mapState(['studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted',]),
     },
     props: {
         //So that this page can easily access the project that it is clicked on
@@ -118,7 +118,7 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED',]),
+        ...mapMutations(['SET_STUDENT_PROJECT_ID','SET_STUDENT_PROJECT_TITLE','SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED',]),
         goback() {
             this.$router.push({name:'StudentInProgressProjects'})
         },
@@ -156,11 +156,24 @@ export default {
     },
     mounted() {
         const curr = this
-
+        //non-vuex
+        /*
         curr.projectId = curr.$route.params.projectId
         curr.projectTitle = curr.$route.params.projectTitle
         curr.fullTitle = "Tasks for " + curr.projectTitle 
+        */
+       //vuex
+        this.projectId = this.studentProjectId
+        this.projectTitle = this.studentProjectTitle
+        this.fullTitle = "Tasks for " + this.projectTitle 
+        this.toDoTask = this.studentToDo
+        this.inProgressTask = this.studentInProgress
+        this.pendingReviewTask = this.studentPendingReview
+        this.completedTask = this.studentCompleted
+
         console.log(curr.fullTitle)
+        //non-vuex
+        /*
         async function getTasks() {
           //Change "To-Do" to props later
           //Later, each project needs to have its list of tasks
@@ -173,7 +186,7 @@ export default {
           var inProgressTask = []
           var pendingReviewTask = []
           var completedTask = []
-          
+        
           tasks.forEach((document) => {
               //Change to dynamic props later
              
@@ -245,6 +258,7 @@ export default {
         curr.completedTask = completedTask
       }
       getTasks()
+      */
     },
     components: {
         ToDo,
