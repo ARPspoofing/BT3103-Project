@@ -218,7 +218,7 @@ export default {
   },
   emits: ['cancel'],
   computed: {
-    ...mapState(['userEmail','cardItems']),
+    ...mapState(['userEmail','cardItems','studentToDo']),
   },
   data() {
     return {
@@ -407,6 +407,7 @@ export default {
     // }
   },
   created() {
+    console.log("for testingngggggggg",this.studentToDo)
     var that = this
     this.userEmailData = this.userEmail
     var userEmail = this.userEmail

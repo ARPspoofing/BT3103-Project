@@ -250,7 +250,6 @@ export default {
             })
           }
       })
-
         console.log("student todo",toDoTask)
         console.log("student in progress",inProgressTask)
         console.log("student pending",pendingReviewTask)
@@ -263,7 +262,8 @@ export default {
         console.log("vuex in prog",this.studentInProgress)
         console.log("vuex pending",this.studentPendingReview)
         console.log("vuex completed",this.studentCompleted)
-      this.$router.push({name:'StudentManagement'/*,params:{projectId:id, projectTitle:title}*/})
+        this.$router.push({name:'StudentManagement'})
+        //this.$router.push({name:'StudentManagement'/*,params:{projectId:id, projectTitle:title}*/})
     }
   }
 };

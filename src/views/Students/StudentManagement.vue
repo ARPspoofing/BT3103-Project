@@ -1,7 +1,5 @@
 <template>
-<!--
-<ToDoViewTest/>
--->
+
 <StudentNavBar :search ="false" :Heading="fullTitle" :header="true"/>
 <!-- Modal -->
   <button @click="blurBg" style = "visibility:hidden" type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
@@ -26,15 +24,12 @@
 <ToDoView v-if="openModal" :task_id="task['id']" :task=task :projectTitle="this.task['projectTitle']" :projectId="task['projectId']" :duedate="this.duedate"/>
 -->
 
-<!--
-Proxy {id: 'hi jack', projectTitle: 'hijack place', projectId: 'BoI9Ie13dAUjtq95A0LM', comments: Array(3), documents: undefined, …}
--->
 <div :class="{blurCss:toBlur}">
 <button @click="goback" id="backButton">Back to Projects</button>
 <div v-if="toDoTask.length >= 0" class="wrapper-outer">
     <div class="wrapper">
         <h4>To-Do</h4>
-        <ToDo @getData="capture" v-for="(task,index) in toDoTask" :task="task" :key="index" :projectTitle="projectTitle" :projectId="projectId"/>    </div>
+        <ToDo @getData="capture" v-for="(task,index) in toDoTask" :task="task" :key="index" :projectTitle="projectTitle" :projectId="projectId"/></div>
     <div class="wrapper">
         <h4>IN PROGRESS</h4>
         <InProgress @getData="capture"  v-for="(task,index) in inProgressTask" :task="task" :key="index"
@@ -147,13 +142,6 @@ export default {
             console.log("trying")
         }
     },
-
-    computed: {
-
-       
-
-
-    },
     mounted() {
         const curr = this
         //non-vuex
@@ -163,6 +151,11 @@ export default {
         curr.fullTitle = "Tasks for " + curr.projectTitle 
         */
        //vuex
+        console.log("inside student management",this.studentToDo)
+        console.log("inside student management",this.studentInProgress)
+        console.log("inside student management",this.studentPendingReview)
+        console.log("inside student management",this.studentCompleted)
+
         this.projectId = this.studentProjectId
         this.projectTitle = this.studentProjectTitle
         this.fullTitle = "Tasks for " + this.projectTitle 
@@ -171,7 +164,7 @@ export default {
         this.pendingReviewTask = this.studentPendingReview
         this.completedTask = this.studentCompleted
 
-        console.log(curr.fullTitle)
+        
         //non-vuex
         /*
         async function getTasks() {
