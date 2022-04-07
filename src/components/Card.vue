@@ -12,6 +12,7 @@
     <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">
       Rejected
     </p>
+    <p id="closed" v-if="stat == 'closed'">Application Closed</p>
 <div v-show=false>NO</div>
     <button
       id="applybtns"
@@ -63,6 +64,7 @@
                             </p>
                           </div>
                           <span>
+                            
                             <div class="applybtns">
                               <button
                                 type="button"
@@ -76,11 +78,13 @@
                                 No
                               </button>
                             </div>
+                            
                           </span>
                         </div>
                       </div>
                     </div>
                   </div>
+                  
                   <button
                     id="acceptbtn"
                     v-show="offered"
@@ -96,8 +100,8 @@
                     class="btn-apply"
                   >
                     Decline
-                  </button>
-      -->
+                  </button>-->
+      
  <!--Ruth previous card version. Keeping incase new version is wrong 
     <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">Rejected</p>
 
@@ -289,7 +293,14 @@ export default {
   border-width: 0px;
   height: 30px;
 }
-
+#closed {
+  background-color: #ecf0f3;
+  width: 180px;
+  font-size: 15px;
+  border-radius: 12px;
+  color: #ec5c5c;
+  /*font-weight: bold;*/
+}
 
 
 .btn-apply {

@@ -1,9 +1,9 @@
 <template>
   <StudentNavBar :search=true :header=true />
-  <div v-if="loading">
-    Loading
-  </div>
-  <div v-if="!loading" class="mainBody">   
+  
+
+  <div v-if="!loading" class="mainBody">
+  
     <!-- <button class="purple button" @click="toggleFilterMenu">Filter</button> -->
     <!--
     <button @click="closeFilterMenu"> close filter menu </button>
@@ -12,13 +12,15 @@
   <transition name="filter">
      <Filter @submitFilter=closeFilterMenu v-if="filterModal"/>
   </transition>
+
+
   
       
     <div @click="openFilter" ref="filterWrap" class="filter-wrap flex flex-column">
     
     </div> 
     <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
-      <button class="button" @click="toggleFilterMenu">Filter</button>
+      <button class="button" @click="toggleFilterMenu">Filter</button> 
       <nav class="menu">
       <ol>
         <li class="menu-item">
@@ -34,25 +36,29 @@
         </li>
       </ol>
       </nav>
-      Search results for {{receivedSearch}}:
+      
+      <div v-if="stopLoader">
+        Search results for {{receivedSearch}}:
+      </div>
       <hr/>
     </h1>
-    
-     <div v-if="noProjectsPresent" class = "noProject">
-         <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> ensure that you have spelled your search correctly.</h1>
-          <!-- {{GET_SEARCH_DATA}} -->        
+      <div v-if="noProjectsPresent" class = "noProject">
+        <PathfinderLoading v-if="!stopLoader"/> 
+        <h1 v-if="stopLoader" class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> Ensure that you have spelled your search correctly.</h1>
+          <!-- {{GET_SEARCH_DATA}} -->      
      </div>
-      <div v-else class="projectContainer">
+     <PathfinderLoading v-if="!stopLoader"/> 
+      <div v-if="stopLoader" class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key + 2*6)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :picture = "item.profPicture" :description="item.description" @clickCard="indivprojFirst(key + 2*6)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
         </div>
 
         <div :key="item.key" v-for="(item, key) in secondPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojSecond(key)" @applicantbtn="addApplicantSecond(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :picture = "item.profPicture" :description="item.description" @clickCard="indivprojSecond(key)" @applicantbtn="addApplicantSecond(key + 2*6)"/>
         </div>
 
         <div :key="item.key" v-for="(item, key) in thirdPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojThird(key)" @applicantbtn="addApplicantThird(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :picture = "item.profPicture" :description="item.description" @clickCard="indivprojThird(key)" @applicantbtn="addApplicantThird(key + 2*6)"/>
         </div>
         </div>
       </div>
@@ -70,6 +76,7 @@ import {mapState} from "vuex"
 import {mapMutations} from "vuex"
 import {mapGetters} from "vuex"
 import Filter from '../../components/Filter.vue'
+import PathfinderLoading from '../../components/PathfinderLoading.vue'
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -78,6 +85,7 @@ export default {
     StudentNavBar,
     Card,
     Filter,
+    PathfinderLoading,
   },
 
   computed: {
@@ -98,6 +106,7 @@ export default {
       loading:false,
       //store all id in one array
       searchId: null,
+      stopLoader: false,
       //store all id in separate arrays
     }
   },
@@ -111,7 +120,7 @@ export default {
       this.TOGGLE_FILTER()
     },
     closeFilterMenu(e) {
-      //alert('close')
+      alert('close')
       this.TOGGLE_FILTER()
     },
     /*
@@ -161,37 +170,37 @@ export default {
       //var businessEmail = auth.currentUser.email;
       //var businessEmail = window.localStorage.getItem('emailForSignIn')
       //order projects by posted date, from latest to oldest
-      //alert(order)
+      alert(order)
       var projects = null
       if (order == "recent") {
-        //alert("true!!")
+        alert("true!!")
         this.CLEAR_FILTER()
         this.SET_FILTER("recent")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date", "desc"));
       } else if (order == "oldest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("oldest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date"));
       } else if (order == "highest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("highest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance", "desc"));
       } else if (order == "lowest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("lowest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance"));
       } else if (order == "longest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("longest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End"));
       } else if (order== "shortest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("shortest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End", "desc"));
       } else {
         this.CLEAR_FILTER()
         this.SET_FILTER("shortest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End", "desc"));
       }
       var temp = []
       //searchData is a dictionary of {0:projectId,1:projectId...}
@@ -229,6 +238,9 @@ export default {
 
   mounted() {
     const that = this;
+    setTimeout(() => {
+      this.stopLoader = true
+    }, 2500)
     const gottenSearch = that.$route.params.searched;
     this.receivedSearch = gottenSearch;
     //data variable = state variable 
@@ -263,26 +275,26 @@ export default {
       //let snapshot = await getDocs(collection(db, "Project"))
       if (that.recent == true) {
         //alert("recent")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date","desc"));
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date","desc"));
       } else if (that.oldest == true) {
         //alert("oldest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date"));
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date"));
       } else if (that.highest == true) {
         //alert("highest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance","desc"));
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance","desc"));
       } else if (that.lowest == true) {
         //alert("lowest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance"));
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance"));
       } else if (that.longest == true) {
         //alert("longest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End"));
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End"));
       } else if (that.shortest == true) {
         //alert("shortest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End","desc"));
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End","desc"));
       //Just Order by project end date if no filter 
       } else {
         //alert("else")
-        var snapshot = query(collection(db, "Project"), orderBy("Project_End","desc"));
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End","desc"));
       }
       snapshot = await getDocs(snapshot)
       /*
@@ -362,6 +374,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
         });
         } else if (secondPriorityIds.includes(docs.id)) {
           secondPriority.push({ 
@@ -377,6 +390,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
         });
 
         } else if (thirdPriorityIds.includes(docs.id)) {
@@ -393,6 +407,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
         });
 
         }

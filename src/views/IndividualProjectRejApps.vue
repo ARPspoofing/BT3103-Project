@@ -135,7 +135,10 @@ export default {
   },
 
   mounted() {
-
+    console.log("mounted")
+    console.log("rej",this.cardItems['rejApplicants'])
+    this.items = JSON.parse(this.cardItems);
+    console.log("test",this.items['rejApplicants'])
     //non-vuex
     /*
     this.items = JSON.parse(this.$route.params.items)
@@ -158,8 +161,19 @@ export default {
     //console.log(this.rejApplicants)
     //Veux
     this.items = JSON.parse(this.cardItems);
-    if (this.cardItems.rejApplicants) {
-      this.rejApplicants = JSON.parse(this.cardItems.rejApplicants)
+    if (this.items['rejApplicants']) { 
+      
+      //Get values of JSON dictionary  
+      var rejCopy = this.items['rejApplicants']
+      var rejValues = Object.keys(rejCopy).map(function(key){
+        return rejCopy[key];
+      });
+      //But the values arr is 2d
+      //To flatten use ES6 spread
+      var rej = []
+      rej = rej.concat(...rejValues)
+      this.rejApplicants = rej
+
       for(var i = 0; i < this.rejApplicants.length; i++) {
         getApplicant(this.rejApplicants[i]).then((res)=>{this.applicant.push(res)})
       }

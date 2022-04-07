@@ -187,6 +187,7 @@ export default {
       schoolEmail:'',
       personalEmail:'',
       contactNo:'',
+      description: '',
       interests: [],
       popUp:false,
       menu:false,
@@ -211,7 +212,6 @@ export default {
       errorMessage:"",
       resumeLink:'',
       transcriptLink:'',
-      description: '',
     }
   },
   
@@ -402,6 +402,7 @@ export default {
       that.resumeLink = data.resumeDownloadLink
       that.transcriptLink = data.transcriptDownloadLink
       that.description = data.description
+    
       /*
       if (!data.description) {
         that.description = data.description

@@ -13,6 +13,7 @@
         <i class="fa-solid fa-angles-left"></i> Back to Management
       </button>
     </router-link>
+
     <div class="view container">
       <!-- <router-link :to="{name:'BusinessManagement'}">
            
@@ -73,10 +74,18 @@
         <div class="middle-bottom flex">
           <div class="documents flex flex-column">
             <p><b>Submit Relevant Documents :</b></p>
-            <button id="addFileButton" @click="addFile">
+            <!--<button id="addFileButton" @click="addFile">
               <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
               Add Files
-            </button>
+            </button>-->
+            <input
+              type="file"
+              multiple
+              name="files[]"
+              id="files"
+              accept=".jpeg,.pdf,.docx"
+              v-on:change="uploadFiles"
+            />
             <div
               class="previous"
               v-for="(task, counter) in files"
@@ -90,6 +99,7 @@
                 multiple
                 name="files[]"
                 id="files"
+                accept=".jpeg,.pdf,.docx"
                 v-on:change="uploadFiles"
               />
             </div>
@@ -104,7 +114,7 @@
               name="comments"
               rows="4"
               cols="60"
-              placeholder="Comments"
+              placeholder="Please enter your comment"
               maxlength="500"
             ></textarea>
             <button id="commentButton" @click="addComment">Add Comment</button>
@@ -116,9 +126,12 @@
           :key="item.key"
           v-for="(item, key) in comment"
         >
-        <div id="eachComment">
-        <img v-bind:src="item.profPic" alt="Logo" class="logo" />
-          <p><strong>{{ item["name"] }}</strong>: {{ item["comment"] }}</p>
+          <div id="eachComment">
+            <img v-bind:src="item.profPic" alt="Logo" class="logo" />
+            <p>
+              <strong>{{ item["name"] }}</strong
+              >: {{ item["comment"] }}
+            </p>
           </div>
         </div>
       </div>
@@ -141,7 +154,7 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 import { update } from "firebase/database";
-import { ref } from "vue";
+//import { ref } from "vue";
 import { useRouter } from "vue-router";
 import Loading from "../../components/Loading.vue";
 const db = getFirestore(firebaseApp);
@@ -151,6 +164,8 @@ import {
   getStorage,
   uploadBytesResumable,
   getDownloadURL,
+  ref,
+  storageRef,
 } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 const auth = getAuth();
@@ -176,6 +191,9 @@ export default {
       status: "",
       dateOptions: { year: "numeric", month: "short", day: "numeric" },
       email: auth.currentUser.email,
+      file: null,
+      files: [],
+      fileLink: "",
     };
   },
   watch: {
@@ -203,6 +221,57 @@ export default {
   methods: {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
+    },
+
+    async updateFile() {
+      let proj = await doc(db, "Project", this.projectId);
+      let project = await getDoc(proj);
+
+      var dat = await project.data();
+      var tasks = dat.Tasks;
+      var toRemove = {};
+      var newTask = {};
+
+      for (let i = 0; i < tasks.length; i++) {
+        let currTask = tasks[i];
+        console.log(this.task_id);
+        if (currTask.taskName == this.task_id) {
+          toRemove = { ...currTask };
+          newTask = currTask;
+        }
+      }
+
+      await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
+      if (newTask.files) {
+        newTask.files.push(this.fileLink);
+      } else {
+        newTask.files = [];
+        newTask.files.push(this.fileLink);
+      }
+      this.files.push(this.fileLink);
+
+      await updateDoc(ref, { Tasks: arrayUnion(newTask) });
+    },
+
+    async uploadFiles(event) {
+      //Add code to upload the resume somewhere
+      this.file = event.target.files[0];
+      const storage = getStorage();
+      const fileref = ref(storage, this.file.name);
+      const uploadTask = uploadBytesResumable(fileref, this.file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {},
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            console.log("File available at", (this.fileLink = url));
+          });
+        }
+      );
+      updateFile();
     },
 
     async addComment() {
@@ -273,12 +342,12 @@ export default {
       let project = await getDoc(ref);
 
       var dat = await project.data();
-      console.log(dat);
+      //console.log(dat);
       var tasks = dat.Tasks;
-      console.log("ok");
-      console.log(this.task);
-      console.log(tasks);
-      console.log(tasks.length);
+      //console.log("ok");
+      //console.log(this.task);
+      //console.log(tasks);
+      //console.log(tasks.length);
       var toRemove = {};
 
       var newTask = {};
@@ -384,6 +453,36 @@ export default {
     console.log(curr.$route.params.comments);
     const projectTitle = curr.$route.params.projectTitle;
 
+    async function updateFile() {
+      let proj = await doc(db, "Project", this.projectId);
+      let project = await getDoc(proj);
+
+      var dat = await project.data();
+      var tasks = dat.Tasks;
+      var toRemove = {};
+      var newTask = {};
+
+      for (let i = 0; i < tasks.length; i++) {
+        let currTask = tasks[i];
+        console.log(this.task_id);
+        if (currTask.taskName == this.task_id) {
+          toRemove = { ...currTask };
+          newTask = currTask;
+        }
+      }
+
+      await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
+      if (newTask.files) {
+        newTask.files.push(this.fileLink);
+      } else {
+        newTask.files = [];
+        newTask.files.push(this.fileLink);
+      }
+      this.files.push(this.fileLink);
+
+      await updateDoc(ref, { Tasks: arrayUnion(newTask) });
+    }
+
     async function getComments() {
       const docRef = doc(db, "Project", projectId);
       let project = await getDoc(docRef);
@@ -393,7 +492,11 @@ export default {
         let thisTask = tasks[i];
         if (thisTask.taskName == taskId) {
           currTask = thisTask;
-          curr.comment = currTask.comments.reverse();
+          if (currTask.comments) {
+            curr.comment = currTask.comments.reverse();
+          } else {
+            curr.comment = [];
+          }
           break;
         }
       }

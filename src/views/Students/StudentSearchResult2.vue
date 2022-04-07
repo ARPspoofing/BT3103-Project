@@ -1,23 +1,26 @@
 <template>
   <StudentNavBar :search=true :header=true />
-  <div v-if="loading">
-    Loading
-  </div>
-  <div v-if="!loading" class="mainBody">   
+  
+ 
+  <div v-if="!loading" class="mainBody"> 
+    
     <!-- <button class="purple button" @click="toggleFilterMenu">Filter</button> -->
 
+
   <transition name="filter">
-     <Filter v-if="filterModal"/> 
+     <Filter @submitFilter=closeFilterMenu v-if="filterModal"/>
   </transition>
+  
   
       
     <div @click="openFilter" ref="filterWrap" class="filter-wrap flex flex-column">
     
     </div> 
-    <h1 id="status" class="searchDisplay" v-if = "!noProjectsPresent">
-      <button class="button" @click="toggleFilterMenu">Filter</button>
-
-      <nav class="menu">
+    
+    
+    <div id="status" class="searchDisplay" v-if = "!noProjectsPresent">
+      <button class="button" @click="toggleFilterMenu">Filter</button>  
+      <div class="menu">
       <ol>
         <li class="menu-item">
           <a>Sort By</a>
@@ -31,18 +34,19 @@
           </ol>
         </li>
       </ol>
-      </nav>
-
-
-      Search results for {{receivedSearch}}:
+      </div>
+      <div v-if="stopLoader">
+        Search results for {{receivedSearch}}:
+      </div>
       <hr/>
-    </h1>
-    
+    </div>
      <div v-if="noProjectsPresent" class = "noProject">
-         <h1 class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> Ensure that you have spelt your search correctly.</h1>
-          <!-- {{GET_SEARCH_DATA}} -->        
+        <PathfinderLoading v-if="!stopLoader"/> 
+        <h1 v-if="stopLoader" class = "noProjectsText">Sorry, no projects matched your search <span style="color: green">{{receivedSearch}}</span>. <br> Ensure that you have spelled your search correctly.</h1>
+          <!-- {{GET_SEARCH_DATA}} -->      
      </div>
-      <div v-else class="projectContainer">
+     <PathfinderLoading v-if="!stopLoader"/> 
+      <div v-if="stopLoader" class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
           <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key /*+ 2*6*/)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
         </div>
@@ -70,6 +74,7 @@ import {mapState} from "vuex"
 import {mapMutations} from "vuex"
 import {mapGetters} from "vuex"
 import Filter from '../../components/Filter.vue'
+import PathfinderLoading from '../../components/PathfinderLoading.vue'
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -78,7 +83,8 @@ export default {
 
     StudentNavBar,
     Card,
-    Filter
+    Filter,
+    PathfinderLoading,
   },
   
   computed: {
@@ -102,6 +108,7 @@ export default {
       highestPriority: null,
       secondPriority: null,
       thirdPriority: null,
+      stopLoader: false,
     }
   },
 
@@ -161,37 +168,37 @@ export default {
       //var businessEmail = auth.currentUser.email;
       //var businessEmail = window.localStorage.getItem('emailForSignIn')
       //order projects by posted date, from latest to oldest
-      //alert(order)
+      alert(order)
       var projects = null
       if (order == "recent") {
-        //alert("true!!")
+        alert("true!!")
         this.CLEAR_FILTER()
         this.SET_FILTER("recent")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date", "desc"));
       } else if (order == "oldest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("oldest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date"));
       } else if (order == "highest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("highest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance", "desc"));
       } else if (order == "lowest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("lowest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance"));
       } else if (order == "longest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("longest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]),  orderBy('Status', "asc"), orderBy("Project_End"));
       } else if (order== "shortest") {
         this.CLEAR_FILTER()
         this.SET_FILTER("shortest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]),  orderBy('Status', "asc"), orderBy("Project_End", "desc"));
       } else {
         this.CLEAR_FILTER()
         this.SET_FILTER("shortest")
-        projects = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End", "desc"));
+        projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]),  orderBy('Status', "asc"), orderBy("Project_End", "desc"));
       }
       var temp = []
       //searchData is a dictionary of {0:projectId,1:projectId...}
@@ -228,6 +235,9 @@ export default {
 
   mounted() {
     const that = this;
+    setTimeout(() => {
+      this.stopLoader = true     
+    }, 2500)
     const gottenSearch = that.$route.params.searched;
     this.receivedSearch = gottenSearch;
     //data variable = state variable 
@@ -260,27 +270,26 @@ export default {
       console.log(highestPriorityIds)
       //let snapshot = await getDocs(collection(db, "Project"))
       if (that.recent == true) {
-        //("recent")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date","desc"));
+        alert("recent")
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]),  orderBy('Status', "asc"), orderBy("Posted_Date","desc"));
       } else if (that.oldest == true) {
-        //alert("oldest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Posted_Date"));
+        alert("oldest")
+        var snapshot = query(collection(db, "Project"),  where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date"));
       } else if (that.highest == true) {
-        //alert("highest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance","desc"));
+        alert("highest")
+        var snapshot = query(collection(db, "Project"),  where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance","desc"));
       } else if (that.lowest == true) {
-        //alert("lowest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Allowance"));
+        alert("lowest")
+        var snapshot = query(collection(db, "Project"),  where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Allowance"));
       } else if (that.longest == true) {
-        //alert("longest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End"));
-      } else if (that.shortest == true) {
-        //alert("shortest")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End","desc"));
+        alert("longest")
+        var snapshot = query(collection(db, "Project"),  where('Status', "not-in", ["closed", "completed"]), orderBy("Project_End"));
+        alert("shortest")
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End","desc"));
       //Just Order by project end date if no filter 
       } else {
-        //alert("else")
-        var snapshot = query(collection(db, "Project"), where('Status', "!=", "closed"), orderBy("Status","asc"), orderBy("Project_End","desc"));
+        alert("else")
+        var snapshot = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Project_End","desc"));
       }
       snapshot = await getDocs(snapshot)
       /*
@@ -538,7 +547,7 @@ export default {
     .button {
     cursor: pointer;
     padding: 8px 44px;
-    border-radius: 0px;
+    border-radius: 8px;
     border: none;
     font-size: 16px;
     margin-right: 20px;
@@ -550,31 +559,23 @@ export default {
           }
     }
 
-    .save {
-        div {
-            flex:1;
-        }
-    }
-
-    .right {
-        margin-left:80%;
-    }
-
     .menu ol {
 	    list-style: none;
 	    padding: 0;
 	    margin: 0;
       background-color: #ec9f39; 
+      font-size: 16px;  
+      
     }
-    .menu ol:first-child {
+    .menu ol {
       width: 10%;
       max-width: 960px;
       margin: 1rem auto 0 auto;
-      margin-left: 75%;
       align-items: right;
+      box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
     }
     .menu-item {
-      border-top: 2px solid #de8614;
+      border-top: 2px solid #16a085;
       position: relative;
       transition: background 0.3s ease-in-out; 
     }
@@ -591,8 +592,7 @@ export default {
       font-variant: normal;
       text-rendering: auto;
       line-height: 1;
-      color: #de8614;
- 
+      color: #16a085;
     }
 
     .menu-item .sub-menu {
@@ -618,16 +618,16 @@ export default {
       transform: rotateX(0deg);
     }
     .menu-item a {
-      font-size: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
-    text-decoration: none;
-    text-transform: uppercase;
-    height: 35.2px;
-    width: 125px;
-    padding: 8px 6px;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+      text-transform: uppercase;
+      height: 100%;
+      width: 100%;
+      padding: 1.5em 1em;
     }
 
 

@@ -23,7 +23,9 @@
          :offered=false 
          :projectTitle = "item.projectTitle" 
          :description="item.description"  
-         :stat="stat" />
+         :stat="stat"
+         :picture = "item.profilePicture"
+          />
     </div>
   </div>
 </template>
@@ -64,6 +66,7 @@ export default {
     ...mapState(['userEmail']),
   },
   mounted() {
+    
     /*
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -79,12 +82,25 @@ export default {
     async function getRejectedProjects() {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
-      const data = docSnap.data();
-      that.rejected = data.rejectedProjects
+      //For some reason if have for loop and the array is empty got error so I changed to this
+      const response = await Promise.all(
+        docSnap.data().rejectedProjects.map(async item => {
+          console.log("nested",item)
+          const finalResult = await getDoc(doc(db,"Project",item))
+          console.log(finalResult.data())
+          that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description,  profilePicture: finalResult.data().profPicture})
+        }
+        )
+      )
+      //const data = docSnap.data();
+      //that.rejected = data.rejectedProjects
+      /*
+      console.log("rejected",data.rejectedProjects)
       for(var i = 0; i < data.rejectedProjects.length; i++) {
         getProject(data.rejectedProjects[i]).then((res)=>{that.projects.push(res)})
       }
       console.log(that.projects)
+      */
     }
     getRejectedProjects()
     
@@ -92,7 +108,7 @@ export default {
       const ref = doc(db, "Project", proj);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      return {projectTitle: data.Project_Title, description: data.Description}
+      return {projectTitle: data.Project_Title, description: data.Description,  profilePicture: data.profPicture}
     }
   }
 }
