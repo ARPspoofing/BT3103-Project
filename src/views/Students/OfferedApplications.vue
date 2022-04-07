@@ -169,7 +169,7 @@ export default {
 
           
           const docRef = await updateDoc(doc(db, "students", this.userEmail), {
-              rejectedProjects: this.declined,
+              declinedProjects: this.declined,
               offeredProjects: this.offered,
           })
           //console.log(docRef)
