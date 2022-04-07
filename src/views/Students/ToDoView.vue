@@ -378,12 +378,6 @@ export default {
   padding-bottom: 150px;
 }
 */
-.mainBody {
-  width: 50%;
-  height: 50%;
-}
-
-
 
 .flex {
   display: flex;
@@ -407,7 +401,7 @@ img {
 }
 
 .details {
-  padding: 48px;
+
   margin-top: 24px;
   /*background-color:rgb(11, 167, 115);*/
   background-color: #b3cabe;
@@ -416,6 +410,7 @@ img {
   margin-right: 60px;
   width:50%;
   height:50%;
+
 }
 
 .top div {
@@ -461,7 +456,7 @@ p {
   font-size: 16px;
 }
 
-date h4 {
+.date h4 {
   margin-top: 20px;
 }
 
@@ -477,8 +472,7 @@ textarea {
   border-radius: 12px;
   outline: none;
 }
-.bottom {
-}
+
 #backButton {
   background: #0e8044;
   /*width: 190px;
