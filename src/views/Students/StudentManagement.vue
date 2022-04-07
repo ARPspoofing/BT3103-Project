@@ -6,7 +6,7 @@
 
 <StudentNavBar :search ="false" :Heading="fullTitle" :header="true"/>
 <!-- Modal -->
-  <button style = "visibility:hidden" type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
+  <button @click="blurBg" style = "visibility:hidden" type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
 
 
 <!-- Modal -->
@@ -18,7 +18,7 @@
         <ToDoView :task="task" :task_id="task['id']" :projectId="task['projectId']" :projectTitle="task['projectTitle']"/>
         -->
         <ToDoView :description="this.longdescription" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId"/>
-        <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+        <button @click="unblurBg" type="button" id="nobtn" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
@@ -31,7 +31,7 @@
 <!--
 Proxy {id: 'hi jack', projectTitle: 'hijack place', projectId: 'BoI9Ie13dAUjtq95A0LM', comments: Array(3), documents: undefined, …}
 -->
-
+<div :class="{blurCss:toBlur}">
 <button @click="goback" id="backButton">Back to Projects</button>
 <div v-if="toDoTask.length >= 0" class="wrapper-outer">
     <div class="wrapper">
@@ -66,10 +66,9 @@ Proxy {id: 'hi jack', projectTitle: 'hijack place', projectId: 'BoI9Ie13dAUjtq9
         <h3>No task has been completed yet.</h3>
         
         </div>
-    </div>
-    
+    </div>    
 </div>
-   
+</div>
 </template>
 
 <script>
@@ -112,6 +111,7 @@ export default {
             projectId:null,
             projectTitle:null,
             longdescription:null,
+            toBlur:false,
         }
     },
     methods: {
@@ -129,6 +129,12 @@ export default {
             console.log("task emit",task_emit['id'])
             this.openModal = true
             this.$refs.confirmModal.click();
+        },
+        blurBg() {
+            this.toBlur = true
+        },
+        unblurBg() {
+            this.toBlur = false
         },
         attempt() {
             this.openModal = true
@@ -351,6 +357,10 @@ export default {
     font-size: 18px;
     text-align: center;
     color: #3f3f3f;
+  }
+
+  .blurCss {
+      filter: blur(5px); 
   }
 
 </style>
