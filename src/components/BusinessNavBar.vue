@@ -20,7 +20,7 @@
           
             <router-link class="nav-item nav-link active" :to="{name:'BusinessHomePage'}" >Home</router-link>
             <div class="dropdown-divider"></div>
-            <router-link class="nav-item nav-link active" :to="{name:'BusinessAbout'}">About</router-link>
+            <router-link class="nav-item nav-link active" :to="{name:'BusinessAbout'}">Profile</router-link>
             <div class="dropdown-divider"></div>
             
             <router-link class="nav-item nav-link active" :to="{name:'BusinessLogin'}"><span @click="logOut">Log Out</span></router-link>

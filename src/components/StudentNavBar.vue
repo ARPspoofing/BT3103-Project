@@ -19,7 +19,7 @@
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <router-link class="nav-item nav-link active" :to="{name:'StudentHomePage'}" >Home</router-link>
             <div class="dropdown-divider"></div>
-            <router-link class="nav-item nav-link active" :to="{name:'StudentAbout'}">About</router-link>
+            <router-link class="nav-item nav-link active" :to="{name:'StudentAbout'}">Profile</router-link>
             <div class="dropdown-divider"></div>
             <router-link class="nav-item nav-link active" :to="{name:'StudentInProgressProjects'}">My Projects</router-link>
             <div class="dropdown-divider"></div>

@@ -1,5 +1,5 @@
 <template>
-  <BusinessNavBar :search=true :Heading="Heading" :header=true />
+  <BusinessNavBar :Heading="Heading" :header=true />
   <div @click="check" ref="formWrap" class="form-wrap flex flex-column" id="mainBody">
       <form @submit.prevent="submitForm" class="content">
           <div class="profile-pic-outer">
