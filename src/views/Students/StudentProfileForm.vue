@@ -404,10 +404,10 @@ export default {
                 this.errorMessage = "Please select your course from the options provided"
             } else if (this.year == '') {
                 this.yearErrorPresent = true;
-                this.errorMessage = "Please fill out your current year of study"
+                this.errorMessage = "Please fill in your current year of study"
             } else if (parseInt(this.year) > 4 || parseInt(this.year) < 1) {
                 this.yearErrorPresent = true;  
-                this.errorMessage = "Please fill out a valid year of study (Must be between 1 and 4 inclusive)";  
+                this.errorMessage = "Please fill in a valid year of study (Must be between 1 and 4 inclusive)";  
                 
             } else if (this.allInterestsEmpty()) {
                 this.interestErrorPresent = true; 
