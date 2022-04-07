@@ -99,11 +99,17 @@
                 <h4>File Details</h4>
               <div class="input flex flex-column">
                     <label for="resume">Resume</label>
+                    <a v-bind:href="this.resumeLink" target="_blank" class="but"
+            >View Resume</a
+          >
                     <input type="file" multiple name="files[]" id="resume" accept=".jpeg,.pdf,.docx" v-on:change="changeResume" >
                 </div>
              <div class="errorMsg" v-if="resumeErrorPresent">{{this.errorMessage}}</div>
               <div class="input flex flex-column">
                   <label for="transcript">Transcript</label>
+                  <a v-bind:href="transcriptLink" target="_blank" class="but"
+            >View Transcript</a
+          >
                   <input type="file" multiple name="files[]" id="transcript" accept=".jpeg,.pdf,.docx" v-on:change="changeTranscript">
               </div>
             <div class="errorMsg" v-if="transcriptErrorPresent">{{this.errorMessage}}</div>
@@ -258,6 +264,8 @@ export default {
         },() => {
             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                 console.log("File available at", this.resumeLink = url)
+                this.resumeLink = url
+                console.log(this.resumeLink)
             })
         })
     },
@@ -358,7 +366,7 @@ export default {
           this.transcriptErrorPresent = true;   
           this.errorMessage = "Please upload your transcript"
       } else {
-
+        console.log("link ", this.resumeLink)
       updateDoc(doc(db,"students",String(this.schoolEmail)),{
           email: this.schoolEmail,
           name:this.name,
@@ -678,4 +686,16 @@ ul {
     margin-left: 48px;
     color: #3f3f3f;
   }
+
+  .but {
+  text-decoration: none;
+  background: #0e8044;
+  padding: 4px;
+  border-radius: 8px;
+  color: white;
+  width: 180px;
+  margin-left: 15%;
+  margin-right: auto;
+  margin-bottom: 5px;
+}
 </style>
