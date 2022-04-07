@@ -23,7 +23,9 @@
         :offered=false 
         :projectTitle="item.projectTitle"
         :description="item.description"
-        :stat="stat" />
+        :stat="stat"
+        :picture = "item.profilePicture"
+         />
     </div>
   </div>
 </template>
@@ -87,7 +89,7 @@ export default {
           console.log("nested",item)
           if (item) {
             const finalResult = await getDoc(doc(db,"Project",item))
-            that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description})
+            that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description,  profilePicture: finalResult.data().profPicture})
           } 
           //console.log(finalResult.data())
           //that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description})
@@ -110,7 +112,7 @@ export default {
         const ref = doc(db, "Project", proj);
         const docSnap = await getDoc(ref);
         const data = docSnap.data();
-        return {projectTitle: data.Project_Title, description: data.Description}
+        return {projectTitle: data.Project_Title, description: data.Description,  profilePicture: data.profPicture}
     }
   }
 }

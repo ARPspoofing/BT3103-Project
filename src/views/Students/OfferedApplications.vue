@@ -26,7 +26,8 @@
         :offered=true
         @acceptBtn="acceptProj(key)"
         @declineBtn="declineProj(key)"
-      />
+        :picture = "item.profilePicture"
+      /> 
     </div>
   </div>
 </template>
@@ -203,8 +204,8 @@ export default {
         docSnap.data().offeredProjects.map(async item => {
           console.log("nested",item)
           const finalResult = await getDoc(doc(db,"Project",item))
-          console.log(finalResult.data())
-          that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description})
+          console.log(finalResult.data().profPicture)
+          that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description, profilePicture: finalResult.data().profPicture})
         }
         )
       )
@@ -250,7 +251,7 @@ export default {
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       getBizProjects(data.poster_id).then((res)=>{that.bizProjects.push(res)})
-      return {projectTitle: data.Project_Title, description: data.Description, business: data.poster_id}
+      return {projectTitle: data.Project_Title, description: data.Description, business: data.poster_id, profilePicture: data.profPicture}
     }
   },
 };

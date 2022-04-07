@@ -120,7 +120,7 @@ export default {
       this.TOGGLE_FILTER()
     },
     closeFilterMenu(e) {
-      //alert('close')
+      alert('close')
       this.TOGGLE_FILTER()
     },
     /*
@@ -170,10 +170,10 @@ export default {
       //var businessEmail = auth.currentUser.email;
       //var businessEmail = window.localStorage.getItem('emailForSignIn')
       //order projects by posted date, from latest to oldest
-      //alert(order)
+      alert(order)
       var projects = null
       if (order == "recent") {
-        //alert("true!!")
+        alert("true!!")
         this.CLEAR_FILTER()
         this.SET_FILTER("recent")
         projects = query(collection(db, "Project"), where('Status', "not-in", ["closed", "completed"]), orderBy('Status', "asc"), orderBy("Posted_Date", "desc"));
