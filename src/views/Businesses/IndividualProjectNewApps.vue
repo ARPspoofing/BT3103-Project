@@ -8,7 +8,7 @@
             <div class="modal-body">
               <div class="words">
                 <i class="fa-solid fa-circle-check" id="tickIcon"></i>
-                  <p>Accept?</p>
+                  <p>Accept {{modalName}}?</p>
               </div>
               <span>
                 <div class = "applybtns">
@@ -28,8 +28,8 @@
           <div class="modal-content">
             <div class="modal-body">
               <div class="words">
-                <i class="fa-solid fa-circle-check" id="tickIcon"></i>
-                  <p>Reject?</p>
+                <i class="fa-solid fa-times-circle" id="tickIcon"></i>
+                  <p>Reject {{modalName}}?</p>
               </div>
               <span>
                 <div class = "applybtns">
@@ -46,9 +46,6 @@
 
 
   <div class="mainBody">
-              <button type="submit" ref="confirmModalAccept" class="green" data-bs-toggle="modal" data-bs-target="#saveModalAccept" >Accept</button>                  
-              <button type="submit" ref="confirmModalReject" class="green" data-bs-toggle="modal" data-bs-target="#saveModalReject" >Reject</button>                  
-
     <router-link
       class="floating-right-bottom-btn"
       :to="{ name: 'BusinessAddProject' }"
@@ -132,6 +129,8 @@
       </div>
     </div>
   </div>
+  <button type="submit"  ref="confirmModalAccept" class="green" data-bs-toggle="modal" data-bs-target="#saveModalAccept" >Accept</button>                  
+  <button type="submit"  ref="confirmModalReject" class="green" data-bs-toggle="modal" data-bs-target="#saveModalReject" >Reject</button>   
 </template>
 
 <script>
@@ -179,13 +178,15 @@ export default {
       rejected: [],
       applied: [],
       popUpConfirm: null,
+      modalName:null,
     };
   },
 
   methods: {
     ...mapActions(["GET_NEW_CARD"]),
     //...mapMutations(['SET_KEY',]),
-    firstClick(event) {
+    firstClick(event,name) {
+      this.modalName = name
       if (event == true) {
         this.$refs.confirmModalAccept.click()
       } else {
@@ -197,7 +198,7 @@ export default {
     },
     confirmYesReject() {
       this.popUpConfirm = false
-    },g
+    },
     indvApplicant(key) {
       console.log(this.applicant[key]);
       console.log(this.offered[key]);
@@ -497,4 +498,58 @@ hr {
   width: 70px;
   color: #004a23;
 }
+
+#applyModal {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: #BBDFCC;
+    border: none;
+  }
+
+  .words {
+    width: max-content;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    height: 50px;
+  }
+
+  .applybtns {
+    width: max-content;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+
+  #yesbtn, #nobtn {
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color:#89ca9a;
+    color: #3f3f3f;
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+  }
+
+  #tickIcon {
+    height: 38px;
+    width: 38px;
+    color: #3D9956;
+    float: left;
+  }
+
+  .modal-body p {
+    font-size: 18px;
+    text-align: center;
+    width: 180px;
+    margin-left: 48px;
+    color: #3f3f3f;
+  }
+
+
 </style>

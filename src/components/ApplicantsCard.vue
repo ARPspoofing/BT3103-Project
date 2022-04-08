@@ -149,7 +149,7 @@ export default {
     };
   },
   watch: {
-    popUpConfirm(newState) {
+    popUpConfirm(state) {
       if (state == true) {
           this.$emit("acceptbtn");
       } else {
@@ -181,12 +181,12 @@ export default {
   methods: {
     acceptbtn() {
       //this.$emit("acceptbtn");
-      this.$emit("firstClick",true)
+      this.$emit("firstClick",true,this.applicantName)
     },
 
     rejectbtn() {
       //this.$emit("rejectbtn");
-      this.$emit("firstClick",false)
+      this.$emit("firstClick",false,this.applicantName)
     },
 
     clickCard() {
