@@ -146,7 +146,7 @@ export default {
       let docRef = await doc(db, "Project", curr.projectId);
       let project = await getDoc(docRef);
       let tasks = project.data().Tasks;
-      //console.log(tasks);
+
       var toDoTask = [];
       var inProgressTask = [];
       var pendingReviewTask = [];

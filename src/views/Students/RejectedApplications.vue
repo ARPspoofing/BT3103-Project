@@ -1,36 +1,41 @@
 <template>
-    <StudentNavBar :header=true :Heading="Heading" />
-    <div class="mainBody">
+  <StudentNavBar :header="true" :Heading="Heading" />
+  <div class="mainBody">
     <h1 id="status">
       <router-link class="optionsOff" :to="{ name: 'OfferedApplications' }">
         <b>OFFERED</b>
-       </router-link>
+      </router-link>
       <span>
-          <router-link class="optionsOff" :to="{ name: 'PendingApplications' }">
+        <router-link class="optionsOff" :to="{ name: 'PendingApplications' }">
           <b>PENDING</b>
-           </router-link>
+        </router-link>
       </span>
       <span>
-          <span class="options">
-            <b>REJECTED</b>
-            </span>
+        <span class="options">
+          <b>REJECTED</b>
+        </span>
       </span>
     </h1>
     <hr />
-    <div class="projectContainer" :key="item.key" v-for="(item, index) in projects">
-         <Card 
-         :apply=false 
-         :offered=false 
-         :projectTitle = "item.projectTitle" 
-         :description="item.description"  
-         :stat="stat" />
+    <div
+      class="projectContainer"
+      :key="item.key"
+      v-for="(item, index) in projects"
+    >
+      <Card
+        :apply="false"
+        :offered="false"
+        :projectTitle="item.projectTitle"
+        :description="item.description"
+        :stat="stat"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import StudentNavBar from '../../components/StudentNavBar.vue'
-import Card from '../../components/Card.vue'
+import StudentNavBar from "../../components/StudentNavBar.vue";
+import Card from "../../components/Card.vue";
 import firebaseApp from "../../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
@@ -40,17 +45,17 @@ import {
   deleteDoc,
   getDocs,
   updateDoc,
-  getDoc
+  getDoc,
 } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
-import {mapState} from "vuex"
+import { mapState } from "vuex";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default {
-    name: 'RejectedApplications',
-    components: {
-    StudentNavBar, 
-    Card
+  name: "RejectedApplications",
+  components: {
+    StudentNavBar,
+    Card,
   },
   data() {
     return {
@@ -58,13 +63,12 @@ export default {
       stat: "rejected",
       rejected: [],
       projects: [],
-    }
+    };
   },
   computed: {
-    ...mapState(['userEmail']),
+    ...mapState(["userEmail"]),
   },
   mounted() {
-    
     /*
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -74,22 +78,24 @@ export default {
     });
     this.userEmail = auth.currentUser.email;
     */
-   var userEmail = this.userEmail
+    var userEmail = this.userEmail;
 
-    const that = this
+    const that = this;
     async function getRejectedProjects() {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
       //For some reason if have for loop and the array is empty got error so I changed to this
       const response = await Promise.all(
-        docSnap.data().rejectedProjects.map(async item => {
-          console.log("nested",item)
-          const finalResult = await getDoc(doc(db,"Project",item))
-          console.log(finalResult.data())
-          that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description})
-        }
-        )
-      )
+        docSnap.data().rejectedProjects.map(async (item) => {
+          console.log("nested", item);
+          const finalResult = await getDoc(doc(db, "Project", item));
+          console.log(finalResult.data());
+          that.projects.push({
+            projectTitle: finalResult.data().Project_Title,
+            description: finalResult.data().Description,
+          });
+        })
+      );
       //const data = docSnap.data();
       //that.rejected = data.rejectedProjects
       /*
@@ -100,16 +106,19 @@ export default {
       console.log(that.projects)
       */
     }
-    getRejectedProjects()
-    
+    getRejectedProjects();
+
     async function getProject(proj) {
       const ref = doc(db, "Project", proj);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      return {projectTitle: data.Project_Title, description: data.Description}
+      return {
+        projectTitle: data.Project_Title,
+        description: data.Description,
+      };
     }
-  }
-}
+  },
+};
 </script>
 
 <style>
@@ -134,11 +143,11 @@ export default {
 }
 
 hr {
-    border: 0;
-    border-top: 2px solid #606060;
-    width: 90%;
-    margin: 5px 0px 16px 38px;
-  }
+  border: 0;
+  border-top: 2px solid #606060;
+  width: 90%;
+  margin: 5px 0px 16px 38px;
+}
 
 .options {
   font-size: 15px;
@@ -163,14 +172,14 @@ hr {
 }
 
 .optionsOff:hover {
-    color: #606060;
+  color: #606060;
 }
 
-#appstatus { 
-    text-align: left;
-    display: block;
-    margin-left: 10px;
-    font-size: 18px;
-    font-weight:bold;
-  }
+#appstatus {
+  text-align: left;
+  display: block;
+  margin-left: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
 </style>

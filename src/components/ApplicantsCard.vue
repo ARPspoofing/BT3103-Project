@@ -6,7 +6,7 @@
         <div class="appDetails">
           {{ applicantName }} <br />
           {{ applicantCourse }}
-        </div> 
+        </div>
         <div
           id="pendingOffer"
           class="acceptedStat"
@@ -139,7 +139,7 @@ export default {
   data() {
     return {
       testCollection: [],
-      status: ""
+      status: "",
     };
   },
 
