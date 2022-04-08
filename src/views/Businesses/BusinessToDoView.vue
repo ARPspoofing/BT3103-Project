@@ -546,7 +546,7 @@ export default {
                }
                }) */
       curr.name = currTask.taskName;
-      curr.duedate = currTask.taskDueDate;
+      //curr.duedate = currTask.taskDueDate;
       curr.projectTitle = projectTitle;
       console.log(projectTitle);
       // curr.duedate = (new Date(temp[0]['duedate'].seconds * 1000)).toLocaleDateString('en-us',curr.dateOptions)

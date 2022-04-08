@@ -5,10 +5,8 @@
   <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-body">
-                <TestDelete/>
-                
-                <BusinessToDoView :description="this.longdescription" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId" :task="this.task"/>
+      <div class="modal-body">            
+               <BusinessToDoView :description="this.longdescription" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId" :task="this.task"/>
                 
         <button @click="unblurBg" type="button" id="nobtn" data-bs-dismiss="modal">Cancel</button>
       </div>
@@ -124,13 +122,7 @@ import BusinessNavBar from "../../components/BusinessNavBar.vue";
 import { getAuth } from "firebase/auth";
 import BusinessToDoView from '../Businesses/BusinessToDoView.vue'
 import ToDoView from '../Students/ToDoView.vue'
-import TestDelete from '../Businesses/TestDelete.vue'
 
-/*
-const auth = getAuth();
-var email = auth.currentUser.email;
-console.log(email);
-*/
 
 export default {
   name: "BusinessManagement",
@@ -141,6 +133,7 @@ export default {
     PendingReview,
     Completed,
     BusinessToDoView,
+    ToDoView,
   },
   props: {
     //So that this page can easily access the project that it is clicked on
