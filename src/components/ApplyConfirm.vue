@@ -1,26 +1,21 @@
 <template>
-    <div>
-      <div class="mainBody">
-        <i class="fa-solid fa-circle-check" id="tickIcon"></i>
-        <p>
+  <div>
+    <div class="mainBody">
+      <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+      <p>
         Apply for
-        <span style="color: #0e8044"><strong> {{ projectTitle }} </strong></span
+        <span style="color: #0e8044"
+          ><strong> {{ projectTitle }} </strong></span
         >?
-        </p>
-        <span>
+      </p>
+      <span>
         <div class="applybtns">
-        <button
-            type="button"
-            id="yesbtn"
-            @click="applicantbtnYes"
-        >
+          <button type="button" id="yesbtn" @click="applicantbtnYes">
             Yes
-        </button>
-        <button type="button" id="nobtn" @click="applicantbtnNo">
-            No
-        </button>
+          </button>
+          <button type="button" id="nobtn" @click="applicantbtnNo">No</button>
         </div>
-    </span>
+      </span>
     </div>
     <button
       id="acceptbtn"
@@ -38,7 +33,7 @@
     >
       Decline
     </button>
-    
+
     <!--
     <transition name="modal-fade">
     <div class="modal-backdrop">
@@ -89,25 +84,24 @@
       </div>
     </div>
   </transition>
-  -->
-    </div>
+  --></div>
 </template>
 
 <script>
-    export default {
-        name: "ApplyConfirm",
-        props: ["projectTitle"],
-        methods: {
-            applicantbtnYes() {
-                alert("accept")
-                this.$emit('confirmYes',true)
-            },
-            applicantbtnNo() {
-                alert("decline")
-                this.$emit('confirmYes',false)
-            }
-        },
-    }
+export default {
+  name: "ApplyConfirm",
+  props: ["projectTitle"],
+  methods: {
+    applicantbtnYes() {
+      alert("accept");
+      this.$emit("confirmYes", true);
+    },
+    applicantbtnNo() {
+      alert("decline");
+      this.$emit("confirmYes", false);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -127,7 +121,7 @@
   padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
-  background: #FFF;
+  background: #fff;
   z-index: 999;
   transform: none;
 }
@@ -195,7 +189,7 @@
 }
 
 #declinebtn {
-  background-color: #F40000;
+  background-color: #f40000;
   color: white;
   border-radius: 8px;
   border-width: 0px;

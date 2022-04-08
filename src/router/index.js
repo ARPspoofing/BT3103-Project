@@ -50,37 +50,37 @@ const routes = [
   {
     path: "/project",
     name: "IndividualProjectInfo",
-    component: () => import("../views/IndividualProjectInfo.vue"),
+    component: () => import("../views/Businesses/IndividualProjectInfo.vue"),
   },
   {
     path: "/project/new_apps",
     name: "IndividualProjectNewApps",
-    component: () => import("../views/IndividualProjectNewApps.vue"),
+    component: () => import("../views/Businesses/IndividualProjectNewApps.vue"),
   },
   {
     path: "/project/acc_apps",
     name: "IndividualProjectAccApps",
-    component: () => import("../views/IndividualProjectAccApps.vue"),
+    component: () => import("../views/Businesses/IndividualProjectAccApps.vue"),
   },
   {
     path: "/project/rej_apps",
     name: "IndividualProjectRejApps",
-    component: () => import("../views/IndividualProjectRejApps.vue"),
+    component: () => import("../views/Businesses/IndividualProjectRejApps.vue"),
   },
   {
     path: "/project/student_profileInfo",
     name: "BusinessViewStudentInfo",
-    component: () => import("../views/BusinessViewStudentInfo.vue")
+    component: () => import("../views/Businesses/BusinessViewStudentInfo.vue"),
   },
   {
     path: "/project/student_projectinfo",
     name: "StudentViewProjectInfo",
-    component: () => import("../views/StudentViewProjectInfo.vue"),
+    component: () => import("../views/Students/StudentViewProjectInfo.vue"),
   },
   {
     path: "/project/business_editproj",
     name: "BusinessEditProject",
-    component: () => import("../views/BusinessEditProject.vue"),
+    component: () => import("../views/Businesses/BusinessEditProject.vue"),
   },
   {
     path: "/student/login",
@@ -96,9 +96,9 @@ const routes = [
     },
   },
   {
-    path:"/student/navBar",
+    path: "/student/navBar",
     name: "StudentNavBar",
-    component: () => import ("../components/StudentNavBar.vue"),
+    component: () => import("../components/StudentNavBar.vue"),
   },
   {
     path: "/student/landingpage",
@@ -147,8 +147,8 @@ const routes = [
   },
   {
     path: "/student/applyconfirm",
-    name:"ApplyConfirm",
-    component: () => import("../components/ApplyConfirm.vue")
+    name: "ApplyConfirm",
+    component: () => import("../components/ApplyConfirm.vue"),
   },
 
   //Business routes
@@ -201,8 +201,8 @@ const routes = [
 
   {
     path: "/business/loading",
-    name:"businessLoading",
-    component: () => import("../components/GoogleLoading.vue")
+    name: "businessLoading",
+    component: () => import("../components/GoogleLoading.vue"),
   },
 
   {

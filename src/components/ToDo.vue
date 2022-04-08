@@ -9,7 +9,7 @@
                 duedate: task['duedate'],
                 taskname: task['taskname'],
                 issuedate: task['issueDate'],
-                status:task['status'],
+             s   status:task['status'],
                 todo: task['todo'],
                 inprogress: task['inprogress'],
                 pendingreview: task['pendingreview'],
