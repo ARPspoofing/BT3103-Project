@@ -178,7 +178,7 @@ export default {
   background-color: #bbdfcc;
   border-radius: 8px;
   width: 30%;
-  height: max-content;
+  height: 200px;
   float: left;
   padding: 20px;
   margin: 10px;
@@ -216,7 +216,7 @@ export default {
 }
 
 .reject {
-  background-color: #f40000;
+  background-color: #ec5c5c;
   color: white;
   width: 110%;
   border-radius: 8px;

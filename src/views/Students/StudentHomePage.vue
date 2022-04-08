@@ -289,7 +289,7 @@ export default {
       console.log("eeeeeeeeeeeeeeee");
     },
     applying(event, key) {
-      alert(key);
+      // alert(key);
       this.applyConfirm = true;
       this.currKey = key;
       if (event) {
@@ -310,7 +310,7 @@ export default {
       this.applyConfirm = false;
     },
     async addApplicant(key) {
-      alert(key);
+      // alert(key);
       if (this.like) {
         console.log(this.testCollection[key]);
         var newApplicants = this.testCollection[key]["newApplicants"];
@@ -467,7 +467,7 @@ export default {
   mounted() {
     this.userEmailData = this.userEmail;
 
-    const that = this;
+    const that = this; 
 
     async function getAppliedProjects() {
       const ref = doc(db, "students", that.userEmailData);

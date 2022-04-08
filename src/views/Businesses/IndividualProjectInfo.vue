@@ -83,7 +83,6 @@
             <button
               href="#"
               class="close-proj"
-              @click="closeProject()"
               data-bs-toggle="modal"
               data-bs-target="#closeModal"
             >
@@ -118,6 +117,7 @@
                           type="button"
                           id="yesbtn"
                           data-bs-dismiss="modal"
+                          @click="closeProject()"
                         >
                           Yes
                         </button>

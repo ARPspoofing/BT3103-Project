@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="outer">
     <div class="mainBody">
       <i class="fa-solid fa-circle-check" id="tickIcon"></i>
       <p>
@@ -93,11 +93,11 @@ export default {
   props: ["projectTitle"],
   methods: {
     applicantbtnYes() {
-      alert("accept");
+      // alert("accept");
       this.$emit("confirmYes", true);
     },
     applicantbtnNo() {
-      alert("decline");
+      // alert("decline");
       this.$emit("confirmYes", false);
     },
   },
@@ -106,24 +106,20 @@ export default {
 
 <style scoped>
 .mainBody {
-  position: fixed;
-  /*
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  margin: auto;
-  */
-  text-align: center;
-  width: 600px;
-  height: 80px;
-  max-width: 22em;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
-  background: #fff;
-  z-index: 999;
-  transform: none;
+      position: fixed;
+    text-align: center;
+    width: 800px;
+    height: 180px;
+    max-width: 27em;
+    padding: 2rem;
+    border-radius: 7px;
+    box-shadow: 0 10px 10px rgb(0 0 0 / 30%);
+    background: #bbdfcc;
+    z-index: 999;
+    transform: none;
+    margin-left: 33%;
+    /* margin-right: auto; */
+    overflow-y: hidden;
 }
 
 .card-text {
@@ -247,5 +243,23 @@ export default {
 
 .rejected {
   color: #ec5c5c;
+}
+
+#tickIcon {
+  height: 38px;
+  width: 38px;
+  color: #3d9956;
+}
+
+#yesbtn,
+#nobtn {
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #89ca9a;
+  color: #3f3f3f;
+  width: 120px;
+  height: 30px;
+  font-size: 18px;
 }
 </style>

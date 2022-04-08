@@ -132,9 +132,10 @@ export default {
         margin-bottom: 4px;*/
   text-decoration: none;
   margin: 15px 5px;
-  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.15); 
   height: 170px;
   text-align: left;
+  width: 250px;
 }
 p {
   margin: 0px;
