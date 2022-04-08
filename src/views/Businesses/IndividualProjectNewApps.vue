@@ -2,17 +2,38 @@
   <BusinessNavBar :Heading="Heading" :header="true" />
 
 
-    <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
+    <div class="modal fade" id="saveModalAccept" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-body">
               <div class="words">
                 <i class="fa-solid fa-circle-check" id="tickIcon"></i>
-                  <p>Apply to {{currProject}}?</p>
+                  <p>Accept?</p>
               </div>
               <span>
                 <div class = "applybtns">
-                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="confirmYes(true)">Yes</button>
+                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="confirmYesAccept">Yes</button>
+                  <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                </div>
+              </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="modal fade" id="saveModalReject" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="words">
+                <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+                  <p>Reject?</p>
+              </div>
+              <span>
+                <div class = "applybtns">
+                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="confirmYesReject">Yes</button>
                   <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
                 </div>
               </span>
@@ -25,7 +46,8 @@
 
 
   <div class="mainBody">
-              <button type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
+              <button type="submit" ref="confirmModalAccept" class="green" data-bs-toggle="modal" data-bs-target="#saveModalAccept" >Accept</button>                  
+              <button type="submit" ref="confirmModalReject" class="green" data-bs-toggle="modal" data-bs-target="#saveModalReject" >Reject</button>                  
 
     <router-link
       class="floating-right-bottom-btn"
@@ -103,6 +125,7 @@
             @acceptbtn="accApplicant(key)"
             @rejectbtn="rejApplicant(key)"
             @clickCard="indvApplicant(key)"
+            @firstClick="firstClick"
             :popUpConfirm="this.popUpConfirm"  
           />
         </div>
@@ -162,6 +185,19 @@ export default {
   methods: {
     ...mapActions(["GET_NEW_CARD"]),
     //...mapMutations(['SET_KEY',]),
+    firstClick(event) {
+      if (event == true) {
+        this.$refs.confirmModalAccept.click()
+      } else {
+        this.$refs.confirmModalReject.click()
+      }
+    },
+    confirmYesAccept() {
+      this.popUpConfirm = true
+    },
+    confirmYesReject() {
+      this.popUpConfirm = false
+    },g
     indvApplicant(key) {
       console.log(this.applicant[key]);
       console.log(this.offered[key]);

@@ -171,7 +171,6 @@ export default {
     projectId: String,
     like: false,
     latest: false,
-    IndividualProjectNewApps
     //applicantbtn: Function,
   },
   methods: {

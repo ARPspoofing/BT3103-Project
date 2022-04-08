@@ -135,6 +135,9 @@
       </div>
     </span>
   </div>
+          <button style="visibility: hidden;" ref="clickMeAccept" @click="firstAccept"></button>
+          <button style="visibility: hidden;" ref="clickMeReject" @click="firstReject"></button>
+
 </template>
 
 <script>
@@ -145,7 +148,15 @@ export default {
       status: "",
     };
   },
-
+  watch: {
+    popUpConfirm(newState) {
+      if (state == true) {
+          this.$emit("acceptbtn");
+      } else {
+        this.$emit("rejectbtn");
+      }
+    }
+  },
   props: {
     buttons: Boolean,
     applicantName: String,
@@ -155,23 +166,27 @@ export default {
     popUpConfirm: Boolean,
   },
 
+/*
   setup(props) {
     watch(()=>props.popUpConfirm, (state) => {
-            if (state == true) {
-              this.$refs.accept.click()
-            } else {
-              this.$refs.reject.click()
-            }
+        if (state == true) {
+          this.$emit("acceptbtn");
+        } else {
+          this.$emit("rejectbtn");
+        }
     })
   },
+  */
 
   methods: {
     acceptbtn() {
-      this.$emit("acceptbtn");
+      //this.$emit("acceptbtn");
+      this.$emit("firstClick",true)
     },
 
     rejectbtn() {
-      this.$emit("rejectbtn");
+      //this.$emit("rejectbtn");
+      this.$emit("firstClick",false)
     },
 
     clickCard() {
