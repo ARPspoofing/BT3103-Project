@@ -295,7 +295,7 @@ export default {
       //this.task = newTask;
       //vuex
       this.SET_STUDENT_TASK(newTask)
-      //this.$router.push({name:'managementLoading'})
+      this.$router.push({name:'managementLoading'})
     },
 
     async updateTask() {
