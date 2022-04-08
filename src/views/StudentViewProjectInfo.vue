@@ -135,6 +135,8 @@ export default {
       appstat: "",
       companyEmail: "", 
       companyName: "",
+      projId:"",
+      companyEmail:"",
     }
   },
   computed: {
@@ -176,6 +178,7 @@ export default {
     this.projId = JSON.parse(this.cardItems).projectId
     this.appstat = JSON.parse(this.cardItems).appstat
     this.companyEmail = JSON.parse(this.cardItems).company
+    console.log(this.appstat)
 
 
     const that = this

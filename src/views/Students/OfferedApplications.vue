@@ -76,6 +76,7 @@ export default {
   methods: {
     async acceptProj(key) {
       var projId = this.offered[key]
+      console.log(projId)
       var projName = this.projects[key].projectTitle
       alert(projName)
       var business = this.projects[key].business
@@ -119,12 +120,14 @@ export default {
       alert("Accepting Project: " + projName);
       try {
           const docRef = await updateDoc(doc(db, "students", this.userEmail), {
-              inProgProjects: this.accepted,
-              offeredProjects: this.offered,
+              inProgProjects: arrayUnion(projId),
+              offeredProjects: arrayRemove(projId),
           })
 
+          console.log(biz)
+
           const docRef2 = await updateDoc(doc(db, "businesses", business), {
-              inProgProjects: biz,
+              inProgProjects: arrayUnion(projId),
           })
 
           //console.log(docRef)
@@ -240,8 +243,8 @@ export default {
       const ref = doc(db, "businesses", that.userEmail);
       const docSnap = await getDoc(ref);
       
-      //const data = docSnap.data();
-      //return data.inProgProjects;
+      const data = docSnap.data();
+      return data.inProgProjects;
     }
    getBizProjects(this.userEmail)
     

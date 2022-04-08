@@ -50,7 +50,7 @@
      <PathfinderLoading v-if="!stopLoader"/> 
       <div v-if="stopLoader" class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :picture = "item.profPicture" :description="item.description" @clickCard="indivprojFirst(key + 2*6)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :picture = "item.profPicture" :description="item.description" @clickCard="indivprojFirst(key)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
         </div>
 
         <div :key="item.key" v-for="(item, key) in secondPriority">
@@ -69,6 +69,7 @@
 import StudentNavBar from '../../components/StudentNavBar.vue'
 import Card from '../../components/Card.vue'
 import firebaseApp from '../../firebase.js';
+import {getAuth} from 'firebase/auth'
 import { getFirestore } from "firebase/firestore"
 import {orderBy, query, collection, doc, setDoc, deleteDoc, getDocs, getDoc } from "firebase/firestore"
 import {signOut} from "firebase/auth"
@@ -107,6 +108,7 @@ export default {
       //store all id in one array
       searchId: null,
       stopLoader: false,
+      appliedProjects:[],
       //store all id in separate arrays
     }
   },
@@ -238,6 +240,9 @@ export default {
 
   mounted() {
     const that = this;
+    const auth = getAuth()
+
+    that.appliedProjects = []
     setTimeout(() => {
       this.stopLoader = true
     }, 2500)
@@ -254,7 +259,26 @@ export default {
     alert(this.secondPriority)
     alert(this.thirdPriority)
     */
+   async function getAppliedProjects() {
+     const docRef = await doc(db, "students", auth.currentUser.email)
+     
+     const info = await getDoc(docRef)
+     const appliedProjects = await info.data().appliedProjects
+     const inProgProjects = await info.data().inProgProjects 
+     const offeredProjects = await info.data().offeredProjects
+     const rejectedProjects = await info.data().rejectedProjects
+     that.appliedProjects = that.appliedProjects.concat(appliedProjects)
+     that.appliedProjects = that.appliedProjects.concat(inProgProjects)
+     that.appliedProjects = that.appliedProjects.concat(offeredProjects)
+     that.appliedProjects = that.appliedProjects.concat(rejectedProjects)
+     
+
     
+
+   }
+
+   getAppliedProjects()
+   
     async function setProjects() {
       //Non VUEX version. Uncomment if VUEX does not work
       /*
@@ -361,7 +385,14 @@ export default {
         let data = docs.data()
         console.log("searchResultone",highestPriorityIds)
         if (highestPriorityIds.includes(docs.id)) {
+          let applicationStatus = '';
+          if(that.appliedProjects.includes(docs.id)) {
+            applicationStatus = 'applied'
+          } else {
+            applicationStatus = 'apply'
+          }
         highestPriority.push({ 
+            projectId: docs.id,
             projectTitle: data.Project_Title, 
             description: data.Description, 
             vacancies: data.Num_Of_Vacancies,
@@ -371,13 +402,21 @@ export default {
             projectEnd: data.Project_End,
             tasks: data.Tasks,
             tags: data.Tags,
+            appstat: applicationStatus,
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
             profPicture: data.profPicture,
         });
         } else if (secondPriorityIds.includes(docs.id)) {
+          let applicationStatus = '';
+          if(that.appliedProjects.includes(docs.id)) {
+            applicationStatus = 'applied'
+          } else {
+            applicationStatus = 'apply'
+          }
           secondPriority.push({ 
+            projectId: docs.id,
             projectTitle: data.Project_Title, 
             description: data.Description, 
             vacancies: data.Num_Of_Vacancies,
@@ -387,6 +426,7 @@ export default {
             projectEnd: data.Project_End,
             tasks: data.Tasks,
             tags: data.Tags,
+            appstat: applicationStatus,
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
@@ -394,7 +434,15 @@ export default {
         });
 
         } else if (thirdPriorityIds.includes(docs.id)) {
+          let applicationStatus = '';
+          if(that.appliedProjects.includes(docs.id)) {
+            applicationStatus = 'applied'
+          } else {
+            applicationStatus = 'apply'
+          }
+           
             thirdPriority.push({ 
+            projectId: docs.id,
             projectTitle: data.Project_Title, 
             description: data.Description, 
             vacancies: data.Num_Of_Vacancies,
@@ -404,6 +452,7 @@ export default {
             projectEnd: data.Project_End,
             tasks: data.Tasks,
             tags: data.Tags,
+            appstat:applicationStatus,
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,

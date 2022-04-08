@@ -48,15 +48,18 @@
      <PathfinderLoading v-if="!stopLoader"/> 
       <div v-if="stopLoader" class="projectContainer">
         <div :key="item.key" v-for="(item, key) in highestPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key /*+ 2*6*/)" @applicantbtn="addApplicantFirst(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojFirst(key /*+ 2*6*/)" @applicantbtn="addApplicantFirst(key + 2*6)"
+          :picture = item.profPicture :appstat = item.appstat />
         </div>
 
         <div :key="item.key" v-for="(item, key) in secondPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojSecond(key)" @applicantbtn="addApplicantSecond(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojSecond(key)" @applicantbtn="addApplicantSecond(key + 2*6)"
+          :picture = item.profPicture appstat = item.appstat />
         </div>
 
         <div :key="item.key" v-for="(item, key) in thirdPriority">
-          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojThird(key)" @applicantbtn="addApplicantThird(key + 2*6)"/>
+          <Card :apply=true :projectTitle = "item.projectTitle" :description="item.description" @clickCard="indivprojThird(key)" @applicantbtn="addApplicantThird(key + 2*6)"
+          :picture = item.profPicture :appstat= item.appstat />
         </div>
         </div>
       </div>
@@ -109,6 +112,7 @@ export default {
       secondPriority: null,
       thirdPriority: null,
       stopLoader: false,
+      appliedProjects:[],
     }
   },
 
@@ -235,6 +239,7 @@ export default {
 
   mounted() {
     const that = this;
+    that.appliedProjects = []
     setTimeout(() => {
       this.stopLoader = true     
     }, 2500)
@@ -249,6 +254,25 @@ export default {
     this.highestPriority = this.highestPriorityIds
     this.secondPriority = this.secondPriorityIds
     this.thirdPriority = this.thirdPriorityIds
+
+   async function getAppliedProjects() {
+     const docRef = await doc(db, "students", auth.currentUser.email)
+     
+     const info = await getDoc(docRef)
+     const appliedProjects = await info.data().appliedProjects
+     const inProgProjects = await info.data().inProgProjects 
+     const offeredProjects = await info.data().offeredProjects
+     const rejectedProjects = await info.data().rejectedProjects
+     that.appliedProjects = that.appliedProjects.concat(appliedProjects)
+     that.appliedProjects = that.appliedProjects.concat(inProgProjects)
+     that.appliedProjects = that.appliedProjects.concat(offeredProjects)
+     that.appliedProjects = that.appliedProjects.concat(rejectedProjects)
+     
+
+    
+
+   }
+   getAppliedProjects()
         
     
     async function setProjects() {
@@ -357,6 +381,12 @@ export default {
         let data = docs.data()
         console.log("searchResultone",highestPriorityIds)
         if (highestPriorityIds.includes(docs.id)) {
+          let applicationStatus = '';
+          if(that.appliedProjects.includes(docs.id)) {
+            applicationStatus = 'applied'
+          } else {
+            applicationStatus = 'apply'
+          }
         highestPriority.push({ 
             projectTitle: data.Project_Title, 
             description: data.Description, 
@@ -370,8 +400,15 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
         });
         } else if (secondPriorityIds.includes(docs.id)) {
+          let applicationStatus = '';
+          if(that.appliedProjects.includes(docs.id)) {
+            applicationStatus = 'applied'
+          } else {
+            applicationStatus = 'apply'
+          }
           secondPriority.push({ 
             projectTitle: data.Project_Title, 
             description: data.Description, 
@@ -385,9 +422,16 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture
         });
 
         } else if (thirdPriorityIds.includes(docs.id)) {
+          let applicationStatus = '';
+          if(that.appliedProjects.includes(docs.id)) {
+            applicationStatus = 'applied'
+          } else {
+            applicationStatus = 'apply'
+          }
             thirdPriority.push({ 
             projectTitle: data.Project_Title, 
             description: data.Description, 
@@ -401,6 +445,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture
         });
 
         }

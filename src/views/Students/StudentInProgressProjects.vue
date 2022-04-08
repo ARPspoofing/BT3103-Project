@@ -175,14 +175,8 @@ export default {
   },
 
   methods: {
-<<<<<<< HEAD
-
-    
-    viewTasks(id, title) {
-=======
     ...mapMutations(['SET_STUDENT_TASK_ID','SET_STUDENT_PROJECT_ID','SET_STUDENT_PROJECT_TITLE','SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED',]),
     async viewTasks(id, title) {
->>>>>>> 00a99c66334399983d30aeb8465808b93d4199dc
       console.log("in method")
       console.log(title)
       this.SET_STUDENT_PROJECT_ID(id)

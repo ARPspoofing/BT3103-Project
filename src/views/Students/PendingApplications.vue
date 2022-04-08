@@ -23,7 +23,8 @@
         :offered=false 
         :projectTitle="item.projectTitle"
         :description="item.description"
-        :stat="stat" />
+        :stat="stat"
+        :picture="item.picture" />
     </div>
   </div>
 </template>
@@ -110,7 +111,8 @@ export default {
         const ref = doc(db, "Project", proj);
         const docSnap = await getDoc(ref);
         const data = docSnap.data();
-        return {projectTitle: data.Project_Title, description: data.Description}
+        console.log(data.picture)
+        return {projectTitle: data.Project_Title, description: data.Description, picture:data.profPicture}
     }
   }
 }
