@@ -42,7 +42,7 @@
                 <div class="flex flex-row">
                     <div style="margin-top: 5px;width: 100%;">
                         <ul  style="display: grid;grid-template-columns:repeat(5,1fr);">
-                            <li v-for="(item,index) in interests" style="width: 20%;display: inline" >
+                            <li v-for="(item,index) in interests" :key=index style="width: 20%;display: inline" >
                                 <div class="interest-flex">
                                     <label class = "labelTag" for="interest">Interest</label>                            
                                     <select class="inputTag" id="interest" v-model="item.value" >   
@@ -529,9 +529,6 @@ export default {
 
     .interest {
         gap:5px;
-        div {
-            flex: 1;
-        }
     }
 
     .content {
@@ -570,19 +567,9 @@ export default {
     cursor: pointer;
     padding: 16px 24px;
     border-radius: 30px;
-    borer: none;
     font-size: 12px;
     margin-right: 8px;
     color: #fff;
-    img {
-            margin-right: 4px;
-          }
-    }
-
-    .save {
-        div {
-            flex:1;
-        }
     }
 
     .right {

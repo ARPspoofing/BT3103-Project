@@ -1,5 +1,5 @@
 <template>
-  <BusinessNavBar :Heading="Heading" :header=true />
+  <BusinessNavBar :class="{blur:!profileFormCreated}" :Heading="Heading" :header=true />
   <BusinessProfileForm @success='close' v-if='!profileFormCreated'/>
   <div :class="{blur:!profileFormCreated,mainBody:foreverTrue}">
     <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
@@ -78,10 +78,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(['userEmail','cardItems']),
+    ...mapState(['userEmail','cardItems','key']),
   },
   methods: {
-    ...mapMutations(['CLEAR_CARDITEMS','SET_CARDITEMS']),
+    ...mapMutations(['CLEAR_CARDITEMS','SET_CARDITEMS','SET_KEY']),
     close(e) {
       this.profileFormCreated = e
       this.$router.push({name:'BusinessHomePage'})
@@ -89,6 +89,7 @@ export default {
     indivproj(key) {
       //vuex
       this.CLEAR_CARDITEMS()
+      this.SET_KEY(key)
       this.SET_CARDITEMS(JSON.stringify(this.testCollection[key]))
       //Non-vuex
       this.$router.push({
@@ -170,7 +171,6 @@ export default {
       //var businessEmail = auth.currentUser.email;
       //var businessEmail = window.localStorage.getItem('emailForSignIn')
       var businessEmail = that.userEmail
-      alert(businessEmail)
       //order projects by posted date, from latest to oldest
       let projects = query(collection(db, "Project"), orderBy("Posted_Date", "desc"));
       let snapshot = await getDocs(projects);

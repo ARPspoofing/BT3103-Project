@@ -74,25 +74,43 @@ export default {
     this.userEmail = auth.currentUser.email;
     */
     var userEmail = this.userEmail
-    alert(this.userEmail)
     const that = this
     async function getAppliedProjects() {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
-      const data = docSnap.data();
-      that.applied = data.appliedProjects
+      //const data = docSnap.data();
+      //that.applied = data.appliedProjects
+      //console.log("testingPending",data.appliedProjects)
+
+      const response = await Promise.all(
+        docSnap.data().appliedProjects.map(async item => {
+          console.log("nested",item)
+          if (item) {
+            const finalResult = await getDoc(doc(db,"Project",item))
+            that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description})
+          } 
+          //console.log(finalResult.data())
+          //that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description})
+        }
+        )
+      )
+
+
+
+      /*
       for(var i = 0; i < data.appliedProjects.length; i++) {
         getProject(data.appliedProjects[i]).then((res)=>{that.projects.push(res)})
       }
       console.log(that.projects)
+      */
     }
     getAppliedProjects()
     
     async function getProject(proj) {
-      const ref = doc(db, "Project", proj);
-      const docSnap = await getDoc(ref);
-      const data = docSnap.data();
-      return {projectTitle: data.Project_Title, description: data.Description}
+        const ref = doc(db, "Project", proj);
+        const docSnap = await getDoc(ref);
+        const data = docSnap.data();
+        return {projectTitle: data.Project_Title, description: data.Description}
     }
   }
 }

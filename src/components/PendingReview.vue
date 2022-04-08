@@ -1,18 +1,16 @@
 <template>
+<!--
     <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
         taskId: task['id'], projectId:task['projectId'], projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
-    <div class="pendingreview">
+        -->
+    <div class="pendingreview" @click="getData">
         <div class="top flex flex-row">
             <div class="title"><strong>{{task['taskname']}}</strong></div>
             <div class="status-button flex todoButton">
-               
-                <div>
-                    <p>Pending Review</p>
-                </div>
-                
+                    Pending
             </div>
         </div>
-        <div class="duedate">
+        <div class="top flex flex-row">
             <p>
                  Due date: {{duedate}}
             </p>
@@ -24,12 +22,15 @@
         </p>
         </div>          
     </div>  
+    <!--
     </router-link>  
+    -->
 
     
 </template>
 
 <script>
+import * as moment from 'moment'
     export default {
         name: 'PendingReview',
         props: {
@@ -46,6 +47,15 @@
             return {
                 duedate: this.task.duedate,
                 dateOptions: {year: "numeric", month: "short", day: "numeric"},
+            }
+        },
+        methods: {
+            formatDate(date) {
+                return moment(date).format("DD MMMM YYYY");
+            },
+            getData() {
+              this.$emit('getData',this.task)
+              console.log(this.task)
             }
         },
       
@@ -105,7 +115,7 @@
     }
 
      .status-button {
-        width: 4px;
+        width: 100px;
         height: 10px;
         font-size: 12px;
         justify-self: start;

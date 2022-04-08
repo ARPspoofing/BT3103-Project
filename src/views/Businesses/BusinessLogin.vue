@@ -36,7 +36,7 @@
                     <h4 class="forgot">Forgot Password</h4>
                 </div>
                 <div class="input">
-                    <button @click="login"><b>Log In</b></button>
+                    <button ref="refresh" @click="login"><b>Log In</b></button>
                 </div>
                 <div class="google">
                     <GoogleButton @click="google" msg="sign in"/>
@@ -87,7 +87,12 @@ export default {
         GoogleButton,
     }, 
     computed: {
-        ...mapState(['userEmail'])
+        ...mapState(['userEmail','businessCounter'])
+    },
+    mounted() {
+        if (this.businessCounter == 0) {    
+            this.$refs.refresh.click()
+        }
     },
     /*
     mounted() {
@@ -100,7 +105,7 @@ export default {
     },  
     */ 
     methods: {
-    ...mapMutations(['SET_USEREMAIL']),
+    ...mapMutations(['SET_USEREMAIL','SET_BUSINESS_COUNTER']),
     forgot() {
         this.forgetPassword = true
     },
@@ -117,9 +122,7 @@ export default {
             const credential = GoogleAuthProvider.credentialFromResult(result);
             const token = credential.accessToken;
             const user = result.user;
-            alert(user.email)
             this.SET_USEREMAIL(user.email)
-            //window.localStorage.setItem('emailForSignIn', user.email);
             this.$router.push({name:'businessLoading'})
                 // ...
         }).catch((error) => {
@@ -133,11 +136,12 @@ export default {
             // ...
         });
     },
-    async login(){
-        console.log("In method")
+    async login() {
         if(this.email == '') {
-            this.emailErrorPresent = true
-            this.errorMessage = "Please fill in your email"  
+            if (this.businessCounter != 0) {
+                this.emailErrorPresent = true
+                this.errorMessage = "Please fill in your email"  
+            }
             setTimeout(() => {
                 this.emailErrorPresent = false
             },1500)
@@ -178,7 +182,7 @@ export default {
                     console.log("formFilled")      
                     this.$router.push({name:'BusinessHomePage',params:{'formFilled':true}})
                 } else {
-                    this.$router.push({name:'BusinessProfileForm',params:{'formFilled':false}})
+                    this.$router.push({name:'BusinessHomePage',params:{'formFilled':false}})
                 }
             }
             
@@ -197,9 +201,9 @@ export default {
                     this.emailErrorPresent = false
                 }, 1500)
             }
-    })
-    }
-        
+        })
+    this.SET_BUSINESS_COUNTER() 
+    }  
     }
 },
 }

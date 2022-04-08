@@ -141,6 +141,11 @@ const routes = [
     component: () => import("../views/Students/StudentManagement.vue"),
   },
   {
+    path: "/student/managementloading",
+    name: "managementLoading",
+    component: () => import("../components/managementLoading.vue"),
+  },
+  {
     path: "/student/management/ToDo:taskId",
     name: "ToDoView",
     component: () => import("../views/Students/ToDoView.vue"),
@@ -149,8 +154,7 @@ const routes = [
     path: "/student/applyconfirm",
     name:"ApplyConfirm",
     component: () => import("../components/ApplyConfirm.vue")
-  },
-
+  }, 
   //Business routes
   {
     path: "/business/inprogress",

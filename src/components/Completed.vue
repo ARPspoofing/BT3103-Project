@@ -11,7 +11,7 @@
                 
             </div>
         </div>
-        <div class="duedate">
+        <div class="top flex flex-row">
             <p>
                  Due date: {{duedate}}
             </p>

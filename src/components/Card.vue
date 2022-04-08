@@ -1,15 +1,15 @@
 <template>
   <div class="card-body" @click.self="clickCard">
-    <div class="clogo">
-      <img v-bind:src=picture alt="Logo" class="logo" />
+    <div class="clogo" @click.self="clickCard">
+      <img  @click.self="clickCard" v-bind:src=picture alt="Logo" class="logo" />
       <span class="card-title"> {{ currProjectTitle }} <br /> </span>
     </div>
-    <div class="card-content">
-      <p class="card-text">{{ description }}</p>
+    <div class="card-content" @click.self="clickCard">
+      <p class="card-text" @click.self="clickCard">{{ description }}</p>
     </div>
-    <p id="appstatus" class="offered" v-if="stat == 'offered'">Offered</p>
-    <p id="appstatus" class="pending" v-else-if="stat == 'pending'">Pending</p>
-    <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">
+    <p id="appstatus" class="offered" v-if="stat == 'offered'" @click.self="clickCard">Offered</p>
+    <p id="appstatus" class="pending" v-else-if="stat == 'pending'" @click.self="clickCard">Pending</p>
+    <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'" @click.self="clickCard">
       Rejected
     </p>
 <div v-show=false>NO</div>
@@ -24,7 +24,7 @@
     <button
       id="applybtns"
       v-show="apply"
-      v-else="appstat == 'apply'"
+      v-else-if="appstat == 'apply'"
       class="btn-apply"
       data-bs-toggle="modal"
       data-bs-target="#applyModal"
@@ -63,6 +63,7 @@
                             </p>
                           </div>
                           <span>
+                            
                             <div class="applybtns">
                               <button
                                 type="button"
@@ -76,11 +77,13 @@
                                 No
                               </button>
                             </div>
+                            
                           </span>
                         </div>
                       </div>
                     </div>
                   </div>
+                  -->
                   <button
                     id="acceptbtn"
                     v-show="offered"
@@ -97,7 +100,7 @@
                   >
                     Decline
                   </button>
-      -->
+      
  <!--Ruth previous card version. Keeping incase new version is wrong 
     <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">Rejected</p>
 
@@ -147,8 +150,10 @@ export default {
   data() {
     return {
       testCollection: [],
+      /*
       stat: "",
       appstat: "",
+      */
       currProjectTitle: "",
     };
   },

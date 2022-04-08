@@ -235,9 +235,6 @@ export default {
 
     .interest {
         gap:5px;
-        div {
-            flex: 1;
-        }
     }
 
     .content {
@@ -281,16 +278,8 @@ export default {
     font-size: 12px;
     margin-right: 8px;
     color: #fff;
-    img {
-            margin-right: 4px;
-          }
     }
 
-    .save {
-        div {
-            flex:1;
-        }
-    }
 
     .right {
         margin-left:80%;

@@ -1,6 +1,5 @@
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import  VuexPersistence from 'vuex-persistedstate'
 import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../firebase.js"
 
@@ -31,7 +30,9 @@ export default createStore({
     highestPriorityIds: [],
     secondPriorityIds: [],
     thirdPriorityIds: [],
-    name: '',
+    counter:0,
+    businessCounter:0,
+    name: null,
     userEmail: '',
     cardItems: null,
     recent: false,
@@ -41,6 +42,23 @@ export default createStore({
     highest: false,
     lowest: false,
     searchString: "",
+    key: null,
+    studentInfo: {},
+    studentToDo: null,
+    studentInProgress:null,
+    studentPendingReview:null,
+    studentCompleted:null,
+    studentProjectId:null,
+    studentTaskId:null,
+    studentTask:null,
+    studentProjectTitle:null,
+    businessToDo: null,
+    businessInProgress:null,
+    businessPendingReview:null,
+    businessCompleted:null,
+    businessProjectId:null,
+    businessProjectTitle:null,
+    
   },
   //getter for debugging
   getters: {
@@ -49,6 +67,12 @@ export default createStore({
     },
   },
   mutations: {
+    SET_COUNTER(state) {
+      state.counter = 1
+    },
+    SET_BUSINESS_COUNTER(state) {
+      state.businessCounter = 1
+    },
     TOGGLE_FILTER(state) {
       state.filterModal = !state.filterModal
     },
@@ -73,6 +97,9 @@ export default createStore({
       state.longest = false,
       state.highest = false,
       state.lowest = false
+    },
+    SET_KEY(state,payload) {
+      state.key = payload
     },
     SET_FILTER(state,payload) {
       if (payload == "recent") {
@@ -126,7 +153,95 @@ export default createStore({
     CLEAR_CARDITEMS(state) {
       state.cardItems = null
     },
+    SET_STUDENT_INFO(state,payload) {
+      state.studentInfo = payload
+    },
+    SET_NEW_CARD(state,payload) {
+      state.cardItems = JSON.stringify(payload[state.key])
+    },
+    SET_STUDENT_PROJECT_ID(state,payload) {
+      state.studentProjectId = payload
+    },
+    SET_STUDENT_TASK_ID(state,payload) {
+      state.studentTaskId = payload
+    },
+    SET_STUDENT_TASK(state,payload) {
+      state.studentTask = payload
+    },
+    SET_STUDENT_PROJECT_TITLE(state,payload) {
+      state.studentProjectTitle = payload
+    },
+    SET_STUDENT_TO_DO(state,payload) {
+      state.studentToDo = payload
+    },
+    SET_STUDENT_IN_PROGRESS(state,payload) {
+      state.studentInProgress = payload
+    },
+    SET_STUDENT_PENDING_REVIEW(state,payload) {
+      state.studentPendingReview = payload
+    },
+    SET_STUDENT_COMPLETED(state,payload) {
+      state.studentCompleted = payload
+    },
+    SET_BUSINESS_PROJECT_ID(state,payload) {
+      state.businessProjectId = payload
+    },
+    SET_BUSINESS_PROJECT_TITLE(state,payload) {
+      state.businessProjectTitle = payload
+    },
+    SET_BUSINESS_TO_DO(state,payload) {
+      state.businessToDo = payload
+    },
+    SET_BUSINESS_IN_PROGRESS(state,payload) {
+      state.businessInProgress = payload
+    },
+    SET_BUSINESS_PENDING_REVIEW(state,payload) {
+      state.businessPendingReview = payload
+    },
+    SET_BUSINESS_COMPLETED(state,payload) {
+      state.businessCompleted = payload
+    },
+    
   },
+  actions: {
+    async GET_NEW_CARD({commit,state}) {
+        var businessEmail = state.userEmail
+        var testCollectionItems = []
+        //order projects by posted date, from latest to oldest
+        let projects = query(collection(db, "Project"), orderBy("Posted_Date", "desc"));
+        let snapshot = await getDocs(projects);
+        const testCollection = [];
+        const docSnap = await getDoc(doc(db, "businesses", businessEmail));
+        let data1 = docSnap.data();
+        var pictureprof = data1.finalProfile;
+        if (typeof pictureprof === "undefined") {
+          pictureprof =
+            "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png";
+        }
+        snapshot.forEach((docs) => {
+          let data = docs.data();
+          var id = docs.id;
+          testCollectionItems.push({
+            projectId: id,
+            projectTitle: data.Project_Title,
+            description: data.Description,
+            vacancies: data.Num_Of_Vacancies,
+            allowance: data.Allowance,
+            position: data.Position,
+            projectStart: data.Project_Start,
+            projectEnd: data.Project_End,
+            tasks: data.Tasks,
+            tags: data.Tags,
+            newApplicants: data.New_Applicants,
+            accApplicants: data.Acc_Applicants,
+            rejApplicants: data.Rej_Applicants,
+            posterId: data.poster_id,
+            profilePicture: pictureprof,
+          });
+        });
+        commit('SET_NEW_CARD',testCollectionItems)
+      }
+    },
   modules: {
   }
 })

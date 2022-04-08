@@ -16,7 +16,7 @@
     <hr />
     <h1></h1>
     <div class="projectContainer">
-      <div :key="item.key" v-for="(item, key) in inProgProjects">
+      <div :key="key" v-for="(item,key) in inProgProjects">
         <Card
           :apply="false"
           :projectTitle="item.projectTitle"
@@ -46,7 +46,10 @@ import {
   getDoc,
 } from "firebase/firestore";
 import {mapState} from "vuex"
+import {mapMutations} from "vuex"
 const db = getFirestore(firebaseApp);
+const curr = this
+const that = this
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default {
@@ -56,12 +59,16 @@ export default {
     Card,
   },
   computed: {
-    ...mapState(['userEmail']),
+    ...mapState(['studentTaskId','userEmail','studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted']),
   },
   data() {
     return {
       Heading: "MY PROJECTS",
       inProgProjects: [],
+      STUDENT_TO_DO_TEMP:[],
+      STUDENT_IN_PROGRESS_TEMP:[],
+      STUDENT_PENDING_REVIEW_TEMP:[],
+      STUDENT_COMPLETED_TEMP:[],
     };
   },
   mounted() {
@@ -98,15 +105,171 @@ export default {
       return {projectTitle: data.Project_Title, description: data.Description, profilePicture: data.profPicture,
       id: docSnap.id}
     }
+    /*
+    async function populateStore() {
+      let docRef = await doc(db,"Project",'hi jack')
+      let project = await getDoc(docRef)
+      let tasks = project.data().Tasks
+      var toDoTask = []
+      var inProgressTask = []
+      var pendingReviewTask = []
+      var completedTask = []
+      tasks.forEach((document) => {  
+        console.log('hello')   
+        if (document.taskStatus == "To do") {
+            toDoTask.push({
+              id: document.taskName,
+              projectTitle: that.projectTitle,
+              projectId: that.projectId,
+              comments: document.comments,
+              documents: document.documents,
+              currStatus: document.taskStatus,
+              duedate: document.taskDueDate,
+              taskname: document.taskName,                    
+              shortdescription: document.taskDescription,
+            })
+        } else if (document.taskStatus == "In progress") {
+            inProgressTask.push({
+              id: document.taskName,
+              projectId: that.projectId,
+              projectTitle: that.projectTitle,
+              comments: document.comments,
+              documents: document.documents,
+              status: document.taskStatus,
+              duedate: document.taskDueDate,
+              taskname: document.taskName,                  
+              shortdescription: document.taskDescription,   
+            })
+          } else if (document.taskStatus == "Pending review") {
+            pendingReviewTask.push({
+              id: document.taskName,
+              projectId: that.projectId,
+              projectTitle: that.projectTitle,
+              comments: document.comments,
+              documents: document.documents,
+              status: document.taskStatus,
+              duedate: document.taskDueDate,
+              taskname: document.taskName,                   
+              shortdescription: document.taskDescription,
+            })
+          } else if (document.taskStatus == "Completed") {
+            completedTask.push({
+              id: document.id,
+              projectId: that.projectId,
+              comments: document.comments,
+              projectTitle: that.projectTitle,
+              documents: document.documents,
+              status: document.taskStatus,
+              duedate: document.taskDueDate,
+              taskname: document.taskName,
+              shortdescription: document.taskDescription,                      
+            })
+          }
+      })
+        console.log("student todo",toDoTask)
+    }
+
+    populateStore()
+    */
+
   },
 
   methods: {
+<<<<<<< HEAD
 
     
     viewTasks(id, title) {
+=======
+    ...mapMutations(['SET_STUDENT_TASK_ID','SET_STUDENT_PROJECT_ID','SET_STUDENT_PROJECT_TITLE','SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED',]),
+    async viewTasks(id, title) {
+>>>>>>> 00a99c66334399983d30aeb8465808b93d4199dc
       console.log("in method")
       console.log(title)
-      this.$router.push({name:'StudentManagement',params:{projectId:id, projectTitle:title}})
+      this.SET_STUDENT_PROJECT_ID(id)
+      this.SET_STUDENT_PROJECT_TITLE(title)
+
+
+      let docRef = await doc(db,"Project",id)
+      let project = await getDoc(docRef)
+      let tasks = project.data().Tasks
+      var toDoTask = []
+      var inProgressTask = []
+      var pendingReviewTask = []
+      var completedTask = []
+      tasks.forEach((document) => {  
+        console.log('document',document)   
+        if (document.taskStatus == "To do") {
+            toDoTask.push({
+              id: document.taskName,
+              /*
+              projectTitle: that.projectTitle,
+              projectId: that.projectId,
+              */
+              comments: document.comments,
+              documents: document.documents,
+              currStatus: document.taskStatus,
+              duedate: document.taskDueDate,
+              taskname: document.taskName,                    
+              shortdescription: document.taskDescription,
+            })
+        } else if (document.taskStatus == "In progress") {
+            inProgressTask.push({
+              id: document.taskName,
+              /*
+              projectTitle: that.projectTitle,
+              projectId: that.projectId,
+              */
+              comments: document.comments,
+              documents: document.documents,
+              status: document.taskStatus,
+              duedate: document.taskDueDate,
+              taskname: document.taskName,                  
+              shortdescription: document.taskDescription,   
+            })
+          } else if (document.taskStatus == "Pending review") {
+            pendingReviewTask.push({
+              id: document.taskName,
+              /*
+              projectTitle: that.projectTitle,
+              projectId: that.projectId,
+              */
+              comments: document.comments,
+              documents: document.documents,
+              status: document.taskStatus,
+              duedate: document.taskDueDate,
+              taskname: document.taskName,                   
+              shortdescription: document.taskDescription,
+            })
+          } else if (document.taskStatus == "Completed") {
+            completedTask.push({
+              id: document.id,
+              comments: document.comments,
+              /*
+              projectTitle: that.projectTitle,
+              projectId: that.projectId,
+              */
+              documents: document.documents,
+              status: document.taskStatus,
+              duedate: document.taskDueDate,
+              taskname: document.taskName,
+              shortdescription: document.taskDescription,                      
+            })
+          }
+      })
+        console.log("student todo",toDoTask)
+        console.log("student in progress",inProgressTask)
+        console.log("student pending",pendingReviewTask)
+        console.log("student todo",completedTask)
+        this.SET_STUDENT_TO_DO(toDoTask)
+        this.SET_STUDENT_IN_PROGRESS(inProgressTask)
+        this.SET_STUDENT_PENDING_REVIEW(pendingReviewTask)
+        this.SET_STUDENT_COMPLETED(completedTask)
+        console.log("vuex todo",this.studentToDo)
+        console.log("vuex in prog",this.studentInProgress)
+        console.log("vuex pending",this.studentPendingReview)
+        console.log("vuex completed",this.studentCompleted)
+        this.$router.push({name:'StudentManagement'})
+        //this.$router.push({name:'StudentManagement'/*,params:{projectId:id, projectTitle:title}*/})
     }
   }
 };

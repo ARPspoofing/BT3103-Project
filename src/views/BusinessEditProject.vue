@@ -124,7 +124,7 @@ export default {
         this.item = JSON.parse(this.cardItems)
         var prevTitle = JSON.parse(this.cardItems).projectTitle
         this.previousTitle = prevTitle
-        console.log(this.item)
+
 
     },
     methods: {
@@ -153,14 +153,13 @@ export default {
             } else {
                 var g = this.item.tags;
             }
-            console.log(g);
             var h = document.getElementById("projectDescription").value;
             var i = this.item.tasks;
 
             alert("Updating your data for Project: " + a);
 
             try {
-                const docRef = await updateDoc(doc(db, "Project", this.previousTitle), {
+                const docRef = await updateDoc(doc(db, "Project", JSON.parse(this.cardItems)['projectId']), {
                 Project_Title: a,
                 Position: b,
                 Num_Of_Vacancies: c,
@@ -177,7 +176,7 @@ export default {
                 this.$emit("updated")
             }
             catch(error) {
-                console.error("Error adding document: ", error);
+                console.error(" the error is: ", error);
             }
             }
     }
