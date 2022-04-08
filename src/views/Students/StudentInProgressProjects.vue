@@ -1,8 +1,8 @@
 <template>
-  <StudentNavBar :header=true :Heading="Heading" />
+  <StudentNavBar :header="true" :Heading="Heading" />
   <div class="mainBody">
     <h1 id="status">
-        <span class="options">
+      <span class="options">
         <b>IN PROGRESS</b>
       </span>
       <span>
@@ -20,11 +20,11 @@
         <Card
           :apply="false"
           :projectTitle="item.projectTitle"
-          :projectId ="item.id"
+          :projectId="item.id"
           :description="item.description"
           :picture="item.profilePicture"
-          :inProgress='true'
-          @viewTasks ="viewTasks(item.id, item.projectTitle)"
+          :inProgress="true"
+          @viewTasks="viewTasks(item.id, item.projectTitle)"
         />
       </div>
     </div>
@@ -45,7 +45,7 @@ import {
   updateDoc,
   getDoc,
 } from "firebase/firestore";
-import {mapState} from "vuex"
+import { mapState } from "vuex";
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -56,7 +56,7 @@ export default {
     Card,
   },
   computed: {
-    ...mapState(['userEmail']),
+    ...mapState(["userEmail"]),
   },
   data() {
     return {
@@ -65,8 +65,8 @@ export default {
     };
   },
   mounted() {
-    var userEmail = this.userEmail
-    const that = this
+    var userEmail = this.userEmail;
+    const that = this;
     async function getinProgProjects() {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
@@ -74,32 +74,39 @@ export default {
       //var projects = data.inProgProjects
       //that.inProgProjects = data.inProgProjects
       if (data) {
-        for(var i = 0; i < data.inProgProjects.length; i++) {
-          getProject(data.inProgProjects[i]).then((res)=>{that.inProgProjects.push(res)})
+        for (var i = 0; i < data.inProgProjects.length; i++) {
+          getProject(data.inProgProjects[i]).then((res) => {
+            that.inProgProjects.push(res);
+          });
         }
-        console.log(that.inProgProjects)
+        console.log(that.inProgProjects);
       }
     }
-    getinProgProjects()
-    
+    getinProgProjects();
+
     async function getProject(proj) {
       const ref = doc(db, "Project", proj);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      return {projectTitle: data.Project_Title, description: data.Description, profilePicture: data.profPicture,
-      id: docSnap.id}
+      return {
+        projectTitle: data.Project_Title,
+        description: data.Description,
+        profilePicture: data.profPicture,
+        id: docSnap.id,
+      };
     }
   },
 
   methods: {
-
-    
     viewTasks(id, title) {
-      console.log("in method")
-      console.log(title)
-      this.$router.push({name:'StudentManagement',params:{projectId:id, projectTitle:title}})
-    }
-  }
+      console.log("in method");
+      console.log(title);
+      this.$router.push({
+        name: "StudentManagement",
+        params: { projectId: id, projectTitle: title },
+      });
+    },
+  },
 };
 </script>
 

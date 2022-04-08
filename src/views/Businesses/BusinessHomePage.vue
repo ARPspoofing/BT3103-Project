@@ -1,8 +1,11 @@
 <template>
-  <BusinessNavBar :Heading="Heading" :header=true />
-  <BusinessProfileForm @success='close' v-if='!profileFormCreated'/>
-  <div :class="{blur:!profileFormCreated, mainBody:foreverTrue}">
-    <router-link class="floating-right-bottom-btn" :to="{name:'BusinessAddProject'}">
+  <BusinessNavBar :Heading="Heading" :header="true" />
+  <BusinessProfileForm @success="close" v-if="!profileFormCreated" />
+  <div :class="{ blur: !profileFormCreated, mainBody: foreverTrue }">
+    <router-link
+      class="floating-right-bottom-btn"
+      :to="{ name: 'BusinessAddProject' }"
+    >
       <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
     </router-link>
     <h1 id="status">
@@ -36,16 +39,16 @@
       </div>
     </div>
   </div>
-</template> 
+</template>
 
 <script>
 import BusinessNavBar from "../../components/BusinessNavBar.vue";
 import Card from "../../components/Card.vue";
 import firebaseApp from "../../firebase.js";
 import { getFirestore } from "firebase/firestore";
-import {useRouter} from "vue-router"
-import {mapState} from "vuex"
-import {mapMutations} from "vuex"
+import { useRouter } from "vue-router";
+import { mapState } from "vuex";
+import { mapMutations } from "vuex";
 import {
   collection,
   doc,
@@ -56,10 +59,10 @@ import {
   getDoc,
   query,
   orderBy,
-  where
+  where,
 } from "firebase/firestore";
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
-import BusinessProfileForm from './BusinessProfileForm.vue'
+import BusinessProfileForm from "./BusinessProfileForm.vue";
 const db = getFirestore(firebaseApp);
 const router = useRouter();
 
@@ -68,32 +71,32 @@ export default {
   components: {
     BusinessNavBar,
     Card,
-    BusinessProfileForm
+    BusinessProfileForm,
   },
   data() {
     return {
       Heading: "MY PROJECTS",
       testCollection: [],
       profileFormCreated: true,
-      foreverTrue: true,    
-      businessEmail: '',
+      foreverTrue: true,
+      businessEmail: "",
       //closed: "closed"
     };
   },
   computed: {
-    ...mapState(['userEmail','cardItems','key']),
+    ...mapState(["userEmail", "cardItems", "key"]),
   },
   methods: {
-    ...mapMutations(['CLEAR_CARDITEMS','SET_CARDITEMS','SET_KEY']),
+    ...mapMutations(["CLEAR_CARDITEMS", "SET_CARDITEMS", "SET_KEY"]),
     close(e) {
-      this.profileFormCreated = e
-      this.$router.push({name:'BusinessHomePage'})
+      this.profileFormCreated = e;
+      this.$router.push({ name: "BusinessHomePage" });
     },
     indivproj(key) {
       //vuex
-      this.CLEAR_CARDITEMS()
-      this.SET_KEY(key)
-      this.SET_CARDITEMS(JSON.stringify(this.testCollection[key]))
+      this.CLEAR_CARDITEMS();
+      this.SET_KEY(key);
+      this.SET_CARDITEMS(JSON.stringify(this.testCollection[key]));
       //Non-vuex
       this.$router.push({
         name: "IndividualProjectInfo",
@@ -121,7 +124,7 @@ export default {
   },
 
   created() {
-    var that = this
+    var that = this;
     /*
     var userEmail
     var currUser = getAuth().onAuthStateChanged(function (user) {
@@ -132,29 +135,31 @@ export default {
       }
     })
     */
-    var userEmail = this.userEmail
+    var userEmail = this.userEmail;
     //var userEmail = window.localStorage.getItem('emailForSignIn')
-     async function profileFormCreatedCheck() {
+    async function profileFormCreatedCheck() {
       var profileFormCreated = false;
-      
-      let snapshot = await getDocs(collection(db,'businesses'))
+
+      let snapshot = await getDocs(collection(db, "businesses"));
       /*
       if (snapshot.profileFormCreated == true) {
         profileFormCreated = true
       }
       that.profileFormCreated = profileFormCreated
       */
-     snapshot.forEach((doc) => (doc.id==userEmail) ? profileFormCreated = doc.data().profileFormCreated : profileFormCreated = profileFormCreated )
-     that.profileFormCreated = profileFormCreated
+      snapshot.forEach((doc) =>
+        doc.id == userEmail
+          ? (profileFormCreated = doc.data().profileFormCreated)
+          : (profileFormCreated = profileFormCreated)
+      );
+      that.profileFormCreated = profileFormCreated;
     }
-    profileFormCreatedCheck()
-
+    profileFormCreatedCheck();
 
     /*
     var currUser = getAuth().currentUser
     this.profileFormCreated = currUser.email
     */
-
   },
   mounted() {
     /*
@@ -168,14 +173,19 @@ export default {
     console.log("email: " + this.businessEmail);
     */
     const that = this;
-    this.businessEmail = this.userEmail
-  
+    this.businessEmail = this.userEmail;
+
     async function fetchProject() {
       //var businessEmail = auth.currentUser.email;
       //var businessEmail = window.localStorage.getItem('emailForSignIn')
-      var businessEmail = that.userEmail
+      var businessEmail = that.userEmail;
       //order projects by posted date, from latest to oldest
-      let projects = query(collection(db, "Project"), where("Status", "!=", "completed"), orderBy("Status", "asc"), orderBy("Posted_Date", "desc"));
+      let projects = query(
+        collection(db, "Project"),
+        where("Status", "!=", "completed"),
+        orderBy("Status", "asc"),
+        orderBy("Posted_Date", "desc")
+      );
       let snapshot = await getDocs(projects);
       const testCollection = [];
       const docSnap = await getDoc(doc(db, "businesses", businessEmail));
@@ -205,8 +215,8 @@ export default {
           rejApplicants: data.Rej_Applicants,
           posterId: data.poster_id,
           profilePicture: pictureprof,
-          status: data.Status, 
-          application: data.Application, 
+          status: data.Status,
+          application: data.Application,
         });
       });
       that.testCollection = testCollection;
@@ -216,102 +226,102 @@ export default {
     /*
     profileFormCreatedCheck();
     */
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
 .mainBody {
-    background-color: #F5F5F5;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    overflow-y: scroll;
-    padding-bottom: 550px;
-    /*
+  background-color: #f5f5f5;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  overflow-y: scroll;
+  padding-bottom: 550px;
+  /*
     filter: blur(5px);
     */
-  }
-  
-  .navbar-custom {
-    background-color: #004A23;
-  }
+}
 
-  #title {
-      color: white;
-      margin-left:30px;
-      margin-right: 30px;
-      margin-bottom: 0px;
-  }
+.navbar-custom {
+  background-color: #004a23;
+}
 
-  .btn {
-      margin: 10px;
-  }
+#title {
+  color: white;
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-bottom: 0px;
+}
 
-  .blur {
-  filter: blur(5px); 
-  }
+.btn {
+  margin: 10px;
+}
 
-  .projectContainer {
-    margin-left: 30px;
-  }
+.blur {
+  filter: blur(5px);
+}
 
-  #status {
-    text-align: left;
-    font-size: 28px;
-    margin: 30px 30px 0px 30px;
-    color: #606060;
-  }
+.projectContainer {
+  margin-left: 30px;
+}
 
-  hr {
-    border: 0;
-    border-top: 2px solid #606060;
-    width: 90%;
-    margin: 5px 0px 16px 38px;
-  }
+#status {
+  text-align: left;
+  font-size: 28px;
+  margin: 30px 30px 0px 30px;
+  color: #606060;
+}
 
-  .options {
-    font-size: 15px;
-    padding: 5px 25px;
-    margin-left: 15px;
-    border-radius: 30px; /* or 50% */
-    background-color: #0E8044;
-    color: white;
-    text-align: center;
-  }
+hr {
+  border: 0;
+  border-top: 2px solid #606060;
+  width: 90%;
+  margin: 5px 0px 16px 38px;
+}
 
-  .optionsOff {
-    font-size: 15px;
-    padding: 10px 25px;
-    margin-left: 15px;
-    border-radius: 30px; /* or 50% */
-    background-color: F5F5F5;
-    text-align: center;
-    color: #606060;
-    text-decoration: none;
-  }
+.options {
+  font-size: 15px;
+  padding: 5px 25px;
+  margin-left: 15px;
+  border-radius: 30px; /* or 50% */
+  background-color: #0e8044;
+  color: white;
+  text-align: center;
+}
 
-  .optionsOff:hover {
-    color: #0E8044;
-  }
+.optionsOff {
+  font-size: 15px;
+  padding: 10px 25px;
+  margin-left: 15px;
+  border-radius: 30px; /* or 50% */
+  background-color: F5F5F5;
+  text-align: center;
+  color: #606060;
+  text-decoration: none;
+}
 
-  .floating-right-bottom-btn {
-    position : fixed;
-    right : 40px;
-    bottom : 50px;
-    background-color: white;
-    border-width: 0px;
-    height: 70px;
-    width: 70px;
-    z-index: 110;
-    border-radius: 50%;
-    padding: 0px;
-    background: #F8F8F8; 
-  }
+.optionsOff:hover {
+  color: #0e8044;
+}
 
-  #plusIcon {
-    height: 70px;
-    width: 70px;
-    color: #004A23;
-  }
+.floating-right-bottom-btn {
+  position: fixed;
+  right: 40px;
+  bottom: 50px;
+  background-color: white;
+  border-width: 0px;
+  height: 70px;
+  width: 70px;
+  z-index: 110;
+  border-radius: 50%;
+  padding: 0px;
+  background: #f8f8f8;
+}
+
+#plusIcon {
+  height: 70px;
+  width: 70px;
+  color: #004a23;
+}
 </style>

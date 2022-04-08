@@ -8,7 +8,8 @@
   >
     <button @click="goback" id="backButton">
       <i class="fa-solid fa-angles-left"></i>
-      Back to Applicants</button>
+      Back to Applicants
+    </button>
     <form @submit.prevent="submitForm" class="content">
       <div class="profile-pic-outer">
         <img class="profile-pic" :src="finalProfile" />
@@ -66,6 +67,21 @@
             </ul>
           </div>
         </div>
+        <!--Description-->
+        <div class="description flex flex-column">
+          <div class="input flex flex-column">
+            <label for="description">Description</label>
+            <textarea
+              type="text"
+              id="description"
+              rows="4"
+              cols="50"
+              maxlength="500"
+              v-model="description"
+              readonly
+            ></textarea>
+          </div>
+        </div>
       </div>
 
       <!--Contact Details-->
@@ -105,33 +121,16 @@
           >
         </div>
       </div>
-
-      <!--Description-->
-      <div class="description flex flex-column">
-        <h4>Please limit your description to 500 characters</h4>
-        <div class="input flex flex-column">
-          <label for="description">Description</label>
-          <textarea
-            type="text"
-            id="description"
-            rows="4"
-            cols="50"
-            maxlength="500"
-            v-model="description"
-            readonly
-          ></textarea>
-        </div>
-      </div>
     </form>
   </div>
 </template>
 
 <script>
-import BusinessNavBar from "../components/BusinessNavBar.vue";
+import BusinessNavBar from "../../components/BusinessNavBar.vue";
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "vue-router";
 import * as moment from "moment";
-import firebaseApp from "../firebase.js";
+import firebaseApp from "../../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
   collection,
@@ -308,7 +307,7 @@ export default {
       offer: [],
       reject: [],
       apply: [],
-    //   showButton: false,
+      //   showButton: false,
       items: [],
       newApplicants: [],
       accApplicants: [],
@@ -329,7 +328,7 @@ export default {
     this.apply = JSON.parse(this.$route.params.applied);
     this.item = JSON.parse(this.$route.params.items);
     this.theKey = JSON.parse(this.$route.params.key);
-    this.stat = JSON.parse(this.$route.params.stat)
+    this.stat = JSON.parse(this.$route.params.stat);
     console.log(this.accApplicant);
     this.items = JSON.parse(this.$route.params.items);
     this.projectId = JSON.parse(this.$route.params.items).projectId;
@@ -338,7 +337,7 @@ export default {
     this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants;
 
     var email = JSON.parse(this.$route.params.applicants).email;
-    console.log(email)
+    console.log(email);
     const that = this;
     async function getApplicant(email) {
       const docSnap = await getDoc(doc(db, "students", email));
@@ -576,6 +575,10 @@ ul {
   color: blue;
 }
 
+h4 {
+  margin-top: 15px;
+}
+
 #applyModal {
   background-color: rgba(0, 0, 0, 0.5);
 }
@@ -638,6 +641,7 @@ ul {
   width: 180px;
   margin-left: 15%;
   margin-right: auto;
+  margin-bottom: 20px;
 }
 
 #backButton {

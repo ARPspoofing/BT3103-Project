@@ -139,14 +139,14 @@
           </button>
           <br />
           <div class="errorMsg" v-if="deliverablesErrorPresent">
-          {{ this.deliverablesErrorMessage }}
+            {{ this.deliverablesErrorMessage }}
           </div>
 
           <label for="duration">Task Name*</label>
           <input type="text" v-model.lazy="task.taskName" required />
           <div class="errorMsg" v-if="deliverableTaskErrorPresent">
-          {{ this.deliverableTaskErrorMessage }}
-        </div>
+            {{ this.deliverableTaskErrorMessage }}
+          </div>
           <br /><br />
           <label for="description">Description</label>
           <input type="text" v-model.lazy="task.taskDescription" required />
@@ -154,10 +154,9 @@
           <label for="duedate">Due Date*</label>
           <input type="date" v-model.lazy="task.taskDueDate" required />
           <div class="errorMsg" v-if="deliverableDueDateErrorPresent">
-          {{ this.deliverableDueDateErrorMessage }}
+            {{ this.deliverableDueDateErrorMessage }}
+          </div>
         </div>
-        </div>
-        
       </div>
       <button
         id="saveButton"
@@ -211,12 +210,11 @@ import firebaseApp from "../../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import { collection, doc, setDoc, addDoc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import {mapState} from "vuex";
-import {mapMutations} from "vuex";
+import { mapState } from "vuex";
+import { mapMutations } from "vuex";
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
 console.log(auth.currentUser);
-
 
 export default {
   data() {
@@ -229,7 +227,7 @@ export default {
           taskDescription: "",
           taskDueDate: "",
           taskStatus: "To do",
-          taskIssueDate: new Date().toISOString().split('T')[0],
+          taskIssueDate: new Date().toISOString().split("T")[0],
         },
       ],
       projectTitleErrorPresent: false,
@@ -239,8 +237,8 @@ export default {
       projectPeriodErrorPresent: false,
       tagsErrorPresent: false,
       //deliverablesErrorPresent: false,
-      deliverableTaskErrorPresent: false, 
-      deliverableDueDateErrorPresent: false, 
+      deliverableTaskErrorPresent: false,
+      deliverableDueDateErrorPresent: false,
       projectTitleErrorMessage: "",
       positionErrorMessage: "",
       vacancyErrorMessage: "",
@@ -248,15 +246,15 @@ export default {
       tagsErrorMessage: "",
       allowanceErrorMessage: "",
       //deliverablesErrorMessage: "",
-      deliverableTaskErrorErrorMessage: "", 
-      deliverableDueDateErrorErrorMessage: "", 
+      deliverableTaskErrorErrorMessage: "",
+      deliverableDueDateErrorErrorMessage: "",
     };
   },
   computed: {
-    ...mapState(['userEmail']),
+    ...mapState(["userEmail"]),
   },
   mounted() {
-    var email = this.userEmail
+    var email = this.userEmail;
   },
   methods: {
     addTask() {
@@ -265,7 +263,7 @@ export default {
         taskDescription: "",
         taskDueDate: "",
         taskStatus: "To do",
-        taskIssueDate: new Date().toISOString().split('T')[0],
+        taskIssueDate: new Date().toISOString().split("T")[0],
         comments: [],
       });
     },
@@ -342,7 +340,7 @@ export default {
         this.deliverablesErrorMessage = "Please enter at least one Deliverable";
       }*/
 
-    /*for (i = 0; i < this.tasks.length; i++) {
+      /*for (i = 0; i < this.tasks.length; i++) {
       if (this.tasks[i].taskName == "") {
         this.deliverableTaskErrorPresent = true;
         this.deliverableTaskErrorMessage = "Please enter Task Name";
@@ -387,7 +385,7 @@ export default {
             Posted_Date: m,
             profPicture: pictureprof,
             Status: "open",
-            Application: "open"
+            Application: "open",
           });
 
           console.log(docRef);

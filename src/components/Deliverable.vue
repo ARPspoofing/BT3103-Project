@@ -1,36 +1,36 @@
 <template>
   <li class="event">
-    <h3>{{title}}</h3>
-    <p>{{description}}</p>
+    <h3>{{ title }}</h3>
+    <p>{{ description }}</p>
   </li>
 </template>
 
 <script>
 export default {
-    props:{
-        title: String, 
-        description: String,
-    }
-}
+  props: {
+    title: String,
+    description: String,
+  },
+};
 </script>
 
 <style>
 p {
-      font-size: 14px;
-  }
+  font-size: 14px;
+}
 
-  .event {
-      border-bottom: 1px dashed #e8ebf1;
-      padding-bottom: 25px;
-      margin-bottom: 25px;
-      position: relative;
-  }
- h3 {
-      font-weight: bold;
-      font-size: 16px;
-      margin-bottom: 10px;
-      text-align: left;
-  }
+.event {
+  border-bottom: 1px dashed #e8ebf1;
+  padding-bottom: 25px;
+  margin-bottom: 25px;
+  position: relative;
+}
+h3 {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: left;
+}
 
 /*
     .timeline {

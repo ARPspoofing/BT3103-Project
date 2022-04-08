@@ -1,14 +1,14 @@
 <template>
-    <StudentNavBar :header=true :Heading="Heading" />
-    <div class="mainBody">
+  <StudentNavBar :header="true" :Heading="Heading" />
+  <div class="mainBody">
     <h1 id="status">
       <router-link class="optionsOff" :to="{ name: 'OfferedApplications' }">
         <b>OFFERED</b>
-       </router-link>
+      </router-link>
       <span>
-          <span class="options">
+        <span class="options">
           <b>PENDING</b>
-           </span>
+        </span>
       </span>
       <span>
         <router-link class="optionsOff" :to="{ name: 'RejectedApplications' }"
@@ -17,10 +17,14 @@
       </span>
     </h1>
     <hr />
-    <div class="projectContainer" :key="item.key" v-for="(item, index) in projects">
-        <Card 
-        :apply=false 
-        :offered=false 
+    <div
+      class="projectContainer"
+      :key="item.key"
+      v-for="(item, index) in projects"
+    >
+      <Card
+        :apply="false"
+        :offered="false"
         :projectTitle="item.projectTitle"
         :description="item.description"
         :stat="stat"
@@ -31,8 +35,8 @@
 </template>
 
 <script>
-import StudentNavBar from '../../components/StudentNavBar.vue'
-import Card from '../../components/Card.vue'
+import StudentNavBar from "../../components/StudentNavBar.vue";
+import Card from "../../components/Card.vue";
 import firebaseApp from "../../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
@@ -42,17 +46,17 @@ import {
   deleteDoc,
   getDocs,
   updateDoc,
-  getDoc
+  getDoc,
 } from "firebase/firestore";
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 const db = getFirestore(firebaseApp);
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default {
-    name: 'PendingApplications',
-    components: {
-    StudentNavBar, 
-    Card
+  name: "PendingApplications",
+  components: {
+    StudentNavBar,
+    Card,
   },
   data() {
     return {
@@ -60,10 +64,10 @@ export default {
       stat: "pending",
       applied: [],
       projects: [],
-    }
+    };
   },
   computed: {
-    ...mapState(['userEmail']),
+    ...mapState(["userEmail"]),
   },
   mounted() {
     /*
@@ -75,47 +79,40 @@ export default {
     });
     this.userEmail = auth.currentUser.email;
     */
-    var userEmail = this.userEmail
-    const that = this
+    var userEmail = this.userEmail;
+    const that = this;
     async function getAppliedProjects() {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
-      //const data = docSnap.data();
-      //that.applied = data.appliedProjects
-      //console.log("testingPending",data.appliedProjects)
 
       const response = await Promise.all(
-        docSnap.data().appliedProjects.map(async item => {
-          console.log("nested",item)
+        docSnap.data().appliedProjects.map(async (item) => {
+          console.log("nested", item);
           if (item) {
-            const finalResult = await getDoc(doc(db,"Project",item))
-            that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description,  profilePicture: finalResult.data().profPicture})
-          } 
-          //console.log(finalResult.data())
-          //that.projects.push({projectTitle: finalResult.data().Project_Title, description: finalResult.data().Description})
-        }
-        )
-      )
-
-
-
-      /*
-      for(var i = 0; i < data.appliedProjects.length; i++) {
-        getProject(data.appliedProjects[i]).then((res)=>{that.projects.push(res)})
-      }
-      console.log(that.projects)
-      */
+            const finalResult = await getDoc(doc(db, "Project", item));
+            that.projects.push({
+              projectTitle: finalResult.data().Project_Title,
+              description: finalResult.data().Description,
+              profilePicture: finalResult.data().profPicture
+            });
+          }
+        })
+      );
     }
-    getAppliedProjects()
-    
+    getAppliedProjects();
+
     async function getProject(proj) {
-        const ref = doc(db, "Project", proj);
-        const docSnap = await getDoc(ref);
-        const data = docSnap.data();
-        return {projectTitle: data.Project_Title, description: data.Description,  profilePicture: data.profPicture}
+      const ref = doc(db, "Project", proj);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      return {
+        projectTitle: data.Project_Title,
+        description: data.Description,
+        profilePicture: data.profPicture
+      };
     }
-  }
-}
+  },
+};
 </script>
 
 <style>
@@ -140,11 +137,11 @@ export default {
 }
 
 hr {
-    border: 0;
-    border-top: 2px solid #606060;
-    width: 90%;
-    margin: 5px 0px 16px 38px;
-  }
+  border: 0;
+  border-top: 2px solid #606060;
+  width: 90%;
+  margin: 5px 0px 16px 38px;
+}
 
 .options {
   font-size: 15px;
@@ -168,11 +165,11 @@ hr {
   text-decoration: none;
 }
 
-#appstatus { 
-    text-align: left;
-    display: block;
-    margin-left: 10px;
-    font-size: 18px;
-    font-weight:bold;
-  }
+#appstatus {
+  text-align: left;
+  display: block;
+  margin-left: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
 </style>
