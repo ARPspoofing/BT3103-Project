@@ -177,6 +177,7 @@ export default {
     console.log(JSON.parse(this.cardItems).projectId)
     this.projId = JSON.parse(this.cardItems).projectId
     this.appstat = JSON.parse(this.cardItems).appstat
+    console.log(this.appstat)
     this.companyEmail = JSON.parse(this.cardItems).company
     console.log(this.appstat)
 

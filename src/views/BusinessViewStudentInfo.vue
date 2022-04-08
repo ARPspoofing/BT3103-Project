@@ -328,6 +328,8 @@ export default {
     var userEmail = this.userEmail;
     console.log("studentInfo",this.studentInfo['applicants'])
     //vuex
+
+    /* 
     this.applicant = JSON.parse(this.studentInfo['applicants']);
     this.allApplicant = JSON.parse(this.studentInfo['allApplicants']);
     // this.showButton = JSON.parse(this.$route.params.buttonShow);
@@ -346,13 +348,16 @@ export default {
     this.projectId = this.items['projectId'];
     this.newApplicants = this.items['newApplicants'];
     this.accApplicants = this.items['accApplicants'];
-    this.rejApplicants = this.items['rejApplicants'];
+    this.rejApplicants = this.items['rejApplicants']; 
+    */
+    
 
 
 
     //Non vuex
-    /*
+    
     this.applicant = JSON.parse(this.$route.params.applicants);
+    console.log(this.applicant)
     this.allApplicant = JSON.parse(this.$route.params.allApplicants);
     // this.showButton = JSON.parse(this.$route.params.buttonShow);
     this.newApplicant = JSON.parse(this.$route.params.newApplicants);
@@ -370,9 +375,9 @@ export default {
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants;
     this.accApplicants = JSON.parse(this.$route.params.items).accApplicants;
     this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants;
-    */
+    
 
-    var email = JSON.parse(this.studentInfo.applicants).email;
+    var email = this.applicant.email;
     console.log(email)
     const that = this;
     async function getApplicant(email) {
