@@ -7,9 +7,9 @@
         <div class="top flex flex-row">
             <div class="title"><strong>{{task['taskname']}}</strong></div>
             <div class="status-button flex inprogressButton">                
-                <div >
-                    <p>In-Progress</p>
-                </div>
+                <div>
+              <p id="status">In Progress</p>
+            </div>
                 
             </div>
         </div>

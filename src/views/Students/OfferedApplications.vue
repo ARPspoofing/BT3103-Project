@@ -1,6 +1,37 @@
 <template>
   <StudentNavBar :header="true" :Heading="Heading" />
+
+
+
+  <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="words">
+                <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+                  <p>Apply to {{currProject}}?</p>
+              </div>
+              <span>
+                <div class = "applybtns">
+                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="confirmYes(true)">Yes</button>
+                  <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                </div>
+              </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
   <div class="mainBody">
+          <button type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
+
     <h1 id="status">
       <span class="options">
         <b>OFFERED</b>

@@ -6,7 +6,7 @@
             <div class="status-button flex todoButton">
                
                 <div>
-                    <p>To Do</p>
+                <p id="status">To Do</p>
                 </div>
                 
             </div>
@@ -165,6 +165,9 @@ export default {
   methods: {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
+    },
+    getData() {
+      this.$emit('getData',this.task)
     },
   },
 };

@@ -1,6 +1,32 @@
 <template>
   <BusinessNavBar :Heading="Heading" :header="true" />
+
+
+    <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="words">
+                <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+                  <p>Apply to {{currProject}}?</p>
+              </div>
+              <span>
+                <div class = "applybtns">
+                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="confirmYes(true)">Yes</button>
+                  <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                </div>
+              </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
   <div class="mainBody">
+              <button type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
+
     <router-link
       class="floating-right-bottom-btn"
       :to="{ name: 'BusinessAddProject' }"
@@ -77,6 +103,7 @@
             @acceptbtn="accApplicant(key)"
             @rejectbtn="rejApplicant(key)"
             @clickCard="indvApplicant(key)"
+            :popUpConfirm="this.popUpConfirm"  
           />
         </div>
       </div>
@@ -128,6 +155,7 @@ export default {
       offered: [],
       rejected: [],
       applied: [],
+      popUpConfirm: null,
     };
   },
 
@@ -158,6 +186,8 @@ export default {
     async accApplicant(key) {
       //this.SET_KEY(key)
       //this.GET_NEW_CARD()
+      //TBC this.$refs.confirmModal.click()
+      
       var accApplicant = this.newApplicants[key];
       var offered = this.offered[key];
       var name = this.applicant[key].name;

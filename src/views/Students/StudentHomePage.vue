@@ -321,7 +321,6 @@ export default {
     },
     applying(event,key) {
       this.$refs.confirmModal.click();
-      alert(key)
       this.applyConfirm = true
       this.currKey = key
       if (event) {

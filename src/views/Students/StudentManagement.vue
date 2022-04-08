@@ -366,4 +366,17 @@ export default {
       filter: blur(5px); 
   }
 
+  #backButton {
+    background: #0e8044;
+  /*width: 190px;
+        height: 30px;*/
+    color: white;
+    margin-top: 20px;
+    border: none;
+    border-radius: 15px;
+    border-radius: 30px;
+    padding: 10px 25px;
+    font-size: 14px;
+}
+
 </style>

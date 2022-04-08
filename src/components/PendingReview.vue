@@ -4,7 +4,9 @@
         <div class="top flex flex-row">
             <div class="title"><strong>{{task['taskname']}}</strong></div>
             <div class="status-button flex todoButton">
-                    Pending
+                    <div>
+              <p id="status">Pending</p>
+            </div>
             </div>
         </div>
         <div class="top flex flex-row">

@@ -47,7 +47,7 @@ export default {
     var title = this.studentProjectTitle
     setTimeout(() => {
      this.$refs.clickMe.click()
-    }, 250)
+    }, 2500)
   },
   methods: {
       ...mapMutations(['SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED']),

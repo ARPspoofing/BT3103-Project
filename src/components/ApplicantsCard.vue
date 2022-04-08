@@ -44,7 +44,7 @@
           data-bs-toggle="modal"
           data-bs-target="#accModal"
         >-->
-        <button href="#" class="accept" @click="acceptbtn">Accept</button>
+        <button ref="accept" href="#" class="accept" @click="acceptbtn">Accept</button>
         <br />
         <!--<div
           class="modal fade"
@@ -91,7 +91,7 @@
           data-bs-toggle="modal"
           data-bs-target="#rejModal"
         >-->
-        <button href="#" class="reject" @click="rejectbtn">Reject</button>
+        <button ref="reject" href="#" class="reject" @click="rejectbtn">Reject</button>
         <br />
         <!--<div
           class="modal fade"
@@ -152,6 +152,17 @@ export default {
     applicantCourse: String,
     status: String,
     accepted: Boolean,
+    popUpConfirm: Boolean,
+  },
+
+  setup(props) {
+    watch(()=>props.popUpConfirm, (state) => {
+            if (state == true) {
+              this.$refs.accept.click()
+            } else {
+              this.$refs.reject.click()
+            }
+    })
   },
 
   methods: {
