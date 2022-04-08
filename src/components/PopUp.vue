@@ -42,7 +42,7 @@ export default {
 .content {
   border-radius: 15px;
   padding: 40px 20px;
-  border: 3px solid #ffc875;
+  /* border: 3px solid #ffc875; */
   background-color: #ffe9c8;
   box-shadow: 15px 15px 40px rgba(0, 0, 0, 0.2);
 }
