@@ -76,7 +76,7 @@
               <div class="modal-body">
                 <div class="words">
                   <i class="fa-solid fa-circle-check" id="tickIcon"></i>
-                  <p>Edit changes?</p>
+                  <p>Save changes?</p>
                 </div>
                 <span>
                   <div class="applybtns">
@@ -233,7 +233,7 @@ export default {
 
         this.$router.push({ name: "BusinessHomePage" });
       }
-      alert("save data");
+      // alert("save data");
     },
   },
 
@@ -385,7 +385,7 @@ select {
 button,
 .button {
   cursor: pointer;
-  padding: 2px 24px;
+  padding: 7px 44px;
   border-radius: 30px;
   border: none;
   font-size: 14px;
@@ -492,7 +492,7 @@ ul {
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   height: 50px;
 }
 
@@ -514,18 +514,18 @@ ul {
   width: 120px;
   height: 30px;
   font-size: 18px;
+  padding-top: 3px;
 }
 
 #tickIcon {
   height: 38px;
   width: 38px;
   color: #3d9956;
-  float: left;
 }
 
 .modal-body p {
   text-align: center;
-  width: 180px;
-  margin-left: 48px;
+  width: max-content;
+  margin-bottom: 20px;
 }
 </style>

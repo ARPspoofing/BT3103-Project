@@ -508,8 +508,9 @@ export default {
           transcriptDownloadLink: this.transcriptLink,
           description: this.description,
         });
+        this.$router.push({ name: "StudentHomePage" });
       }
-      alert("save data");
+      // alert("save data");
     },
   },
 
@@ -665,7 +666,7 @@ select {
 button,
 .button {
   cursor: pointer;
-  padding: 2px 24px;
+  padding: 7px 44px;
   border-radius: 30px;
   border: none;
   font-size: 14px;
@@ -772,7 +773,7 @@ ul {
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   height: 50px;
 }
 
@@ -794,21 +795,19 @@ ul {
   width: 120px;
   height: 30px;
   font-size: 18px;
+  padding-top: 3px;
 }
 
 #tickIcon {
   height: 38px;
   width: 38px;
   color: #3d9956;
-  float: left;
 }
 
 .modal-body p {
-  font-size: 18px;
   text-align: center;
-  width: 180px;
-  margin-left: 48px;
-  color: #3f3f3f;
+  width: max-content;
+  margin-bottom: 20px;
 }
 
 .but {
@@ -821,5 +820,9 @@ ul {
   margin-left: 15%;
   margin-right: auto;
   margin-bottom: 5px;
+}
+
+#saveModal {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 </style>

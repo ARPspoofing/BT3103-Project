@@ -201,6 +201,7 @@ export default {
           that.projects.push({
             projectTitle: finalResult.data().Project_Title,
             description: finalResult.data().Description,
+            profilePicture: finalResult.data().profPicture
           });
         })
       );*/
@@ -254,6 +255,7 @@ export default {
         projectTitle: data.Project_Title,
         description: data.Description,
         business: data.poster_id,
+        profilePicture: data.profPicture
       };
     }
   },

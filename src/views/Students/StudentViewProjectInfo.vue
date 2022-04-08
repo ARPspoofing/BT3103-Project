@@ -566,7 +566,7 @@ hr {
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   height: 50px;
 }
 
@@ -594,12 +594,13 @@ hr {
   height: 38px;
   width: 38px;
   color: #3d9956;
-  float: left;
+  margin-left: 40%;
+  margin-right: auto;
 }
 
 .modal-body p {
   text-align: center;
-  width: 180px;
-  margin-left: 48px;
+  width: max-content;
+  margin-bottom: 20px;
 }
 </style>

@@ -5,9 +5,54 @@
       <i class="fa-solid fa-angles-left"></i>
       Back to Projects
     </button>
-    <button id="completeButton" @click="completeProject()">
+    <button id="completeButton" data-bs-toggle="modal" data-bs-target="#closeModal"> 
       Complete Project
     </button>
+    <div
+              class="modal fade"
+              id="closeModal"
+              tabindex="-1"
+              aria-labelledby="closeModalLabel"
+              aria-hidden="true"
+              data-bs-backdrop="false"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <div class="words">
+                      <i
+                        class="fa-solid fa-triangle-exclamation"
+                        id="warningIcon"
+                      ></i>
+                      <p>
+                        Are you sure you want to <br />
+                        <span style="color: red"> complete </span> this project?<br />
+                        This action is not reversible.
+                      </p>
+                    </div>
+                    <span>
+                      <div class="applybtns">
+                        <button
+                          type="button"
+                          id="yesbtn"
+                          data-bs-dismiss="modal"
+                          @click="completeProject()"
+                        >
+                          Yes
+                        </button>
+                        <button
+                          type="button"
+                          id="nobtn"
+                          data-bs-dismiss="modal"
+                        >
+                          No
+                        </button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
     <div class="wrapper-outer">
       <div class="wrapper">
         <h4>TO-DO</h4>
@@ -187,7 +232,7 @@ export default {
 
         this.$emit("updated");
       } catch (error) {
-        console.error("Error updating document: ", error);
+        console.error("Error updating document: ", error); 
       }
     },
   },
@@ -398,5 +443,55 @@ h4 {
   padding: 10px 25px;
   font-size: 14px;
   margin-left: 50px;
+}
+
+#closeModal {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #ffe9c8;
+  border: none;
+}
+
+.words {
+  width: max-content;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+.applybtns {
+  width: max-content;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+#yesbtn,
+#nobtn {
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #ffc875;
+  color: #3f3f3f;
+  width: 120px;
+  height: 30px;
+  font-size: 18px;
+}
+
+#warningIcon {
+  height: 60px;
+  width: 60px;
+  color: #ffab2c;
+  float: left;
+}
+
+.modal-body p {
+  font-size: 14px;
+  text-align: center;
+  width: 300px;
 }
 </style>
