@@ -1,7 +1,9 @@
 <template>
-        <img class="loading" src="https://cutewallpaper.org/21/loading-gif-transparent-background/CBP-Portal.gif">
-        <button @click="viewTasks"> Click me
+<div class="mainBody">
+        <div class="lds-hourglass"></div>
+        <button style="visibility: hidden;" ref="clickMe" @click="viewTasks"> Click me
         </button>
+</div>
 </template>
 
 <script>
@@ -37,11 +39,15 @@ export default {
       STUDENT_IN_PROGRESS_TEMP:[],
       STUDENT_PENDING_REVIEW_TEMP:[],
       STUDENT_COMPLETED_TEMP:[],
+      click:false,
     };
   },
   mounted() {
     var id = this.studentProjectId
     var title = this.studentProjectTitle
+    setTimeout(() => {
+     this.$refs.clickMe.click()
+    }, 2000)
   },
   methods: {
       ...mapMutations(['SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED']),
@@ -132,15 +138,45 @@ export default {
 </script>
 
 <style scoped>
-    .loading {
-        z-index: 999;
-        height: 30%;
-        width: 30%;
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        left:30vw;
-        top:40vh;
-    }
+
+.mainBody {
+    background-color:#C3EEC5;
+    width:auto;
+    height:100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .lds-hourglass {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-hourglass:after {
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  width: 0;
+  height: 0;
+  margin: 8px;
+  box-sizing: border-box;
+  border: 32px solid #004a23;
+  border-color: #004a23 transparent #004a23 transparent;
+  animation: lds-hourglass 1.2s infinite;
+}
+@keyframes lds-hourglass {
+  0% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  50% {
+    transform: rotate(900deg);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  100% {
+    transform: rotate(1800deg);
+  }
+}
 </style>
