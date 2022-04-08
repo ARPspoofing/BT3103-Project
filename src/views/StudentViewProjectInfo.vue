@@ -3,7 +3,7 @@
   <div class="mainBody">
     <div>
       <div class = "clogo">
-        <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+        <img :src="profilePicture" alt="Logo" class = "logo">
         <span>
           <div class="projTitle">
             {{items.projectTitle}}  <br>
@@ -135,6 +135,7 @@ export default {
       appstat: "",
       companyEmail: "", 
       companyName: "",
+      profilePicture: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",
     }
   },
   computed: {
@@ -176,6 +177,7 @@ export default {
     this.projId = JSON.parse(this.cardItems).projectId
     this.appstat = JSON.parse(this.cardItems).appstat
     this.companyEmail = JSON.parse(this.cardItems).company
+    this.profilePicture = JSON.parse(this.cardItems).profilePicture
 
 
     const that = this

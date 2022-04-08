@@ -22,7 +22,7 @@
     <hr/>
     <div>
       <div class = "clogo">
-        <img src="../assets/google-logo.png" alt="Logo" class = "logo">
+        <img :src="profilePicture" alt="Logo" class = "logo">
         <span>
           <div class="projTitle">
             {{items.projectTitle}}  <br>
@@ -178,6 +178,7 @@ export default {
       newApplicants: [],
       accApplicants: [],
       rejApplicants: [],
+      profilePicture: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",
     }
   },
   mounted() {
@@ -207,6 +208,7 @@ export default {
     this.newApplicants = JSON.parse(this.cardItems).newApplicants
     this.accApplicants = JSON.parse(this.cardItems).accApplicants
     this.rejApplicants = JSON.parse(this.cardItems).rejApplicants
+    this.profilePicture = JSON.parse(this.cardItems).profilePicture
 
     if (this.$route.params.newApplicants) {
       this.newApplicants = JSON.parse(this.$route.params.newApplicants)
