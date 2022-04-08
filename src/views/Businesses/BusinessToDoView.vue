@@ -1,5 +1,8 @@
 <template>
+<!--
   <div class="mainBody">
+    -->
+    <!--
     <router-link
       :to="{
         name: 'BusinessManagement',
@@ -13,6 +16,7 @@
         <i class="fa-solid fa-angles-left"></i> Back to Management
       </button>
     </router-link>
+    -->
 
     <div class="view container">
       <!-- <router-link :to="{name:'BusinessManagement'}">
@@ -61,7 +65,9 @@
         </div>
         <div class="top-middle flex">
           <div id="duedate" class="date flex flex-column">
+            <!--       Don't need issue date
             <p><b>Task Issue Date :</b> {{ formatDate(issuedate) }}</p>
+            -->
             <p><b>Due Date :</b> {{ formatDate(duedate) }}</p>
           </div>
         </div>
@@ -136,7 +142,9 @@
         </div>
       </div>
     </div>
+    <!--
   </div>
+  -->
 </template>
 
 <script>
@@ -168,21 +176,22 @@ import {
   storageRef,
 } from "firebase/storage";
 import { getAuth } from "firebase/auth";
-const auth = getAuth();
-var email = auth.currentUser.email;
-console.log(email);
+import {mapState} from 'vuex'
+import {mapMutations} from 'vuex'
 
 export default {
   name: "BusinessToDoView",
   data() {
     return {
       name: "",
+      /*
       task_id: this.$route.params.taskId,
       projectId: this.$route.params.projectId,
       projectTitle: this.$route.params.projectTitle,
       duedate: this.$route.params.duedate,
       task: this.$route.params.task,
       description: this.$route.params.description,
+      */
       number: this.$route.params.key,
       extend: "",
       documents: "",
@@ -190,12 +199,13 @@ export default {
       long: "",
       status: "",
       dateOptions: { year: "numeric", month: "short", day: "numeric" },
-      email: auth.currentUser.email,
+      email: this.userEmail,
       file: null,
       files: [],
       fileLink: "",
     };
   },
+  props: ['task_id','projectId','projectTitle','duedate','task','description'],
   watch: {
     extend() {
       const extendedDate = new Date();
@@ -294,9 +304,9 @@ export default {
       }
       console.log(toRemove);
       console.log(newTask);
-      console.log(this.email);
+  
 
-      let ref2 = doc(db, "businesses", this.email);
+      let ref2 = doc(db, "businesses", this.userEmail);
       let biz = await getDoc(ref2);
       var da = biz.data();
       console.log(da);
@@ -304,7 +314,7 @@ export default {
       await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
       if (newTask.comments) {
         newTask.comments.push({
-          user: this.email,
+          user: this.userEmail,
           comment: a,
           date: new Date(),
           name: da.name,
@@ -313,7 +323,7 @@ export default {
       } else {
         newTask.comments = [];
         newTask.comments.push({
-          user: this.email,
+          user: this.userEmail,
           comment: a,
           date: new Date(),
           name: da.name,
@@ -321,7 +331,7 @@ export default {
         });
       }
       this.comment.unshift({
-        user: this.email,
+        user: this.userEmail,
         comment: a,
         date: new Date(),
         name: da.name,

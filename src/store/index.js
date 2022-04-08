@@ -58,6 +58,8 @@ export default createStore({
     businessPendingReview:null,
     businessCompleted:null,
     businessProjectId:null,
+    businessTaskId:null,
+    businessTask:null,
     businessProjectTitle:null,
     
   },
@@ -195,6 +197,12 @@ export default createStore({
     },
     SET_BUSINESS_PROJECT_TITLE(state,payload) {
       state.businessProjectTitle = payload
+    },
+    SET_BUSINESS_TASK_ID(state,payload) {
+      state.businessTaskId = payload
+    },
+    SET_BUSINESS_TASK(state,payload) {
+      state.businessTask = payload
     },
     SET_BUSINESS_TO_DO(state,payload) {
       state.businessToDo = payload
