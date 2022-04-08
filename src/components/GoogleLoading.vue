@@ -37,10 +37,6 @@ export default {
         async function checkToRoute() {
             
             var userEmail = window.localStorage.getItem('emailForSignIn')
-<<<<<<< HEAD
-            alert(userEmail)
-=======
->>>>>>> c88599b3061f6d1428f7472c4b3aa52c213c0b03
             const docRef = doc(db,"businesses",String(userEmail))
             console.log("doccccccc",docRef)
             //console.log(await getDoc(docRef))
