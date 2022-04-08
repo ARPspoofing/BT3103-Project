@@ -30,8 +30,7 @@
         :offered="true"
         @acceptBtn="acceptProj(key)"
         @declineBtn="declineProj(key)"
-        :picture = "item.profilePicture"
-      /> 
+      />
     </div>
   </div>
 </template>
