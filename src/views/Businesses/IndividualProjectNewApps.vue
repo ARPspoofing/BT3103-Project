@@ -77,6 +77,7 @@
             @acceptbtn="accApplicant(key)"
             @rejectbtn="rejApplicant(key)"
             @clickCard="indvApplicant(key)"
+            :picture="item.finalProfile"
           />
         </div>
       </div>
@@ -317,7 +318,7 @@ export default {
       const ref = doc(db, "students", app);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      return { name: data.name, course: data.course, email: data.email };
+      return { name: data.name, course: data.course, email: data.email, finalProfile: data.finalProfile, };
     }
 
     async function getOfferedProjects(app) {
