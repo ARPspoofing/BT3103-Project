@@ -1,10 +1,89 @@
 <template>
-    <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
-        taskId: task['id'], projectId:task['projectId'], projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
+  <div v-if="user == 'student'">
+    <router-link
+      style="text-decoration: none; color: inherit"
+      :to="{
+        name: 'ToDoView',
+        params: {
+          task: task,
+          taskId: task['id'],
+          projectId: task['projectId'],
+          projectTitle: this.task['projectTitle'],
+          duedate: this.duedate,
+        },
+      }"
+    >
+      <div class="completed">
+        <div class="top flex flex-row">
+          <div class="title">
+            <strong>{{ task["taskname"] }}</strong>
+          </div>
+          <div class="status-button flex completedButton">
+            <div>
+              <p id="status">Completed</p>
+            </div>
+          </div>
+        </div>
+        <div class="duedate">
+          <p>Due date: {{ duedate }}</p>
+        </div>
+
+        <div class="short">
+          <p>Short Description: {{ task["shortdescription"] }}</p>
+        </div>
+      </div>
+    </router-link>
+  </div>
+  <div v-else>
+    <router-link
+      style="text-decoration: none; color: inherit"
+      :to="{
+        name: 'BusinessToDoView',
+        params: {
+          task: task,
+          taskId: task['id'],
+          projectId: task['projectId'],
+          projectTitle: this.task['projectTitle'],
+          duedate: this.duedate,
+        },
+      }"
+    >
+      <div class="completed">
+        <div class="top flex flex-row">
+          <div class="title">
+            <strong>{{ task["taskname"] }}</strong>
+          </div>
+          <div class="status-button flex completedButton">
+            <div>
+              <p id="status">Completed</p>
+            </div>
+          </div>
+        </div>
+        <div class="duedate">
+          <p>Due date: {{ duedate }}</p>
+        </div>
+
+        <div class="short">
+          <p>Short Description: {{ task["shortdescription"] }}</p>
+        </div>
+      </div>
+    </router-link>
+  </div>
+  <!-- <router-link style="text-decoration: none; color: inherit; " 
+        :to="{name:'ToDoView', 
+        params: {
+            task: task,
+            taskId: task['id'], 
+            projectId:task['projectId'], 
+            projectTitle:this.task['projectTitle'], 
+            duedate:this.duedate
+        }
+        }"
+    >
     <div class="completed">
         <div class="top flex flex-row">
             <div class="title"><strong>{{task['taskname']}}</strong></div>
-            <div class="status-button flex inprogressButton">                
+            <div class="status-button flex completed">                
                 <div >
                     <p>Completed</p>
                 </div>
@@ -23,121 +102,161 @@
         </p>
         </div>          
     </div>  
-    </router-link>  
-
-    
+    </router-link>   -->
 </template>
 
 <script>
-    export default {
-        name: 'Completed',
-        props: {
-            task:Object,
-            projectTitle:String,
-            projectId:String
-
-        },
-        data() {
-            return {
-                duedate: this.task.duedate,
-                dateOptions: {year: "numeric", month: "short", day: "numeric"},
-            }
-        },
-        watch: {
-        },
-        methods: {
-            
-        }
-    }
+export default {
+  name: "Completed",
+  props: {
+    task: Object,
+    projectTitle: String,
+    projectId: String,
+    user: String,
+  },
+  data() {
+    return {
+      duedate: this.task.duedate,
+      dateOptions: { year: "numeric", month: "short", day: "numeric" },
+    };
+  },
+  watch: {},
+  methods: {
+    formatDate(date) {
+      return moment(date).format("DD MMMM YYYY");
+    },
+  },
+};
 </script>
 
 <style scoped>
-
-    .completed {
-        background-color: #BD9DCC;
-        border-radius: 20px;
-        padding: 40px 20px;
-        /*margin-right:5px;
+.completed {
+  /*background-color: aquamarine;*/
+  border-radius: 20px;
+  padding: 30px 20px;
+  /*margin-right:5px;
         margin-left:5px;
         margin-bottom: 4px;*/
-        text-decoration: none;
-        margin: 15px 5px;
-        box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.15);
-    }
+  text-decoration: none;
+  margin: 15px 5px;
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.15);
+  height: 170px;
+  text-align: left;
+}
 
-    .flex {
-        display: flex;
-    }
+p {
+  margin: 0px;
+}
 
-    .flex-row {
-        flex-direction: row;
-    }
+.title {
+  height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
 
-    a {
-        height:200px;
-    }
+.flex {
+  display: flex;
+}
 
-    .duedate {
-        width:15vw;
-    }
+.flex-row {
+  flex-direction: row;
+}
 
-    .todo {
-        color: white;
-        background-color: rgb(54, 179, 110);
-    }
+a {
+  height: 200px;
+}
 
-    
+.duedate {
+  width: 15vw;
+}
 
-    .pendingreview {
-        color: white;
-        background-color: rgb(102, 117, 245);
-    }
+.todo {
+  color: white;
+  background-color: #73ad8e; /*rgb(54, 179, 110);*/
+}
 
- 
-     .status-button {
-        width: 4px;
-        height: 10px;
-        font-size: 12px;
-        justify-self: start;
-        align-items: center;
-        justify-content: center;
-        padding: 8px 30px;
-        border-radius: 10px;
-        margin-left: auto;
-    }
+.inprogress {
+  color: white;
+  background-color: rgb(245, 116, 11);
+}
 
-    .top {
-        margin-bottom: 15px;
-        margin-top:-15px;
-    }
+.pendingreview {
+  color: white;
+  background-color: rgb(102, 117, 245);
+}
 
-    
-    .todoButton {
-        background-color: rgb(230, 121, 139);
-    }
+.completed {
+  color: white;
+  background-color: #bd9dcc;
+}
 
-    .inprogressButton {
-         background-color: rgb(230, 121, 139);
+.status-button {
+  width: 4px;
+  height: 10px;
+  font-size: 12px;
+  justify-self: start;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 30px;
+  border-radius: 10px;
+  margin-left: auto;
+}
 
-    }
+.top {
+  margin-bottom: 15px;
+  margin-top: -15px;
+}
 
-    .pendingreviewButton {
-         background-color: rgb(230, 121, 139);
+.todoButton {
+  background-color: rgb(230, 121, 139);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 
-    }
+.inprogressButton {
+  background-color: rgb(230, 121, 139);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 
+.pendingreviewButton {
+  background-color: rgb(230, 121, 139);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 
-    .completedButton {
-         background-color: rgb(230, 121, 139);
+.completedButton {
+  background-color: rgb(230, 121, 139);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 95px;
+}
 
-    }
+.duedate {
+  font-size: 13px;
+  margin-top: -7px;
+}
 
-    .duedate {
-        font-size:12px;
-        margin-top:-15px;
-    }
-    
+.short {
+  font-size: 13px;
+  margin-top: 5px;
+  height: 63px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* number of lines to show */
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
 
-
-
+#status {
+  width: max-content;
+  font-size: 12px;
+  margin: 0px;
+  color: white;
+}
 </style>

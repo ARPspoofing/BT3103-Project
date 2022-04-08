@@ -47,7 +47,7 @@ export default {
     var title = this.studentProjectTitle
     setTimeout(() => {
      this.$refs.clickMe.click()
-    }, 2000)
+    }, 250)
   },
   methods: {
       ...mapMutations(['SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED']),
@@ -141,8 +141,8 @@ export default {
 
 .mainBody {
     background-color:#C3EEC5;
-    width:auto;
-    height:100vh;
+    width:100vw;
+    height:150vh;
     display: flex;
     align-items: center;
     justify-content: center;

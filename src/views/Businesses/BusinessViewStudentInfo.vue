@@ -6,7 +6,10 @@
     class="form-wrap flex flex-column"
     id="mainBody"
   >
-    <button @click="goback" id="backButton">Back to Applicants</button>
+    <button @click="goback" id="backButton">
+      <i class="fa-solid fa-angles-left"></i>
+      Back to Applicants
+    </button>
     <form @submit.prevent="submitForm" class="content">
       <div class="profile-pic-outer">
         <img class="profile-pic" :src="finalProfile" />
@@ -64,6 +67,21 @@
             </ul>
           </div>
         </div>
+        <!--Description-->
+        <div class="description flex flex-column">
+          <div class="input flex flex-column">
+            <label for="description">Description</label>
+            <textarea
+              type="text"
+              id="description"
+              rows="4"
+              cols="50"
+              maxlength="500"
+              v-model="description"
+              readonly
+            ></textarea>
+          </div>
+        </div>
       </div>
 
       <!--Contact Details-->
@@ -103,33 +121,16 @@
           >
         </div>
       </div>
-
-      <!--Description-->
-      <div class="description flex flex-column">
-        <h4>Please limit your description to 500 characters</h4>
-        <div class="input flex flex-column">
-          <label for="description">Description</label>
-          <textarea
-            type="text"
-            id="description"
-            rows="4"
-            cols="50"
-            maxlength="500"
-            v-model="description"
-            readonly
-          ></textarea>
-        </div>
-      </div>
     </form>
   </div>
 </template>
 
 <script>
-import BusinessNavBar from "../components/BusinessNavBar.vue";
+import BusinessNavBar from "../../components/BusinessNavBar.vue";
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "vue-router";
 import * as moment from "moment";
-import firebaseApp from "../firebase.js";
+import firebaseApp from "../../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
   collection,
@@ -202,13 +203,6 @@ export default {
       // this.allApplicant.splice(this.theKey, 1);
       // this.offer.splice(this.theKey, 1);
       // this.apply.splice(this.theKey, 1);
-      console.log(this.accApplicant);
-      console.log(this.newApplicant);
-      console.log(offered);
-      console.log(this.offer);
-      console.log(applied);
-      console.log(this.apply);
-      console.log(this.theKey);
 
       alert("Accepting applicant: " + name);
       try {
@@ -317,7 +311,7 @@ export default {
       offer: [],
       reject: [],
       apply: [],
-    //   showButton: false,
+      //   showButton: false,
       items: [],
       newApplicants: [],
       accApplicants: [],
@@ -363,7 +357,7 @@ export default {
     this.apply = JSON.parse(this.$route.params.applied);
     this.item = JSON.parse(this.$route.params.items);
     this.theKey = JSON.parse(this.$route.params.key);
-    this.stat = JSON.parse(this.$route.params.stat)
+    this.stat = JSON.parse(this.$route.params.stat);
     console.log(this.accApplicant);
     this.items = JSON.parse(this.$route.params.items);
     this.projectId = JSON.parse(this.$route.params.items).projectId;
@@ -605,6 +599,10 @@ ul {
   color: blue;
 }
 
+h4 {
+  margin-top: 15px;
+}
+
 #applyModal {
   background-color: rgba(0, 0, 0, 0.5);
 }
@@ -667,12 +665,13 @@ ul {
   width: 180px;
   margin-left: 15%;
   margin-right: auto;
+  margin-bottom: 20px;
 }
 
 #backButton {
   background: #0e8044;
-  width: 180px;
-  height: 50px;
+  padding: 10px 25px;
+  width: 200px;
 }
 
 #accButton {

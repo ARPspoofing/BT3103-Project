@@ -267,48 +267,39 @@ export default {
 </script>
 
 <style scoped>
-    .wrapper-outer {
-        display: flex;
-        flex-direction: row;
-    }
-    
-    .wrapper {
-        background-color: rgb(195, 238, 197);
-        height:100vh;
-        flex:1;
-        align-items: center;
-        justify-content: center;
-        align-content: center;
-        justify-items: center;
-        margin-right:5px;
-    }
-
-    .empty {
-        align-items: center;
-    }   
-
-    h3 {
-        margin-top:-100px;
-        font-size: 20px;  
-    }
-
-    p {
-        text-align: center;
-        font-size:12px;
-        font-weight:300;
-    }
-
-    #backButton {
-    background: #0e8044;
-  /*width: 190px;
-        height: 30px;*/
-    color: white;
-    margin-top: 20px;
-    border: none;
-    border-radius: 15px;
-    border-radius: 30px;
-    padding: 10px 25px;
-    font-size: 14px;
+.mainBody {
+  background-color: #f5f5f5;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  overflow-y: scroll;
+  padding-bottom: 150px;
+  /*
+    filter: blur(5px);
+   */
+}
+.wrapper-outer {
+  display: flex;
+  flex-direction: row;
+  /* position: fixed; */
+  /* overflow-y: scroll; */
+  /* padding-bottom: 150px; */
+  margin: 20px;
+  margin-top: 0px;
+  width: 98%;
+  padding: 20px;
+  padding-bottom: 150px;
+}
+.wrapper {
+  background-color: #dbebe3; /* rgb(195, 238, 197);*/
+  /* height:100vh; */
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  margin-right: 5px;
+  padding: 15px;
 }
 
 

@@ -1,8 +1,8 @@
 <template>
-  <StudentNavBar :header=true :Heading="Heading" />
+  <StudentNavBar :header="true" :Heading="Heading" />
   <div class="mainBody">
     <h1 id="status">
-        <span class="options">
+      <span class="options">
         <b>IN PROGRESS</b>
       </span>
       <span>
@@ -20,11 +20,11 @@
         <Card
           :apply="false"
           :projectTitle="item.projectTitle"
-          :projectId ="item.id"
+          :projectId="item.id"
           :description="item.description"
           :picture="item.profilePicture"
-          :inProgress='true'
-          @viewTasks ="viewTasks(item.id, item.projectTitle)"
+          :inProgress="true"
+          @viewTasks="viewTasks(item.id, item.projectTitle)"
         />
       </div>
     </div>
@@ -72,17 +72,8 @@ export default {
     };
   },
   mounted() {
-    /*
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        this.user = user;
-      }
-    });
-    this.userEmail = auth.currentUser.email;
-    */
-    var userEmail = this.userEmail
-    const that = this
+    var userEmail = this.userEmail;
+    const that = this;
     async function getinProgProjects() {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
@@ -90,20 +81,26 @@ export default {
       //var projects = data.inProgProjects
       //that.inProgProjects = data.inProgProjects
       if (data) {
-        for(var i = 0; i < data.inProgProjects.length; i++) {
-          getProject(data.inProgProjects[i]).then((res)=>{that.inProgProjects.push(res)})
+        for (var i = 0; i < data.inProgProjects.length; i++) {
+          getProject(data.inProgProjects[i]).then((res) => {
+            that.inProgProjects.push(res);
+          });
         }
-        console.log(that.inProgProjects)
+        console.log(that.inProgProjects);
       }
     }
-    getinProgProjects()
-    
+    getinProgProjects();
+
     async function getProject(proj) {
       const ref = doc(db, "Project", proj);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      return {projectTitle: data.Project_Title, description: data.Description, profilePicture: data.profPicture,
-      id: docSnap.id}
+      return {
+        projectTitle: data.Project_Title,
+        description: data.Description,
+        profilePicture: data.profPicture,
+        id: docSnap.id,
+      };
     }
     /*
     async function populateStore() {
@@ -287,7 +284,8 @@ export default {
   height: 100%;
   position: fixed;
   overflow-y: scroll;
-  padding-bottom: 550px;
+  padding-bottom: 1000px;
+  margin-bottom: 100px;
 }
 
 .projectContainer {

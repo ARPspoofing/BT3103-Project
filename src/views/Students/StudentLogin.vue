@@ -55,12 +55,9 @@ import {getDoc, collection, doc} from "firebase/firestore"
 import {mapState} from "vuex"
 import {mapMutations} from "vuex"
 import ResetPassword from '../../components/ResetPassword.vue'
-
 const router = useRouter()
 const auth = getAuth()
 const db = getFirestore(firebaseApp)   
-
-
 export default {
     name:'StudentLogin',
     data() {
@@ -159,12 +156,10 @@ export default {
         color: #2c3e50;
         text-decoration: none;
     }
-
     a.router-link-exact-active {
         color: #42b983;
         font-weight:700px;
     }
-
     .link {
         font-weight: bold;
         color: blue;
@@ -176,9 +171,7 @@ export default {
         font-size: 18px;
         margin-left:15px;
         font-weight:bolder;
-
     }
-
     .form-wrap {
         display:flex;
         height:105%;
@@ -186,7 +179,6 @@ export default {
         background: url("../../assets/signupBG.png") no-repeat center center fixed;
         overflow:hidden;
     }
-
     form {
         padding: 0 10px;
         position: relative;
@@ -196,13 +188,10 @@ export default {
         align-items: left;
         flex: 1;
         margin-left:12vw;
-
     }
-
     .inputs {
         width:40%;
     }
-
     .input {
         position: relative;
         display: flex;
@@ -213,7 +202,6 @@ export default {
         color: red;
         font-size: 15px;
     }
-
     input {
         width: 80%;
         border: 2px solid darkgreen;
@@ -227,17 +215,14 @@ export default {
         margin:5px;
         margin-left: 10px;
     }
-
     input:focus {
         outline: none;
     }
-
     .icon {
         width:12px;
         position:absolute;
         margin-left:20px;
     }
-
     button {
         margin-top:3vh;
         margin-left: 10px;
@@ -252,7 +237,6 @@ export default {
         border-radius: 25px;
         color: white;
     }
-
     .forgot {
         font-size:14px;
         color: darkgreen;
@@ -260,7 +244,6 @@ export default {
         cursor: pointer;
         width: 80%;
     }
-
     .shake {
     animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     transform: translate3d(0, 0, 0);
@@ -287,7 +270,6 @@ export default {
     .input-error {
         order: 2px solid red;
     }
-
     h1 {
         text-align: left;
         margin-top: 20px;
@@ -296,12 +278,9 @@ export default {
     h4 {
         font-size: 16px;
         margin-top: 5px;
-
     }
     .inputLabel {
         margin-bottom: 0px;
         text-align: left;
     }
-
-
 </style>

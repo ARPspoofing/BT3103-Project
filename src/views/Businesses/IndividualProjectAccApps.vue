@@ -85,9 +85,9 @@
 </template>
 
 <script>
-import BusinessNavBar from "../components/BusinessNavBar.vue";
-import ApplicantsCard from "../components/ApplicantsCard.vue";
-import firebaseApp from "../firebase.js";
+import BusinessNavBar from "../../components/BusinessNavBar.vue";
+import ApplicantsCard from "../../components/ApplicantsCard.vue";
+import firebaseApp from "../../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
   collection,
@@ -97,12 +97,12 @@ import {
   getDocs,
   updateDoc,
   getDoc,
-  query, 
-  where
+  query,
+  where,
 } from "firebase/firestore";
-import {mapState} from "vuex"
-import {mapMutations} from "vuex"
-import {mapActions} from "vuex"
+import { mapState } from "vuex";
+import { mapMutations } from "vuex";
+import { mapActions } from "vuex";
 const db = getFirestore(firebaseApp);
 import { getAuth } from "firebase/auth";
 
@@ -124,7 +124,7 @@ export default {
       accApplicants: [],
       rejApplicants: [],
       applicant: [],
-      projectId:"",
+      projectId: "",
       offered: [],
       rejected: [],
       applied: [],
@@ -167,7 +167,7 @@ export default {
 
       //Non vuex
       this.$router.push({
-        name:'BusinessViewStudentInfo', 
+        name: "BusinessViewStudentInfo",
         params: {
           applicants: JSON.stringify(this.applicant[key]),
           allApplicants: JSON.stringify(this.applicant),
@@ -181,7 +181,7 @@ export default {
           key: JSON.stringify(key),
           stat: JSON.stringify(""),
         },
-      })
+      });
     },
   },
 
@@ -213,9 +213,9 @@ export default {
 
     //vuex
     this.items = JSON.parse(this.cardItems);
-    console.log(this.cardItems)
-    console.log(this.cardItems)
-    console.log("below carditems",this.items['accApplicants'])
+    console.log(this.cardItems);
+    console.log(this.cardItems);
+    console.log("below carditems", this.items["accApplicants"]);
     this.projectId = JSON.parse(this.cardItems).projectId;
     if (this.items["accApplicants"]) {
       this.accApplicants = this.items['accApplicants'];
@@ -226,13 +226,13 @@ export default {
       }
     }
 
-    const that = this
+    const that = this;
     async function getApplicant(app) {
-      const stuRef = collection(db, "students")
+      const stuRef = collection(db, "students");
       const ref = doc(db, "students", app);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      console.log("studata",data.declineProjects)
+      console.log("studata", data.declineProjects);
       var stat = "pending";
       var inProg = data.inProgProjects;
       var declined = data.rejectedProjects;
@@ -242,21 +242,26 @@ export default {
       if (data.declinedProjects) {
         declined = data.declinedProjects;
       }
-      
+
       //console.log(that.projectId)
       //console.log(inProg)
       //console.log(inProg.includes(that.projectId),String(that.projectId) , inProg )
       if (inProg.includes(that.projectId)) {
-        stat = "accepted"
+        stat = "accepted";
       } else if (declined.includes(that.projectId)) {
-        stat = "declined"
+        stat = "declined";
       }
       //let result = await data.name
-      return { name: data.name, course: data.course, status: stat, email: data.email };
+      return {
+        name: data.name,
+        course: data.course,
+        status: stat,
+        email: data.email,
+      };
     }
     // console.log(this.newApplicants)
     // console.log(this.rejApplicants)
-    console.log(this.applicant)
+    console.log(this.applicant);
     // console.log(this.accApplicants)
     // console.log(this.offered)
     // console.log(this.rejected)
@@ -327,6 +332,10 @@ hr {
   text-align: center;
   color: #606060;
   text-decoration: none;
+}
+
+.optionsOff:hover {
+  color: #0e8044;
 }
 
 .floating-right-bottom-btn {

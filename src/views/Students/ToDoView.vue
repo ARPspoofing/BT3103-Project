@@ -137,7 +137,6 @@ import Loading from "../../components/Loading.vue";
 const db = getFirestore(firebaseApp);
 const router = useRouter();
 import * as moment from "moment";
-
 export default {
   name: "ToDoView",
   computed: {
@@ -184,7 +183,6 @@ export default {
         this.dateOptions
       );
     },
-
     status() {
       var self = this;
       self.updateStatus();
@@ -195,17 +193,14 @@ export default {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
-
     async addComment() {
       var a = document.getElementById("comments").value;
       let ref = await doc(db, "Project", this.studentProjectId);
       let project = await getDoc(ref);
-
       var dat = await project.data();
       var tasks = dat.Tasks;
       var toRemove = {};
       var newTask = {};
-
       for (let i = 0; i < tasks.length; i++) {
         let currTask = tasks[i];
         console.log(this.task_id);
@@ -217,12 +212,10 @@ export default {
       console.log(toRemove);
       console.log(newTask);
       console.log(this.userEmail);
-
       let ref2 = doc(db, "students", this.userEmail);
       let biz = await getDoc(ref2);
       var da = biz.data();
       console.log(da);
-
       await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
       if (newTask.comments) {
         newTask.comments.push({
@@ -249,21 +242,17 @@ export default {
         name: da.name,
         profPic: da.finalProfile,
       });
-
       await updateDoc(ref, { Tasks: arrayUnion(newTask) });
-
       //non-vuex
       //this.task = newTask;
       this.SET_STUDENT_TASK(newTask)
       document.getElementById("comments").value = "";
     },
-
     async updateStatus() {
       const currStatus = this.status;
       console.log(currStatus);
       let ref = await doc(db, "Project", this.studentProjectId);
       let project = await getDoc(ref);
-
       var tasks = await project.data().Tasks;
       console.log("tasks",tasks)
       console.log("ok");
@@ -271,9 +260,7 @@ export default {
       //console.log(tasks);
       //console.log(tasks.length);
       var toRemove = {};
-
       var newTask = {};
-
       for (let i = 0; i < tasks.length; i++) {
         console.log(i);
         let currTask = tasks[i];
@@ -284,12 +271,9 @@ export default {
           newTask = currTask;
         }
       }
-
       console.log(tasks);
       console.log(newTask);
-
       await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
-
       await updateDoc(ref, { Tasks: arrayUnion(newTask) });
       //non-vuex
       //this.task = newTask;
@@ -297,11 +281,9 @@ export default {
       this.SET_STUDENT_TASK(newTask)
       this.$router.push({name:'managementLoading'})
     },
-
     async updateTask() {
       try {
         const docRef = await updateDoc(doc(db, "Project", this.studentProjectId), {});
-
         console.log(docRef);
         this.$emit("updated");
       } catch (error) {
@@ -309,10 +291,8 @@ export default {
       }
     },
   },
-
   mounted() {
     const curr = this;
-
     //Non vuex
     //const taskId = curr.$route.params.taskId;
     //console.log(curr.$route.params.taskId);
@@ -324,7 +304,6 @@ export default {
     const projectTitle = this.projectTitle
     
     //console.log(curr.$route.params);
-
     async function getComments() {
       const docRef = doc(db, "Project", projectId);
       let project = await getDoc(docRef);
@@ -364,7 +343,6 @@ export default {
       var tasks = await project.data().Tasks;
       console.log(tasks);
       var currTask = {};
-
       for (let i = 0; i < tasks.length; i++) {
         let thisTask = tasks[i];
         if (thisTask.taskName == taskId) {
@@ -400,61 +378,49 @@ export default {
   padding-bottom: 150px;
 }
 */
-
 .flex {
   display: flex;
 }
-
 .flex-column {
   flex-direction: column;
 }
-
 nav-link {
   margin-bottom: 12px;
   align-items: center;
   color: white;
   font-size: 12px;
 }
-
 img {
   margin-right: 16px;
   width: 7px;
   height: 10px;
 }
-
 .details {
   /*background-color:rgb(11, 167, 115);*/
   background-color: #b3cabe;
   border-radius: 20px;
 }
-
 .top div {
   flex-grow: 1;
 }
-
 .left {
   font-size: 12px;
 }
-
 .left p:first-child {
   font-size: 24px;
   text-transform: uppercase;
   margin-bottom: 8px;
 }
-
 .left p:nth-child(2) {
   font-size: 16px;
 }
-
 span {
   color: black;
 }
-
 .right {
   font-size: 12px;
   align-items: flex-end;
 }
-
 .middle {
   margin-top: 30px;
   color: black;
@@ -466,15 +432,12 @@ h4 {
   margin-bottom: 5px;
   margin-top: 20px;
 }
-
 p {
   font-size: 16px;
 }
-
 .date h4 {
   margin-top: 20px;
 }
-
 .description {
   margin-left: 0px;
   text-align: justify;
@@ -487,7 +450,6 @@ textarea {
   border-radius: 12px;
   outline: none;
 }
-
 #backButton {
   background: #0e8044;
   /*width: 190px;
@@ -550,7 +512,6 @@ label {
   width: 180px;
   position: right;
 }
-
 .logo {
   vertical-align: left;
   width: 45px;
@@ -561,5 +522,4 @@ label {
   margin-top: -2.5px;
   float: left;
 }
-
 </style>

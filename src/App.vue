@@ -66,24 +66,19 @@ export default {
   color: #2c3e50;
   text-decoration: none;
 }
-
 #nav a.router-link-exact-active {
   color: #42b983;
   font-weight:700px;
 }
-
 .home {
   height:80vh;
 }
-
 .fade-enter-from,
 .fade-leave-to {
   opacity:0;
 }
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease-out;
 }
-
 </style>

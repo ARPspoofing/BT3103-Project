@@ -12,7 +12,8 @@
     <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'" @click.self="clickCard">
       Rejected
     </p>
-<div v-show=false>NO</div>
+    <p id="closed" v-if="stat == 'closed'">Application Closed</p>
+    <div v-show="false">NO</div>
     <button
       id="applybtns"
       v-show="apply"
@@ -31,7 +32,7 @@
       @click="applying"
     >
       Apply Now
-    </button>   
+    </button>
 
     <button
       id="studentManagementButton"
@@ -40,8 +41,8 @@
       class="btn-apply"
     >
       View tasks
-    </button> 
-        <!--
+    </button>
+    <!--
                   <div 
                     class="modal fade"
                     id="applyModal"
@@ -83,7 +84,7 @@
                       </div>
                     </div>
                   </div>
-                  -->
+                  
                   <button
                     id="acceptbtn"
                     v-show="offered"
@@ -99,9 +100,9 @@
                     class="btn-apply"
                   >
                     Decline
-                  </button>
-      
- <!--Ruth previous card version. Keeping incase new version is wrong 
+                  </button>-->
+
+    <!--Ruth previous card version. Keeping incase new version is wrong 
     <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">Rejected</p>
 
     <button id="applybtns" v-show="apply" v-if="appstat == 'applied'" class="btn-applied">Applied</button>
@@ -123,7 +124,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>  -->
     <button
       id="acceptbtn"
       v-show="offered"
@@ -139,10 +140,8 @@
       class="btn-apply"
     >
       Decline
-    </button> -->
-
-    
-  </div> 
+    </button>
+  </div>
 </template>
 
 <script>
@@ -158,7 +157,7 @@ export default {
     };
   },
   mounted() {
-    this.currProjectTitle = this.projectTitle
+    this.currProjectTitle = this.projectTitle;
   },
   props: {
     projectTitle: String,
@@ -170,8 +169,8 @@ export default {
     picture: String,
     inProgress: Boolean,
     projectId: String,
-    like:false,
-    latest:false,
+    like: false,
+    latest: false,
     //applicantbtn: Function,
   },
   methods: {
@@ -201,11 +200,11 @@ export default {
       //If like == true and latest == false, emit true. Then use testCollection in StudentHomePage "applying()"
       //If like == false and latest == true, emit false. Then use wholeCollection in StudentHomePage "applying()"
       if (this.like == true && this.latest == false) {
-        this.$emit("applying",true)
+        this.$emit("applying", true);
       } else {
-        this.$emit("applying",false)
+        this.$emit("applying", false);
       }
-    }
+    },
   },
 };
 </script>
@@ -267,18 +266,24 @@ export default {
 }
 
 #acceptbtn {
+  background-color: #0e8044;
   color: white;
   border-radius: 8px;
   border-width: 0px;
   height: 30px;
+  width: 90px;
+  font-size: 14px;
 }
 
 #declinebtn {
-  background-color: #F40000;
+  background-color: #e83939;
   color: white;
   border-radius: 8px;
   border-width: 0px;
   height: 30px;
+  width: 90px;
+  margin-left: 10px;
+  font-size: 14px;
 }
 
 #studentManagementButton {
@@ -289,7 +294,13 @@ export default {
   height: 30px;
 }
 
-
+#closed {
+  background-color: #ecf0f3;
+  width: 180px;
+  font-size: 15px;
+  border-radius: 12px;
+  color: #ec5c5c;
+}
 
 .btn-apply {
   background-color: #0e8044;
@@ -330,6 +341,8 @@ export default {
   margin-left: 10px;
   font-size: 18px;
   font-weight: bold;
+  width: max-content;
+  float: left;
 }
 
 .offered {

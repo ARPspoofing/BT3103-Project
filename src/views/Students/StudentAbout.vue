@@ -160,7 +160,6 @@ import PopUp from '../../components/PopUp.vue'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {mapState} from 'vuex'
 import {mapMutations} from 'vuex'
-
 export default {
   name: 'StudentAbout',
   created() {
@@ -207,7 +206,6 @@ export default {
       transcriptErrorPresent:false,
       transcriptPresent: false,
       resumePresent: false,
-
       //change to firebase later
       finalProfile: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",
       errorMessage:"",
@@ -222,7 +220,6 @@ export default {
       search: Boolean,
       header: Boolean,
   },
-
   methods:  {   
     add() {
       const maxSize = 3
@@ -233,7 +230,6 @@ export default {
         })
       } 
     },
-
     onFileSelected(event) {
       this.profileImage = event.target.files[0]
       const storage = getStorage();
@@ -246,7 +242,6 @@ export default {
       }
       );
     },
-
     changeResume(event) {
         this.resumePresent = true;  
         //Add code to upload the resume somewhere
@@ -263,7 +258,6 @@ export default {
             })
         })
     },
-
     changeTranscript(event) {
         this.transcriptPresent = true; 
         //Add code to upload the transcript somewhere
@@ -285,12 +279,10 @@ export default {
             this.interests = this.interests.filter(interest => interest.id != id)
         }
     },
-
     showPopUp() {
         this.popUp = true
         console.log(this.popUp)
     },
-
     close(leave) {
         if (leave === false) {
           this.popUp = false
@@ -299,7 +291,6 @@ export default {
           this.popUp = false
         }
     },
-
     allInterestsEmpty() {
         console.log(this.interests)
         console.log(this.interests.length)
@@ -308,9 +299,7 @@ export default {
                 return false
             }
         }
-
       return true;
-
     },
     async save() {             
         this.nameErrorPresent = false;
@@ -322,7 +311,6 @@ export default {
         this.contactNumberErrorPresent = false;
         this.resumeErrorPresent = false;
         this.transcriptErrorPresent = false;
-
       if(this.name == "") {
           this.nameErrorPresent = true;
           this.errorMessage = "Please fill out your name"
@@ -359,7 +347,6 @@ export default {
           this.transcriptErrorPresent = true;   
           this.errorMessage = "Please upload your transcript"
       } else {
-
       updateDoc(doc(db,"students",String(this.schoolEmail)),{
           email: this.schoolEmail,
           name:this.name,
@@ -375,10 +362,8 @@ export default {
       })
       }
       alert("save data")
-
     },
   },
-
   mounted() {
       /*
     const auth = getAuth();
@@ -424,12 +409,10 @@ export default {
     padding-bottom: 150px;
     padding-top: 20px;
   }
-
 h3 {
     font-family: verdana;
     text-align: center;
 }
-
 h1 {
     color: rgba(0, 0, 0, 0.829);
     font-family: verdana;
@@ -437,7 +420,6 @@ h1 {
     text-align: center;
     padding: 8px
 }
-
 nav {
   background-color: "#004A23";
 }
@@ -450,18 +432,15 @@ nav {
   overflow:scroll;
   margin-bottom: 30px;
 }
-
 input,
 select {
     margin-bottom: 20px;
     margin-left:10px;
 }
-
 .interest-flex {
     width:200px;
     
 }
-
 input,
 select,
 textarea {
@@ -473,16 +452,13 @@ textarea {
     margin-left: auto;
     margin-right: auto;
 }
-
 textarea {
     margin-bottom: 8px;
 }
-
 .labelTag,
 .inputTag {
     border-radius:20px;
 }
-
 label {
     text-align: left;
     width: 70%;
@@ -490,47 +466,37 @@ label {
     margin-right: auto;
     margin-bottom: 3px;
 }
-
 .addBtn {
     margin-top: 6vh;
 }
-
 .interest {
     gap:10px;
     div {
         flex: 1;
     }
 }
-
 img {
     width:40px;
     height:40px;
 }
-
 select{
     padding-left:0.55rem;
 }
-
 .delete {
     margin-top:-45px;
     margin-left:35px;
     color:red;
 }
-
 .profile-pic {
     border-radius: 50%;
     margin:10px 0px;
     width:120px;
     height: 120px;
-
 }
-
 .errorMsg {
     color: red;
     margin-top:5px;
 }
-
-
 button,
 .button {
 cursor: pointer;
@@ -545,14 +511,12 @@ img {
         margin-right: 4px;
       }
 }
-
 .save {
     div {
         flex:1;
     }
     
 }
-
 .right {
     width: max-content;
     float: right;
@@ -560,7 +524,6 @@ img {
     margin-right: 180px;
     margin-top: 20px;
 }
-
 .dark-purple {
 background-color: #252945;
 }
@@ -582,7 +545,6 @@ display: flex;
 .flex-column {
 flex-direction: column;
 }
-
 .flex-row {
     flex-direction: row;
     width: 70%;
@@ -590,7 +552,6 @@ flex-direction: column;
     margin-right: auto;
     padding-left: 0px;
 }
-
 .container {
 width: 100%;
 padding: 40px 10px;
@@ -604,15 +565,12 @@ margin: 0 auto;
 text-decoration: none;
 color: initial;
 }
-
 li {
     cursor: pointer;
 }
-
 ul {
     padding-left: 0px;
 }
-
 .uploadIcon {
     border-radius: 10%;
     background-color:green;
@@ -620,23 +578,19 @@ ul {
     text-align: center;
     margin-top:-5px;
 }
-
 .profile-icon h4 {
     display: grid;
     place-items: center;
     cursor:pointer;
     color:blue;
 } 
-
  #applyModal {
     background-color: rgba(0, 0, 0, 0.5);
   }
-
   .modal-content {
     background-color: #BBDFCC;
     border: none;
   }
-
   .words {
     width: max-content;
     margin-top: 20px;
@@ -645,7 +599,6 @@ ul {
     margin-bottom: 10px;
     height: 50px;
   }
-
   .applybtns {
     width: max-content;
     margin-top: 10px;
@@ -653,7 +606,6 @@ ul {
     margin-right: auto;
     margin-bottom: 20px;
   }
-
   #yesbtn, #nobtn {
     margin: 10px;
     border: none;
@@ -664,14 +616,12 @@ ul {
     height: 30px;
     font-size: 18px;
   }
-
   #tickIcon {
     height: 38px;
     width: 38px;
     color: #3D9956;
     float: left;
   }
-
   .modal-body p {
     font-size: 18px;
     text-align: center;

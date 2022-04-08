@@ -142,7 +142,7 @@ export default {
   data() {
     return {
       testCollection: [],
-      status: ""
+      status: "",
     };
   },
 
