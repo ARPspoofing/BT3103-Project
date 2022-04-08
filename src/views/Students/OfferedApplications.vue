@@ -1,19 +1,34 @@
 <template>
-  <StudentNavBar :header="true" :Heading="Heading" />
-
-
-
-  <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
+  <StudentNavBar :header="true" :Heading="Heading"/>
+  <div class="modal fade" id="saveModalAccept" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-body">
               <div class="words">
                 <i class="fa-solid fa-circle-check" id="tickIcon"></i>
-                  <p>Apply to {{currProject}}?</p>
+                  <p>Accept {{modalName}}?</p>
               </div>
               <span>
                 <div class = "applybtns">
-                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="confirmYes(true)">Yes</button>
+                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="confirmYesAccept">Yes</button>
+                  <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
+                </div>
+              </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="saveModalReject" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="words">
+                <i class="fa-solid fa-times-circle" id="tickIcon"></i>
+                  <p>Reject {{modalName}}?</p>
+              </div>
+              <span>
+                <div class = "applybtns">
+                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="confirmYesReject">Yes</button>
                   <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
                 </div>
               </span>
@@ -30,7 +45,6 @@
 
 
   <div class="mainBody">
-          <button type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
 
     <h1 id="status">
       <span class="options">
@@ -61,9 +75,13 @@
         :offered="true"
         @acceptBtn="acceptProj(key)"
         @declineBtn="declineProj(key)"
+        @firstClick="firstClick"
+        :popUpConfirm="this.popUpConfirm"    
       />
     </div>
   </div>
+  <button type="submit" style="visibility:hidden;" ref="confirmModalAccept" class="green" data-bs-toggle="modal" data-bs-target="#saveModalAccept" >Accept</button>                  
+  <button type="submit" style="visibility:hidden;" ref="confirmModalReject" class="green" data-bs-toggle="modal" data-bs-target="#saveModalReject" >Reject</button>  
 </template>
 
 <script>
@@ -103,12 +121,28 @@ export default {
       accepted: [],
       declined: [],
       bizProjects: [],
+      popUpConfirm: null,
+      modalName:null,
     };
   },
   computed: {
     ...mapState(["userEmail"]),
   },
   methods: {
+    firstClick(event,name) {
+      this.modalName = name
+      if (event == true) {
+        this.$refs.confirmModalAccept.click()
+      } else {
+        this.$refs.confirmModalReject.click()
+      }
+    },
+    confirmYesAccept() {
+      this.popUpConfirm = true
+    },
+    confirmYesReject() {
+      this.popUpConfirm = false
+    },
     async acceptProj(key) {
       var projId = this.offered[key];
       var projName = this.projects[key].projectTitle;
@@ -342,4 +376,60 @@ hr {
   color: #606060;
   text-decoration: none;
 }
+
+#applyModal {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: #BBDFCC;
+    border: none;
+  }
+
+  .words {
+    width: max-content;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    height: 50px;
+  }
+
+  .applybtns {
+    width: max-content;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+
+  #yesbtn, #nobtn {
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color:#89ca9a;
+    color: #3f3f3f;
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+  }
+
+  #tickIcon {
+    height: 38px;
+    width: 38px;
+    color: #3D9956;
+    float: left;
+  }
+
+  .modal-body p {
+    font-size: 18px;
+    text-align: center;
+    width: 180px;
+    margin-left: 48px;
+    color: #3f3f3f;
+  }
+
+
+
+
 </style>

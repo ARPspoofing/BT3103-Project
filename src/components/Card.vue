@@ -171,7 +171,17 @@ export default {
     projectId: String,
     like: false,
     latest: false,
+    popUpConfirm:Boolean,
     //applicantbtn: Function,
+  },
+  watch: {
+    popUpConfirm(state) {
+      if (state == true) {
+          this.$emit("acceptBtn");
+      } else {
+        this.$emit("declineBtn");
+      }
+    }
   },
   methods: {
     applicantbtn() {
@@ -183,11 +193,11 @@ export default {
     },
 
     acceptBtn() {
-      this.$emit("acceptBtn");
+      this.$emit("firstClick",true,this.projectTitle)
     },
 
     declineBtn() {
-      this.$emit("declineBtn");
+      this.$emit("firstClick",false,this.projectTitle)
     },
 
     viewTasksBtn() {

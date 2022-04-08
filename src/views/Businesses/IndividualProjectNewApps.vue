@@ -129,8 +129,8 @@
       </div>
     </div>
   </div>
-  <button type="submit"  ref="confirmModalAccept" class="green" data-bs-toggle="modal" data-bs-target="#saveModalAccept" >Accept</button>                  
-  <button type="submit"  ref="confirmModalReject" class="green" data-bs-toggle="modal" data-bs-target="#saveModalReject" >Reject</button>   
+  <button type="submit" style="visibility:hidden;" ref="confirmModalAccept" class="green" data-bs-toggle="modal" data-bs-target="#saveModalAccept" >Accept</button>                  
+  <button type="submit" style="visibility:hidden;" ref="confirmModalReject" class="green" data-bs-toggle="modal" data-bs-target="#saveModalReject" >Reject</button>   
 </template>
 
 <script>
