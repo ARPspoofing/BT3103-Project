@@ -1,12 +1,12 @@
 <template>
   <div class="card-body" @click.self="clickCard">
     <div class="clogo">
-      <img src="../assets/google-logo.png" alt="Logo" class="logo" />
+      <img v-bind:src="picture" alt="Logo" class="logo" />
       <span>
         <div class="appDetails">
           {{ applicantName }} <br />
           {{ applicantCourse }}
-        </div> 
+        </div>
         <div
           id="pendingOffer"
           class="acceptedStat"
@@ -139,7 +139,7 @@ export default {
   data() {
     return {
       testCollection: [],
-      status: ""
+      status: "",
     };
   },
 
@@ -149,6 +149,7 @@ export default {
     applicantCourse: String,
     status: String,
     accepted: Boolean,
+    picture: String,
   },
 
   methods: {

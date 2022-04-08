@@ -77,6 +77,7 @@
             @acceptbtn="accApplicant(key)"
             @rejectbtn="rejApplicant(key)"
             @clickCard="indvApplicant(key)"
+            :picture="item.finalProfile"
           />
         </div>
       </div>
@@ -85,10 +86,10 @@
 </template>
 
 <script>
-import BusinessNavBar from "../components/BusinessNavBar.vue";
-import ApplicantsCard from "../components/ApplicantsCard.vue";
+import BusinessNavBar from "../../components/BusinessNavBar.vue";
+import ApplicantsCard from "../../components/ApplicantsCard.vue";
 import BusinessViewStudentInfo from "./BusinessViewStudentInfo.vue";
-import firebaseApp from "../firebase.js";
+import firebaseApp from "../../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
   collection,
@@ -99,9 +100,9 @@ import {
   updateDoc,
   getDoc,
 } from "firebase/firestore";
-import {mapState} from "vuex"
-import {mapMutations} from "vuex"
-import {mapActions} from "vuex"
+import { mapState } from "vuex";
+import { mapMutations } from "vuex";
+import { mapActions } from "vuex";
 
 const db = getFirestore(firebaseApp);
 import { getAuth } from "firebase/auth";
@@ -114,7 +115,7 @@ export default {
     BusinessViewStudentInfo,
   },
   computed: {
-    ...mapState(['cardItems','userEmail','key']),
+    ...mapState(["cardItems", "userEmail", "key"]),
   },
   data() {
     return {
@@ -132,13 +133,13 @@ export default {
   },
 
   methods: {
-    ...mapActions(['GET_NEW_CARD',]),
+    ...mapActions(["GET_NEW_CARD"]),
     //...mapMutations(['SET_KEY',]),
     indvApplicant(key) {
-      console.log(this.applicant[key])
-      console.log(this.offered[key])
+      console.log(this.applicant[key]);
+      console.log(this.offered[key]);
       this.$router.push({
-        name:'BusinessViewStudentInfo', 
+        name: "BusinessViewStudentInfo",
         params: {
           applicants: JSON.stringify(this.applicant[key]),
           allApplicants: JSON.stringify(this.applicant),
@@ -152,7 +153,7 @@ export default {
           key: JSON.stringify(key),
           stat: JSON.stringify("showbtns"),
         },
-      })
+      });
     },
 
     async accApplicant(key) {
@@ -164,7 +165,6 @@ export default {
       var projTitle = this.items["projectTitle"];
       var projId = this.items["projectId"];
       var applied = this.applied[key];
-      //console.log("bef" + applied)
 
       if (!this.accApplicants) {
         var accApplicants = [];
@@ -174,12 +174,10 @@ export default {
         this.accApplicants.push(accApplicant);
       }
 
-      var index = applied.indexOf(projId)
-      applied.splice(index, 1)
-      //console.log("after" + applied)
+      var index = applied.indexOf(projId);
+      applied.splice(index, 1);
 
       offered.push(projId);
-      //console.log(offered);
       this.newApplicants.splice(key, 1);
       this.applicant.splice(key, 1);
       this.offered.splice(key, 1);
@@ -193,12 +191,11 @@ export default {
         });
         const docRef2 = await updateDoc(doc(db, "students", accApplicant), {
           offeredProjects: offered,
-          appliedProjects: applied
+          appliedProjects: applied,
         });
         console.log(docRef);
-        this.GET_NEW_CARD()
-        this.$emit("updated"); 
-
+        this.GET_NEW_CARD();
+        this.$emit("updated");
       } catch (error) {
         console.error("Error updating document: ", error);
       }
@@ -213,7 +210,7 @@ export default {
       var projTitle = this.items["projectTitle"];
       var projId = this.items["projectId"];
       var applied = this.applied[key];
-      console.log("bef" + applied)
+      console.log("bef" + applied);
 
       if (!this.rejApplicants) {
         var rejApplicants = [];
@@ -223,9 +220,9 @@ export default {
         this.rejApplicants.push(rejApplicant);
       }
 
-      var index = applied.indexOf(projId)
-      applied.splice(index, 1)
-      console.log("aft" + applied)
+      var index = applied.indexOf(projId);
+      applied.splice(index, 1);
+      console.log("aft" + applied);
 
       rejected.push(projId);
 
@@ -244,16 +241,13 @@ export default {
 
         const docRef2 = await updateDoc(doc(db, "students", rejApplicant), {
           rejectedProjects: rejected,
-          appliedProjects: applied
+          appliedProjects: applied,
         });
-        this.GET_NEW_CARD()
-        console.log(docRef);
+        this.GET_NEW_CARD();
         this.$emit("updated");
       } catch (error) {
         console.error("Error updating document: ", error);
       }
-      console.log(this.rejApplicants);
-      console.log(key);
     },
   },
 
@@ -266,17 +260,13 @@ export default {
     this.accApplicants = JSON.parse(this.$route.params.items).accApplicants;
     this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants;
     */
-    //vuex 
-    console.log(this.cardItems)
+    //vuex
+    console.log(this.cardItems);
     this.items = JSON.parse(this.cardItems);
     this.projectId = JSON.parse(this.cardItems).projectId;
     this.newApplicants = JSON.parse(this.cardItems).newApplicants;
     this.accApplicants = JSON.parse(this.cardItems).accApplicants;
     this.rejApplicants = JSON.parse(this.cardItems).rejApplicants;
-    //console.log(this.newApplicants)
-    //console.log(this.accApplicants)
-    //console.log(this.rejApplicants)
-    //console.log(this.rejApplicants)
     //Non-vuex
     /*
     if (this.$route.params.newApplicants) {
@@ -328,8 +318,7 @@ export default {
       const ref = doc(db, "students", app);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      //let result = await data.name
-      return { name: data.name, course: data.course, email: data.email };
+      return { name: data.name, course: data.course, email: data.email, finalProfile: data.finalProfile, };
     }
 
     async function getOfferedProjects(app) {
@@ -352,9 +341,6 @@ export default {
       const data = docSnap.data();
       return data.appliedProjects;
     }
-
-    console.log(this.newApplicants);
-    console.log(this.applied);
   },
 };
 </script>
@@ -421,6 +407,10 @@ hr {
   text-align: center;
   color: #606060;
   text-decoration: none;
+}
+
+.optionsOff:hover {
+  color: #0e8044;
 }
 
 .floating-right-bottom-btn {
