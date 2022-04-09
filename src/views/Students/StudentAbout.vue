@@ -129,7 +129,7 @@
         <h4>Contact Details</h4>
         <div class="input flex flex-column">
           <label for="schoolEmail">School Email</label>
-          <input type="text" id="schoolEmail" v-model="schoolEmail" />
+          <input type="text" id="schoolEmail" v-model="schoolEmail" readonly />
         </div>
         <div class="errorMsg" v-if="schoolEmailErrorPresent">
           {{ this.errorMessage }}
