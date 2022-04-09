@@ -127,11 +127,11 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['SET_CARDITEMS','CLEAR_CARDITEMS']),
+    ...mapMutations(["SET_CARDITEMS", "CLEAR_CARDITEMS"]),
     indvApplicant(key) {
       console.log(this.applicant[key]);
       console.log(this.offered);
-      this.CLEAR_CARDITEMS()
+      this.CLEAR_CARDITEMS();
       //To fix ...
       this.$router.push({
         name: "BusinessViewStudentInfo",
@@ -150,18 +150,18 @@ export default {
         },
       });
       this.SET_CARDITEMS({
-          applicants: JSON.stringify(this.applicant[key]),
-          allApplicants: JSON.stringify(this.applicant),
-          newApplicants: JSON.stringify(this.newApplicants),
-          accApplicants: JSON.stringify(this.accApplicants),
-          rejApplicants: JSON.stringify(this.rejApplicants),
-          offered: JSON.stringify(this.offered),
-          rejected: JSON.stringify(this.rejected),
-          applied: JSON.stringify(this.applied),
-          items: JSON.stringify(this.items),
-          key: JSON.stringify(key),
-          stat: JSON.stringify(""),
-        })
+        applicants: JSON.stringify(this.applicant[key]),
+        allApplicants: JSON.stringify(this.applicant),
+        newApplicants: JSON.stringify(this.newApplicants),
+        accApplicants: JSON.stringify(this.accApplicants),
+        rejApplicants: JSON.stringify(this.rejApplicants),
+        offered: JSON.stringify(this.offered),
+        rejected: JSON.stringify(this.rejected),
+        applied: JSON.stringify(this.applied),
+        items: JSON.stringify(this.items),
+        key: JSON.stringify(key),
+        stat: JSON.stringify(""),
+      });
     },
   },
 

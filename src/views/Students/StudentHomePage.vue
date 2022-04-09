@@ -1,32 +1,57 @@
 <template>
-  <StudentNavBar :class="{blur:!profileFormCreated}" :search=true :header=false :key="componentKey"/>
+  <StudentNavBar
+    :class="{ blur: !profileFormCreated }"
+    :search="true"
+    :header="false"
+    :key="componentKey"
+  />
   <div>
-
-   <div class="right">
-      </div>
-      <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
-              <div class="words">
-                <i class="fa-solid fa-circle-check" id="tickIcon"></i>
-                  <p>Apply to {{currProject}}?</p>
-              </div>
-              <span>
-                <div class = "applybtns">
-                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="confirmYes(true)">Yes</button>
-                  <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
-                </div>
-              </span>
-              </div>
+    <div class="right"></div>
+    <div
+      class="modal fade"
+      id="saveModal"
+      tabindex="-1"
+      aria-labelledby="saveModalLabel"
+      aria-hidden="true"
+      data-bs-backdrop="false"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="words">
+              <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+              <p>Apply to {{ currProject }}?</p>
             </div>
+            <span>
+              <div class="applybtns">
+                <button
+                  type="button"
+                  id="yesbtn"
+                  data-bs-dismiss="modal"
+                  @click="confirmYes(true)"
+                >
+                  Yes
+                </button>
+                <button type="button" id="nobtn" data-bs-dismiss="modal">
+                  No
+                </button>
+              </div>
+            </span>
           </div>
         </div>
+      </div>
+    </div>
   </div>
   <!--div class="modal-overlay" v-if="applyConfirm"></div>-->
-  <StudentProfileForm @cancel='cancel' @success='close' v-if='!profileFormCreated'/>
-  <div v-if='profileFormCreated' :class="{blur:!profileFormCreated,mainBody:foreverTrue}">  
-  
+  <StudentProfileForm
+    @cancel="cancel"
+    @success="close"
+    v-if="!profileFormCreated"
+  />
+  <div
+    v-if="profileFormCreated"
+    :class="{ blur: !profileFormCreated, mainBody: foreverTrue }"
+  >
     <h1 id="interest">Projects You May Like</h1>
     <!--
     <transition name="applyConfirm" mode="out-in">
@@ -242,8 +267,17 @@
         <span class="visually-hidden">Next</span>
       </button>
     </div>
-  </div>  
-  <button style = "visibility:hidden" type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
+  </div>
+  <button
+    style="visibility: hidden"
+    type="submit"
+    ref="confirmModal"
+    class="green"
+    data-bs-toggle="modal"
+    data-bs-target="#saveModal"
+  >
+    Save
+  </button>
 </template>
 
 <script>
@@ -278,7 +312,7 @@ export default {
   },
   emits: ["cancel"],
   computed: {
-    ...mapState(['userEmail','cardItems','studentToDo']),
+    ...mapState(["userEmail", "cardItems", "studentToDo"]),
   },
   data() {
     return {
@@ -295,21 +329,21 @@ export default {
       studentTags: [],
       allApplied: [],
       applyConfirm: false,
-      currProject: '',
-      currKey:null,
-      like:false,
-      latest:false,
-      componentKey:0,
-    }
+      currProject: "",
+      currKey: null,
+      like: false,
+      latest: false,
+      componentKey: 0,
+    };
   },
 
   methods: {
-    ...mapMutations(['SET_CARDITEMS','CLEAR_CARDITEMS']),
-    submitTest() {  
+    ...mapMutations(["SET_CARDITEMS", "CLEAR_CARDITEMS"]),
+    submitTest() {
       this.$refs.submitBtn.click();
     },
     forceRender() {
-      this.componentKey += 1
+      this.componentKey += 1;
     },
     close(e) {
       this.profileFormCreated = true;
@@ -319,14 +353,14 @@ export default {
       this.cancel = e;
       console.log("eeeeeeeeeeeeeeee");
     },
-    applying(event,key) {
+    applying(event, key) {
       this.$refs.confirmModal.click();
-      this.applyConfirm = true
-      this.currKey = key
+      this.applyConfirm = true;
+      this.currKey = key;
       if (event) {
-        this.currProject = this.testCollection[key]["projectTitle"]
-        this.like = true
-        this.latest = false
+        this.currProject = this.testCollection[key]["projectTitle"];
+        this.like = true;
+        this.latest = false;
       } else {
         this.currProject = this.wholeTestCollection[key]["projectTitle"];
         this.like = false;
@@ -759,57 +793,56 @@ hr {
   cursor: pointer;
 }
 
-
 #applyModal {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
-  .modal-content {
-    background-color: #BBDFCC;
-    border: none;
-  }
+.modal-content {
+  background-color: #bbdfcc;
+  border: none;
+}
 
-  .words {
-    width: max-content;
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
-    height: 50px;
-  }
+.words {
+  width: max-content;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  height: 50px;
+}
 
-  .applybtns {
-    width: max-content;
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-  }
+.applybtns {
+  width: max-content;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
 
-  #yesbtn, #nobtn {
-    margin: 10px;
-    border: none;
-    border-radius: 10px;
-    background-color:#89ca9a;
-    color: #3f3f3f;
-    width: 120px;
-    height: 30px;
-    font-size: 18px;
-  }
+#yesbtn,
+#nobtn {
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #89ca9a;
+  color: #3f3f3f;
+  width: 120px;
+  height: 30px;
+  font-size: 18px;
+}
 
-  #tickIcon {
-    height: 38px;
-    width: 38px;
-    color: #3D9956;
-    float: left;
-  }
+#tickIcon {
+  height: 38px;
+  width: 38px;
+  color: #3d9956;
+  float: left;
+}
 
-  .modal-body p {
-    font-size: 18px;
-    text-align: center;
-    width: 180px;
-    margin-left: 48px;
-    color: #3f3f3f;
-  }
-
+.modal-body p {
+  font-size: 18px;
+  text-align: center;
+  width: 180px;
+  margin-left: 48px;
+  color: #3f3f3f;
+}
 </style>

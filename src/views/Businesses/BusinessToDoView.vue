@@ -1,8 +1,8 @@
 <template>
-<!--
+  <!--
   <div class="mainBody">
     -->
-    <!--
+  <!--
     <router-link
       :to="{
         name: 'BusinessManagement',
@@ -18,12 +18,12 @@
     </router-link>
     -->
 
-    <div class="view container">
-      <!-- <router-link :to="{name:'BusinessManagement'}">
+  <div class="view container">
+    <!-- <router-link :to="{name:'BusinessManagement'}">
            
            <img src='../../assets/back.png'> Go Back
        </router-link> -->
-      <!--
+    <!--
        <div class="header flex">
            <div class="left flex">
                <Span>Status</Span>
@@ -38,14 +38,14 @@
            </div>
        </div>
        -->
-      <div class="details flex flex-column">
-        <div class="top flex">
-          <div class="left flex">
-            <p>
-              <strong>{{ task_id }}</strong>
-            </p>
-          </div>
-          <!--<div class="right flex flex-column">
+    <div class="details flex flex-column">
+      <div class="top flex">
+        <div class="left flex">
+          <p>
+            <strong>{{ task_id }}</strong>
+          </p>
+        </div>
+        <!--<div class="right flex flex-column">
             <label>Extend Due Date</label>
             <select v-model="extend" id="input">
               <option value="1 day">1 day</option>
@@ -54,36 +54,52 @@
               <option value="7 days">1 week</option>
             </select>
           </div>-->
-          <div class="right flex flex-column" id="rightmost">
-            <label>Change status</label>
-            <select v-model="status">
-              <option value="To do">To Do</option>
-              <option value="In progress">In Progress</option>
-              <option value="Completed">Completed</option>
-            </select>
-          </div>
+        <div class="right flex flex-column" id="rightmost">
+          <label>Change status</label>
+          <select v-model="status">
+            <option value="To do">To Do</option>
+            <option value="In progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
         </div>
-        <div class="top-middle flex">
-          <div id="duedate" class="date flex flex-column">
-            <!--       Don't need issue date
+      </div>
+      <div class="top-middle flex">
+        <div id="duedate" class="date flex flex-column">
+          <!--       Don't need issue date
             <p><b>Task Issue Date :</b> {{ formatDate(issuedate) }}</p>
             -->
-            <p><b>Due Date :</b> {{ formatDate(duedate) }}</p>
-          </div>
+          <p><b>Due Date :</b> {{ formatDate(duedate) }}</p>
         </div>
-        <div class="middle flex">
-          <div id="description" class="description flex flex-column">
-            <p><b>Task Description</b></p>
-            <p>{{ this.description }}</p>
-          </div>
+      </div>
+      <div class="middle flex">
+        <div id="description" class="description flex flex-column">
+          <p><b>Task Description</b></p>
+          <p>{{ this.description }}</p>
         </div>
-        <div class="middle-bottom flex">
-          <div class="documents flex flex-column">
-            <p><b>Submit Relevant Documents :</b></p>
-            <!--<button id="addFileButton" @click="addFile">
+      </div>
+      <div class="middle-bottom flex">
+        <div class="documents flex flex-column">
+          <p><b>Submit Relevant Documents :</b></p>
+          <!--<button id="addFileButton" @click="addFile">
               <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
               Add Files
             </button>-->
+          <input
+            type="file"
+            multiple
+            name="files[]"
+            id="files"
+            accept=".jpeg,.pdf,.docx"
+            v-on:change="uploadFiles"
+          />
+          <div
+            class="previous"
+            v-for="(task, counter) in files"
+            v-bind:key="counter"
+          >
+            <button id="deleteFile" @click="deleteFile(counter)">
+              <i class="fa fa-times" id="crossIcon"></i>
+            </button>
             <input
               type="file"
               multiple
@@ -92,57 +108,41 @@
               accept=".jpeg,.pdf,.docx"
               v-on:change="uploadFiles"
             />
-            <div
-              class="previous"
-              v-for="(task, counter) in files"
-              v-bind:key="counter"
-            >
-              <button id="deleteFile" @click="deleteFile(counter)">
-                <i class="fa fa-times" id="crossIcon"></i>
-              </button>
-              <input
-                type="file"
-                multiple
-                name="files[]"
-                id="files"
-                accept=".jpeg,.pdf,.docx"
-                v-on:change="uploadFiles"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="bottom flex flex-column">
-          <label for="comments">Comments</label>
-          <h4>Please limit additional comments to 500 characters</h4>
-          <div class="input flex flex-column">
-            <textarea
-              id="comments"
-              name="comments"
-              rows="4"
-              cols="60"
-              placeholder="Please enter your comment"
-              maxlength="500"
-            ></textarea>
-            <button id="commentButton" @click="addComment">Add Comment</button>
-            <!--<textarea required type="text" id="comments" rows="4" cols="50" maxlength="500" v-model="comments"></textarea>-->
-          </div>
-        </div>
-        <div
-          class="projectContainer"
-          :key="item.key"
-          v-for="(item, key) in this.taskComment"
-        >
-          <div id="eachComment">
-            <img v-bind:src="item.profPic" alt="Logo" class="logo" />
-            <p>
-              <strong>{{ item["name"] }}</strong
-              >: {{ item["comment"] }}
-            </p>
           </div>
         </div>
       </div>
+      <div class="bottom flex flex-column">
+        <label for="comments">Comments</label>
+        <h4>Please limit additional comments to 500 characters</h4>
+        <div class="input flex flex-column">
+          <textarea
+            id="comments"
+            name="comments"
+            rows="4"
+            cols="60"
+            placeholder="Please enter your comment"
+            maxlength="500"
+          ></textarea>
+          <button id="commentButton" @click="addComment">Add Comment</button>
+          <!--<textarea required type="text" id="comments" rows="4" cols="50" maxlength="500" v-model="comments"></textarea>-->
+        </div>
+      </div>
+      <div
+        class="projectContainer"
+        :key="item.key"
+        v-for="(item, key) in this.taskComment"
+      >
+        <div id="eachComment">
+          <img v-bind:src="item.profPic" alt="Logo" class="logo" />
+          <p>
+            <strong>{{ item["name"] }}</strong
+            >: {{ item["comment"] }}
+          </p>
+        </div>
+      </div>
     </div>
-    <!--
+  </div>
+  <!--
   </div>
   -->
 </template>
@@ -176,8 +176,8 @@ import {
   storageRef,
 } from "firebase/storage";
 import { getAuth } from "firebase/auth";
-import {mapState} from 'vuex'
-import {mapMutations} from 'vuex'
+import { mapState } from "vuex";
+import { mapMutations } from "vuex";
 
 export default {
   name: "BusinessToDoView",
@@ -203,10 +203,18 @@ export default {
       file: null,
       files: [],
       fileLink: "",
-      allTaskComments:null,
+      allTaskComments: null,
     };
   },
-  props: ['task_id','projectId','projectTitle','duedate','task','description','taskComment'],
+  props: [
+    "task_id",
+    "projectId",
+    "projectTitle",
+    "duedate",
+    "task",
+    "description",
+    "taskComment",
+  ],
   watch: {
     extend() {
       const extendedDate = new Date();
@@ -224,7 +232,23 @@ export default {
     },
   },
   computed: {
-    ...mapState(['businessTask','userEmail','businessTaskId','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted','businessInProgProjects','businessCompletedProjects','businessStudents','businessStudentsInProg','businessStudentsComp','taskComments']),
+    ...mapState([
+      "businessTask",
+      "userEmail",
+      "businessTaskId",
+      "businessProjectId",
+      "businessProjectTitle",
+      "businessToDo",
+      "businessInProgress",
+      "businessPendingReview",
+      "businessCompleted",
+      "businessInProgProjects",
+      "businessCompletedProjects",
+      "businessStudents",
+      "businessStudentsInProg",
+      "businessStudentsComp",
+      "taskComments",
+    ]),
     //This function is not used
     taskIndex() {
       return parseInt(this.number) + 1;
@@ -232,7 +256,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['SET_BUSINESS_TASK','SET_ALL_TASK_COMMENTS']),
+    ...mapMutations(["SET_BUSINESS_TASK", "SET_ALL_TASK_COMMENTS"]),
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
@@ -308,7 +332,6 @@ export default {
       }
       console.log(toRemove);
       console.log(newTask);
-  
 
       let ref2 = doc(db, "businesses", this.userEmail);
       let biz = await getDoc(ref2);
@@ -345,7 +368,7 @@ export default {
       await updateDoc(ref, { Tasks: arrayUnion(newTask) });
       //Non vuex
       //this.task = newTask;
-      this.SET_BUSINESS_TASK(newTask)
+      this.SET_BUSINESS_TASK(newTask);
       document.getElementById("comments").value = "";
     },
 
@@ -373,7 +396,7 @@ export default {
         console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
-          console.log("toRemove",toRemove)
+          console.log("toRemove", toRemove);
           currTask.taskStatus = currStatus;
           newTask = currTask;
         }
@@ -389,13 +412,16 @@ export default {
       //non-vuex
       //this.task = newTask;
       //vuex
-      this.SET_BUSINESS_TASK(newTask)
-      this.$router.push({name:'businessManagementLoading'})
+      this.SET_BUSINESS_TASK(newTask);
+      this.$router.push({ name: "businessManagementLoading" });
     },
 
     async updateTask() {
       try {
-        const docRef = await updateDoc(doc(db, "Project", this.businessProjectId), {});
+        const docRef = await updateDoc(
+          doc(db, "Project", this.businessProjectId),
+          {}
+        );
 
         console.log(docRef);
         this.$emit("updated");
@@ -474,11 +500,10 @@ export default {
     console.log(curr.$route.params.comments);
     const projectTitle = curr.$route.params.projectTitle;
     */
-    console.log('task comments')
-    const projectId = this.businessProjectId
-    const taskId = this.task_id
-    const projectTitle = this.projectTitle
-    
+    console.log("task comments");
+    const projectId = this.businessProjectId;
+    const taskId = this.task_id;
+    const projectTitle = this.projectTitle;
 
     async function updateFile() {
       let proj = await doc(db, "Project", projectId);
@@ -511,19 +536,18 @@ export default {
     }
 
     async function getComments() {
-      
       const docRef = doc(db, "Project", projectId);
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;
       var currTask = {};
-      console.log("taskComments",tasks)
-      for (let i = 0; i < tasks.length; i++) {        
+      console.log("taskComments", tasks);
+      for (let i = 0; i < tasks.length; i++) {
         let thisTask = tasks[i];
         if (thisTask.taskName == taskId) {
           currTask = thisTask;
           if (currTask.comments) {
             curr.comment = currTask.comments.reverse();
-            console.log("comments",currTask.comments.reverse())
+            console.log("comments", currTask.comments.reverse());
           } else {
             curr.comment = [];
           }
@@ -533,8 +557,8 @@ export default {
       console.log(curr.comment);
     }
     getComments();
-    console.log("currcomments",curr.comment);
-    
+    console.log("currcomments", curr.comment);
+
     //Non vuex function. Not used already for vuex
 
     /* database.forEach((doc) => {

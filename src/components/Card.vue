@@ -1,15 +1,39 @@
 <template>
   <div class="card-body" @click.self="clickCard">
     <div class="clogo" @click.self="clickCard">
-      <img  @click.self="clickCard" v-bind:src=picture alt="Logo" class="logo" />
+      <img
+        @click.self="clickCard"
+        v-bind:src="picture"
+        alt="Logo"
+        class="logo"
+      />
       <span class="card-title"> {{ currProjectTitle }} <br /> </span>
     </div>
     <div class="card-content" @click.self="clickCard">
       <p class="card-text" @click.self="clickCard">{{ description }}</p>
     </div>
-    <p id="appstatus" class="offered" v-if="stat == 'offered'" @click.self="clickCard">Offered</p>
-    <p id="appstatus" class="pending" v-else-if="stat == 'pending'" @click.self="clickCard">Pending</p>
-    <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'" @click.self="clickCard">
+    <p
+      id="appstatus"
+      class="offered"
+      v-if="stat == 'offered'"
+      @click.self="clickCard"
+    >
+      Offered
+    </p>
+    <p
+      id="appstatus"
+      class="pending"
+      v-else-if="stat == 'pending'"
+      @click.self="clickCard"
+    >
+      Pending
+    </p>
+    <p
+      id="appstatus"
+      class="rejected"
+      v-else-if="stat == 'rejected'"
+      @click.self="clickCard"
+    >
       Rejected
     </p>
     <p id="closed" v-if="stat == 'closed'">Application Closed</p>
@@ -171,17 +195,17 @@ export default {
     projectId: String,
     like: false,
     latest: false,
-    popUpConfirm:Boolean,
+    popUpConfirm: Boolean,
     //applicantbtn: Function,
   },
   watch: {
     popUpConfirm(state) {
       if (state == true) {
-          this.$emit("acceptBtn");
+        this.$emit("acceptBtn");
       } else {
         this.$emit("declineBtn");
       }
-    }
+    },
   },
   methods: {
     applicantbtn() {
@@ -193,11 +217,11 @@ export default {
     },
 
     acceptBtn() {
-      this.$emit("firstClick",true,this.projectTitle)
+      this.$emit("firstClick", true, this.projectTitle);
     },
 
     declineBtn() {
-      this.$emit("firstClick",false,this.projectTitle)
+      this.$emit("firstClick", false, this.projectTitle);
     },
 
     viewTasksBtn() {

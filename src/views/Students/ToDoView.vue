@@ -1,5 +1,5 @@
 <template>
-<!--
+  <!--
     <router-link
       :to="{
         name: 'StudentManagement',
@@ -15,103 +15,103 @@
       </button>
     </router-link>
     -->
-    <div class="details flex flex-column">
-      <div class="top flex">
-        <div class="left flex">
-          <p>
-            <strong>{{ task_id }}</strong>
-          </p>
-        </div>
-        <div class="right flex flex-column">
-          <label>Change status</label>
-          <select v-model="status">
-            <option value="To do">To Do</option>
-            <option value="In progress">In Progress</option>
-            <option value="Pending review">Send for review</option>
-          </select>
-        </div>
+  <div class="details flex flex-column">
+    <div class="top flex">
+      <div class="left flex">
+        <p>
+          <strong>{{ task_id }}</strong>
+        </p>
       </div>
-      <div class="top-middle flex">
-        <div id="duedate" class="date flex flex-column">
-          <!-- Task issue date necessary? Nope -->
-          <!--
+      <div class="right flex flex-column">
+        <label>Change status</label>
+        <select v-model="status">
+          <option value="To do">To Do</option>
+          <option value="In progress">In Progress</option>
+          <option value="Pending review">Send for review</option>
+        </select>
+      </div>
+    </div>
+    <div class="top-middle flex">
+      <div id="duedate" class="date flex flex-column">
+        <!-- Task issue date necessary? Nope -->
+        <!--
           <p><b>Task Issue Date: </b> {{ duedate }}</p>
           -->
-          <p><b>Task Due Date:</b> {{ formatDate(duedate) }}</p>
-        </div>
+        <p><b>Task Due Date:</b> {{ formatDate(duedate) }}</p>
       </div>
-      <!--<div class="top-middle flex">
+    </div>
+    <!--<div class="top-middle flex">
                 <div id="duedate" class="date flex flex-column">
                    <p><b>Task Issue Date :</b> {{formatDate(issuedate)}}</p>
                    <p><b>Due Date :</b> {{formatDate(duedate)}}</p>
                </div>
            </div>-->
-      <div class="middle flex">
-        <div id="description" class="description flex flex-column">
-          <p><b>Task Description</b></p>
-          <p>{{ this.description }}</p>
-        </div>
+    <div class="middle flex">
+      <div id="description" class="description flex flex-column">
+        <p><b>Task Description</b></p>
+        <p>{{ this.description }}</p>
       </div>
-      <!--<div class="middle-bottom flex">
+    </div>
+    <!--<div class="middle-bottom flex">
                <div class="documents flex flex-column">
                    <p>Relevant Documents:</p>
                    <img src="../../assets/document.jpeg">
                </div>
            </div>-->
-      <div class="middle-bottom flex">
-        <div class="documents flex flex-column">
-          <p><b>Submit Relevant Documents :</b></p>
-          <button id="addFileButton" @click="addFile">
-            <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
-            Add Files
+    <div class="middle-bottom flex">
+      <div class="documents flex flex-column">
+        <p><b>Submit Relevant Documents :</b></p>
+        <button id="addFileButton" @click="addFile">
+          <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
+          Add Files
+        </button>
+        <div
+          class="previous"
+          v-for="(task, counter) in files"
+          v-bind:key="counter"
+        >
+          <button id="deleteFile" @click="deleteFile(counter)">
+            <i class="fa fa-times" id="crossIcon"></i>
           </button>
-          <div
-            class="previous"
-            v-for="(task, counter) in files"
-            v-bind:key="counter"
-          >
-            <button id="deleteFile" @click="deleteFile(counter)">
-              <i class="fa fa-times" id="crossIcon"></i>
-            </button>
-            <input
-              type="file"
-              multiple
-              name="files[]"
-              id="files"
-              v-on:change="uploadFiles"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="bottom flex flex-column">
-        <label for="comments">Comments</label>
-        <h4>Please limit additional comments to 500 characters</h4>
-        <div class="input flex flex-column">
-          <textarea
-            id="comments"
-            name="comments"
-            rows="4"
-            cols="60"
-            placeholder="Please enter your comment"
-            maxlength="500"
-          ></textarea>
-          <button id="commentButton" @click="addComment">Add Comment</button>
-        </div>
-      </div>
-      <div
-        class="projectContainer"
-        :key="item.key"
-        v-for="(item) in this.taskComment"
-      >
-        <div id="eachComment">
-          <img v-bind:src="item.profPic" alt="Logo" class="logo" />
-          <p>
-            <strong>{{ item["name"] }}</strong
-            >: {{ item["comment"] }}
-          </p>
+          <input
+            type="file"
+            multiple
+            name="files[]"
+            id="files"
+            v-on:change="uploadFiles"
+          />
         </div>
       </div>
     </div>
+    <div class="bottom flex flex-column">
+      <label for="comments">Comments</label>
+      <h4>Please limit additional comments to 500 characters</h4>
+      <div class="input flex flex-column">
+        <textarea
+          id="comments"
+          name="comments"
+          rows="4"
+          cols="60"
+          placeholder="Please enter your comment"
+          maxlength="500"
+        ></textarea>
+        <button id="commentButton" @click="addComment">Add Comment</button>
+      </div>
+    </div>
+    <div
+      class="projectContainer"
+      :key="item.key"
+      v-for="item in this.taskComment"
+    >
+      <div id="eachComment">
+        <img v-bind:src="item.profPic" alt="Logo" class="logo" />
+        <p>
+          <strong>{{ item["name"] }}</strong
+          >: {{ item["comment"] }}
+        </p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -131,8 +131,8 @@ import {
 import { update } from "firebase/database";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import {mapState} from 'vuex'
-import {mapMutations} from 'vuex'
+import { mapState } from "vuex";
+import { mapMutations } from "vuex";
 import Loading from "../../components/Loading.vue";
 const db = getFirestore(firebaseApp);
 const router = useRouter();
@@ -140,7 +140,19 @@ import * as moment from "moment";
 export default {
   name: "ToDoView",
   computed: {
-    ...mapState(['studentTask','userEmail','studentTaskId','userEmail','studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted','taskComments',]),   
+    ...mapState([
+      "studentTask",
+      "userEmail",
+      "studentTaskId",
+      "userEmail",
+      "studentProjectId",
+      "studentProjectTitle",
+      "studentToDo",
+      "studentInProgress",
+      "studentPendingReview",
+      "studentCompleted",
+      "taskComments",
+    ]),
   },
   data() {
     return {
@@ -153,7 +165,7 @@ export default {
       task: '',
       description: '',
       */
-      
+
       /*
       task_id: this.$route.params.taskId,
       projectId: this.$route.params.projectId,
@@ -171,7 +183,15 @@ export default {
       email: this.userEmail,
     };
   },
-  props: ['task_id','projectId','projectTitle','duedate','task','description','taskComment'],
+  props: [
+    "task_id",
+    "projectId",
+    "projectTitle",
+    "duedate",
+    "task",
+    "description",
+    "taskComment",
+  ],
   watch: {
     extend() {
       const extendedDate = new Date();
@@ -189,7 +209,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(['SET_STUDENT_TASK',]),
+    ...mapMutations(["SET_STUDENT_TASK"]),
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
@@ -297,7 +317,7 @@ export default {
       await updateDoc(ref, { Tasks: arrayUnion(newTask) });
       //non-vuex
       //this.task = newTask;
-      this.SET_STUDENT_TASK(newTask)
+      this.SET_STUDENT_TASK(newTask);
       document.getElementById("comments").value = "";
     },
     async updateStatus() {
@@ -306,8 +326,8 @@ export default {
       let ref = await doc(db, "Project", this.studentProjectId);
       let project = await getDoc(ref);
       var tasks = await project.data().Tasks;
-      console.log("all tasks",tasks)
-      console.log("tasks",tasks)
+      console.log("all tasks", tasks);
+      console.log("tasks", tasks);
       console.log("ok");
       //console.log(this.task);
       //console.log(tasks);
@@ -320,7 +340,14 @@ export default {
         console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
-          console.log("to Remove",toRemove,"oldstatus",currTask.taskStatus,"newStatus",currStatus)
+          console.log(
+            "to Remove",
+            toRemove,
+            "oldstatus",
+            currTask.taskStatus,
+            "newStatus",
+            currStatus
+          );
           currTask.taskStatus = currStatus;
           newTask = currTask;
         }
@@ -333,12 +360,15 @@ export default {
       //non-vuex
       //this.task = newTask;
       //vuex
-      this.SET_STUDENT_TASK(newTask)
-      this.$router.push({name:'managementLoading'})
+      this.SET_STUDENT_TASK(newTask);
+      this.$router.push({ name: "managementLoading" });
     },
     async updateTask() {
       try {
-        const docRef = await updateDoc(doc(db, "Project", this.studentProjectId), {});
+        const docRef = await updateDoc(
+          doc(db, "Project", this.studentProjectId),
+          {}
+        );
         console.log(docRef);
         this.$emit("updated");
       } catch (error) {
@@ -354,10 +384,9 @@ export default {
     //const projectId = curr.$route.params.projectId;
     //const projectTitle = curr.$route.params.projectTitle;
     //vuex
-    const projectId = this.studentProjectId
-    const taskId = this.task_id
-    const projectTitle = this.projectTitle
-    
+    const projectId = this.studentProjectId;
+    const taskId = this.task_id;
+    const projectTitle = this.projectTitle;
 
     async function updateFile() {
       let proj = await doc(db, "Project", projectId);
@@ -391,19 +420,18 @@ export default {
 
     //console.log(curr.$route.params);
     async function getComments() {
-      
       const docRef = doc(db, "Project", projectId);
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;
       var currTask = {};
-      console.log("taskComments",tasks)
-      for (let i = 0; i < tasks.length; i++) {        
+      console.log("taskComments", tasks);
+      for (let i = 0; i < tasks.length; i++) {
         let thisTask = tasks[i];
         if (thisTask.taskName == taskId) {
           currTask = thisTask;
           if (currTask.comments) {
             curr.comment = currTask.comments.reverse();
-            console.log("comments",currTask.comments.reverse())
+            console.log("comments", currTask.comments.reverse());
           } else {
             curr.comment = [];
           }
@@ -413,7 +441,7 @@ export default {
       console.log(curr.comment);
     }
     getComments();
-    console.log("currcomments",curr.comment);
+    console.log("currcomments", curr.comment);
     /*
        database.forEach((doc) => {
                //Change to dynamic props later

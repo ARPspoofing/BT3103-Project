@@ -252,9 +252,9 @@ label {
   margin-bottom: 3px;
 }
 
-    .interest {
-        gap:5px;
-    }
+.interest {
+  gap: 5px;
+}
 
 .content {
   position: relative;

@@ -1,49 +1,75 @@
 <template>
   <BusinessNavBar :Heading="Heading" :header="true" />
 
-
-    <div class="modal fade" id="saveModalAccept" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
-              <div class="words">
-                <i class="fa-solid fa-circle-check" id="tickIcon"></i>
-                  <p>Accept {{modalName}}?</p>
-              </div>
-              <span>
-                <div class = "applybtns">
-                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="confirmYesAccept">Yes</button>
-                  <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
-                </div>
-              </span>
-              </div>
-            </div>
+  <div
+    class="modal fade"
+    id="saveModalAccept"
+    tabindex="-1"
+    aria-labelledby="saveModalLabel"
+    aria-hidden="true"
+    data-bs-backdrop="false"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="words">
+            <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+            <p>Accept {{ modalName }}?</p>
           </div>
-        </div>
-
-
-
-        <div class="modal fade" id="saveModalReject" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
-              <div class="words">
-                <i class="fa-solid fa-times-circle" id="tickIcon"></i>
-                  <p>Reject {{modalName}}?</p>
-              </div>
-              <span>
-                <div class = "applybtns">
-                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="confirmYesReject">Yes</button>
-                  <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
-                </div>
-              </span>
-              </div>
+          <span>
+            <div class="applybtns">
+              <button
+                type="button"
+                id="yesbtn"
+                data-bs-dismiss="modal"
+                @click="confirmYesAccept"
+              >
+                Yes
+              </button>
+              <button type="button" id="nobtn" data-bs-dismiss="modal">
+                No
+              </button>
             </div>
-          </div>
+          </span>
         </div>
+      </div>
+    </div>
+  </div>
 
-
-
+  <div
+    class="modal fade"
+    id="saveModalReject"
+    tabindex="-1"
+    aria-labelledby="saveModalLabel"
+    aria-hidden="true"
+    data-bs-backdrop="false"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="words">
+            <i class="fa-solid fa-times-circle" id="tickIcon"></i>
+            <p>Reject {{ modalName }}?</p>
+          </div>
+          <span>
+            <div class="applybtns">
+              <button
+                type="button"
+                id="yesbtn"
+                data-bs-dismiss="modal"
+                @click="confirmYesReject"
+              >
+                Yes
+              </button>
+              <button type="button" id="nobtn" data-bs-dismiss="modal">
+                No
+              </button>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="mainBody">
     <router-link
@@ -123,14 +149,32 @@
             @rejectbtn="rejApplicant(key)"
             @clickCard="indvApplicant(key)"
             @firstClick="firstClick"
-            :popUpConfirm="this.popUpConfirm"  
+            :popUpConfirm="this.popUpConfirm"
           />
         </div>
       </div>
     </div>
   </div>
-  <button type="submit" style="visibility:hidden;" ref="confirmModalAccept" class="green" data-bs-toggle="modal" data-bs-target="#saveModalAccept" >Accept</button>                  
-  <button type="submit" style="visibility:hidden;" ref="confirmModalReject" class="green" data-bs-toggle="modal" data-bs-target="#saveModalReject" >Reject</button>   
+  <button
+    type="submit"
+    style="visibility: hidden"
+    ref="confirmModalAccept"
+    class="green"
+    data-bs-toggle="modal"
+    data-bs-target="#saveModalAccept"
+  >
+    Accept
+  </button>
+  <button
+    type="submit"
+    style="visibility: hidden"
+    ref="confirmModalReject"
+    class="green"
+    data-bs-toggle="modal"
+    data-bs-target="#saveModalReject"
+  >
+    Reject
+  </button>
 </template>
 
 <script>
@@ -178,29 +222,29 @@ export default {
       rejected: [],
       applied: [],
       popUpConfirm: null,
-      modalName:null,
+      modalName: null,
     };
   },
 
   methods: {
     ...mapActions(["GET_NEW_CARD"]),
     //...mapMutations(['SET_KEY',]),
-    firstClick(event,name) {
-      this.modalName = name
+    firstClick(event, name) {
+      this.modalName = name;
       if (event == true) {
-        this.$refs.confirmModalAccept.click()
+        this.$refs.confirmModalAccept.click();
       } else {
-        this.$refs.confirmModalReject.click()
+        this.$refs.confirmModalReject.click();
       }
     },
     confirmYesAccept() {
-      this.popUpConfirm = true
+      this.popUpConfirm = true;
     },
     confirmYesReject() {
-      this.popUpConfirm = false
+      this.popUpConfirm = false;
     },
     indvApplicant(key) {
-      alert("key " + key)
+      alert("key " + key);
       console.log(this.applicant[key]);
       console.log(this.offered[key]);
       this.$router.push({
@@ -225,7 +269,7 @@ export default {
       //this.SET_KEY(key)
       //this.GET_NEW_CARD()
       //TBC this.$refs.confirmModal.click()
-      alert("key " + key)
+      alert("key " + key);
       var accApplicant = this.newApplicants[key];
       var offered = this.offered[key];
       var name = this.applicant[key].name;
@@ -271,7 +315,7 @@ export default {
     async rejApplicant(key) {
       //this.SET_KEY(key)
       //this.GET_NEW_CARD()
-      alert("key " + key)
+      alert("key " + key);
       var rejApplicant = this.newApplicants[key];
       var rejected = this.rejected[key];
       var name = this.applicant[key].name;
@@ -502,56 +546,55 @@ hr {
 }
 
 #applyModal {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
-  .modal-content {
-    background-color: #BBDFCC;
-    border: none;
-  }
+.modal-content {
+  background-color: #bbdfcc;
+  border: none;
+}
 
-  .words {
-    width: max-content;
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
-    height: 50px;
-  }
+.words {
+  width: max-content;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  height: 50px;
+}
 
-  .applybtns {
-    width: max-content;
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-  }
+.applybtns {
+  width: max-content;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
 
-  #yesbtn, #nobtn {
-    margin: 10px;
-    border: none;
-    border-radius: 10px;
-    background-color:#89ca9a;
-    color: #3f3f3f;
-    width: 120px;
-    height: 30px;
-    font-size: 18px;
-  }
+#yesbtn,
+#nobtn {
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #89ca9a;
+  color: #3f3f3f;
+  width: 120px;
+  height: 30px;
+  font-size: 18px;
+}
 
-  #tickIcon {
-    height: 38px;
-    width: 38px;
-    color: #3D9956;
-    float: left;
-  }
+#tickIcon {
+  height: 38px;
+  width: 38px;
+  color: #3d9956;
+  float: left;
+}
 
-  .modal-body p {
-    font-size: 18px;
-    text-align: center;
-    width: 180px;
-    margin-left: 48px;
-    color: #3f3f3f;
-  }
-
-
+.modal-body p {
+  font-size: 18px;
+  text-align: center;
+  width: 180px;
+  margin-left: 48px;
+  color: #3f3f3f;
+}
 </style>

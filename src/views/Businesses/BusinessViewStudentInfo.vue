@@ -51,7 +51,8 @@
             <ul style="display: grid; grid-template-columns: repeat(5, 1fr)">
               <li
                 v-for="(item, index) in interests"
-                :key=index style="width: 20%; display: inline"
+                :key="index"
+                style="width: 20%; display: inline"
               >
                 <div class="interest-flex">
                   <label class="labelTag" for="interest">Interest</label>
@@ -142,7 +143,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
-import {mapState} from "vuex"
+import { mapState } from "vuex";
 const db = getFirestore(firebaseApp);
 const router = useRouter();
 export default {
@@ -151,7 +152,7 @@ export default {
     BusinessNavBar,
   },
   computed: {
-    ...mapState(['userEmail','studentInfo',]),
+    ...mapState(["userEmail", "studentInfo"]),
   },
   created() {
     this.interests.push({
@@ -320,29 +321,27 @@ export default {
   },
   mounted() {
     var userEmail = this.userEmail;
-    console.log("studentInfo",this.studentInfo['applicants'])
+    console.log("studentInfo", this.studentInfo["applicants"]);
     //vuex
-    this.applicant = JSON.parse(this.studentInfo['applicants']);
-    this.allApplicant = JSON.parse(this.studentInfo['allApplicants']);
+    this.applicant = JSON.parse(this.studentInfo["applicants"]);
+    this.allApplicant = JSON.parse(this.studentInfo["allApplicants"]);
     // this.showButton = JSON.parse(this.$route.params.buttonShow);
-    this.newApplicant = JSON.parse(this.studentInfo['newApplicants']);
-    this.accApplicant = JSON.parse(this.studentInfo['accApplicants']);
-    this.rejApplicant = JSON.parse(this.studentInfo['rejApplicants']);
-    this.offer = JSON.parse(this.studentInfo['offered']);
-    this.reject = JSON.parse(this.studentInfo['rejected']);
-    this.apply = JSON.parse(this.studentInfo['applied']);
-    this.item = JSON.parse(this.studentInfo['items']);
-    this.theKey = JSON.parse(this.studentInfo['key']);
-    this.stat = JSON.parse(this.studentInfo['stat'])
+    this.newApplicant = JSON.parse(this.studentInfo["newApplicants"]);
+    this.accApplicant = JSON.parse(this.studentInfo["accApplicants"]);
+    this.rejApplicant = JSON.parse(this.studentInfo["rejApplicants"]);
+    this.offer = JSON.parse(this.studentInfo["offered"]);
+    this.reject = JSON.parse(this.studentInfo["rejected"]);
+    this.apply = JSON.parse(this.studentInfo["applied"]);
+    this.item = JSON.parse(this.studentInfo["items"]);
+    this.theKey = JSON.parse(this.studentInfo["key"]);
+    this.stat = JSON.parse(this.studentInfo["stat"]);
     console.log(this.accApplicant);
-    this.items = JSON.parse(this.studentInfo['items']);
-    console.log('items',this.items)
-    this.projectId = this.items['projectId'];
-    this.newApplicants = this.items['newApplicants'];
-    this.accApplicants = this.items['accApplicants'];
-    this.rejApplicants = this.items['rejApplicants'];
-
-
+    this.items = JSON.parse(this.studentInfo["items"]);
+    console.log("items", this.items);
+    this.projectId = this.items["projectId"];
+    this.newApplicants = this.items["newApplicants"];
+    this.accApplicants = this.items["accApplicants"];
+    this.rejApplicants = this.items["rejApplicants"];
 
     //Non vuex
     /*
@@ -367,7 +366,7 @@ export default {
     */
 
     var email = JSON.parse(this.studentInfo.applicants).email;
-    console.log(email)
+    console.log(email);
     const that = this;
     async function getApplicant(email) {
       const docSnap = await getDoc(doc(db, "students", email));

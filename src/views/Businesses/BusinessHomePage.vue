@@ -325,7 +325,11 @@ hr {
 </style>
 -->
 <template>
-  <BusinessNavBar :class="{blur:!profileFormCreated}" :Heading="Heading" :header="true" />
+  <BusinessNavBar
+    :class="{ blur: !profileFormCreated }"
+    :Heading="Heading"
+    :header="true"
+  />
   <BusinessProfileForm @success="close" v-if="!profileFormCreated" />
   <div :class="{ blur: !profileFormCreated, mainBody: foreverTrue }">
     <router-link
@@ -499,7 +503,7 @@ export default {
     async function fetchProject() {
       //var businessEmail = auth.currentUser.email;
       //var businessEmail = window.localStorage.getItem('emailForSignIn')
-      
+
       //order projects by posted date, from latest to oldest
       let projects = query(
         collection(db, "Project"),

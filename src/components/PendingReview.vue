@@ -1,30 +1,25 @@
 <template>
-
   <div class="pendingreview" @click="getData">
-        <div class="top flex flex-row">
-            <div class="title"><strong>{{task['taskname']}}</strong></div>
-            <div class="status-button flex todoButton">
-                    <div>
-              <p id="status">Pending</p>
-            </div>
-            </div>
+    <div class="top flex flex-row">
+      <div class="title">
+        <strong>{{ task["taskname"] }}</strong>
+      </div>
+      <div class="status-button flex todoButton">
+        <div>
+          <p id="status">Pending</p>
         </div>
-        <div class="top flex flex-row">
-            <p>
-                 Due date: {{duedate}}
-            </p>
-        </div>
-       
-        <div class="short">
-        <p>
-            Short Description: {{task['shortdescription']}}
-        </p>
-        </div>          
-    </div>  
+      </div>
+    </div>
+    <div class="top flex flex-row">
+      <p>Due date: {{ duedate }}</p>
+    </div>
 
+    <div class="short">
+      <p>Short Description: {{ task["shortdescription"] }}</p>
+    </div>
+  </div>
 
-
-<!-- Non vuex non modal pop up business / student management. To uncomment if cannot finish business management vuex
+  <!-- Non vuex non modal pop up business / student management. To uncomment if cannot finish business management vuex
   <div v-if="user == 'student'">
     <router-link
       style="text-decoration: none; color: inherit"
@@ -126,44 +121,38 @@
     
     </router-link>  
     -->
-
-    
 </template>
 
 <script>
-import * as moment from 'moment'
-    export default {
-        name: 'PendingReview',
-        props: {
-            task:Object,
-            projectTitle:String,
-            projectId:String,
-            user: String,
-        },
-         mounted() {
-            const curr = this
-            console.log(curr.task)
-            
-        },
-        data() {
-            return {
-                duedate: this.task.duedate,
-                dateOptions: {year: "numeric", month: "short", day: "numeric"},
-            }
-        },
-        methods: {
-            formatDate(date) {
-                return moment(date).format("DD MMMM YYYY");
-            },
-            getData() {
-              this.$emit('getData',this.task)
-              console.log(this.task)
-            }
-        },
-      
-
-       
-    }
+import * as moment from "moment";
+export default {
+  name: "PendingReview",
+  props: {
+    task: Object,
+    projectTitle: String,
+    projectId: String,
+    user: String,
+  },
+  mounted() {
+    const curr = this;
+    console.log(curr.task);
+  },
+  data() {
+    return {
+      duedate: this.task.duedate,
+      dateOptions: { year: "numeric", month: "short", day: "numeric" },
+    };
+  },
+  methods: {
+    formatDate(date) {
+      return moment(date).format("DD MMMM YYYY");
+    },
+    getData() {
+      this.$emit("getData", this.task);
+      console.log(this.task);
+    },
+  },
+};
 </script>
 
 <style scoped>

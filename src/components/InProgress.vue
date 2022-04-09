@@ -1,33 +1,28 @@
 <template>
-<!--
+  <!--
      <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
         taskId: task['id'], projectId:task['projectId'], projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
         -->
-   <div class="inProgress" @click="getData">
-        <div class="top flex flex-row">
-            <div class="title"><strong>{{task['taskname']}}</strong></div>
-            <div class="status-button flex inprogressButton">                
-                <div>
-              <p id="status">In Progress</p>
-            </div>
-                
-            </div>
+  <div class="inProgress" @click="getData">
+    <div class="top flex flex-row">
+      <div class="title">
+        <strong>{{ task["taskname"] }}</strong>
+      </div>
+      <div class="status-button flex inprogressButton">
+        <div>
+          <p id="status">In Progress</p>
         </div>
-        <div class="top flex flex-row">
-            <p>
-                 Due date: {{formatDate(task["duedate"])}}
-            </p>
-        </div>
-       
-        <div class="short">
-        <p>
-            Short Description: {{task['shortdescription']}}
-        </p>
-        </div>          
-    </div>  
-   
-   
-   
+      </div>
+    </div>
+    <div class="top flex flex-row">
+      <p>Due date: {{ formatDate(task["duedate"]) }}</p>
+    </div>
+
+    <div class="short">
+      <p>Short Description: {{ task["shortdescription"] }}</p>
+    </div>
+  </div>
+
   <!--New non vuex non modal pop-up business/student management. To uncomment if cannot do business vuex in time
   <div class="inProgress">
   <div v-if="user == 'student'">
@@ -104,9 +99,6 @@
   </div>
   -->
 
-
-
-
   <!-- <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
         taskId: task['id'], projectId:task['projectId'], description: task['shortdescription'],projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
     <div class="inProgress">
@@ -134,39 +126,35 @@
    
     </router-link>  
     -->
-
-    
 </template>
 
 <script>
-import * as moment from 'moment'
-    export default {
-        name: 'InProgress',
-        props: {
-            task:Object,
-            projectTitle:String,
-            projectId:String,
-            user:String,
+import * as moment from "moment";
+export default {
+  name: "InProgress",
+  props: {
+    task: Object,
+    projectTitle: String,
+    projectId: String,
+    user: String,
+  },
 
-        },
-
-        data() {
-            return {
-                duedate: this.task.duedate,
-                dateOptions: {year: "numeric", month: "short", day: "numeric"},
-            }
-        },
-        watch: {
-        },
-        methods: {
-            formatDate(date) {
-                return moment(date).format("DD MMMM YYYY");
-            },
-            getData() {
-              this.$emit('getData',this.task)
-            }
-        }
-    }
+  data() {
+    return {
+      duedate: this.task.duedate,
+      dateOptions: { year: "numeric", month: "short", day: "numeric" },
+    };
+  },
+  watch: {},
+  methods: {
+    formatDate(date) {
+      return moment(date).format("DD MMMM YYYY");
+    },
+    getData() {
+      this.$emit("getData", this.task);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -237,17 +225,17 @@ a {
   margin-left: auto;
 }
 
-     .status-button {
-        width: 100px;
-        height: 10px;
-        font-size: 12px;
-        justify-self: start;
-        align-items: center;
-        justify-content: center;
-        padding: 8px 30px;
-        border-radius: 10px;
-        margin-left: auto;
-    }
+.status-button {
+  width: 100px;
+  height: 10px;
+  font-size: 12px;
+  justify-self: start;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 30px;
+  border-radius: 10px;
+  margin-left: auto;
+}
 .top {
   margin-bottom: 15px;
   margin-top: -15px;
