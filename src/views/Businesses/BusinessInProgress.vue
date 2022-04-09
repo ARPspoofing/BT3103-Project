@@ -196,7 +196,7 @@ export default {
             })
           } else if (document.taskStatus == "Completed") {
             completedTask.push({
-              id: document.id,
+              id: document.taskName,
               comments: document.comments,
               /*
               projectTitle: that.projectTitle,

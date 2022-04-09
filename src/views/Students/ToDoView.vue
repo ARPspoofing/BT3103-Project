@@ -28,6 +28,7 @@
             <option value="To do">To Do</option>
             <option value="In progress">In Progress</option>
             <option value="Pending review">Send for review</option>
+            <option value="Completed">Completed</option>
           </select>
         </div>
       </div>
@@ -254,6 +255,7 @@ export default {
       let ref = await doc(db, "Project", this.studentProjectId);
       let project = await getDoc(ref);
       var tasks = await project.data().Tasks;
+      console.log("all tasks",tasks)
       console.log("tasks",tasks)
       console.log("ok");
       //console.log(this.task);
@@ -267,10 +269,12 @@ export default {
         console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
+          console.log("to Remove",toRemove,"oldstatus",currTask.taskStatus,"newStatus",currStatus)
           currTask.taskStatus = currStatus;
           newTask = currTask;
         }
       }
+
       console.log(tasks);
       console.log(newTask);
       await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
