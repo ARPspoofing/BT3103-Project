@@ -81,4 +81,7 @@ export default {
 .fade-leave-active {
   transition: opacity 0.5s ease-out;
 }
+#role:hover {
+  color: #0e8044;
+}
 </style>

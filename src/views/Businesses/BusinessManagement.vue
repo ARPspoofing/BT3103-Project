@@ -155,6 +155,7 @@ import { getAuth } from "firebase/auth";
 import BusinessToDoView from "../Businesses/BusinessToDoView.vue";
 import ToDoView from "../Students/ToDoView.vue";
 
+
 export default {
   name: "BusinessManagement",
   components: {
@@ -169,6 +170,9 @@ export default {
   props: {
     //So that this page can easily access the project that it is clicked on
     projectName: String,
+  },
+  watch: {
+    
   },
   computed: {
     ...mapState([
@@ -209,6 +213,7 @@ export default {
       studentsComp: [],
       toBlur: false,
       comment: null,
+
     };
   },
   methods: {

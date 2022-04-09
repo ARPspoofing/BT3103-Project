@@ -77,6 +77,7 @@
             :accepted="true"
             :status="item.status"
             @clickCard="indvApplicant(key)"
+            :picture="item.finalProfile"
           />
         </div>
       </div>
@@ -257,6 +258,7 @@ export default {
         course: data.course,
         status: stat,
         email: data.email,
+        finalProfile: data.finalProfile ,
       };
     }
     // console.log(this.newApplicants)

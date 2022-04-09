@@ -28,6 +28,7 @@
         :projectTitle="item.projectTitle"
         :description="item.description"
         :stat="stat"
+        :picture = "item.profilePicture"
       />
     </div>
   </div>
@@ -93,6 +94,7 @@ export default {
           that.projects.push({
             projectTitle: finalResult.data().Project_Title,
             description: finalResult.data().Description,
+            profilePicture: finalResult.data().profPicture,
           });
         })
       );
@@ -115,6 +117,7 @@ export default {
       return {
         projectTitle: data.Project_Title,
         description: data.Description,
+        profilePicture: data.profPicture,
       };
     }
   },

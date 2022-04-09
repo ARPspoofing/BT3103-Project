@@ -1,6 +1,7 @@
 <template>
   <StudentNavBar :search="false" :Heading="fullTitle" :header="true" />
   <!-- Modal -->
+  {{storeNum.number}}
   <button
     @click="blurBg"
     style="visibility: hidden"
@@ -142,6 +143,8 @@ import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import Loading from "../../components/Loading.vue";
 import ToDoView from "../Students/ToDoView.vue";
+import {store} from '../../store/globalStore.js'
+
 const db = getFirestore(firebaseApp);
 const router = useRouter();
 
@@ -160,9 +163,7 @@ export default {
     ]),
   },
   watch: {
-    studentTask(newVal,oldVal) {
-      alert('business updated!')
-    },
+   
   },
   props: {
     //So that this page can easily access the project that it is clicked on
@@ -186,6 +187,8 @@ export default {
       description: null,
       toBlur: false,
       comment: [],
+      storeNum:store.state.numbers,
+      dataVal:null,
     };
   },
   methods: {
@@ -253,6 +256,12 @@ export default {
     },
   },
   mounted() {
+
+    window.addEventListener('foo-key-localstorage-changed', (event) => {
+    this.dataVal = event.detail.storage;
+    });
+
+
     const curr = this;
     //non-vuex
     /*

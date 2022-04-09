@@ -65,6 +65,7 @@ import { getDoc, collection, doc } from "firebase/firestore";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import ResetPassword from "../../components/ResetPassword.vue";
+import {store} from '../../store/globalStore.js'
 const router = useRouter();
 const auth = getAuth();
 const db = getFirestore(firebaseApp);
@@ -78,9 +79,11 @@ export default {
       errorMessage: "",
       emailError: false,
       passwordError: false,
+      storeState: store.state,
     };
   },
   mounted() {
+    store.addNumber(5)
     if (this.counter == 0) {
       this.$refs.refresh.click();
     }

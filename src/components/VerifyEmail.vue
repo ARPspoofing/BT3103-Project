@@ -44,6 +44,8 @@ import {
 } from "firebase/auth";
 import { useRouter } from "vue-router";
 import Loading from "./Loading.vue";
+import {mapState} from "vuex";
+
 
 const db = getFirestore(firebaseApp);
 const router = useRouter();
@@ -59,11 +61,14 @@ export default {
       loading: false,
     };
   },
+  computed: {
+    ...mapState(['userEmail',]),
+  },
   mounted() {
     const that = this;
     async function check() {
       const auth = getAuth();
-      let email = window.localStorage.getItem("emailForSignIn");
+      let email = this.userEmail
       that.email = email;
       const docRef = doc(db, "businesses", String(email));
       const docs = await getDoc(docRef);
@@ -79,7 +84,7 @@ export default {
       }
       console.log("CHECK", isSignInWithEmailLink(auth, window.location.href));
       if (isSignInWithEmailLink(auth, window.location.href)) {
-        let email = window.localStorage.getItem("emailForSignIn");
+        //let email = window.localStorage.getItem("emailForSignIn");
         console.log("link email", email);
         if (!email) {
           // User opened the link on a different device.

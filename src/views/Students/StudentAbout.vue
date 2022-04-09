@@ -129,7 +129,7 @@
         <h4>Contact Details</h4>
         <div class="input flex flex-column">
           <label for="schoolEmail">School Email</label>
-          <input type="text" id="schoolEmail" v-model="schoolEmail" />
+          <input type="text" id="schoolEmail" v-model="schoolEmail" readonly/>
         </div>
         <div class="errorMsg" v-if="schoolEmailErrorPresent">
           {{ this.errorMessage }}
@@ -154,6 +154,9 @@
         <h4>File Details</h4>
         <div class="input flex flex-column">
           <label for="resume">Resume</label>
+          <a v-bind:href="this.resumeLink" target="_blank" class="but"
+            >View Resume</a
+          >
           <input
             type="file"
             multiple
@@ -168,6 +171,9 @@
         </div>
         <div class="input flex flex-column">
           <label for="transcript">Transcript</label>
+          <a v-bind:href="transcriptLink" target="_blank" class="but"
+            >View Transcript</a
+          >
           <input
             type="file"
             multiple
@@ -379,6 +385,8 @@ export default {
           getDownloadURL(uploadTask.snapshot.ref).then((url) => {
             console.log("File available at", (this.resumeLink = url));
           });
+          this.resumeLink = url;
+          console.log(this.resumeLink);
         }
       );
     },
@@ -473,7 +481,7 @@ export default {
         ) == false
       ) {
         this.contactNumberErrorPresent = true;
-        this.errorMessage = "Please enter your contact number";
+        this.errorMessage = "Please enter a valid contact number";
       } else if (!this.resumePresent && this.resumeLink == "") {
         this.resumeErrorPresent = true;
         this.errorMessage = "Please upload your resume";
@@ -494,8 +502,9 @@ export default {
           transcriptDownloadLink: this.transcriptLink,
           description: this.description,
         });
+        this.$router.push({ name: "StudentHomePage" });
       }
-      alert("save data");
+      //alert("save data");
     },
   },
   mounted() {
@@ -633,22 +642,15 @@ select {
 button,
 .button {
   cursor: pointer;
-  padding: 2px 24px;
+  padding: 7px 44px;
   border-radius: 30px;
   border: none;
   font-size: 14px;
   margin-right: 8px;
   margin-left: 20px;
   color: #fff;
-  img {
-    margin-right: 4px;
-  }
 }
-.save {
-  div {
-    flex: 1;
-  }
-}
+
 .right {
   width: max-content;
   float: right;
@@ -728,7 +730,7 @@ ul {
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   height: 50px;
 }
 .applybtns {
@@ -748,6 +750,7 @@ ul {
   width: 120px;
   height: 30px;
   font-size: 18px;
+  padding-top: 3px;
 }
 #tickIcon {
   height: 38px;
@@ -758,8 +761,21 @@ ul {
 .modal-body p {
   font-size: 18px;
   text-align: center;
+  width: max-content;
+  margin-bottom: 20px;
+}
+.but {
+  text-decoration: none;
+  background: #0e8044;
+  padding: 4px;
+  border-radius: 8px;
+  color: white;
   width: 180px;
-  margin-left: 48px;
-  color: #3f3f3f;
+  margin-left: 15%;
+  margin-right: auto;
+  margin-bottom: 5px;
+}
+#saveModal {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 </style>

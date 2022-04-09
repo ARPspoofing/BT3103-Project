@@ -192,8 +192,7 @@ export default {
         this.industryErrorPresent = true;
         this.errorMessage = "Please fill in your company's industry";
       } else {
-        const auth = getAuth();
-        const email = auth.currentUser.email;
+        const email = this.userEmail
         //accessing the current user and setting the elements
         await updateDoc(doc(db, "businesses", String(email)), {
           finalProfile: this.finalProfile,

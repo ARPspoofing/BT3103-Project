@@ -595,6 +595,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
+  padding-top: 150px;
 }
 ::-webkit-scrollbar {
   display: none;
@@ -621,7 +622,7 @@ input,
 select,
 textarea {
   width: 100%;
-  background-color: #33d69f;
+  background-color: white;
   border: none;
   outline: none;
 }
@@ -642,7 +643,7 @@ textarea {
   background-color: #bbdfcc;
   color: black;
   border-radius: 5%;
-  height: 180%;
+  height: 300%;
   margin-top: 600px;
 }
 img {

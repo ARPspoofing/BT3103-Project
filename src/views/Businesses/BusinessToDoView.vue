@@ -178,6 +178,7 @@ import {
 import { getAuth } from "firebase/auth";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
+import {store} from '../../store/globalStore.js'
 
 export default {
   name: "BusinessToDoView",
@@ -377,7 +378,10 @@ export default {
     },
 
     async updateStatus() {
+      //To remove 
       this.SET_UPDATED(true)
+      store.addNumber(5)
+    
       const currStatus = this.status;
       console.log(currStatus);
       console.log(this.projectId);

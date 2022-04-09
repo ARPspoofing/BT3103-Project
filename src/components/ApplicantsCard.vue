@@ -1,7 +1,7 @@
 <template>
   <div class="card-body" @click.self="clickCard">
     <div class="clogo" @click.self="clickCard">
-      <img src="../assets/google-logo.png" alt="Logo" class="logo" />
+      <img v-bind:src="picture" alt="Logo" class="logo" />
       <span>
         <div @click.self="clickCard" class="appDetails">
           {{ applicantName }} <br />
@@ -175,6 +175,7 @@ export default {
     status: String,
     accepted: Boolean,
     popUpConfirm: Boolean,
+    picture: String,
   },
 
   /*
@@ -217,7 +218,8 @@ export default {
   background-color: #bbdfcc;
   border-radius: 8px;
   width: 30%;
-  height: max-content;
+  /*height: max-content;*/
+  height: 200px;
   float: left;
   padding: 20px;
   margin: 10px;
@@ -255,7 +257,7 @@ export default {
 }
 
 .reject {
-  background-color: #f40000;
+  background-color: #ec5c5c;
   color: white;
   width: 110%;
   border-radius: 8px;

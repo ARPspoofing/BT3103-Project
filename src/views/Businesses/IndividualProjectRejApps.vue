@@ -74,6 +74,7 @@
           :applicantName="item.name"
           :applicantCourse="item.course"
           @clickCard="indvApplicant(key)"
+          :picture="item.finalProfile"
         />
       </div>
       <!--       
@@ -216,7 +217,7 @@ export default {
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
       //let result = await data.name
-      return { name: data.name, course: data.course, email: data.email };
+      return { name: data.name, course: data.course, email: data.email,finalProfile: data.finalProfile};
     }
     console.log(this.applicant);
   },

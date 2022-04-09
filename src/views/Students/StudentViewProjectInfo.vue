@@ -3,7 +3,7 @@
   <div class="mainBody">
     <div>
       <div class="clogo">
-        <img src="../../assets/google-logo.png" alt="Logo" class="logo" />
+        <img :src="profilePicture" alt="Logo" class="logo" />
         <span>
           <div class="projTitle">
             {{ items.projectTitle }} <br />
@@ -181,6 +181,7 @@ export default {
       appstat: "",
       companyEmail: "",
       companyName: "",
+      profilePicture: "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",
     };
   },
   computed: {
@@ -222,6 +223,7 @@ export default {
     this.projId = JSON.parse(this.cardItems).projectId;
     this.appstat = JSON.parse(this.cardItems).appstat;
     this.companyEmail = JSON.parse(this.cardItems).company;
+    this.profilePicture = JSON.parse(this.cardItems).profilePicture;
 
     const that = this;
     async function getAppliedProjects() {
@@ -564,7 +566,7 @@ hr {
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   height: 50px;
 }
 
@@ -592,12 +594,13 @@ hr {
   height: 38px;
   width: 38px;
   color: #3d9956;
-  float: left;
+  margin-left: 40%;
+  margin-right: auto;
 }
 
 .modal-body p {
   text-align: center;
-  width: 180px;
-  margin-left: 48px;
+  width: max-content;
+  margin-bottom: 20px;
 }
 </style>
