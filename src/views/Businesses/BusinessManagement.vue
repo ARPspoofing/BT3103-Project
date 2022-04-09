@@ -7,7 +7,7 @@
     <div class="modal-content">
       <div class="modal-body">    
 
-               <BusinessToDoView :description="this.longdescription" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId" :task="this.task"/>
+               <BusinessToDoView :taskComment="this.comment" :description="this.longdescription" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId" :task="this.task"/>
                 
         <button @click="unblurBg" type="button" id="nobtn" data-bs-dismiss="modal">Cancel</button>
       </div>
@@ -141,7 +141,7 @@ export default {
     projectName: String,
   },
   computed: {
-    ...mapState(['userEmail','businessTask','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted','businessInProgProjects','businessCompletedProjects','businessStudents','businessStudentsInProg','businessStudentsComp']),
+    ...mapState(['taskComments','userEmail','businessTask','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted','businessInProgProjects','businessCompletedProjects','businessStudents','businessStudentsInProg','businessStudentsComp']),
   },
 
   data() {
@@ -167,7 +167,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['SET_BUSINESS_TASK','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED','SET_BUSINESS_IN_PROG_PROJECTS','SET_BUSINESS_COMPLETED_PROJECTS','SET_BUSINESS_STUDENTS','SET_BUSINESS_STUDENTS_IN_PROG','SET_BUSINESS_STUDENTS_COMP',]),
+    ...mapMutations(['SET_BUSINESS_TASK','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED','SET_BUSINESS_IN_PROG_PROJECTS','SET_BUSINESS_COMPLETED_PROJECTS','SET_BUSINESS_STUDENTS','SET_BUSINESS_STUDENTS_IN_PROG','SET_BUSINESS_STUDENTS_COMP','SET_TASK_COMMENTS',]),
     //...mapMutations(['SET_BUSINESS_TASK','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED',]),
     goback() {
       this.$router.push({
@@ -210,6 +210,7 @@ export default {
             currTask = thisTask;
           if (currTask.comments) {
             curr.comment = currTask.comments.reverse();
+             this.SET_TASK_COMMENTS(currTask.comments)
             console.log("comments",currTask.comments.reverse())
           } else {
             curr.comment = [];
@@ -218,6 +219,7 @@ export default {
         }
       }
       console.log("current comments",curr.comment)
+     
         
         
         

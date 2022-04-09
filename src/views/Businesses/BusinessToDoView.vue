@@ -130,7 +130,7 @@
         <div
           class="projectContainer"
           :key="item.key"
-          v-for="(item, key) in comment"
+          v-for="(item, key) in this.taskComment"
         >
           <div id="eachComment">
             <img v-bind:src="item.profPic" alt="Logo" class="logo" />
@@ -206,7 +206,7 @@ export default {
       allTaskComments:null,
     };
   },
-  props: ['task_id','projectId','projectTitle','duedate','task','description'],
+  props: ['task_id','projectId','projectTitle','duedate','task','description','taskComment'],
   watch: {
     extend() {
       const extendedDate = new Date();
@@ -224,7 +224,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(['businessTask','userEmail','businessTaskId','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted','businessInProgProjects','businessCompletedProjects','businessStudents','businessStudentsInProg','businessStudentsComp','allTaskComments']),
+    ...mapState(['businessTask','userEmail','businessTaskId','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted','businessInProgProjects','businessCompletedProjects','businessStudents','businessStudentsInProg','businessStudentsComp','taskComments']),
     taskIndex() {
       return parseInt(this.number) + 1;
     },
@@ -473,7 +473,7 @@ export default {
     console.log(curr.$route.params.comments);
     const projectTitle = curr.$route.params.projectTitle;
     */
-
+    console.log('task comments')
     const projectId = this.businessProjectId
     const taskId = this.task_id
     const projectTitle = this.projectTitle
@@ -510,6 +510,7 @@ export default {
     }
 
     async function getComments() {
+      
       const docRef = doc(db, "Project", projectId);
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;

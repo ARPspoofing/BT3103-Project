@@ -67,7 +67,7 @@ export default createStore({
     businessStudents:null,
     businessStudentsInProg:null,
     businessStudentsComp:null, 
-    allTaskComments:null,
+    TaskComments:null,
   },
   //getter for debugging
   getters: {
@@ -237,8 +237,8 @@ export default createStore({
     SET_BUSINESS_STUDENTS_COMP(state,payload) {
       state.businessStudentsComp = payload
     },
-    SET_ALL_TASK_COMMENTS(state,payload) {
-      state.allTaskComments = payload
+    SET_TASK_COMMENTS(state,payload) {
+      state.TaskComments = payload
     },
 
     
