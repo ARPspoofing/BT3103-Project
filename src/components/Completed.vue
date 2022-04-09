@@ -150,7 +150,7 @@ export default {
     },
     getData() {
       this.$emit("getData", this.task);
-      console.log(this.task);
+      //console.log(this.task);
     },
   },
 };

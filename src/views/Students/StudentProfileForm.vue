@@ -317,14 +317,11 @@ export default {
       id: uuidv4(),
       value: "",
     });
-    console.log(this.interests.target);
+    //console.log(this.interests.target);
     const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log("currUser", user.email);
-        this.schoolEmail = user.email;
-      }
-    });
+        //console.log("currUser", user.email);
+    this.schoolEmail = this.userEmail;
+     
   },
   data() {
     return {
@@ -464,8 +461,10 @@ export default {
       this.$emit("cancel", true);
     },
     allInterestsEmpty() {
+      /*
       console.log(this.interests);
       console.log(this.interests.length);
+      */
       for (let i = 0; i < this.interests.length; i++) {
         if (this.interests[i].value != "") {
           return false;
@@ -545,8 +544,8 @@ export default {
         this.errorMessage = "Please upload your transcript";
       } else {
         const auth = getAuth();
-        const email = auth.currentUser.email;
-        console.log(email);
+        const email = this.userEmail
+        //console.log(email);
         this.SET_NAME(this.name);
         await setDoc(doc(db, "students", String(email)), {
           email: email,

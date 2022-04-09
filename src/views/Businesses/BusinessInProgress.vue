@@ -61,7 +61,6 @@ import BusinessProfileForm from "./BusinessProfileForm.vue";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 const db = getFirestore(firebaseApp);
-
 export default {
   name: "BusinessInProgress",
   components: {
@@ -112,11 +111,12 @@ export default {
       "SET_BUSINESS_STUDENTS_IN_PROG",
       "SET_BUSINESS_STUDENTS_COMP",
     ]),
-
     // The function indivproj(key) isn't used for now
     indivproj(key) {
+      /*
       console.log(JSON.stringify(this.testCollection[key].tasks));
       console.log(JSON.stringify(this.testCollection[key].projectId));
+      */
       this.$router.push({
         name: "BusinessManagement",
         params: {
@@ -131,7 +131,6 @@ export default {
     isEqual(email) {
       return email == this.businessEmail;
     },
-
     async getProjects() {
       const ref = doc(db, "businesses", this.userEmail);
       const docSnap = await getDoc(ref);
@@ -139,7 +138,6 @@ export default {
       this.SET_BUSINESS_IN_PROG_PROJECTS(data.inProgProjects);
       this.SET_BUSINESS_COMPLETED_PROJECTS(data.completedProjects);
     },
-
     async getStudents(id) {
       const projects = query(
         collection(db, "students"),
@@ -149,7 +147,7 @@ export default {
       var students = [];
       var studentsInProg = [];
       var studentsComp = [];
-      console.log(snapshot);
+      //console.log(snapshot);
       snapshot.forEach(async (docs) => {
         let data = docs.data();
         students.push(data.email);
@@ -165,11 +163,12 @@ export default {
       this.getProjects();
       this.SET_BUSINESS_PROJECT_ID(projectId);
       this.SET_BUSINESS_PROJECT_TITLE(projectTitle);
+      /*
       console.log("projectId", projectId);
       console.log("projectTitle", projectTitle);
+      */
       var id = projectId;
       var title = projectTitle;
-
       let docRef = await doc(db, "Project", id);
       let project = await getDoc(docRef);
       let tasks = project.data().Tasks;
@@ -178,7 +177,7 @@ export default {
       var pendingReviewTask = [];
       var completedTask = [];
       tasks.forEach((document) => {
-        console.log("document", document);
+        //console.log("document", document);
         if (document.taskStatus == "To do") {
           toDoTask.push({
             id: document.taskName,
@@ -237,18 +236,22 @@ export default {
           });
         }
       });
+      /*
       console.log("business todo", toDoTask);
       console.log("business in progress", inProgressTask);
       console.log("business pending", pendingReviewTask);
       console.log("business todo", completedTask);
+      */
       this.SET_BUSINESS_TO_DO(toDoTask);
       this.SET_BUSINESS_IN_PROGRESS(inProgressTask);
       this.SET_BUSINESS_PENDING_REVIEW(pendingReviewTask);
       this.SET_BUSINESS_COMPLETED(completedTask);
+      /*
       console.log("vuex todo", this.businessToDo);
       console.log("vuex in prog", this.businessInProgress);
       console.log("vuex pending", this.businessPendingReview);
       console.log("vuex completed", this.businessCompleted);
+      */
       this.$router.push({ name: "BusinessManagement" });
       //console.log(key);
       //console.log(this.testCollection[key]);
@@ -262,7 +265,6 @@ export default {
     */
     var userEmail = this.userEmail;
     const that = this;
-
     async function getInProgProjects() {
       const ref = doc(db, "businesses", userEmail);
       const docSnap = await getDoc(ref);
@@ -276,15 +278,14 @@ export default {
           that.testCollection.push(res);
         });
       }
-      console.log("inprogprojects", that.inProgProjects);
+      //console.log("inprogprojects", that.inProgProjects);
     }
     getInProgProjects();
-
     async function getProject(proj) {
       const ref = doc(db, "Project", proj);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      console.log(data);
+      //console.log(data);
       /*const docSnap2 = await getDoc(doc(db, "businesses", auth.currentUser.email));
       let data1 = docSnap2.data();
       var pictureprof = data1.finalProfile;
@@ -293,7 +294,6 @@ export default {
           "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png";
       }
       console.log(that.testCollection)*/
-
       return {
         projectId: proj,
         projectTitle: data.Project_Title,
@@ -313,8 +313,7 @@ export default {
         status: data.Status,
       };
     }
-    console.log(that.testCollection);
-
+    //console.log(that.testCollection);
     /*async function fetchProject(identity) {
       let projects = collection(db, "Project", identity)
       let snapshot = await getDocs(projects);
@@ -360,18 +359,15 @@ export default {
 .navbar-custom {
   background-color: #004a23;
 }
-
 #title {
   color: white;
   margin-left: 30px;
   margin-right: 30px;
   margin-bottom: 0px;
 }
-
 .btn {
   margin: 10px;
 }
-
 .mainBody {
   background-color: #f5f5f5;
   width: 100%;
@@ -383,25 +379,21 @@ export default {
     filter: blur(5px);
     */
 }
-
 .projectContainer {
   margin-left: 30px;
 }
-
 #interest {
   text-align: left;
   font-size: 28px;
   margin: 30px 30px 0px 30px;
   color: #606060;
 }
-
 hr {
   border: 0;
   border-top: 2px solid #606060;
   width: 90%;
   margin: 5px 0px 16px 38px;
 }
-
 .options {
   font-size: 15px;
   padding: 5px 25px;
@@ -411,7 +403,6 @@ hr {
   color: white;
   text-align: center;
 }
-
 .optionsOff {
   font-size: 15px;
   padding: 10px 25px;
@@ -422,7 +413,6 @@ hr {
   color: #606060;
   text-decoration: none;
 }
-
 .floating-right-bottom-btn {
   position: fixed;
   right: 40px;
@@ -435,13 +425,11 @@ hr {
   border-radius: 50%;
   padding: 0px;
 }
-
 #plusIcon {
   height: 70px;
   width: 70px;
   color: #004a23;
 }
-
 .optionsOff:hover {
   color: #0e8044;
 }

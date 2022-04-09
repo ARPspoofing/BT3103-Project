@@ -159,7 +159,7 @@ export default {
       id: uuidv4(),
       value: "",
     });
-    console.log(this.interests.target);
+    //console.log(this.interests.target);
   },
   props: {
     buttonShow: Boolean,
@@ -178,7 +178,7 @@ export default {
     },
     async acceptbtn() {
       var theaccApplicant = this.newApplicant[this.theKey];
-      console.log(theaccApplicant);
+      //console.log(theaccApplicant);
       var offered = this.offer;
       var name = this.applicant.name;
       var projTitle = this.item["projectTitle"];
@@ -205,7 +205,7 @@ export default {
       // this.offer.splice(this.theKey, 1);
       // this.apply.splice(this.theKey, 1);
 
-      alert("Accepting applicant: " + name);
+      //alert("Accepting applicant: " + name);
       try {
         const docRef = await updateDoc(doc(db, "Project", projId), {
           Acc_Applicants: this.accApplicant,
@@ -252,6 +252,7 @@ export default {
       this.newApplicant.splice(this.theKey, 1);
       // this.applicant.splice(key, 1);
       // this.apply.splice(key, 1);
+      /*
       console.log(this.rejApplicant);
       console.log(this.newApplicant);
       console.log(rejected);
@@ -259,8 +260,9 @@ export default {
       console.log(applied);
       console.log(this.apply);
       console.log(this.theKey);
+      */
 
-      alert("Rejecting applicant: " + name);
+      //alert("Rejecting applicant: " + name);
 
       try {
         const docRef = await updateDoc(doc(db, "Project", projId), {
@@ -273,7 +275,7 @@ export default {
           appliedProjects: applied,
         });
 
-        console.log(docRef);
+        //console.log(docRef);
         this.$emit("updated");
       } catch (error) {
         console.error("Error updating document: ", error);
@@ -321,7 +323,7 @@ export default {
   },
   mounted() {
     var userEmail = this.userEmail;
-    console.log("studentInfo", this.studentInfo["applicants"]);
+    //console.log("studentInfo", this.studentInfo["applicants"]);
     //vuex
     this.applicant = JSON.parse(this.studentInfo["applicants"]);
     this.allApplicant = JSON.parse(this.studentInfo["allApplicants"]);
@@ -335,9 +337,9 @@ export default {
     this.item = JSON.parse(this.studentInfo["items"]);
     this.theKey = JSON.parse(this.studentInfo["key"]);
     this.stat = JSON.parse(this.studentInfo["stat"]);
-    console.log(this.accApplicant);
+    //console.log(this.accApplicant);
     this.items = JSON.parse(this.studentInfo["items"]);
-    console.log("items", this.items);
+    //console.log("items", this.items);
     this.projectId = this.items["projectId"];
     this.newApplicants = this.items["newApplicants"];
     this.accApplicants = this.items["accApplicants"];
@@ -366,13 +368,13 @@ export default {
     */
 
     var email = JSON.parse(this.studentInfo.applicants).email;
-    console.log(email);
+    //console.log(email);
     const that = this;
     async function getApplicant(email) {
       const docSnap = await getDoc(doc(db, "students", email));
-      console.log("doc: " + docSnap);
+      //console.log("doc: " + docSnap);
       let data = docSnap.data();
-      console.log(data);
+      //console.log(data);
       that.finalProfile = data.finalProfile;
       that.name = data.name;
       that.course = data.course;

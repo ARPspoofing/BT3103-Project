@@ -267,11 +267,11 @@ export default {
       } else {
         var g = this.item.tags;
       }
-      console.log(g);
+      //console.log(g);
       var h = document.getElementById("projectDescription").value;
       var i = this.item.tasks;
 
-      alert("Updating your data for Project: " + a);
+      //alert("Updating your data for Project: " + a);
 
       try {
         const docRef = await updateDoc(doc(db, "Project", this.previousTitle), {
@@ -286,7 +286,7 @@ export default {
           Tasks: i,
         });
 
-        console.log(docRef);
+        //console.log(docRef);
         document.getElementById("projectForm");
         this.$emit("updated");
         this.$router.push({ name: "IndividualProjectInfo" });

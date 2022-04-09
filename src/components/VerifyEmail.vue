@@ -76,16 +76,16 @@ export default {
       const verifyEmail = docs.data().verifyEmail;
       if (verifyEmail) {
         if (formFilled) {
-          console.log("formFilled");
+          //console.log("formFilled");
           that.$router.push({ name: "BusinessHomePage" });
         } else {
           that.$router.push({ name: "BusinessHomePage" });
         }
       }
-      console.log("CHECK", isSignInWithEmailLink(auth, window.location.href));
+      //console.log("CHECK", isSignInWithEmailLink(auth, window.location.href));
       if (isSignInWithEmailLink(auth, window.location.href)) {
         //let email = window.localStorage.getItem("emailForSignIn");
-        console.log("link email", email);
+        //console.log("link email", email);
         if (!email) {
           // User opened the link on a different device.
           email = window.prompt("Please provide your email for confirmation");
@@ -98,7 +98,7 @@ export default {
             verifyEmail: true,
           });
           if (formFilled) {
-            console.log("formFilled");
+            //console.log("formFilled");
             that.$router.push({
               name: "BusinessHomePage",
               params: { formFilled: true },

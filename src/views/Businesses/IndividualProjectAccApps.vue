@@ -136,8 +136,10 @@ export default {
     ...mapActions(["GET_NEW_CARD"]),
     ...mapMutations(["SET_STUDENT_INFO"]),
     indvApplicant(key) {
+      /*
       console.log(this.applicant[key]);
       console.log(this.offered);
+      */
       /*
       this.SET_STUDENT_INFO('applicants',JSON.stringify(this.applicant[key]))
       this.SET_STUDENT_INFO('allApplicants', JSON.stringify(this.applicant))
@@ -164,7 +166,7 @@ export default {
         key: JSON.stringify(key),
         stat: JSON.stringify(""),
       });
-      console.log("currStudentInfo", this.studentInfo);
+      //console.log("currStudentInfo", this.studentInfo);
 
       //Non vuex
       this.$router.push({
@@ -214,9 +216,11 @@ export default {
 
     //vuex
     this.items = JSON.parse(this.cardItems);
+    /*
     console.log(this.cardItems);
     console.log(this.cardItems);
     console.log("below carditems", this.items["accApplicants"]);
+    */
     this.projectId = JSON.parse(this.cardItems).projectId;
     if (this.items["accApplicants"]) {
       this.accApplicants = this.items["accApplicants"];
@@ -233,7 +237,7 @@ export default {
       const ref = doc(db, "students", app);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      console.log("studata", data.declineProjects);
+      //console.log("studata", data.declineProjects);
       var stat = "pending";
       var inProg = data.inProgProjects;
       var declined = data.rejectedProjects;
@@ -263,7 +267,7 @@ export default {
     }
     // console.log(this.newApplicants)
     // console.log(this.rejApplicants)
-    console.log(this.applicant);
+    //console.log(this.applicant);
     // console.log(this.accApplicants)
     // console.log(this.offered)
     // console.log(this.rejected)

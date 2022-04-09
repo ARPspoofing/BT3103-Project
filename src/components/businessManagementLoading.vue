@@ -74,7 +74,7 @@ export default {
       var pendingReviewTask = [];
       var completedTask = [];
       tasks.forEach((document) => {
-        console.log("document", document);
+        //console.log("document", document);
         if (document.taskStatus == "To do") {
           toDoTask.push({
             id: document.taskName,
@@ -133,18 +133,18 @@ export default {
           });
         }
       });
-      console.log("business todo", toDoTask);
-      console.log("business in progress", inProgressTask);
-      console.log("business pending", pendingReviewTask);
-      console.log("business todo", completedTask);
+      //console.log("business todo", toDoTask);
+      //console.log("business in progress", inProgressTask);
+      //console.log("business pending", pendingReviewTask);
+      //console.log("business todo", completedTask);
       this.SET_BUSINESS_TO_DO(toDoTask);
       this.SET_BUSINESS_IN_PROGRESS(inProgressTask);
       this.SET_BUSINESS_PENDING_REVIEW(pendingReviewTask);
       this.SET_BUSINESS_COMPLETED(completedTask);
-      console.log("vuex todo", this.businessToDo);
-      console.log("vuex in prog", this.businessInProgress);
-      console.log("vuex pending", this.businessPendingReview);
-      console.log("vuex completed", this.businessCompleted);
+      //console.log("vuex todo", this.businessToDo);
+      //console.log("vuex in prog", this.businessInProgress);
+      //console.log("vuex pending", this.businessPendingReview);
+      //console.log("vuex completed", this.businessCompleted);
       this.$router.push({ name: "BusinessManagement" });
     },
   },

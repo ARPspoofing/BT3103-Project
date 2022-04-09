@@ -287,7 +287,7 @@ export default {
       id: uuidv4(),
       value: "",
     });
-    console.log(this.interests.target);
+    //console.log(this.interests.target);
   },
   components: {
     StudentNavBar,
@@ -362,7 +362,7 @@ export default {
         (error) => {},
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            console.log("File available at", (this.finalProfile = downloadURL));
+            //console.log("File available at", (this.finalProfile = downloadURL));
           });
         }
       );
@@ -418,7 +418,7 @@ export default {
     },
     showPopUp() {
       this.popUp = true;
-      console.log(this.popUp);
+      //console.log(this.popUp);
     },
     close(leave) {
       if (leave === false) {
@@ -429,8 +429,10 @@ export default {
       }
     },
     allInterestsEmpty() {
+      /*
       console.log(this.interests);
       console.log(this.interests.length);
+      */
       for (let i = 0; i < this.interests.length; i++) {
         if (this.interests[i].value != "") {
           return false;
@@ -517,9 +519,9 @@ export default {
     const that = this;
     async function getApplicant(userEmail) {
       const docSnap = await getDoc(doc(db, "students", userEmail));
-      console.log("doc: " + docSnap);
+  
       let data = docSnap.data();
-      console.log(data);
+     
       that.finalProfile = data.finalProfile;
       that.name = data.name;
       that.course = data.course;

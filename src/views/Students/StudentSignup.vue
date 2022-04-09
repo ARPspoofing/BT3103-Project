@@ -124,7 +124,7 @@ export default {
         //console.log(validEmail)
       });
       curr.validEmail = validEmail;
-      console.log(curr.validEmail);
+      //console.log(curr.validEmail);
     }
     getValidEmail();
   },
@@ -134,7 +134,7 @@ export default {
   methods: {
     ...mapMutations(["SET_USEREMAIL"]),
     register() {
-      console.log(this.validEmail);
+      //console.log(this.validEmail);
       if (this.email == "") {
         this.errorMessage = "email field is empty";
         this.emailErrorPresent = true;
@@ -212,7 +212,7 @@ export default {
                     */
       } else if (!this.validEmail.includes(this.email)) {
         this.errorMessage = "Unregistered NUS email";
-        console.log(this.validEmail);
+        //console.log(this.validEmail);
         this.emailErrorPresent = true;
         setTimeout(() => {
           this.emailErrorPresent = false;
@@ -264,7 +264,7 @@ export default {
                 this.passwordErrorPresent = false;
               }, 1500);
             }
-            console.log(this.error);
+            //console.log(this.error);
             this.loading = false;
           });
       }

@@ -232,7 +232,7 @@ export default {
       self.updateStatus();
     },
     updated(newVal,oldVal) {
-      alert('businessUpdated!')
+      //alert('businessUpdated!')
     },
   },
   computed: {
@@ -277,7 +277,7 @@ export default {
 
       for (let i = 0; i < tasks.length; i++) {
         let currTask = tasks[i];
-        console.log(this.task_id);
+        //console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
           newTask = currTask;
@@ -329,19 +329,21 @@ export default {
 
       for (let i = 0; i < tasks.length; i++) {
         let currTask = tasks[i];
-        console.log(this.task_id);
+        //console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
           newTask = currTask;
         }
       }
+      /*
       console.log(toRemove);
       console.log(newTask);
+      */
 
       let ref2 = doc(db, "businesses", this.userEmail);
       let biz = await getDoc(ref2);
       var da = biz.data();
-      console.log(da);
+      //console.log(da);
 
       await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
       if (newTask.comments) {
@@ -384,8 +386,10 @@ export default {
       store.addNumber(5)
     
       const currStatus = this.status;
+      /*
       console.log(currStatus);
       console.log(this.projectId);
+      */
       let ref = await doc(db, "Project", this.businessProjectId);
       let project = await getDoc(ref);
 
@@ -401,19 +405,20 @@ export default {
       var newTask = {};
 
       for (let i = 0; i < tasks.length; i++) {
-        console.log(i);
+        //console.log(i);
         let currTask = tasks[i];
-        console.log(this.task_id);
+        //console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
-          console.log("toRemove", toRemove);
+          //console.log("toRemove", toRemove);
           currTask.taskStatus = currStatus;
           newTask = currTask;
         }
       }
-
+      /*
       console.log(tasks);
       console.log(newTask);
+      */
 
       await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
 
@@ -433,7 +438,7 @@ export default {
           {}
         );
 
-        console.log(docRef);
+        //console.log(docRef);
         this.$emit("updated");
       } catch (error) {
         console.error("Error updating document: ", error);
@@ -510,7 +515,7 @@ export default {
     console.log(curr.$route.params.comments);
     const projectTitle = curr.$route.params.projectTitle;
     */
-    console.log("task comments");
+    //console.log("task comments");
     const projectId = this.businessProjectId;
     const taskId = this.task_id;
     const projectTitle = this.projectTitle;
@@ -526,7 +531,7 @@ export default {
 
       for (let i = 0; i < tasks.length; i++) {
         let currTask = tasks[i];
-        console.log(this.task_id);
+        //console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
           newTask = currTask;
@@ -550,24 +555,24 @@ export default {
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;
       var currTask = {};
-      console.log("taskComments", tasks);
+      //console.log("taskComments", tasks);
       for (let i = 0; i < tasks.length; i++) {
         let thisTask = tasks[i];
         if (thisTask.taskName == taskId) {
           currTask = thisTask;
           if (currTask.comments) {
             curr.comment = currTask.comments.reverse();
-            console.log("comments", currTask.comments.reverse());
+            //console.log("comments", currTask.comments.reverse());
           } else {
             curr.comment = [];
           }
           break;
         }
       }
-      console.log(curr.comment);
+      //console.log(curr.comment);
     }
     getComments();
-    console.log("currcomments", curr.comment);
+    //console.log("currcomments", curr.comment);
 
     //Non vuex function. Not used already for vuex
 

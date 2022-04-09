@@ -135,7 +135,7 @@ export default {
   },
   mounted() {
     const curr = this;
-    console.log(curr.task);
+    //console.log(curr.task);
   },
   data() {
     return {
@@ -149,7 +149,7 @@ export default {
     },
     getData() {
       this.$emit("getData", this.task);
-      console.log(this.task);
+      //console.log(this.task);
     },
   },
 };

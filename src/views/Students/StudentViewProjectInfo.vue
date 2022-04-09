@@ -213,13 +213,13 @@ export default {
     */
 
     //Vuex
-    console.log("cardItems", this.cardItems);
+    //console.log("cardItems", this.cardItems);
     this.tasks = JSON.parse(this.cardItems).tasks;
     this.tags = JSON.parse(this.cardItems).tags;
     this.newApplicants = JSON.parse(this.cardItems).newApplicants;
     this.projTitle = JSON.parse(this.cardItems).projectTitle;
     this.items = JSON.parse(this.cardItems);
-    console.log(JSON.parse(this.cardItems).projectId);
+    //console.log(JSON.parse(this.cardItems).projectId);
     this.projId = JSON.parse(this.cardItems).projectId;
     this.appstat = JSON.parse(this.cardItems).appstat;
     this.companyEmail = JSON.parse(this.cardItems).company;
@@ -255,7 +255,7 @@ export default {
     },
     async addApplicant() {
       var newApplicants = this.newApplicants;
-      console.log(newApplicants);
+      //console.log(newApplicants);
       var projTitle = this.projTitle;
       newApplicants.push(this.userEmailData);
       var projId = this.projId;
@@ -276,12 +276,12 @@ export default {
           }
         );
 
-        console.log(docRef);
+        //console.log(docRef);
         this.$emit("updated");
       } catch (error) {
         console.error("Error updating document: ", error);
       }
-      console.log(newApplicants);
+      //console.log(newApplicants);
       // var applicants = testCollection[key]["Applicants"]
     },
   },

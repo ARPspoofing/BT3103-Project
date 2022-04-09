@@ -351,7 +351,7 @@ export default {
     },
     cancel(e) {
       this.cancel = e;
-      console.log("eeeeeeeeeeeeeeee");
+      //console.log("eeeeeeeeeeeeeeee");
     },
     applying(event, key) {
       this.$refs.confirmModal.click();
@@ -371,21 +371,21 @@ export default {
       if (e == true) {
         this.addApplicant(this.currKey);
       }
-      console.log("yes");
+      //console.log("yes");
       this.applyConfirm = false;
     },
     async addApplicant(key) {
       alert(key);
       if (this.like) {
-        console.log(this.testCollection[key]);
+        //console.log(this.testCollection[key]);
         var newApplicants = this.testCollection[key]["newApplicants"];
-        console.log(newApplicants);
+        //console.log(newApplicants);
         var projTitle = this.testCollection[key]["projectTitle"];
         newApplicants.push(this.userEmail);
         var applied = this.applied;
-        console.log(applied);
+        //console.log(applied);
         var projectId = this.testCollection[key]["projectId"];
-        console.log(projectId);
+        //console.log(projectId);
         applied.push(projectId);
         // applied.push(projTitle);
         this.testCollection[key]["appstat"] = "applied";
@@ -410,15 +410,15 @@ export default {
           console.error("Error updating document: ", error);
         }
       } else if (this.latest) {
-        console.log(this.wholeTestCollection[key]);
+        //console.log(this.wholeTestCollection[key]);
         var newApplicants = this.wholeTestCollection[key]["newApplicants"];
-        console.log(newApplicants);
+        //console.log(newApplicants);
         var projTitle = this.wholeTestCollection[key]["projectTitle"];
         newApplicants.push(this.userEmail);
         var applied = this.applied;
-        console.log(applied);
+        //console.log(applied);
         var projectId = this.wholeTestCollection[key]["projectId"];
-        console.log(projectId);
+        //console.log(projectId);
         applied.push(projectId);
         // applied.push(projTitle);
         this.wholeTestCollection[key]["appstat"] = "applied";
@@ -463,8 +463,10 @@ export default {
           items: JSON.stringify(this.testCollection[key]),
         },
       });
+      /*
       console.log(key);
       console.log(this.testCollection[key]);
+      */
     },
 
     indivprojlatest(key) {
@@ -479,8 +481,10 @@ export default {
           items: JSON.stringify(this.wholeTestCollection[key]),
         },
       });
+      /*
       console.log(key);
       console.log(this.wholeTestCollection[key]);
+      */
     },
 
     // interestProjects() {
@@ -538,7 +542,7 @@ export default {
       const ref = doc(db, "students", that.userEmailData);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      console.log(data.appliedProjects);
+      //console.log(data.appliedProjects);
       that.applied = data.appliedProjects;
     }
     getAppliedProjects();
@@ -564,7 +568,7 @@ export default {
       for (var i = 0; i < array[0].length; i++) {
         returnArray.push(array[0][i]["value"]);
       }
-      console.log(returnArray);
+      //console.log(returnArray);
 
       const projects = query(
         collection(db, "Project"),
@@ -592,7 +596,7 @@ export default {
         //     pictureprof = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
         //   }
         if (that.allApplied.includes(id)) {
-          console.log("pic is: " + data.profPicture);
+          //console.log("pic is: " + data.profPicture);
           testCollection.push({
             /*projectTitle: data.Project_Title, 
             description: data.Description,
@@ -700,15 +704,17 @@ export default {
       });
       that.testCollection = testCollection;
       that.wholeTestCollection = wholeTestCollection;
+      /*
       console.log(testCollection);
       console.log(wholeTestCollection);
+      */
       testCollection.sort(function (x, y) {
         return y.timestamp - x.timestamp;
       });
       wholeTestCollection.sort(function (x, y) {
         return y.timestamp - x.timestamp;
       });
-      console.log(wholeTestCollection);
+      //console.log(wholeTestCollection);
     }
 
     getAllAppliedProjects();

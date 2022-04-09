@@ -129,7 +129,7 @@ export default {
           }, 1500);
         } else {
           const formFilled = docs.data().profileFormCreated;
-          console.log(formFilled);
+          //console.log(formFilled);
           signInWithEmailAndPassword(getAuth(), this.email, this.password)
             .then((data) => {
               this.SET_USEREMAIL(this.email);

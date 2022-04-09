@@ -218,7 +218,7 @@ import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
-console.log(auth.currentUser);
+//console.log(auth.currentUser);
 
 export default {
   data() {
@@ -306,7 +306,7 @@ export default {
         var g = this.selected;
       }
 
-      console.log(g);
+      //console.log(g);
       var h = document.getElementById("projectDescription").value;
       var i = this.tasks;
       var j = [];

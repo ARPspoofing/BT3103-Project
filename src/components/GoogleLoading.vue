@@ -39,16 +39,16 @@ export default {
         //this.profileFormCreated = currUser.email
         //console.log(this.profileFormCreated)
         userEmail = user.email;
-        console.log(user.email);
+        //console.log(user.email);
       }
     });
     async function checkToRoute() {
       var userEmail = window.localStorage.getItem("emailForSignIn");
       const docRef = doc(db, "businesses", String(userEmail));
-      console.log("doccccccc", docRef);
+      //console.log("doccccccc", docRef);
       //console.log(await getDoc(docRef))
       const docs = await getDoc(docRef);
-      console.log("doc exists:", docs.exists());
+      //console.log("doc exists:", docs.exists());
       if (!docs.exists()) {
         await setDoc(doc(db, "businesses", String(userEmail)), {
           profileFormCreated: false,
@@ -83,8 +83,8 @@ export default {
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorMessage);
-            console.log("email", userEmail);
+            //console.log(errorMessage);
+            //console.log("email", userEmail);
             // ...
           });
         //that.$router.push({name:'BusinessVerify'})

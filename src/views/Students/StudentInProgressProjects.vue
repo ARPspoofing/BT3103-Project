@@ -95,7 +95,7 @@ export default {
             that.inProgProjects.push(res);
           });
         }
-        console.log(that.inProgProjects);
+        //console.log(that.inProgProjects);
       }
     }
     getinProgProjects();
@@ -190,8 +190,10 @@ export default {
       "SET_STUDENT_COMPLETED",
     ]),
     async viewTasks(id, title) {
+      /*
       console.log("in method");
       console.log(title);
+      */
       this.SET_STUDENT_PROJECT_ID(id);
       this.SET_STUDENT_PROJECT_TITLE(title);
 
@@ -203,7 +205,7 @@ export default {
       var pendingReviewTask = [];
       var completedTask = [];
       tasks.forEach((document) => {
-        console.log("document", document);
+        //console.log("document", document);
         if (document.taskStatus == "To do") {
           toDoTask.push({
             id: document.taskName,
@@ -262,18 +264,22 @@ export default {
           });
         }
       });
+      /*
       console.log("student todo", toDoTask);
       console.log("student in progress", inProgressTask);
       console.log("student pending", pendingReviewTask);
       console.log("student completed", completedTask);
+      */
       this.SET_STUDENT_TO_DO(toDoTask);
       this.SET_STUDENT_IN_PROGRESS(inProgressTask);
       this.SET_STUDENT_PENDING_REVIEW(pendingReviewTask);
       this.SET_STUDENT_COMPLETED(completedTask);
+      /*
       console.log("vuex todo", this.studentToDo);
       console.log("vuex in prog", this.studentInProgress);
       console.log("vuex pending", this.studentPendingReview);
       console.log("vuex completed", this.studentCompleted);
+      */
       this.$router.push({ name: "StudentManagement" });
       //this.$router.push({name:'StudentManagement'/*,params:{projectId:id, projectTitle:title}*/})
     },

@@ -215,14 +215,16 @@ export default {
       this.projectTitle = task_emit["projectTitle"];
       this.description = task_emit["shortdescription"];
       this.duedate = task_emit["duedate"];
+      /*
       console.log("task emit full", task_emit);
       console.log("task emit", task_emit["id"]);
+      */
 
       const docRef = doc(db, "Project", this.studentProjectId);
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;
       var currTask = {};
-      console.log("taskComments", tasks);
+      //console.log("taskComments", tasks);
       for (let i = 0; i < tasks.length; i++) {
         let thisTask = tasks[i];
         if (thisTask.taskName == task_emit["id"]) {
@@ -230,14 +232,14 @@ export default {
           if (currTask.comments) {
             curr.comment = currTask.comments.reverse();
             this.SET_TASK_COMMENTS(currTask.comments);
-            console.log("comments", currTask.comments.reverse());
+            //console.log("comments", currTask.comments.reverse());
           } else {
             curr.comment = [];
           }
           break;
         }
       }
-      console.log("current comments", curr.comment);
+      //console.log("current comments", curr.comment);
 
       this.openModal = true;
       this.$refs.confirmModal.click();
@@ -252,7 +254,7 @@ export default {
       this.openModal = true;
     },
     trying() {
-      console.log("trying");
+      //console.log("trying");
     },
   },
   mounted() {
@@ -270,11 +272,12 @@ export default {
         curr.fullTitle = "Tasks for " + curr.projectTitle 
         */
     //vuex
+    /*
     console.log("inside student management", this.studentToDo);
     console.log("inside student management", this.studentInProgress);
     console.log("inside student management", this.studentPendingReview);
     console.log("inside student management", this.studentCompleted);
-
+    */
     this.projectId = this.studentProjectId;
     this.projectTitle = this.studentProjectTitle;
     this.fullTitle = "Tasks for " + this.projectTitle;

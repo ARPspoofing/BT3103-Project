@@ -264,15 +264,17 @@ export default {
       this.projectTitle = task_emit["projectTitle"];
       this.longdescription = task_emit["longdescription"];
       this.duedate = task_emit["duedate"];
+      /*
       console.log("task emit full", task_emit);
       console.log("task emit", task_emit["id"]);
+      */
 
       //retrieve all the comments for all the task first
       const docRef = doc(db, "Project", this.businessProjectId);
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;
       var currTask = {};
-      console.log("taskComments", tasks);
+      //console.log("taskComments", tasks);
       for (let i = 0; i < tasks.length; i++) {
         let thisTask = tasks[i];
         if (thisTask.taskName == task_emit["id"]) {
@@ -280,14 +282,14 @@ export default {
           if (currTask.comments) {
             curr.comment = currTask.comments.reverse();
             this.SET_TASK_COMMENTS(currTask.comments);
-            console.log("comments", currTask.comments.reverse());
+            //console.log("comments", currTask.comments.reverse());
           } else {
             curr.comment = [];
           }
           break;
         }
       }
-      console.log("current comments", curr.comment);
+      //console.log("current comments", curr.comment);
 
       this.openModal = true;
       this.$refs.confirmModal.click();
@@ -328,9 +330,11 @@ export default {
           } else {
             stuComp = [this.businessProjectId];
           }
+          /*
           console.log(this.students[i]);
           console.log(stuInProg);
           console.log(stuComp);
+          */
           const docRef2 = await updateDoc(
             doc(db, "students", this.students[i]),
             {

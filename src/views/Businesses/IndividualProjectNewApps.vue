@@ -246,9 +246,11 @@ export default {
       this.popUpConfirm = false;
     },
     indvApplicant(key) {
+      /*
       alert("key " + key);
       console.log(this.applicant[key]);
       console.log(this.offered[key]);
+      */
       this.$router.push({
         name: "BusinessViewStudentInfo",
         params: {
@@ -306,7 +308,7 @@ export default {
           offeredProjects: offered,
           appliedProjects: applied,
         });
-        console.log(docRef);
+        //console.log(docRef);
         this.GET_NEW_CARD();
         this.$emit("updated");
       } catch (error) {
@@ -324,7 +326,7 @@ export default {
       var projTitle = this.items["projectTitle"];
       var projId = this.items["projectId"];
       var applied = this.applied[key];
-      console.log("bef" + applied);
+      //console.log("bef" + applied);
 
       if (!this.rejApplicants) {
         var rejApplicants = [];
@@ -336,7 +338,7 @@ export default {
 
       var index = applied.indexOf(projId);
       applied.splice(index, 1);
-      console.log("aft" + applied);
+      //console.log("aft" + applied);
 
       rejected.push(projId);
 
@@ -360,7 +362,7 @@ export default {
         this.GET_NEW_CARD();
         this.$emit("updated");
       } catch (error) {
-        console.error("Error updating document: ", error);
+        //console.error("Error updating document: ", error);
       }
     },
   },
@@ -424,7 +426,7 @@ export default {
         getAppliedProjects(this.newApplicants[i]).then((res) => {
           this.applied.push(res);
         });
-        console.log(this.applicant);
+        //console.log(this.applicant);
       }
     }
 

@@ -87,7 +87,7 @@ export default {
 
       const response = await Promise.all(
         docSnap.data().appliedProjects.map(async (item) => {
-          console.log("nested", item);
+          //console.log("nested", item);
           if (item) {
             const finalResult = await getDoc(doc(db, "Project", item));
             that.projects.push({

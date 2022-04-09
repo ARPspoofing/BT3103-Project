@@ -74,7 +74,7 @@ export default {
       var pendingReviewTask = [];
       var completedTask = [];
       tasks.forEach((document) => {
-        console.log("document", document);
+        //console.log("document", document);
         if (document.taskStatus == "To do") {
           toDoTask.push({
             id: document.taskName,
@@ -133,18 +133,18 @@ export default {
           });
         }
       });
-      console.log("student todo", toDoTask);
-      console.log("student in progress", inProgressTask);
-      console.log("student pending", pendingReviewTask);
-      console.log("student todo", completedTask);
+      //console.log("student todo", toDoTask);
+      //console.log("student in progress", inProgressTask);
+      //console.log("student pending", pendingReviewTask);
+      //console.log("student todo", completedTask);
       this.SET_STUDENT_TO_DO(toDoTask);
       this.SET_STUDENT_IN_PROGRESS(inProgressTask);
       this.SET_STUDENT_PENDING_REVIEW(pendingReviewTask);
       this.SET_STUDENT_COMPLETED(completedTask);
-      console.log("vuex todo", this.studentToDo);
-      console.log("vuex in prog", this.studentInProgress);
-      console.log("vuex pending", this.studentPendingReview);
-      console.log("vuex completed", this.studentCompleted);
+      //console.log("vuex todo", this.studentToDo);
+      //console.log("vuex in prog", this.studentInProgress);
+      //console.log("vuex pending", this.studentPendingReview);
+      //console.log("vuex completed", this.studentCompleted);
       this.$router.push({ name: "StudentManagement" });
     },
   },

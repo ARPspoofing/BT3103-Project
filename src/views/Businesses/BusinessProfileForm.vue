@@ -111,7 +111,7 @@ export default {
     ...mapMutations(["SET_NAME"]),
 
     try() {
-      console.log("testc");
+      //console.log("testc");
     },
 
     showPopUp() {

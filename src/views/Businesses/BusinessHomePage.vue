@@ -443,8 +443,8 @@ export default {
           items: JSON.stringify(this.testCollection[key]),
         },
       });
-      console.log(key);
-      console.log(this.testCollection[key]);
+      //console.log(key);
+      //console.log(this.testCollection[key]);
     },
     isEqual(email) {
       return email == this.businessEmail;
@@ -544,7 +544,7 @@ export default {
         });
       });
       that.testCollection = testCollection;
-      console.log(testCollection);
+      //console.log(testCollection);
     }
     fetchProject();
     /*

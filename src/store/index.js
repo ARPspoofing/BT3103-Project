@@ -131,7 +131,7 @@ export default createStore({
       state.searchData = state.searchData.filter(
         (x, i, a) => a.indexOf(x) === i
       );
-      console.log("searchData", state.searchData);
+      
     },
     SET_SEARCH_STRING(state, payload) {
       state.searchString = payload;

@@ -220,7 +220,7 @@ export default {
 
           if (data.poster_id == email) {
             this.projectIds.push(projId);
-            console.log(this.projectIds);
+            //console.log(this.projectIds);
           }
         });
 
@@ -232,7 +232,7 @@ export default {
 
         this.$router.push({ name: "BusinessHomePage" });
       }
-      alert("save data");
+      //alert("save data");
     },
   },
 
@@ -244,13 +244,13 @@ export default {
 
     //var userEmail = window.localStorage.getItem('emailForSignIn')
     var userEmail = this.userEmail;
-    console.log(userEmail);
+    //console.log(userEmail);
     const that = this;
     async function getApplicant(email) {
       const docSnap = await getDoc(doc(db, "businesses", email));
-      console.log("doc: " + docSnap);
+      //console.log("doc: " + docSnap);
       let data = docSnap.data();
-      console.log(data);
+      //console.log(data);
       that.finalProfile = data.finalProfile;
       that.name = data.name;
       that.finalProfile = data.finalProfile;

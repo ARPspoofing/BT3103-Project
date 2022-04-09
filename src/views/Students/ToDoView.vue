@@ -209,7 +209,7 @@ export default {
       self.updateStatus();
     },
     updated(newVal,oldVal) {
-      alert('businessUpdated')
+      //alert('businessUpdated')
     },
   },
   methods: {
@@ -229,7 +229,7 @@ export default {
 
       for (let i = 0; i < tasks.length; i++) {
         let currTask = tasks[i];
-        console.log(this.task_id);
+        //console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
           newTask = currTask;
@@ -279,19 +279,21 @@ export default {
       var newTask = {};
       for (let i = 0; i < tasks.length; i++) {
         let currTask = tasks[i];
-        console.log(this.task_id);
+        //console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
           newTask = currTask;
         }
       }
+      /*
       console.log(toRemove);
       console.log(newTask);
       console.log(this.userEmail);
+      */
       let ref2 = doc(db, "students", this.userEmail);
       let biz = await getDoc(ref2);
       var da = biz.data();
-      console.log(da);
+      //console.log(da);
       await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
       if (newTask.comments) {
         newTask.comments.push({
@@ -326,24 +328,27 @@ export default {
     },
     async updateStatus() {
       const currStatus = this.status;
-      console.log(currStatus);
+      //console.log(currStatus);
       let ref = await doc(db, "Project", this.studentProjectId);
       let project = await getDoc(ref);
       var tasks = await project.data().Tasks;
+      /*
       console.log("all tasks", tasks);
       console.log("tasks", tasks);
       console.log("ok");
+      */
       //console.log(this.task);
       //console.log(tasks);
       //console.log(tasks.length);
       var toRemove = {};
       var newTask = {};
       for (let i = 0; i < tasks.length; i++) {
-        console.log(i);
+        //console.log(i);
         let currTask = tasks[i];
-        console.log(this.task_id);
+        //console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
+          /*
           console.log(
             "to Remove",
             toRemove,
@@ -352,13 +357,15 @@ export default {
             "newStatus",
             currStatus
           );
+          */
           currTask.taskStatus = currStatus;
           newTask = currTask;
         }
       }
-
+      /*
       console.log(tasks);
       console.log(newTask);
+      */
       await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
       await updateDoc(ref, { Tasks: arrayUnion(newTask) });
       //non-vuex
@@ -373,7 +380,7 @@ export default {
           doc(db, "Project", this.studentProjectId),
           {}
         );
-        console.log(docRef);
+        //console.log(docRef);
         this.$emit("updated");
       } catch (error) {
         console.error("Error updating document: ", error);
@@ -403,7 +410,7 @@ export default {
 
       for (let i = 0; i < tasks.length; i++) {
         let currTask = tasks[i];
-        console.log(this.task_id);
+        //console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
           newTask = currTask;
@@ -428,24 +435,24 @@ export default {
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;
       var currTask = {};
-      console.log("taskComments", tasks);
+      //console.log("taskComments", tasks);
       for (let i = 0; i < tasks.length; i++) {
         let thisTask = tasks[i];
         if (thisTask.taskName == taskId) {
           currTask = thisTask;
           if (currTask.comments) {
             curr.comment = currTask.comments.reverse();
-            console.log("comments", currTask.comments.reverse());
+            //console.log("comments", currTask.comments.reverse());
           } else {
             curr.comment = [];
           }
           break;
         }
       }
-      console.log(curr.comment);
+      //console.log(curr.comment);
     }
     getComments();
-    console.log("currcomments", curr.comment);
+    //console.log("currcomments", curr.comment);
     /*
        database.forEach((doc) => {
                //Change to dynamic props later

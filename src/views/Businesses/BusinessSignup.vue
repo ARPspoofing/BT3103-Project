@@ -274,7 +274,7 @@ export default {
         createUserWithEmailAndPassword(getAuth(), this.email, this.password)
           .then((data) => {
             this.SET_USEREMAIL(this.email);
-            console.log("in method");
+            //console.log("in method");
             setDoc(doc(db, "businesses", String(this.email)), {
               profileFormCreated: false,
               verifyEmail: false,
@@ -308,9 +308,9 @@ export default {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.log(errorMessage);
-                console.log("email", this.email);
+                //console.log("email", this.email);
               });
-            console.log("uploaded to firebase");
+            //console.log("uploaded to firebase");
             //this.$router.push({name:'BusinessProfileForm',params: {email}})
             //this.$router.push({name:'BusinessProfileForm'})
             this.loading = false;

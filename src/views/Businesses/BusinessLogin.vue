@@ -176,10 +176,10 @@ export default {
             this.emailErrorPresent = false;
           }, 1500);
         } else {
-          console.log(docs.data());
+          //console.log(docs.data());
           const formFilled = docs.data().profileFormCreated;
           const verifyEmail = docs.data().verifyEmail;
-          console.log(verifyEmail);
+          //console.log(verifyEmail);
           signInWithEmailAndPassword(getAuth(), this.email, this.password)
             .then((data) => {
               this.SET_USEREMAIL(this.email);
@@ -193,7 +193,7 @@ export default {
                 this.$router.push({ name: "BusinessVerify" });
               } else {
                 if (formFilled) {
-                  console.log("formFilled");
+                  //console.log("formFilled");
                   this.$router.push({
                     name: "BusinessHomePage",
                     params: { formFilled: true },
@@ -207,7 +207,7 @@ export default {
               }
             })
             .catch((error) => {
-              console.log(error);
+              //console.log(error);
               if (error.code === "auth/wrong-password") {
                 this.passwordErrorPresent = true;
                 this.errorMessage = "You have entered an incorrect password";

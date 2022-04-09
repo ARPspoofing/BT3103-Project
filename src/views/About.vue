@@ -45,7 +45,7 @@ export default {
   },
   mounted() {
     this.items = JSON.parse(this.$route.params.items);
-    console.log(this.items);
+    //console.log(this.items);
   },
 };
 </script>

@@ -130,8 +130,10 @@ export default {
   methods: {
     ...mapMutations(["SET_CARDITEMS", "CLEAR_CARDITEMS"]),
     indvApplicant(key) {
+      /*
       console.log(this.applicant[key]);
       console.log(this.offered);
+      */
       this.CLEAR_CARDITEMS();
       //To fix ...
       this.$router.push({
@@ -167,10 +169,12 @@ export default {
   },
 
   mounted() {
+    /*
     console.log("mounted");
     console.log("rej", this.cardItems["rejApplicants"]);
+    */
     this.items = JSON.parse(this.cardItems);
-    console.log("test", this.items["rejApplicants"]);
+    //console.log("test", this.items["rejApplicants"]);
     //non-vuex
     /*
     this.items = JSON.parse(this.$route.params.items)
@@ -219,7 +223,7 @@ export default {
       //let result = await data.name
       return { name: data.name, course: data.course, email: data.email,finalProfile: data.finalProfile};
     }
-    console.log(this.applicant);
+    //console.log(this.applicant);
   },
 };
 </script>

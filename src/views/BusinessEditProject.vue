@@ -241,7 +241,7 @@ export default {
       var h = document.getElementById("projectDescription").value;
       var i = this.item.tasks;
 
-      alert("Updating your data for Project: " + a);
+      //alert("Updating your data for Project: " + a);
 
       try {
         const docRef = await updateDoc(
@@ -259,7 +259,7 @@ export default {
           }
         );
 
-        console.log(docRef);
+        //console.log(docRef);
         document.getElementById("projectForm");
         this.$emit("updated");
       } catch (error) {
