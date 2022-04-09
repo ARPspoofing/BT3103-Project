@@ -196,7 +196,7 @@ export default {
             })
           } else if (document.taskStatus == "Completed") {
             completedTask.push({
-              id: document.id,
+              id: document.taskName,
               comments: document.comments,
               /*
               projectTitle: that.projectTitle,
@@ -249,7 +249,7 @@ export default {
           that.testCollection.push(res);
         });
       }
-      //console.log(that.inProgProjects)
+      console.log("inprogprojects",that.inProgProjects)
     }
     getInProgProjects();
 

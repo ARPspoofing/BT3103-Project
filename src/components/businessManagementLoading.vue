@@ -29,7 +29,7 @@ export default {
 
   name: 'managementLoading',
   computed: {
-    ...mapState(['studentTaskId','userEmail','studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted']),
+    ...mapState(['businessTaskId','userEmail','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted']),
   },
   data() {
     return {
@@ -50,9 +50,9 @@ export default {
     }, 2500)
   },
   methods: {
-      ...mapMutations(['SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED',]),
+      ...mapMutations(['SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED',]),
       async viewTasks() {
-        let docRef = await doc(db,"Project",this.studentProjectId)
+        let docRef = await doc(db,"Project",this.businessProjectId)
         let project = await getDoc(docRef)
         let tasks = project.data().Tasks
         var toDoTask = []
@@ -119,19 +119,19 @@ export default {
                 })
             }
         })
-        console.log("student todo",toDoTask)
-        console.log("student in progress",inProgressTask)
-        console.log("student pending",pendingReviewTask)
-        console.log("student todo",completedTask)
-        this.SET_STUDENT_TO_DO(toDoTask)
-        this.SET_STUDENT_IN_PROGRESS(inProgressTask)
-        this.SET_STUDENT_PENDING_REVIEW(pendingReviewTask)
-        this.SET_STUDENT_COMPLETED(completedTask)
-        console.log("vuex todo",this.studentToDo)
-        console.log("vuex in prog",this.studentInProgress)
-        console.log("vuex pending",this.studentPendingReview)
-        console.log("vuex completed",this.studentCompleted)
-        this.$router.push({name:'StudentManagement'})
+        console.log("business todo",toDoTask)
+        console.log("business in progress",inProgressTask)
+        console.log("business pending",pendingReviewTask)
+        console.log("business todo",completedTask)
+        this.SET_BUSINESS_TO_DO(toDoTask)
+        this.SET_BUSINESS_IN_PROGRESS(inProgressTask)
+        this.SET_BUSINESS_PENDING_REVIEW(pendingReviewTask)
+        this.SET_BUSINESS_COMPLETED(completedTask)
+        console.log("vuex todo",this.businessToDo)
+        console.log("vuex in prog",this.businessInProgress)
+        console.log("vuex pending",this.businessPendingReview)
+        console.log("vuex completed",this.businessCompleted)
+        this.$router.push({name:'BusinessManagement'})
     }
   }
 };        

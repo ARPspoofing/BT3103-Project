@@ -58,7 +58,7 @@
             <label>Change status</label>
             <select v-model="status">
               <option value="To do">To Do</option>
-              <option value="Pending review">Send for review</option>
+              <option value="Pending review">In Progress</option>
               <option value="Completed">Completed</option>
             </select>
           </div>
@@ -230,12 +230,13 @@ export default {
   },
 
   methods: {
+    ...mapMutations(['SET_BUSINESS_TASK',]),
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
 
     async updateFile() {
-      let proj = await doc(db, "Project", this.projectId);
+      let proj = await doc(db, "Project", this.businessProjectId);
       let project = await getDoc(proj);
 
       var dat = await project.data();
@@ -282,12 +283,12 @@ export default {
           });
         }
       );
-      updateFile();
+      this.updateFile();
     },
 
     async addComment() {
       var a = document.getElementById("comments").value;
-      let ref = await doc(db, "Project", this.projectId);
+      let ref = await doc(db, "Project", this.businessProjectId);
       let project = await getDoc(ref);
 
       var dat = await project.data();
@@ -340,8 +341,9 @@ export default {
       });
 
       await updateDoc(ref, { Tasks: arrayUnion(newTask) });
-
-      this.task = newTask;
+      //Non vuex
+      //this.task = newTask;
+      this.SET_BUSINESS_TASK(newTask)
       document.getElementById("comments").value = "";
     },
 
@@ -349,7 +351,7 @@ export default {
       const currStatus = this.status;
       console.log(currStatus);
       console.log(this.projectId);
-      let ref = await doc(db, "Project", this.projectId);
+      let ref = await doc(db, "Project", this.businessProjectId);
       let project = await getDoc(ref);
 
       var dat = await project.data();
@@ -369,6 +371,7 @@ export default {
         console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
+          console.log("toRemove",toRemove)
           currTask.taskStatus = currStatus;
           newTask = currTask;
         }
@@ -381,12 +384,16 @@ export default {
 
       await updateDoc(ref, { Tasks: arrayUnion(newTask) });
 
-      this.task = newTask;
+      //non-vuex
+      //this.task = newTask;
+      //vuex
+      this.SET_BUSINESS_TASK(newTask)
+      this.$router.push({name:'businessManagementLoading'})
     },
 
     async updateTask() {
       try {
-        const docRef = await updateDoc(doc(db, "Project", this.projectId), {});
+        const docRef = await updateDoc(doc(db, "Project", this.businessProjectId), {});
 
         console.log(docRef);
         this.$emit("updated");
@@ -458,14 +465,21 @@ export default {
 
   mounted() {
     const curr = this;
+    /*
     const taskId = curr.$route.params.taskId;
     const projectId = curr.$route.params.projectId;
     console.log(curr.$route.params);
     console.log(curr.$route.params.comments);
     const projectTitle = curr.$route.params.projectTitle;
+    */
+
+    const projectId = this.businessProjectId
+    const taskId = this.task_id
+    const projectTitle = this.projectTitle
+    
 
     async function updateFile() {
-      let proj = await doc(db, "Project", this.projectId);
+      let proj = await doc(db, "Project", projectId);
       let project = await getDoc(proj);
 
       var dat = await project.data();
@@ -513,8 +527,26 @@ export default {
       }
       console.log(curr.comment);
     }
+    getComments();
     console.log(curr.comment);
+    
+    //Non vuex function. Not used already for vuex
 
+    /* database.forEach((doc) => {
+               //Change to dynamic props later
+               if (doc.id == ("ToDo" + curr.task_id)) {
+                   var data = doc.data()
+                   console.log(data)
+                   temp.push({
+                       name: data.taskname,
+                       duedate: data.duedate,
+                       documents: data.documents,
+                       comments: data.comments,
+                       long: data.longdescription,
+                   })
+               }
+               }) */
+    /*
     async function getTasksDetails() {
       //Change "To-Do" to props later
       const docRef = await doc(db, "Project", projectId);
@@ -532,20 +564,7 @@ export default {
         }
       }
 
-      /* database.forEach((doc) => {
-               //Change to dynamic props later
-               if (doc.id == ("ToDo" + curr.task_id)) {
-                   var data = doc.data()
-                   console.log(data)
-                   temp.push({
-                       name: data.taskname,
-                       duedate: data.duedate,
-                       documents: data.documents,
-                       comments: data.comments,
-                       long: data.longdescription,
-                   })
-               }
-               }) */
+      
       curr.name = currTask.taskName;
       //curr.duedate = currTask.taskDueDate;
       curr.projectTitle = projectTitle;
@@ -557,8 +576,9 @@ export default {
       curr.long =
         "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.";
     }
-    getComments();
+    
     getTasksDetails();
+    */
     //    this.projectId = this.$route.params.projectId
     //    this.projectTitle = this.$route.params.projectTitle
     //    this.taskname = this.$route.params.taskname

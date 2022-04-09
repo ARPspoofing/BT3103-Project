@@ -233,7 +233,7 @@ export default {
             })
           } else if (document.taskStatus == "Completed") {
             completedTask.push({
-              id: document.id,
+              id: document.taskName,
               comments: document.comments,
               /*
               projectTitle: that.projectTitle,
@@ -250,7 +250,7 @@ export default {
         console.log("student todo",toDoTask)
         console.log("student in progress",inProgressTask)
         console.log("student pending",pendingReviewTask)
-        console.log("student todo",completedTask)
+        console.log("student completed",completedTask)
         this.SET_STUDENT_TO_DO(toDoTask)
         this.SET_STUDENT_IN_PROGRESS(inProgressTask)
         this.SET_STUDENT_PENDING_REVIEW(pendingReviewTask)

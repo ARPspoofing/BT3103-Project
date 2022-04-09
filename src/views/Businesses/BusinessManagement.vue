@@ -85,7 +85,7 @@
           :task="task"
           :key="index"
           :user="Business"
-        />
+        />        
         <div v-else>
           <h3>No task has been completed yet.</h3>
         </div>
@@ -162,6 +162,7 @@ export default {
       students: [],
       studentsInProg: [],
       studentsComp: [],
+      toBlur:false,
     };
   },
   methods: {
@@ -172,6 +173,15 @@ export default {
         name: "BusinessInProgress",
         params: {},
       });
+    },
+    blurBg() {
+      this.toBlur = true
+    },
+    unblurBg() {
+      this.toBlur = false
+    },
+    attempt() {
+      this.openModal = true
     },
     capture(task_emit) {
         this.task = task_emit
@@ -251,7 +261,7 @@ export default {
     this.projectId = this.businessProjectId
     this.projectTitle = this.businessProjectTitle
     */
-   
+
     //Previously assigned in getProjects()
     this.inProgProjects = this.businessInProgProjects
     this.completedProjects = this.businessCompletedProjects
@@ -260,6 +270,16 @@ export default {
     this.students = this.businessStudents
     this.studentsInProg = this.businessStudentsInProg
     this.studentsComp = this.businessStudentsComp
+
+    this.projectId = this.businessProjectId
+    this.projectTitle = this.businessProjectTitle
+    this.fullTitle = "Tasks for " + this.projectTitle 
+    this.toDoTask = this.businessToDo
+    this.inProgressTask = this.businessInProgress
+    this.pendingReviewTask = this.businessPendingReview
+    this.completedTask = this.businessCompleted
+
+
 
     //Non vuex
     /*

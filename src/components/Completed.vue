@@ -4,7 +4,7 @@
             <div class="title"><strong>{{task['taskname']}}</strong></div>
             <div class="status-button flex todoButton">
                     <div>
-              <p id="status">Completed</p>
+              <p id="status">Complete</p>
             </div>
             </div>
         </div>
@@ -389,6 +389,7 @@ a {
 
 .completedButton {
   background-color: rgb(230, 121, 139);
+  
 }
 
 .duedate {
