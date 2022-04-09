@@ -159,7 +159,7 @@
       <div
         class="projectContainer"
         :key="item.key"
-        v-for="(item, key) in this.taskComment"
+        v-for="(item) in this.taskComment"
       >
         <div id="eachComment">
           <img v-bind:src="item.profPic" alt="Logo" class="logo" />

@@ -720,15 +720,6 @@ button,
   color: white;
   float: right;
   background-color: #ec9f39;
-  img {
-    margin-right: 4px;
-  }
-}
-
-.save {
-  div {
-    flex: 1;
-  }
 }
 
 .right {
