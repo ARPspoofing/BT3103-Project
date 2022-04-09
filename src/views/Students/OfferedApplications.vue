@@ -144,15 +144,11 @@ export default {
       this.popUpConfirm = false
     },
     async acceptProj(key) {
-      alert("key " + key)
       var projId = this.offered[key];
       var projName = this.projects[key].projectTitle;
       alert(projName);
       var business = this.projects[key].business;
-      console.log("full key",this.projects[key])
-      console.log("business",this.projects[key].business)
       var biz = this.bizProjects[key];
-      alert(biz)
 
       if (!this.accepted) {
         var accepted = [];
@@ -169,39 +165,36 @@ export default {
         biz.push(projId);
       }
       biz = [...new Set(biz)];
+      console.log("This is biz", biz)
+      console.log(business)
+      
       for (var i = 0; i < this.projects.length; i++) {
         console.log(business, this.projects[i].business === business);
+        console.log(this.bizProjects)
         if (this.projects[i].business === business) {
           console.log("projId", projId);
-          //this.bizProjects[i].push(projId)
-          this.bizProjects.push(projId);
+          this.bizProjects[i].push(projId)
+          //this.bizProjects.push(projId);
         }
       }
-      //this.bizProjects[key] = biz
       console.log(this.bizProjects);
 
       this.projects.splice(key, 1);
       this.offered.splice(key, 1);
       this.bizProjects.splice(key, 1);
-      /*for(var i = 0; i < this.projects.length; i++) {
-        if (this.projects[i].business === business) {
-          this.bizProjects[i].push(projId)
-        }
-      }*/
 
       alert("Accepting Project: " + projName);
-      alert("business " + business)
       try {
         const docRef = await updateDoc(doc(db, "students", this.userEmail), {
           inProgProjects: this.accepted,
           offeredProjects: this.offered,
         });
 
+        console.log("This is updated biz" ,biz)
         const docRef2 = await updateDoc(doc(db, "businesses", business), {
           inProgProjects: biz,
         });
 
-        //console.log(docRef)
         this.$emit("updated");
       } catch (error) {
         console.error("Error updating document: ", error);
@@ -240,8 +233,8 @@ export default {
         */
 
         const docRef = await updateDoc(doc(db, "students", this.userEmail), {
-          rejectedProjects:  arrayUnion(this.declined),
-          offeredProjects:  arrayUnion(this.offered),
+          rejectedProjects: this.declined,
+          offeredProjects: this.offered,
         });
         //console.log(docRef)
         this.$emit("updated");
@@ -268,12 +261,11 @@ export default {
       const docSnap = await getDoc(ref);
       that.offered = docSnap.data().offeredProjects;
       const data = docSnap.data();
-      
       /*const response = await Promise.all(
         docSnap.data().offeredProjects.map(async (item) => {
           console.log("nested", item);
           const finalResult = await getDoc(doc(db, "Project", item));
-          console.log(finalResult.data());
+          //console.log(finalResult.data());
           that.projects.push({
             projectTitle: finalResult.data().Project_Title,
             description: finalResult.data().Description,
@@ -286,7 +278,6 @@ export default {
           getProject(data.offeredProjects[i]).then((res)=>{that.projects.push(res)})
         }
       }
-      
     }
     getOfferedProjects();
 
@@ -309,21 +300,24 @@ export default {
     getDeclinedProjects();
 
     async function getBizProjects(email) {
-      const ref = doc(db, "businesses", that.userEmail);
+      console.log(email)
+      const ref = doc(db, "businesses", email);
       const docSnap = await getDoc(ref);
-
-      //const data = docSnap.data();
-      //return data.inProgProjects;
+      const data = docSnap.data();
+      console.log(data)
+      return data.inProgProjects;
     }
-    getBizProjects(this.userEmail);
+    getBizProjects();
 
     async function getProject(proj) {
       const ref = doc(db, "Project", proj);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
+      console.log(data.poster_id)
       getBizProjects(data.poster_id).then((res) => {
         that.bizProjects.push(res);
       });
+      console.log(that.bizProjects)
       return {
         projectTitle: data.Project_Title,
         description: data.Description,
