@@ -53,7 +53,7 @@
     </div>
     <div class="wrapper">
         <h4>COMPLETED</h4>
-        <Completed @getData="capture" v-for="(task,index) in completedTask" :task="task" :key="index"
+        <Completed v-for="(task,index) in completedTask" :task="task" :key="index"
         :projectTitle="projectTitle" :projectId="projectId"/>
         <!--
         <div v-else>
