@@ -58,7 +58,7 @@
             <label>Change status</label>
             <select v-model="status">
               <option value="To do">To Do</option>
-              <option value="Pending review">In Progress</option>
+              <option value="In progress">In Progress</option>
               <option value="Completed">Completed</option>
             </select>
           </div>
@@ -225,6 +225,7 @@ export default {
   },
   computed: {
     ...mapState(['businessTask','userEmail','businessTaskId','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted','businessInProgProjects','businessCompletedProjects','businessStudents','businessStudentsInProg','businessStudentsComp','taskComments']),
+    //This function is not used
     taskIndex() {
       return parseInt(this.number) + 1;
     },

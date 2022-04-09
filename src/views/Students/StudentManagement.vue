@@ -13,7 +13,7 @@
           <!--
         <ToDoView :task="task" :task_id="task['id']" :projectId="task['projectId']" :projectTitle="task['projectTitle']"/>
         -->
-        <ToDoView :description="this.description" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId" :task="this.studentTask"/>
+        <ToDoView :taskComment="this.comment" :description="this.description" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId" :task="this.studentTask"/>
         <button @click="unblurBg" type="button" id="nobtn" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>
@@ -87,7 +87,7 @@ const router = useRouter()
 export default {
     name: "StudentManagement",
     computed: {
-      ...mapState(['studentTask','studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted',]),
+      ...mapState(['studentTask','studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted','taskComments',]),
     },
     props: {
         //So that this page can easily access the project that it is clicked on
@@ -110,23 +110,52 @@ export default {
             projectTitle:null,
             description:null,
             toBlur:false,
+            comment:[],
         }
     },
     methods: {
-        ...mapMutations(['SET_STUDENT_TASK','SET_STUDENT_PROJECT_ID','SET_STUDENT_PROJECT_TITLE','SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED',]),
+        ...mapMutations(['SET_STUDENT_TASK','SET_STUDENT_PROJECT_ID','SET_STUDENT_PROJECT_TITLE','SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED','SET_TASK_COMMENTS',]),
         goback() {
             this.$router.push({name:'StudentInProgressProjects'})
         },
-        capture(task_emit) {
+        async capture(task_emit) {
+            const curr = this
             this.task = task_emit
             this.SET_STUDENT_TASK(task_emit)
             this.id = task_emit['id']
-            this.projectId = task_emit['projectId']
+            this.projectId = this.studentProjectId
+            //this.projectId = task_emit['projectId']
             this.projectTitle = task_emit['projectTitle']
             this.description = task_emit['shortdescription']
             this.duedate = task_emit['duedate']
             console.log("task emit full",task_emit)
             console.log("task emit",task_emit['id'])
+
+            const docRef = doc(db, "Project", this.studentProjectId);
+        let project = await getDoc(docRef);
+        var tasks = await project.data().Tasks;
+        var currTask = {};
+        console.log("taskComments",tasks)
+        for (let i = 0; i < tasks.length; i++) {        
+          let thisTask = tasks[i];
+          if (thisTask.taskName == task_emit['id']) {
+            currTask = thisTask;
+          if (currTask.comments) {
+            curr.comment = currTask.comments.reverse();
+             this.SET_TASK_COMMENTS(currTask.comments)
+            console.log("comments",currTask.comments.reverse())
+          } else {
+            curr.comment = [];
+          }
+          break;
+        }
+      }
+      console.log("current comments",curr.comment)
+
+
+
+
+
             this.openModal = true
             this.$refs.confirmModal.click();
         },

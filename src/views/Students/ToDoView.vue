@@ -101,7 +101,7 @@
       <div
         class="projectContainer"
         :key="item.key"
-        v-for="(item) in comment"
+        v-for="(item) in this.taskComment"
       >
         <div id="eachComment">
           <img v-bind:src="item.profPic" alt="Logo" class="logo" />
@@ -140,7 +140,7 @@ import * as moment from "moment";
 export default {
   name: "ToDoView",
   computed: {
-    ...mapState(['studentTask','userEmail','studentTaskId','userEmail','studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted',]),   
+    ...mapState(['studentTask','userEmail','studentTaskId','userEmail','studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted','taskComments',]),   
   },
   data() {
     return {
@@ -171,7 +171,7 @@ export default {
       email: this.userEmail,
     };
   },
-  props: ['task_id','projectId','projectTitle','duedate','task','description'],
+  props: ['task_id','projectId','projectTitle','duedate','task','description','taskComment'],
   watch: {
     extend() {
       const extendedDate = new Date();
@@ -193,6 +193,58 @@ export default {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
+
+    async updateFile() {
+      let proj = await doc(db, "Project", this.businessProjectId);
+      let project = await getDoc(proj);
+
+      var dat = await project.data();
+      var tasks = dat.Tasks;
+      var toRemove = {};
+      var newTask = {};
+
+      for (let i = 0; i < tasks.length; i++) {
+        let currTask = tasks[i];
+        console.log(this.task_id);
+        if (currTask.taskName == this.task_id) {
+          toRemove = { ...currTask };
+          newTask = currTask;
+        }
+      }
+
+      await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
+      if (newTask.files) {
+        newTask.files.push(this.fileLink);
+      } else {
+        newTask.files = [];
+        newTask.files.push(this.fileLink);
+      }
+      this.files.push(this.fileLink);
+
+      await updateDoc(ref, { Tasks: arrayUnion(newTask) });
+    },
+
+    async uploadFiles(event) {
+      //Add code to upload the resume somewhere
+      this.file = event.target.files[0];
+      const storage = getStorage();
+      const fileref = ref(storage, this.file.name);
+      const uploadTask = uploadBytesResumable(fileref, this.file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {},
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            console.log("File available at", (this.fileLink = url));
+          });
+        }
+      );
+      this.updateFile();
+    },
+
     async addComment() {
       var a = document.getElementById("comments").value;
       let ref = await doc(db, "Project", this.studentProjectId);
@@ -306,24 +358,62 @@ export default {
     const taskId = this.task_id
     const projectTitle = this.projectTitle
     
+
+    async function updateFile() {
+      let proj = await doc(db, "Project", projectId);
+      let project = await getDoc(proj);
+
+      var dat = await project.data();
+      var tasks = dat.Tasks;
+      var toRemove = {};
+      var newTask = {};
+
+      for (let i = 0; i < tasks.length; i++) {
+        let currTask = tasks[i];
+        console.log(this.task_id);
+        if (currTask.taskName == this.task_id) {
+          toRemove = { ...currTask };
+          newTask = currTask;
+        }
+      }
+
+      await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
+      if (newTask.files) {
+        newTask.files.push(this.fileLink);
+      } else {
+        newTask.files = [];
+        newTask.files.push(this.fileLink);
+      }
+      this.files.push(this.fileLink);
+
+      await updateDoc(ref, { Tasks: arrayUnion(newTask) });
+    }
+
     //console.log(curr.$route.params);
     async function getComments() {
+      
       const docRef = doc(db, "Project", projectId);
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;
       var currTask = {};
-      for (let i = 0; i < tasks.length; i++) {
+      console.log("taskComments",tasks)
+      for (let i = 0; i < tasks.length; i++) {        
         let thisTask = tasks[i];
         if (thisTask.taskName == taskId) {
           currTask = thisTask;
-          curr.comment = currTask.comments.reverse();
+          if (currTask.comments) {
+            curr.comment = currTask.comments.reverse();
+            console.log("comments",currTask.comments.reverse())
+          } else {
+            curr.comment = [];
+          }
           break;
         }
       }
       console.log(curr.comment);
     }
     getComments();
-    console.log(curr.comment);
+    console.log("currcomments",curr.comment);
     /*
        database.forEach((doc) => {
                //Change to dynamic props later
