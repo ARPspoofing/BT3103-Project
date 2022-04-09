@@ -251,7 +251,7 @@ export default {
     this.projectId = this.businessProjectId
     this.projectTitle = this.businessProjectTitle
     */
-   
+
     //Previously assigned in getProjects()
     this.inProgProjects = this.businessInProgProjects
     this.completedProjects = this.businessCompletedProjects
@@ -260,6 +260,16 @@ export default {
     this.students = this.businessStudents
     this.studentsInProg = this.businessStudentsInProg
     this.studentsComp = this.businessStudentsComp
+
+    this.projectId = this.businessProjectId
+    this.projectTitle = this.businessProjectTitle
+    this.fullTitle = "Tasks for " + this.projectTitle 
+    this.toDoTask = this.businessToDo
+    this.inProgressTask = this.businessInProgress
+    this.pendingReviewTask = this.businessPendingReview
+    this.completedTask = this.businessCompleted
+
+
 
     //Non vuex
     /*
