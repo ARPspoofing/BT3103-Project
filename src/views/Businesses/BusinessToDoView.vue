@@ -371,6 +371,7 @@ export default {
         console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
+          console.log("toRemove",toRemove)
           currTask.taskStatus = currStatus;
           newTask = currTask;
         }
@@ -387,7 +388,7 @@ export default {
       //this.task = newTask;
       //vuex
       this.SET_BUSINESS_TASK(newTask)
-      this.$router.push({name:'managementLoading'})
+      this.$router.push({name:'businessManagementLoading'})
     },
 
     async updateTask() {

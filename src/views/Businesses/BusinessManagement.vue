@@ -162,6 +162,7 @@ export default {
       students: [],
       studentsInProg: [],
       studentsComp: [],
+      toBlur:false,
     };
   },
   methods: {
@@ -172,6 +173,15 @@ export default {
         name: "BusinessInProgress",
         params: {},
       });
+    },
+    blurBg() {
+      this.toBlur = true
+    },
+    unblurBg() {
+      this.toBlur = false
+    },
+    attempt() {
+      this.openModal = true
     },
     capture(task_emit) {
         this.task = task_emit
