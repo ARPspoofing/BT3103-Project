@@ -85,7 +85,7 @@
           :task="task"
           :key="index"
           :user="Business"
-        />
+        />        
         <div v-else>
           <h3>No task has been completed yet.</h3>
         </div>

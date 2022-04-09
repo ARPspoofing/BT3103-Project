@@ -200,6 +200,7 @@ export default {
       this.popUpConfirm = false
     },
     indvApplicant(key) {
+      alert("key " + key)
       console.log(this.applicant[key]);
       console.log(this.offered[key]);
       this.$router.push({
@@ -224,7 +225,7 @@ export default {
       //this.SET_KEY(key)
       //this.GET_NEW_CARD()
       //TBC this.$refs.confirmModal.click()
-      
+      alert("key " + key)
       var accApplicant = this.newApplicants[key];
       var offered = this.offered[key];
       var name = this.applicant[key].name;
@@ -270,6 +271,7 @@ export default {
     async rejApplicant(key) {
       //this.SET_KEY(key)
       //this.GET_NEW_CARD()
+      alert("key " + key)
       var rejApplicant = this.newApplicants[key];
       var rejected = this.rejected[key];
       var name = this.applicant[key].name;

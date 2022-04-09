@@ -249,7 +249,7 @@ export default {
           that.testCollection.push(res);
         });
       }
-      //console.log(that.inProgProjects)
+      console.log("inprogprojects",that.inProgProjects)
     }
     getInProgProjects();
 

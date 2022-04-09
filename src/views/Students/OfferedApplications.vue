@@ -144,11 +144,15 @@ export default {
       this.popUpConfirm = false
     },
     async acceptProj(key) {
+      alert("key " + key)
       var projId = this.offered[key];
       var projName = this.projects[key].projectTitle;
       alert(projName);
       var business = this.projects[key].business;
+      console.log("full key",this.projects[key])
+      console.log("business",this.projects[key].business)
       var biz = this.bizProjects[key];
+      alert(biz)
 
       if (!this.accepted) {
         var accepted = [];
@@ -186,6 +190,7 @@ export default {
       }*/
 
       alert("Accepting Project: " + projName);
+      alert("business " + business)
       try {
         const docRef = await updateDoc(doc(db, "students", this.userEmail), {
           inProgProjects: this.accepted,
@@ -235,8 +240,8 @@ export default {
         */
 
         const docRef = await updateDoc(doc(db, "students", this.userEmail), {
-          rejectedProjects: this.declined,
-          offeredProjects: this.offered,
+          rejectedProjects:  arrayUnion(this.declined),
+          offeredProjects:  arrayUnion(this.offered),
         });
         //console.log(docRef)
         this.$emit("updated");
@@ -262,8 +267,9 @@ export default {
       const ref = doc(db, "students", userEmail);
       const docSnap = await getDoc(ref);
       that.offered = docSnap.data().offeredProjects;
-      //const data = docSnap.data();
-      const response = await Promise.all(
+      const data = docSnap.data();
+      
+      /*const response = await Promise.all(
         docSnap.data().offeredProjects.map(async (item) => {
           console.log("nested", item);
           const finalResult = await getDoc(doc(db, "Project", item));
@@ -273,14 +279,14 @@ export default {
             description: finalResult.data().Description,
           });
         })
-      );
-      /*
+      );*/
+      
       if (data.offeredProjects) {
         for(var i = 0; i < data.offeredProjects.length; i++) {
           getProject(data.offeredProjects[i]).then((res)=>{that.projects.push(res)})
         }
       }
-      */
+      
     }
     getOfferedProjects();
 

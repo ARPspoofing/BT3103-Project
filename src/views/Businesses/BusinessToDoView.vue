@@ -283,7 +283,7 @@ export default {
           });
         }
       );
-      updateFile();
+      this.updateFile();
     },
 
     async addComment() {
