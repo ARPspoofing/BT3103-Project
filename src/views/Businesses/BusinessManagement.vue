@@ -31,6 +31,7 @@
             :projectTitle="this.projectTitle"
             :projectId="this.projectId"
             :task="this.task"
+            @addedComment="addedComment"
           />
 
           <button
@@ -38,6 +39,7 @@
             type="button"
             id="nobtn"
             data-bs-dismiss="modal"
+            ref="cancelButton"
           >
             Cancel
           </button>
@@ -232,6 +234,9 @@ export default {
       "SET_BUSINESS_STUDENTS_COMP",
       "SET_TASK_COMMENTS",
     ]),
+    addedComment() {
+      this.$ref.cancelButton.click()
+    },
     //...mapMutations(['SET_BUSINESS_TASK','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED',]),
     goback() {
       this.$router.push({

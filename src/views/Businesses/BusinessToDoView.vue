@@ -375,6 +375,7 @@ export default {
       //this.task = newTask;
       this.SET_BUSINESS_TASK(newTask);
       document.getElementById("comments").value = "";
+      this.$emit('addedComment')
     },
 
     async updateStatus() {
