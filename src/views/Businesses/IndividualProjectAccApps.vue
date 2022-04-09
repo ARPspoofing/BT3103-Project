@@ -69,7 +69,7 @@
     <hr />
     <div>
       <div class="appContainer">
-        <div :key="item.key" v-for="(item, key) in applicant">
+        <div class="divi" :key="item.key" v-for="(item, key) in applicant">
           <ApplicantsCard
             :buttons="false"
             :applicantName="item.name"
@@ -356,5 +356,9 @@ hr {
   height: 70px;
   width: 70px;
   color: #004a23;
+}
+
+.divi {
+  height: 0px;
 }
 </style>
