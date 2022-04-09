@@ -163,6 +163,7 @@ export default {
       studentsInProg: [],
       studentsComp: [],
       toBlur:false,
+      comment:null,
     };
   },
   methods: {
@@ -183,19 +184,56 @@ export default {
     attempt() {
       this.openModal = true
     },
-    capture(task_emit) {
+    async capture(task_emit) {
+      const curr = this
         this.task = task_emit
         this.SET_BUSINESS_TASK(task_emit)
         //this.SET_BUSINESS_TASK(task_emit)
         this.id = task_emit['id']
-        this.projectId = task_emit['projectId']
+        this.projectId = this.businessProjectId
+        //this.projectId = task_emit['projectId']
         this.projectTitle = task_emit['projectTitle']
         this.longdescription = task_emit['longdescription']
         this.duedate = task_emit['duedate']
         console.log("task emit full",task_emit)
         console.log("task emit",task_emit['id'])
+        
+        //retrieve all the comments for all the task first
+        const docRef = doc(db, "Project", this.businessProjectId);
+        let project = await getDoc(docRef);
+        var tasks = await project.data().Tasks;
+        var currTask = {};
+        console.log("taskComments",tasks)
+        for (let i = 0; i < tasks.length; i++) {        
+          let thisTask = tasks[i];
+          if (thisTask.taskName == task_emit['id']) {
+            currTask = thisTask;
+          if (currTask.comments) {
+            curr.comment = currTask.comments.reverse();
+            console.log("comments",currTask.comments.reverse())
+          } else {
+            curr.comment = [];
+          }
+          break;
+        }
+      }
+      console.log("current comments",curr.comment)
+        
+        
+        
         this.openModal = true
         this.$refs.confirmModal.click();
+        
+
+
+        
+
+
+
+
+
+
+
     },
     async completeProject() {
       if (this.completedProjects) {

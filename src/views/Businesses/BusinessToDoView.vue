@@ -203,6 +203,7 @@ export default {
       file: null,
       files: [],
       fileLink: "",
+      allTaskComments:null,
     };
   },
   props: ['task_id','projectId','projectTitle','duedate','task','description'],
@@ -223,14 +224,14 @@ export default {
     },
   },
   computed: {
-    ...mapState(['businessTask','userEmail','businessTaskId','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted','businessInProgProjects','businessCompletedProjects','businessStudents','businessStudentsInProg','businessStudentsComp']),
+    ...mapState(['businessTask','userEmail','businessTaskId','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted','businessInProgProjects','businessCompletedProjects','businessStudents','businessStudentsInProg','businessStudentsComp','allTaskComments']),
     taskIndex() {
       return parseInt(this.number) + 1;
     },
   },
 
   methods: {
-    ...mapMutations(['SET_BUSINESS_TASK',]),
+    ...mapMutations(['SET_BUSINESS_TASK','SET_ALL_TASK_COMMENTS']),
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
@@ -513,12 +514,14 @@ export default {
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;
       var currTask = {};
-      for (let i = 0; i < tasks.length; i++) {
+      console.log("taskComments",tasks)
+      for (let i = 0; i < tasks.length; i++) {        
         let thisTask = tasks[i];
         if (thisTask.taskName == taskId) {
           currTask = thisTask;
           if (currTask.comments) {
             curr.comment = currTask.comments.reverse();
+            console.log("comments",currTask.comments.reverse())
           } else {
             curr.comment = [];
           }
@@ -528,7 +531,7 @@ export default {
       console.log(curr.comment);
     }
     getComments();
-    console.log(curr.comment);
+    console.log("currcomments",curr.comment);
     
     //Non vuex function. Not used already for vuex
 
