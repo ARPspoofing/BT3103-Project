@@ -223,6 +223,7 @@ export default {
     },
   },
   computed: {
+    ...mapState(['businessTask','userEmail','businessTaskId','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted','businessInProgProjects','businessCompletedProjects','businessStudents','businessStudentsInProg','businessStudentsComp']),
     taskIndex() {
       return parseInt(this.number) + 1;
     },

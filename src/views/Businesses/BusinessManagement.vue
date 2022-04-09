@@ -165,7 +165,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['SET_BUSINESS_TASK','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED',]),
+    ...mapMutations(['SET_BUSINESS_TASK','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED','SET_BUSINESS_IN_PROG_PROJECTS','SET_BUSINESS_COMPLETED_PROJECTS','SET_BUSINESS_STUDENTS','SET_BUSINESS_STUDENTS_IN_PROG','SET_BUSINESS_STUDENTS_COMP',]),
     //...mapMutations(['SET_BUSINESS_TASK','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED',]),
     goback() {
       this.$router.push({
@@ -189,19 +189,19 @@ export default {
     },
     async completeProject() {
       if (this.completedProjects) {
-        this.completedProjects.push(this.projectId);
+        this.completedProjects.push(this.businessProjectId);
       } else {
         this.completedProjects = [];
-        this.completedProjects.push(this.projectId);
+        this.completedProjects.push(this.businessProjectId);
       }
       //console.log(this.inProgProjects)
-      var key = this.inProgProjects.indexOf(this.projectId);
+      var key = this.inProgProjects.indexOf(this.businessProjectId);
       //console.log(this.inProgProjects)
       this.inProgProjects.splice(key, 1);
       //console.log(this.inProgProjects)
 
       try {
-        const docRef = await updateDoc(doc(db, "Project", this.projectId), {
+        const docRef = await updateDoc(doc(db, "Project", this.businessProjectId), {
           Status: "completed",
         });
 
@@ -213,12 +213,12 @@ export default {
         for (let i = 0; i < this.students.length; i++) {
           var stuComp = this.studentsComp[i];
           var stuInProg = this.studentsInProg[i];
-          var ind = stuInProg.indexOf(this.projectId);
+          var ind = stuInProg.indexOf(this.businessProjectId);
           stuInProg.splice(ind, 1);
           if (stuComp) {
-            stuComp.push(this.projectId);
+            stuComp.push(this.businessProjectId);
           } else {
-            stuComp = [this.projectId];
+            stuComp = [this.businessProjectId];
           }
           console.log(this.students[i]);
           console.log(stuInProg);
@@ -245,10 +245,30 @@ export default {
     // this.username = this.userEmail
     // const userEmail = this.userEmail
     // console.log(userEmail)
+
+    //Previously route params
+    /*
+    this.projectId = this.businessProjectId
+    this.projectTitle = this.businessProjectTitle
+    */
+   
+    //Previously assigned in getProjects()
+    this.inProgProjects = this.businessInProgProjects
+    this.completedProjects = this.businessCompletedProjects
+
+    //Previously assigned in getStudents()
+    this.students = this.businessStudents
+    this.studentsInProg = this.businessStudentsInProg
+    this.studentsComp = this.businessStudentsComp
+
+    //Non vuex
+    /*
     curr.projectId = curr.$route.params.projectId;
     curr.projectTitle = curr.$route.params.projectTitle;
     console.log(curr.projectId);
+    */
 
+    /*To be commented out once shifted to business In Progress
     async function getProjects() {
       const ref = doc(db, "businesses", email);
       const docSnap = await getDoc(ref);
@@ -260,7 +280,9 @@ export default {
       //var inProgProjects = data.inProgProjects;
     }
     getProjects();
+    */
 
+    /*To be commented out once shifted to business in progress
     async function getStudents() {
       const projects = query(
         collection(db, "students"),
@@ -279,6 +301,7 @@ export default {
       console.log(curr.studentsComp);
     }
     getStudents();
+    */
     //To be commented out once it is shifted to business In Progress
     /*
     async function getTasks() {

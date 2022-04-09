@@ -54,6 +54,7 @@ import {
   getDoc,
   query,
   orderBy,
+  where,
 } from "firebase/firestore";
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
 import BusinessProfileForm from "./BusinessProfileForm.vue";
@@ -128,24 +129,17 @@ export default {
         studentsInProg.push(data.inProgProjects);
         studentsComp.push(data.completedProjects);
       });
-      console.log(curr.students);
-      console.log(curr.studentsInProg);
-      console.log(curr.studentsComp);
       this.SET_BUSINESS_STUDENTS(students)
       this.SET_BUSINESS_STUDENTS_IN_PROG(studentsInProg)
       this.SET_BUSINESS_STUDENTS_COMP(studentsComp)
     },
-
-
-
-
     async viewTasks(projectId, projectTitle) {
-      getStudents(projectId)
-      getProjects()
-      console.log(projectId);
-      console.log(projectTitle);
+      this.getStudents(projectId)
+      this.getProjects()
       this.SET_BUSINESS_PROJECT_ID(projectId)
       this.SET_BUSINESS_PROJECT_TITLE(projectTitle)
+      console.log("projectId",projectId);
+      console.log("projectTitle",projectTitle);
       var id = projectId
       var title = projectTitle
 
