@@ -58,6 +58,7 @@ import {
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
 import BusinessProfileForm from "./BusinessProfileForm.vue";
 import { mapState } from "vuex";
+import {mapMutations} from "vuex";
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -67,7 +68,7 @@ export default {
     Card,
   },
   computed: {
-    ...mapState(["userEmail"]),
+    ...mapState(['userEmail','businessTaskId','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted']),
   },
   data() {
     return {
@@ -75,9 +76,15 @@ export default {
       testCollection: [],
       businessEmail: "",
       inProgProjects: [],
+      BUSINESS_TO_DO_TEMP:[],
+      BUSINESS_IN_PROGRESS_TEMP:[],
+      BUSINESS_PENDING_REVIEW_TEMP:[],
+      BUSINESS_COMPLETED_TEMP:[],
     };
   },
   methods: {
+    ...mapMutations(['SET_BUSINESS_TASK_ID','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED',]),
+    // This function isn't used for now
     indivproj(key) {
       console.log(JSON.stringify(this.testCollection[key].tasks));
       console.log(JSON.stringify(this.testCollection[key].projectId));

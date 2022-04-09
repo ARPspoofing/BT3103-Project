@@ -5,7 +5,8 @@
   <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-body">            
+      <div class="modal-body">    
+                
                <BusinessToDoView :description="this.longdescription" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId" :task="this.task"/>
                 
         <button @click="unblurBg" type="button" id="nobtn" data-bs-dismiss="modal">Cancel</button>
@@ -163,7 +164,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['SET_STUDENT_TASK','SET_STUDENT_PROJECT_ID','SET_STUDENT_PROJECT_TITLE','SET_STUDENT_TO_DO','SET_STUDENT_IN_PROGRESS','SET_STUDENT_PENDING_REVIEW','SET_STUDENT_COMPLETED',]),
+    ...mapMutations(['SET_BUSINESS_TASK','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED',]),
     //...mapMutations(['SET_BUSINESS_TASK','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED',]),
     goback() {
       this.$router.push({
@@ -173,7 +174,7 @@ export default {
     },
     capture(task_emit) {
         this.task = task_emit
-        this.SET_STUDENT_TASK(task_emit)
+        this.SET_BUSINESS_TASK(task_emit)
         //this.SET_BUSINESS_TASK(task_emit)
         this.id = task_emit['id']
         this.projectId = task_emit['projectId']
