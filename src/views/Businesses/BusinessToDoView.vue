@@ -58,7 +58,7 @@
             <label>Change status</label>
             <select v-model="status">
               <option value="To do">To Do</option>
-              <option value="Pending review">Send for review</option>
+              <option value="Pending review">In Progress</option>
               <option value="Completed">Completed</option>
             </select>
           </div>

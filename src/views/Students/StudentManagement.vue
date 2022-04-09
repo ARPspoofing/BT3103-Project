@@ -13,7 +13,7 @@
           <!--
         <ToDoView :task="task" :task_id="task['id']" :projectId="task['projectId']" :projectTitle="task['projectTitle']"/>
         -->
-        <ToDoView :description="this.longdescription" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId" :task="this.studentTask"/>
+        <ToDoView :description="this.description" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId" :task="this.studentTask"/>
         <button @click="unblurBg" type="button" id="nobtn" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>
@@ -108,7 +108,7 @@ export default {
             id:null,
             projectId:null,
             projectTitle:null,
-            longdescription:null,
+            description:null,
             toBlur:false,
         }
     },
@@ -123,7 +123,7 @@ export default {
             this.id = task_emit['id']
             this.projectId = task_emit['projectId']
             this.projectTitle = task_emit['projectTitle']
-            this.longdescription = task_emit['longdescription']
+            this.description = task_emit['shortdescription']
             this.duedate = task_emit['duedate']
             console.log("task emit full",task_emit)
             console.log("task emit",task_emit['id'])

@@ -28,7 +28,6 @@
             <option value="To do">To Do</option>
             <option value="In progress">In Progress</option>
             <option value="Pending review">Send for review</option>
-            <option value="Completed">Completed</option>
           </select>
         </div>
       </div>
