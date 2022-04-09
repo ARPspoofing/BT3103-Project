@@ -141,8 +141,9 @@ export default {
     projectName: String,
   },
   computed: {
-    ...mapState(['userEmail','businessTask','studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted',]),
+    ...mapState(['userEmail','businessTask','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted','businessInProgProjects','businessCompletedProjects','businessStudents','businessStudentsInProg','businessStudentsComp']),
   },
+
   data() {
     return {
       task:null,
