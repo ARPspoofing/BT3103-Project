@@ -15,7 +15,7 @@
     </div>
 
     <div class="short">
-      <p>Short Description: {{ task["shortdescription"] }}</p>
+      <p>Short Description: {{ trimmedSentence }}...</p>
     </div>
   </div>
 
@@ -141,6 +141,15 @@ export default {
     return {
       duedate: this.task.duedate,
       dateOptions: { year: "numeric", month: "short", day: "numeric" },
+      trimmedSentence: this.task["shortdescription"]
+        .substr(0, 50)
+        .substr(
+          0,
+          Math.min(
+            this.task["shortdescription"].substr(0, 50).length,
+            this.task["shortdescription"].substr(0, 50).lastIndexOf(" ")
+          )
+        ),
     };
   },
   methods: {

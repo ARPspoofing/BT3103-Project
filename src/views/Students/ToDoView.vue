@@ -270,6 +270,7 @@ export default {
     },
 
     async addComment() {
+      this.$emit('addComment',true)
       var a = document.getElementById("comments").value;
       let ref = await doc(db, "Project", this.studentProjectId);
       let project = await getDoc(ref);

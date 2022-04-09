@@ -31,7 +31,7 @@
             :projectTitle="this.projectTitle"
             :projectId="this.projectId"
             :task="this.task"
-            @addedComment="addedComment"
+            @addComment="addComment"
           />
 
           <button
@@ -234,8 +234,8 @@ export default {
       "SET_BUSINESS_STUDENTS_COMP",
       "SET_TASK_COMMENTS",
     ]),
-    addedComment() {
-      this.$ref.cancelButton.click()
+    addComment() {
+      this.$refs.cancelButton.click()
     },
     //...mapMutations(['SET_BUSINESS_TASK','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED',]),
     goback() {
@@ -262,7 +262,7 @@ export default {
       this.projectId = this.businessProjectId;
       //this.projectId = task_emit['projectId']
       this.projectTitle = task_emit["projectTitle"];
-      this.longdescription = task_emit["longdescription"];
+      this.longdescription = task_emit["shortdescription"];
       this.duedate = task_emit["duedate"];
       /*
       console.log("task emit full", task_emit);

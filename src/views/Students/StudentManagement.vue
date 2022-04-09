@@ -1,7 +1,7 @@
 <template>
   <StudentNavBar :search="false" :Heading="fullTitle" :header="true" />
   <!-- Modal -->
-  {{storeNum.number}}
+
   <button
     @click="blurBg"
     style="visibility: hidden"
@@ -37,12 +37,14 @@
             :projectTitle="this.projectTitle"
             :projectId="this.projectId"
             :task="this.studentTask"
+            @addComment="addComment"
           />
           <button
             @click="unblurBg"
             type="button"
             id="nobtn"
             data-bs-dismiss="modal"
+            ref="cancelButton"
           >
             Cancel
           </button>
@@ -202,6 +204,9 @@ export default {
       "SET_STUDENT_COMPLETED",
       "SET_TASK_COMMENTS",
     ]),
+    addComment(event) {
+      this.$refs.cancelButton.click()
+    },
     goback() {
       this.$router.push({ name: "StudentInProgressProjects" });
     },

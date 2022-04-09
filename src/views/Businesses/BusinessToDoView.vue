@@ -77,13 +77,41 @@
           <p>{{ this.description }}</p>
         </div>
       </div>
+
+      <div class="middle-bottom flex">
+      <div class="documents flex flex-column">
+        <p><b>Submit Relevant Documents :</b></p>
+        <button id="addFileButton" @click="addFile">
+          <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
+          Add Files
+        </button>
+        <div
+          class="previous"
+          v-for="(task, counter) in files"
+          v-bind:key="counter"
+        >
+          <button id="deleteFile" @click="deleteFile(counter)">
+            <i class="fa fa-times" id="crossIcon"></i>
+          </button>
+          <input
+            type="file"
+            multiple
+            name="files[]"
+            id="files"
+            v-on:change="uploadFiles"
+          />
+        </div>
+      </div>
+    </div>
+
+
+
+
+      <!--
       <div class="middle-bottom flex">
         <div class="documents flex flex-column">
           <p><b>Submit Relevant Documents :</b></p>
-          <!--<button id="addFileButton" @click="addFile">
-              <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
-              Add Files
-            </button>-->
+         
           <input
             type="file"
             multiple
@@ -111,6 +139,7 @@
           </div>
         </div>
       </div>
+      -->
       <div class="bottom flex flex-column">
         <label for="comments">Comments</label>
         <h4>Please limit additional comments to 500 characters</h4>
@@ -215,6 +244,7 @@ export default {
     "task",
     "description",
     "taskComment",
+    "description",
   ],
   watch: {
     extend() {
@@ -318,6 +348,7 @@ export default {
     },
 
     async addComment() {
+      this.$emit('addComment',true)
       var a = document.getElementById("comments").value;
       let ref = await doc(db, "Project", this.businessProjectId);
       let project = await getDoc(ref);
@@ -669,112 +700,78 @@ export default {
 </script>
 
 <style scoped>
-.mainBody {
-  background-color: #f5f5f5;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  overflow-y: scroll;
-  padding-bottom: 150px;
-  /*
-        filter: blur(5px);
-    */
-}
-
 .flex {
   display: flex;
 }
-
 .flex-column {
   flex-direction: column;
 }
-
 nav-link {
   margin-bottom: 12px;
   align-items: center;
   color: white;
   font-size: 12px;
 }
-
 img {
   margin-right: 16px;
   width: 7px;
   height: 10px;
 }
-
 .details {
-  padding: 48px;
-  margin-top: 24px;
   /*background-color:rgb(11, 167, 115);*/
   background-color: #b3cabe;
   border-radius: 20px;
 }
-
 .top div {
   flex-grow: 1;
 }
-
 .left {
   font-size: 12px;
 }
-
 .left p:first-child {
   font-size: 24px;
   text-transform: uppercase;
   margin-bottom: 8px;
 }
-
 .left p:nth-child(2) {
   font-size: 16px;
 }
-
 span {
   color: black;
 }
-
 .right {
   font-size: 12px;
   align-items: flex-end;
 }
-
 .middle {
   margin-top: 30px;
   color: black;
   gap: 16px;
 }
-
 h4 {
   font-size: 12px;
   font-weight: 400;
   margin-bottom: 5px;
   margin-top: 20px;
 }
-
 p {
   font-size: 16px;
 }
-
-date h4 {
+.date h4 {
   margin-top: 20px;
 }
-
 .description {
   margin-left: 0px;
   text-align: justify;
   text-justify: inter-word;
   color: #2c3e50;
 }
-
 textarea {
   -webkit-border-radius: 12px;
   -moz-border-radius: 12px;
   border-radius: 12px;
   outline: none;
 }
-
-.bottom {
-}
-
 #backButton {
   background: #0e8044;
   /*width: 190px;
@@ -786,32 +783,26 @@ textarea {
   padding: 10px 25px;
   font-size: 14px;
 }
-
 #duedate {
   text-align: left;
 }
-
 label {
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 7px;
 }
-
 #input {
   width: 150px;
   height: 25px;
 }
-
 .documents {
   text-align: left;
 }
-
 #files {
   background: #f5f5f5;
   width: 700px;
   margin-bottom: 10px;
 }
-
 #addFileButton {
   background: transparent;
   border: none;
@@ -819,13 +810,19 @@ label {
   width: 120px;
   padding-bottom: 7px;
 }
-
 #deleteFile {
   background: transparent;
   border: none;
   color: rgb(214, 28, 28);
 }
-
+#eachComment {
+  text-align: left;
+  position: centre;
+  margin: 10px;
+  padding: 5px;
+  background-color: lightgoldenrodyellow;
+  border-radius: 30px;
+}
 #commentButton {
   background: #0e8044;
   color: white;
@@ -837,7 +834,6 @@ label {
   width: 180px;
   position: right;
 }
-
 .logo {
   vertical-align: left;
   width: 45px;
@@ -847,14 +843,5 @@ label {
   margin-right: 10px;
   margin-top: -2.5px;
   float: left;
-}
-
-#eachComment {
-  text-align: left;
-  position: centre;
-  margin: 10px;
-  padding: 5px;
-  background-color: lightgoldenrodyellow;
-  border-radius: 30px;
 }
 </style>
