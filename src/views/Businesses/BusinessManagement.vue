@@ -6,7 +6,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body">    
-                
+
                <BusinessToDoView :description="this.longdescription" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId" :task="this.task"/>
                 
         <button @click="unblurBg" type="button" id="nobtn" data-bs-dismiss="modal">Cancel</button>
@@ -141,7 +141,7 @@ export default {
     projectName: String,
   },
   computed: {
-    ...mapState(['userEmail','studentTask','studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted',]),
+    ...mapState(['userEmail','businessTask','studentProjectId','studentProjectTitle','studentToDo','studentInProgress','studentPendingReview','studentCompleted',]),
   },
   data() {
     return {
@@ -278,11 +278,9 @@ export default {
       console.log(curr.studentsComp);
     }
     getStudents();
-
+    //To be commented out once it is shifted to business In Progress
+    /*
     async function getTasks() {
-      //Change "To-Do" to props later
-      //Later, each project needs to have its list of tasks
-      //The code here is just temporary
       let docRef = await doc(db, "Project", curr.projectId);
       let project = await getDoc(docRef);
       let tasks = project.data().Tasks;
@@ -359,6 +357,7 @@ export default {
       curr.completedTask = completedTask;
     }
     getTasks();
+    */
   },
 };
 </script>

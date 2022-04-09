@@ -68,7 +68,7 @@ export default {
     Card,
   },
   computed: {
-    ...mapState(['userEmail','businessTaskId','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted']),
+    ...mapState(['userEmail','businessTaskId','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted','businessInProgProjects','businessCompletedProjects','businessStudents','businessStudentsInProg','businessStudentsComp']),
   },
   data() {
     return {
@@ -83,8 +83,9 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['SET_BUSINESS_TASK_ID','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED',]),
-    // This function isn't used for now
+    ...mapMutations(['SET_BUSINESS_TASK_ID','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED','SET_BUSINESS_IN_PROG_PROJECTS','SET_BUSINESS_COMPLETED_PROJECTS','SET_BUSINESS_STUDENTS','SET_BUSINESS_STUDENTS_IN_PROG','SET_BUSINESS_STUDENTS_COMP',]),
+    
+    // The function indivproj(key) isn't used for now
     indivproj(key) {
       console.log(JSON.stringify(this.testCollection[key].tasks));
       console.log(JSON.stringify(this.testCollection[key].projectId));
@@ -98,20 +99,136 @@ export default {
       //console.log(key);
       //console.log(this.testCollection[key]);
     },
+    //This function is not used
     isEqual(email) {
       return email == this.businessEmail;
     },
 
-    viewTasks(projectId, projectTitle) {
+    async getProjects() {
+      const ref = doc(db, "businesses", this.userEmail);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      this.SET_BUSINESS_IN_PROG_PROJECTS(data.inProgProjects)
+      this.SET_BUSINESS_COMPLETED_PROJECTS(data.completedProjects)
+    },
+
+    async getStudents(id) {
+      const projects = query(
+        collection(db, "students"),
+        where("inProgProjects", "array-contains", id)
+      );
+      let snapshot = await getDocs(projects);
+      var students = []
+      var studentsInProg = []
+      var studentsComp = []
+      console.log(snapshot);
+      snapshot.forEach(async (docs) => {
+        let data = docs.data();
+        students.push(data.email);
+        studentsInProg.push(data.inProgProjects);
+        studentsComp.push(data.completedProjects);
+      });
+      console.log(curr.students);
+      console.log(curr.studentsInProg);
+      console.log(curr.studentsComp);
+      this.SET_BUSINESS_STUDENTS(students)
+      this.SET_BUSINESS_STUDENTS_IN_PROG(studentsInProg)
+      this.SET_BUSINESS_STUDENTS_COMP(studentsComp)
+    },
+
+
+
+
+    async viewTasks(projectId, projectTitle) {
+      getStudents(projectId)
+      getProjects()
       console.log(projectId);
       console.log(projectTitle);
-      this.$router.push({
-        name: "BusinessManagement",
-        params: {
-          projectId: projectId,
-          projectTitle: projectTitle,
-        },
-      });
+      this.SET_BUSINESS_PROJECT_ID(projectId)
+      this.SET_BUSINESS_PROJECT_TITLE(projectTitle)
+      var id = projectId
+      var title = projectTitle
+
+      let docRef = await doc(db,"Project",id)
+      let project = await getDoc(docRef)
+      let tasks = project.data().Tasks
+      var toDoTask = []
+      var inProgressTask = []
+      var pendingReviewTask = []
+      var completedTask = []
+      tasks.forEach((document) => {  
+        console.log('document',document)   
+        if (document.taskStatus == "To do") {
+            toDoTask.push({
+              id: document.taskName,
+              /*
+              projectTitle: that.projectTitle,
+              projectId: that.projectId,
+              */
+              comments: document.comments,
+              documents: document.documents,
+              currStatus: document.taskStatus,
+              duedate: document.taskDueDate,
+              taskname: document.taskName,                    
+              shortdescription: document.taskDescription,
+            })
+        } else if (document.taskStatus == "In progress") {
+            inProgressTask.push({
+              id: document.taskName,
+              /*
+              projectTitle: that.projectTitle,
+              projectId: that.projectId,
+              */
+              comments: document.comments,
+              documents: document.documents,
+              status: document.taskStatus,
+              duedate: document.taskDueDate,
+              taskname: document.taskName,                  
+              shortdescription: document.taskDescription,   
+            })
+          } else if (document.taskStatus == "Pending review") {
+            pendingReviewTask.push({
+              id: document.taskName,
+              /*
+              projectTitle: that.projectTitle,
+              projectId: that.projectId,
+              */
+              comments: document.comments,
+              documents: document.documents,
+              status: document.taskStatus,
+              duedate: document.taskDueDate,
+              taskname: document.taskName,                   
+              shortdescription: document.taskDescription,
+            })
+          } else if (document.taskStatus == "Completed") {
+            completedTask.push({
+              id: document.id,
+              comments: document.comments,
+              /*
+              projectTitle: that.projectTitle,
+              projectId: that.projectId,
+              */
+              documents: document.documents,
+              status: document.taskStatus,
+              duedate: document.taskDueDate,
+              taskname: document.taskName,
+              shortdescription: document.taskDescription,                      
+            })
+          }
+      })
+        console.log("business todo",toDoTask)
+        console.log("business in progress",inProgressTask)
+        console.log("business pending",pendingReviewTask)
+        console.log("business todo",completedTask)
+        this.SET_BUSINESS_TO_DO(toDoTask)
+        this.SET_BUSINESS_IN_PROGRESS(inProgressTask)
+        this.SET_BUSINESS_PENDING_REVIEW(pendingReviewTask)
+        this.SET_BUSINESS_COMPLETED(completedTask)
+        console.log("vuex todo",this.businessToDo)
+        console.log("vuex in prog",this.businessInProgress)
+        console.log("vuex pending",this.businessPendingReview)
+        console.log("vuex completed",this.businessCompleted)
+        this.$router.push({name:'BusinessManagement'})
       //console.log(key);
       //console.log(this.testCollection[key]);
     },

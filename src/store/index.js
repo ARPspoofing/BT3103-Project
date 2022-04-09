@@ -61,7 +61,12 @@ export default createStore({
     businessTaskId:null,
     businessTask:null,
     businessProjectTitle:null,
-    
+    //Addtional things for business only. 
+    businessInProgProjects:null,
+    businessCompletedProjects:null,
+    businessStudents:null,
+    businessStudentsInProg:null,
+    businessStudentsComp:null, 
   },
   //getter for debugging
   getters: {
@@ -216,6 +221,22 @@ export default createStore({
     SET_BUSINESS_COMPLETED(state,payload) {
       state.businessCompleted = payload
     },
+    SET_BUSINESS_IN_PROG_PROJECTS(state,payload) {
+      state.businessInProgProjects = payload
+    },
+    SET_BUSINESS_COMPLETED_PROJECTS(state,payload) {
+      state.businessCompletedProjects = payload
+    },
+    SET_BUSINESS_STUDENTS(state,payload) {
+      state.businessStudents = payload
+    },
+    SET_BUSINESS_STUDENTS_IN_PROG(state,payload) {
+      state.businessStudentsInProg = payload
+    },
+    SET_BUSINESS_STUDENTS_COMP(state,payload) {
+      state.businessStudentsComp = payload
+    }
+
     
   },
   actions: {
