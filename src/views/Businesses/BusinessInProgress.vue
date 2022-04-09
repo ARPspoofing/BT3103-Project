@@ -24,7 +24,7 @@
     </h1>
     <hr />
     <div class="projectContainer">
-      <div :key="item.key" v-for="(item, key) in testCollection">
+      <div :key="item.key" v-for="(item) in testCollection">
         <Card
           :apply="false"
           :projectTitle="item.projectTitle"

@@ -230,6 +230,9 @@ export default {
       var self = this;
       self.updateStatus();
     },
+    updated(newVal,oldVal) {
+      alert('businessUpdated!')
+    },
   },
   computed: {
     ...mapState([
@@ -248,6 +251,7 @@ export default {
       "businessStudentsInProg",
       "businessStudentsComp",
       "taskComments",
+      "updated",
     ]),
     //This function is not used
     taskIndex() {
@@ -256,7 +260,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["SET_BUSINESS_TASK", "SET_ALL_TASK_COMMENTS"]),
+    ...mapMutations(["SET_BUSINESS_TASK", "SET_ALL_TASK_COMMENTS","SET_UPDATED",]),
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
@@ -373,6 +377,7 @@ export default {
     },
 
     async updateStatus() {
+      this.SET_UPDATED(true)
       const currStatus = this.status;
       console.log(currStatus);
       console.log(this.projectId);

@@ -159,6 +159,11 @@ export default {
       "taskComments",
     ]),
   },
+  watch: {
+    studentTask(newVal,oldVal) {
+      alert('business updated!')
+    },
+  },
   props: {
     //So that this page can easily access the project that it is clicked on
     projectName: String,

@@ -155,7 +155,7 @@ export default {
 .mainBody {
   background-color: #c3eec5;
   width: 100vw;
-  height: 150vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -152,6 +152,7 @@ export default {
       "studentPendingReview",
       "studentCompleted",
       "taskComments",
+      "updated",
     ]),
   },
   data() {
@@ -206,6 +207,9 @@ export default {
     status() {
       var self = this;
       self.updateStatus();
+    },
+    updated(newVal,oldVal) {
+      alert('businessUpdated')
     },
   },
   methods: {
