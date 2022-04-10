@@ -62,7 +62,7 @@
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
-          :picture="item.profilePicture"
+          :picture="item.profPicture"
           :description="item.description"
           @clickCard="indivprojFirst(key /*+ 2*6*/)"
           @applicantbtn="addApplicantFirst(key + 2 * 6)"
@@ -73,7 +73,7 @@
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
-          :picture="item.profilePicture"
+          :picture="item.profPicture"
           :description="item.description"
           @clickCard="indivprojSecond(key)"
           @applicantbtn="addApplicantSecond(key + 2 * 6)"
@@ -84,7 +84,7 @@
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
-          :picture="item.profilePicture"
+          :picture="item.profPicture"
           :description="item.description"
           @clickCard="indivprojThird(key)"
           @applicantbtn="addApplicantThird(key + 2 * 6)"
@@ -510,6 +510,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
           });
         } else if (secondPriorityIds.includes(docs.id)) {
           secondPriority.push({
@@ -525,6 +526,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
           });
         } else if (thirdPriorityIds.includes(docs.id)) {
           thirdPriority.push({
@@ -540,6 +542,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
           });
         }
       });

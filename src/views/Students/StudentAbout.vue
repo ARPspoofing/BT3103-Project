@@ -154,7 +154,7 @@
         <h4>File Details</h4>
         <div class="input flex flex-column">
           <label for="resume">Resume</label>
-          <a v-bind:href="this.resumeLink" target="_blank" class="but"
+          <a v-bind:href="resumeLink" target="_blank" class="but"
             >View Resume</a
           >
           <input
@@ -362,7 +362,7 @@ export default {
         (error) => {},
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            //console.log("File available at", (this.finalProfile = downloadURL));
+            console.log("File available at", (this.finalProfile = downloadURL));
           });
         }
       );
@@ -385,7 +385,7 @@ export default {
           getDownloadURL(uploadTask.snapshot.ref).then((url) => {
             console.log("File available at", (this.resumeLink = url));
           });
-          this.resumeLink = url;
+          //this.resumeLink = url;
           console.log(this.resumeLink);
         }
       );
@@ -441,6 +441,7 @@ export default {
       return true;
     },
     async save() {
+      const that = this
       this.nameErrorPresent = false;
       this.courseErrorPresent = false;
       this.yearErrorPresent = false;
@@ -492,17 +493,17 @@ export default {
         this.errorMessage = "Please upload your transcript";
       } else {
         updateDoc(doc(db, "students", String(this.schoolEmail)), {
-          email: this.schoolEmail,
-          name: this.name,
-          course: this.course,
-          year: this.year,
-          interests: this.interests,
-          personalEmail: this.personalEmail,
-          contactNo: this.contactNo,
-          finalProfile: this.finalProfile,
-          resumeDownloadLink: this.resumeLink,
-          transcriptDownloadLink: this.transcriptLink,
-          description: this.description,
+          email: that.schoolEmail,
+          name: that.name,
+          course: that.course,
+          year: that.year,
+          interests: that.interests,
+          personalEmail: that.personalEmail,
+          contactNo: that.contactNo,
+          finalProfile: that.finalProfile,
+          resumeDownloadLink: that.resumeLink,
+          transcriptDownloadLink: that.transcriptLink,
+          description: that.description,
         });
         this.$router.push({ name: "StudentHomePage" });
       }
@@ -520,13 +521,13 @@ export default {
     async function getApplicant(userEmail) {
       const docSnap = await getDoc(doc(db, "students", userEmail));
   
-      let data = docSnap.data();
-     
+      let data = docSnap.data();     
       that.finalProfile = data.finalProfile;
       that.name = data.name;
       that.course = data.course;
       that.year = data.year;
       that.interests = data.interests;
+      //that.schoolEmail = that.userEmail
       that.schoolEmail = data.email;
       that.personalEmail = data.personalEmail;
       that.contactNo = data.contactNo;
