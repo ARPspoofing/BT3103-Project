@@ -365,6 +365,7 @@ export default {
       } catch (error) {
         //console.error("Error updating document: ", error);
       }
+      this.$router.push({name:'BusinessReRoute'})
     },
   },
 
