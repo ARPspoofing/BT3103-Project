@@ -60,6 +60,7 @@
           <select v-model="status">
             <option value="To do">To Do</option>
             <option value="In progress">In Progress</option>
+            <option value="Pending review">Pending Review</option>
             <option value="Completed">Completed</option>
           </select>
         </div>

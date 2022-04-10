@@ -22,8 +22,9 @@
       </div>
 
       <div class="personal-details flex flex-column">
-        <h4>Company name</h4>
+        <h4>Company Details</h4>
         <div class="input flex flex-column">
+          <label for="name">Company Name</label>
           <input type="text" id="name" v-model="name" />
         </div>
 
@@ -31,13 +32,18 @@
           {{ this.errorMessage }}
         </div>
 
-        <h4>Industry</h4>
         <div class="input flex flex-column">
+          <label for="industry">Industry</label>
           <input type="text" id="industry" v-model="industry" />
         </div>
 
         <div class="errorMsg" v-if="industryErrorPresent">
           {{ this.errorMessage }}
+        </div>
+
+        <div class="input flex flex-column">
+          <label for="email">Email</label>
+          <input type="text" id="email" v-model="email" readonly/>
         </div>
 
         <h4>Description</h4>
@@ -155,6 +161,7 @@ export default {
         "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",
       profileImage: null,
       projectIds: [],
+      email: "",
     };
   },
 
@@ -199,7 +206,6 @@ export default {
           name: this.name,
           industry: this.industry,
           description: this.description,
-          finalProfile: this.finalProfile,
         });
 
         //const projects = query(collection(db, "Project"), where('poster_id', '==', email));
@@ -256,6 +262,7 @@ export default {
       that.finalProfile = data.finalProfile;
       that.industry = data.industry;
       that.description = data.description;
+      that.email = email;
       /*
       if (!data.description) {
         that.description = data.description
