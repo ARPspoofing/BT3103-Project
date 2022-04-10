@@ -1,5 +1,5 @@
 <template>
-  <BusinessNavBar :Heading="Heading" :header="true" />
+  <BusinessNavBar :Heading="fullTitle" :header="true" />
 
   <button
     @click="blurBg"
@@ -206,6 +206,7 @@ export default {
       id: null,
       duedate: null,
       projectId: "",
+      fullTitle: "",
       Business: "business",
       inProgProjects: [],
       completedProjects: [],
