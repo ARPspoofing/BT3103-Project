@@ -101,7 +101,7 @@
         @declineBtn="declineProj(key)"
         @firstClick="firstClick"
         :popUpConfirm="this.popUpConfirm"
-        :picture:
+        :picture="item.profilePicture"
       />
     </div>
   </div>
@@ -376,6 +376,7 @@ export default {
         projectTitle: data.Project_Title,
         description: data.Description,
         business: data.poster_id,
+        profilePicture:data.profPicture,
       };
     }
   },
