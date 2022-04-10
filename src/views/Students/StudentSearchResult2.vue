@@ -3,6 +3,9 @@
 
   <div v-if="!loading" class="mainBody">
     <!-- <button class="purple button" @click="toggleFilterMenu">Filter</button> -->
+    <!--
+    <button @click="closeFilterMenu"> close filter menu </button>
+    -->
 
     <transition name="filter">
       <Filter @submitFilter="closeFilterMenu" v-if="filterModal" />
@@ -13,10 +16,9 @@
       ref="filterWrap"
       class="filter-wrap flex flex-column"
     ></div>
-
-    <div id="status" class="searchDisplay" v-if="!noProjectsPresent">
+    <h1 id="status" class="searchDisplay" v-if="!noProjectsPresent">
       <button class="button" @click="toggleFilterMenu">Filter</button>
-      <div class="menu">
+      <nav class="menu">
         <ol>
           <li class="menu-item">
             <a>Sort By</a>
@@ -42,10 +44,11 @@
             </ol>
           </li>
         </ol>
-      </div>
+      </nav>
+
       <div v-if="stopLoader">Search results for {{ receivedSearch }}:</div>
       <hr />
-    </div>
+    </h1>
     <div v-if="noProjectsPresent" class="noProject">
       <PathfinderLoading v-if="!stopLoader" />
       <h1 v-if="stopLoader" class="noProjectsText">
@@ -64,7 +67,7 @@
           :projectTitle="item.projectTitle"
           :picture="item.profPicture"
           :description="item.description"
-          @clickCard="indivprojFirst(key /*+ 2*6*/)"
+          @clickCard="indivprojFirst(key)"
           @applicantbtn="addApplicantFirst(key + 2 * 6)"
         />
       </div>
@@ -100,16 +103,17 @@ import Card from "../../components/Card.vue";
 import firebaseApp from "../../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
-  collection,
-  query,
   orderBy,
+  query,
+  collection,
   doc,
   setDoc,
   deleteDoc,
   getDocs,
+  getDoc,
   where,
 } from "firebase/firestore";
-import { signOut } from "firebase/auth";
+import { signOut, getAuth } from "firebase/auth";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import { mapGetters } from "vuex";
@@ -142,6 +146,7 @@ export default {
       "lowest",
       "cardItems",
     ]),
+    //...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','recent','oldest','highest','lowest','longest','shortest']),
     ...mapGetters(["GET_SEARCH_DATA"]),
   },
 
@@ -155,11 +160,9 @@ export default {
       loading: false,
       //store all id in one array
       searchId: null,
-      //store all id in separate arrays
-      highestPriority: null,
-      secondPriority: null,
-      thirdPriority: null,
       stopLoader: false,
+      appliedProjects:[],
+      //store all id in separate arrays
     };
   },
 
@@ -174,11 +177,14 @@ export default {
       "SET_CARDITEMS",
       "CLEAR_CARDITEMS",
     ]),
-
+    alertFunc() {
+      this.$refs.toggle.$el.click();
+    },
     toggleFilterMenu() {
       this.TOGGLE_FILTER();
     },
-    closeFilterMenu() {
+    closeFilterMenu(e) {
+      //alert('close')
       this.TOGGLE_FILTER();
     },
     /*
@@ -234,10 +240,10 @@ export default {
       //var businessEmail = auth.currentUser.email;
       //var businessEmail = window.localStorage.getItem('emailForSignIn')
       //order projects by posted date, from latest to oldest
-      //alert(order);
+      //alert(order)
       var projects = null;
       if (order == "recent") {
-        //alert("true!!");
+        //alert("true!!")
         this.CLEAR_FILTER();
         this.SET_FILTER("recent");
         projects = query(
@@ -333,7 +339,7 @@ export default {
       this.SET_HIGHEST_PRIORITYIDS(temp);
       //console.log("temp", temp);
       this.$router.push({
-        name: "StudentSearchResult",
+        name: "StudentSearchResult2",
         params: { searched: this.searchString },
       });
     },
@@ -341,6 +347,9 @@ export default {
 
   mounted() {
     const that = this;
+    const auth = getAuth()  
+    that.appliedProjects = []
+    const email = auth.currentUser.email
     setTimeout(() => {
       this.stopLoader = true;
     }, 2500);
@@ -348,16 +357,32 @@ export default {
     this.receivedSearch = gottenSearch;
     //data variable = state variable
     this.searchId = this.searchData;
-    /*
-    console.log("searchData", this.searchData);
-    console.log("highestPriorityIds", this.highestPriorityIds);
-    console.log("secondPriorityIds", this.secondPriorityIds);
-    console.log("thirdPriorityIds", this.thirdPriorityIds);
-    */
+    //console.log("searchData", this.searchData);
     this.highestPriority = this.highestPriorityIds;
     this.secondPriority = this.secondPriorityIds;
     this.thirdPriority = this.thirdPriorityIds;
+    /*
+    alert(this.highestPriority)
+    alert(this.secondPriority)
+    alert(this.thirdPriority)
+    */
+    async function getAppliedProjects() {
+      const ref = doc(db, "students", email);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      //console.log(data.id)
+      var appliedProjects = data.appliedProjects;
+      var inProgressProjects = data.inProgProjects; 
+      var offeredProjects = data.offeredProjects;  
+      var rejectedProjects = data.rejectedProjects;
 
+      that.appliedProjects.concat(appliedProjects) 
+      that.appliedProjects.concat(inProgressProjects) 
+      that.appliedProjects.concat(offeredProjects) 
+      that.rejectedProjects.concat(rejectedProjects)
+
+    }
+    getAppliedProjects()
     async function setProjects() {
       //Non VUEX version. Uncomment if VUEX does not work
       /*
@@ -377,7 +402,7 @@ export default {
       //console.log(highestPriorityIds);
       //let snapshot = await getDocs(collection(db, "Project"))
       if (that.recent == true) {
-        //alert("recent");
+        //alert("recent")
         var snapshot = query(
           collection(db, "Project"),
           where("Status", "not-in", ["closed", "completed"]),
@@ -385,7 +410,7 @@ export default {
           orderBy("Posted_Date", "desc")
         );
       } else if (that.oldest == true) {
-        //alert("oldest");
+        //alert("oldest")
         var snapshot = query(
           collection(db, "Project"),
           where("Status", "not-in", ["closed", "completed"]),
@@ -393,7 +418,7 @@ export default {
           orderBy("Posted_Date")
         );
       } else if (that.highest == true) {
-        //alert("highest");
+        //alert("highest")
         var snapshot = query(
           collection(db, "Project"),
           where("Status", "not-in", ["closed", "completed"]),
@@ -401,7 +426,7 @@ export default {
           orderBy("Allowance", "desc")
         );
       } else if (that.lowest == true) {
-        //alert("lowest");
+        //alert("lowest")
         var snapshot = query(
           collection(db, "Project"),
           where("Status", "not-in", ["closed", "completed"]),
@@ -409,13 +434,15 @@ export default {
           orderBy("Allowance")
         );
       } else if (that.longest == true) {
-        //alert("longest");
+        //alert("longest")
         var snapshot = query(
           collection(db, "Project"),
           where("Status", "not-in", ["closed", "completed"]),
+          orderBy("Status", "asc"),
           orderBy("Project_End")
         );
-        //alert("shortest");
+      } else if (that.shortest == true) {
+        //alert("shortest")
         var snapshot = query(
           collection(db, "Project"),
           where("Status", "not-in", ["closed", "completed"]),
@@ -424,7 +451,7 @@ export default {
         );
         //Just Order by project end date if no filter
       } else {
-        //alert("else");
+        //alert("else")
         var snapshot = query(
           collection(db, "Project"),
           where("Status", "not-in", ["closed", "completed"]),
@@ -495,9 +522,16 @@ export default {
       //console.log("passed the query");
       snapshot.forEach((docs) => {
         let data = docs.data();
+        let appstat = ''
+        if(that.appliedProjects.includes(docs.id)) {
+          appstat = "applied"
+        } else {
+          appstat = "apply"
+        }
         //console.log("searchResultone", highestPriorityIds);
         if (highestPriorityIds.includes(docs.id)) {
           highestPriority.push({
+            projectId:docs.id,
             projectTitle: data.Project_Title,
             description: data.Description,
             vacancies: data.Num_Of_Vacancies,
@@ -507,6 +541,7 @@ export default {
             projectEnd: data.Project_End,
             tasks: data.Tasks,
             tags: data.Tags,
+            appstat:appstat,
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
@@ -514,6 +549,7 @@ export default {
           });
         } else if (secondPriorityIds.includes(docs.id)) {
           secondPriority.push({
+            projectId:docs.id,
             projectTitle: data.Project_Title,
             description: data.Description,
             vacancies: data.Num_Of_Vacancies,
@@ -523,6 +559,7 @@ export default {
             projectEnd: data.Project_End,
             tasks: data.Tasks,
             tags: data.Tags,
+            appstat:appstat,
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
@@ -530,6 +567,7 @@ export default {
           });
         } else if (thirdPriorityIds.includes(docs.id)) {
           thirdPriority.push({
+            projectId: docs.id,
             projectTitle: data.Project_Title,
             description: data.Description,
             vacancies: data.Num_Of_Vacancies,
@@ -539,6 +577,7 @@ export default {
             projectEnd: data.Project_End,
             tasks: data.Tasks,
             tags: data.Tags,
+            appstat:appstat,
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
@@ -713,15 +752,6 @@ button,
   color: white;
   float: right;
   background-color: #ec9f39;
-  img {
-    margin-right: 4px;
-  }
-}
-
-.save {
-  div {
-    flex: 1;
-  }
 }
 
 .right {

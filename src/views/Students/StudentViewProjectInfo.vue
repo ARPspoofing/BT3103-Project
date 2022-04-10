@@ -197,7 +197,8 @@ export default {
     })
     this.userEmail = auth.currentUser.email;
     */
-    this.userEmailData = this.userEmail;
+    const auth = getAuth()
+    this.userEmailData = auth.currentUser.email;
     //console.log(this.userEmail)
     //Non-Vuex
     /*
@@ -232,6 +233,7 @@ export default {
       const data = docSnap.data();
       //console.log(data.id)
       that.applied = data.appliedProjects;
+    
     }
     getAppliedProjects();
 
@@ -261,6 +263,7 @@ export default {
       var projId = this.projId;
       var applied = this.applied;
       applied.push(projId);
+      console.log(applied)
       // applied.push(projTitle);
       this.appstat = "applied";
 

@@ -67,7 +67,7 @@
           :projectTitle="item.projectTitle"
           :picture="item.profPicture"
           :description="item.description"
-          @clickCard="indivprojFirst(key + 2 * 6)"
+          @clickCard="indivprojFirst(key)"
           @applicantbtn="addApplicantFirst(key + 2 * 6)"
         />
       </div>
@@ -113,7 +113,7 @@ import {
   getDoc,
   where,
 } from "firebase/firestore";
-import { signOut } from "firebase/auth";
+import { signOut, getAuth } from "firebase/auth";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import { mapGetters } from "vuex";
@@ -161,6 +161,7 @@ export default {
       //store all id in one array
       searchId: null,
       stopLoader: false,
+      appliedProjects:[],
       //store all id in separate arrays
     };
   },
@@ -346,6 +347,9 @@ export default {
 
   mounted() {
     const that = this;
+    const auth = getAuth()  
+    that.appliedProjects = []
+    const email = auth.currentUser.email
     setTimeout(() => {
       this.stopLoader = true;
     }, 2500);
@@ -362,7 +366,23 @@ export default {
     alert(this.secondPriority)
     alert(this.thirdPriority)
     */
+    async function getAppliedProjects() {
+      const ref = doc(db, "students", email);
+      const docSnap = await getDoc(ref);
+      const data = docSnap.data();
+      //console.log(data.id)
+      var appliedProjects = data.appliedProjects;
+      var inProgressProjects = data.inProgProjects; 
+      var offeredProjects = data.offeredProjects;  
+      var rejectedProjects = data.rejectedProjects;
 
+      that.appliedProjects.concat(appliedProjects) 
+      that.appliedProjects.concat(inProgressProjects) 
+      that.appliedProjects.concat(offeredProjects) 
+      that.rejectedProjects.concat(rejectedProjects)
+
+    }
+    getAppliedProjects()
     async function setProjects() {
       //Non VUEX version. Uncomment if VUEX does not work
       /*
@@ -502,9 +522,16 @@ export default {
       //console.log("passed the query");
       snapshot.forEach((docs) => {
         let data = docs.data();
+        let appstat = ''
+        if(that.appliedProjects.includes(docs.id)) {
+          appstat = "applied"
+        } else {
+          appstat = "apply"
+        }
         //console.log("searchResultone", highestPriorityIds);
         if (highestPriorityIds.includes(docs.id)) {
           highestPriority.push({
+            projectId:docs.id,
             projectTitle: data.Project_Title,
             description: data.Description,
             vacancies: data.Num_Of_Vacancies,
@@ -514,6 +541,7 @@ export default {
             projectEnd: data.Project_End,
             tasks: data.Tasks,
             tags: data.Tags,
+            appstat:appstat,
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
@@ -521,6 +549,7 @@ export default {
           });
         } else if (secondPriorityIds.includes(docs.id)) {
           secondPriority.push({
+            projectId: docs.id,
             projectTitle: data.Project_Title,
             description: data.Description,
             vacancies: data.Num_Of_Vacancies,
@@ -530,6 +559,7 @@ export default {
             projectEnd: data.Project_End,
             tasks: data.Tasks,
             tags: data.Tags,
+            appstat:appstat,
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
@@ -537,6 +567,7 @@ export default {
           });
         } else if (thirdPriorityIds.includes(docs.id)) {
           thirdPriority.push({
+            projectId: docs.id,
             projectTitle: data.Project_Title,
             description: data.Description,
             vacancies: data.Num_Of_Vacancies,
@@ -546,6 +577,7 @@ export default {
             projectEnd: data.Project_End,
             tasks: data.Tasks,
             tags: data.Tags,
+            appstat:appstat,
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
