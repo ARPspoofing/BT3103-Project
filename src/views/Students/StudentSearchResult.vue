@@ -1005,7 +1005,6 @@ button,
   border-radius: 0px;
   border: none;
   font-size: 16px;
-  margin-right: 20px;
   color: white;
   float: right;
   background-color: #ec9f39;
