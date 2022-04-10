@@ -219,7 +219,12 @@ export default {
         */
         if (this.projects[i].business === business) {
           //console.log("projId", projId);
-          this.bizProjects[i].push(projId);
+          if (!this.bizProjects[i]) {
+            this.bizProjects[i] = [];
+            this.bizProjects[i].push(projId);
+          } else {
+            this.bizProjects[i].push(projId);
+          }
           //this.bizProjects.push(projId);
         }
       }
@@ -478,7 +483,8 @@ hr {
   color: #3f3f3f;
 }
 
-#saveModalAccept, #saveModalReject {
+#saveModalAccept,
+#saveModalReject {
   background-color: rgba(0, 0, 0, 0.5);
 }
 </style>
