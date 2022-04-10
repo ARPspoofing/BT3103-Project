@@ -123,7 +123,7 @@ export default {
         const docs = await getDoc(docRef);
         if (!docs.exists()) {
           this.emailError = true;
-          this.errorMessage = "Email not registered please sign up first";
+          this.errorMessage = "Email not registered please sign up";
           setTimeout(() => {
             this.emailError = false;
           }, 1500);
@@ -214,6 +214,7 @@ form {
 .errorMsg {
   color: red;
   font-size: 15px;
+  width: 80%;
 }
 input {
   width: 80%;

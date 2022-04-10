@@ -394,7 +394,8 @@ form {
 
 .errorMsg {
   color: red;
-  margin-top: 10px;
+  font-size: 15px;
+  width: 80%;
 }
 
 input {
