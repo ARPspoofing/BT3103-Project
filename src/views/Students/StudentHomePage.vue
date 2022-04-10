@@ -348,6 +348,7 @@ export default {
     close(e) {
       this.profileFormCreated = true;
       this.forceRender();
+      window.location.reload()
     },
     cancel(e) {
       this.cancel = e;

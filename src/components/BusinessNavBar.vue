@@ -118,6 +118,8 @@ export default {
       const auth = getAuth();
       await signOut(auth);
       window.sessionStorage.clear()
+      window.localStorage.removeItem("emailForSignIn");
+      window.localStorage.clear()
       this.$router.push({ name: "BusinessLogin" });
     },
   },

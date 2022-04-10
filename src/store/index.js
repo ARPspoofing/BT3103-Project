@@ -2,7 +2,6 @@ import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../firebase.js"
-import * as Cookies from 'js-cookie';
 
 import {
   collection,

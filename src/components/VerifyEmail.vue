@@ -10,7 +10,7 @@
         <p>
           You're almost there! We sent as email to<b>
             <br />
-            {{ email }}</b
+            {{ this.userEmail }}</b
           ><br />Just click on the link in the email to complete your signup<br />
           If you don't see it, you may need to: <br />
           Check <b>your spam folder, mark it as safe, and remove spam label</b>
@@ -65,10 +65,12 @@ export default {
     ...mapState(['userEmail',]),
   },
   mounted() {
-    const that = this;
+    const that = this
+    let email = window.localStorage.getItem("emailForSignIn")
+    alert(this.userEmail)
+    //alert('hello' + email)
     async function check() {
       const auth = getAuth();
-      let email = this.userEmail
       that.email = email;
       const docRef = doc(db, "businesses", String(email));
       const docs = await getDoc(docRef);
@@ -84,7 +86,8 @@ export default {
       }
       //console.log("CHECK", isSignInWithEmailLink(auth, window.location.href));
       if (isSignInWithEmailLink(auth, window.location.href)) {
-        //let email = window.localStorage.getItem("emailForSignIn");
+        //let email = this.userEmail
+        let email = window.localStorage.getItem("emailForSignIn");
         //console.log("link email", email);
         if (!email) {
           // User opened the link on a different device.

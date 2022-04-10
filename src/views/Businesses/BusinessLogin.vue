@@ -176,6 +176,8 @@ export default {
             this.emailErrorPresent = false;
           }, 1500);
         } else {
+          this.SET_USEREMAIL(this.email);
+          alert(this.userEmail)
           //console.log(docs.data());
           const formFilled = docs.data().profileFormCreated;
           const verifyEmail = docs.data().verifyEmail;
@@ -190,6 +192,7 @@ export default {
                   params: { formFilled: true },
                 });
               } else if (!verifyEmail) {
+                
                 this.$router.push({ name: "BusinessVerify" });
               } else {
                 if (formFilled) {

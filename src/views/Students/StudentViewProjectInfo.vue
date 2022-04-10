@@ -197,8 +197,9 @@ export default {
     })
     this.userEmail = auth.currentUser.email;
     */
-    const auth = getAuth()
-    this.userEmailData = auth.currentUser.email;
+
+    //const auth = getAuth()
+    this.userEmailData = this.userEmail;
     //console.log(this.userEmail)
     //Non-Vuex
     /*
