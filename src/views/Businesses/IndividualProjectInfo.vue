@@ -242,6 +242,7 @@ import { mapMutations } from "vuex";
 
 const db = getFirestore(firebaseApp);
 
+
 export default {
   name: "IndividualProjectInfo",
   //props: ['items'],
@@ -252,6 +253,7 @@ export default {
   computed: {
     ...mapState(["cardItems"]),
   },
+
   data() {
     return {
       Heading: "PROJECT INFORMATION",
@@ -288,7 +290,6 @@ export default {
     */
     //Vuex version
     this.tasks = JSON.parse(this.cardItems).tasks;
-    console.log(this.tasks)
     this.tags = JSON.parse(this.cardItems).tags;
     this.items = JSON.parse(this.cardItems);
     console.log(JSON.parse(this.cardItems).posterId)
@@ -317,6 +318,7 @@ export default {
       this.rejApplicants = JSON.parse(this.$route.params.rejApplicants);
     }
   },
+
   methods: {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
