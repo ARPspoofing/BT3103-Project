@@ -184,7 +184,7 @@ export default {
           }, 1500);
         } else {
           this.SET_USEREMAIL(this.email);
-          alert(this.userEmail)
+          //alert(this.userEmail)
           //console.log(docs.data());
           const formFilled = docs.data().profileFormCreated;
           const verifyEmail = docs.data().verifyEmail;

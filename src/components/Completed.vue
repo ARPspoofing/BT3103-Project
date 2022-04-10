@@ -1,5 +1,5 @@
 <template>
-  <div class="pendingreview" @click="getData">
+  <div class="completed" @click="getData">
     <div class="top flex flex-row">
       <div class="title">
         <strong>{{ task["taskname"] }}</strong>
@@ -356,7 +356,7 @@ a {
 
 .completed {
   color: white;
-  background-color: rgb(187, 111, 231);
+  background-color: rgb(193, 165, 209);
 }
 
 .status-button {

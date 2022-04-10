@@ -67,7 +67,7 @@ export default {
   mounted() {
     const that = this
     let email = this.userEmail
-    alert(this.userEmail)
+    //alert(this.userEmail)
     //alert('hello' + email)
     async function check() {
       const auth = getAuth();

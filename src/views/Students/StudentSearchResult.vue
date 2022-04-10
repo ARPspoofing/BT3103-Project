@@ -774,6 +774,9 @@ export default {
       //console.log("passed the query");
       snapshot.forEach((docs) => {
         let data = docs.data();
+        // const poster_id = data.posted_id
+        // const docref = doc(db, "businesses", poster_id)
+
         let appstat = "";
         //console.log(that.appliedProjects);
         if (that.appliedProjects.includes(docs.id)) {
@@ -784,6 +787,7 @@ export default {
         //console.log("searchResultone", highestPriorityIds);
         if (highestPriorityIds.includes(docs.id)) {
           highestPriority.push({
+            company: docs.poster_id,
             projectId: docs.id,
             projectTitle: data.Project_Title,
             description: data.Description,
@@ -802,6 +806,7 @@ export default {
           });
         } else if (secondPriorityIds.includes(docs.id)) {
           secondPriority.push({
+            company: docs.poster_id,
             projectId: docs.id,
             projectTitle: data.Project_Title,
             description: data.Description,
@@ -820,6 +825,7 @@ export default {
           });
         } else if (thirdPriorityIds.includes(docs.id)) {
           thirdPriority.push({
+            company: docs.poster_id,
             projectId: docs.id,
             projectTitle: data.Project_Title,
             description: data.Description,

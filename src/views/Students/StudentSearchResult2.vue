@@ -786,6 +786,7 @@ export default {
         //console.log("searchResultone", highestPriorityIds);
         if (highestPriorityIds.includes(docs.id)) {
           highestPriority.push({
+            company: docs.poster_id,
             projectId: docs.id,
             projectTitle: data.Project_Title,
             description: data.Description,
@@ -804,6 +805,7 @@ export default {
           });
         } else if (secondPriorityIds.includes(docs.id)) {
           secondPriority.push({
+            company: docs.poster_id,
             projectId: docs.id,
             projectTitle: data.Project_Title,
             description: data.Description,
@@ -822,6 +824,7 @@ export default {
           });
         } else if (thirdPriorityIds.includes(docs.id)) {
           thirdPriority.push({
+            company: docs.poster_id,
             projectId: docs.id,
             projectTitle: data.Project_Title,
             description: data.Description,
