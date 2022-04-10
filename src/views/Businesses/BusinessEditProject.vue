@@ -289,7 +289,8 @@ export default {
         //console.log(docRef);
         document.getElementById("projectForm");
         this.$emit("updated");
-        this.$router.push({ name: "IndividualProjectInfo" });
+        this.$router.push({name:'BusinessReRoute'})
+        // this.$router.push({ name: "IndividualProjectInfo" });
       } catch (error) {
         console.error("Error adding document: ", error);
       }

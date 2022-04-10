@@ -178,7 +178,7 @@ export default {
         if (!docs.exists()) {
           this.emailErrorPresent = true;
           this.errorMessage =
-            "Email not registered, please create an account first";
+            "Email not registered please sign up";
           setTimeout(() => {
             this.emailErrorPresent = false;
           }, 1500);
@@ -301,6 +301,7 @@ form {
 .errorMsg {
   color: red;
   font-size: 15px;
+  width: 80%;
 }
 
 input {
