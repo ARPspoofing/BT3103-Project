@@ -129,7 +129,7 @@
         <h4>Contact Details</h4>
         <div class="input flex flex-column">
           <label for="schoolEmail">School Email</label>
-          <input type="text" id="schoolEmail" v-model="schoolEmail" />
+          <input type="text" id="schoolEmail" v-model="schoolEmail" readonly/>
         </div>
         <div class="errorMsg" v-if="schoolEmailErrorPresent">
           {{ this.errorMessage }}
@@ -280,7 +280,6 @@ import {
 } from "firebase/storage";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
-
 export default {
   name: "StudentAbout",
   created() {
@@ -288,7 +287,7 @@ export default {
       id: uuidv4(),
       value: "",
     });
-    console.log(this.interests.target);
+    //console.log(this.interests.target);
   },
   components: {
     StudentNavBar,
@@ -327,7 +326,6 @@ export default {
       transcriptErrorPresent: false,
       transcriptPresent: false,
       resumePresent: false,
-
       //change to firebase later
       finalProfile:
         "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",
@@ -343,7 +341,6 @@ export default {
     search: Boolean,
     header: Boolean,
   },
-
   methods: {
     add() {
       const maxSize = 3;
@@ -354,7 +351,6 @@ export default {
         });
       }
     },
-
     onFileSelected(event) {
       this.profileImage = event.target.files[0];
       const storage = getStorage();
@@ -366,12 +362,11 @@ export default {
         (error) => {},
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            console.log("File available at", (this.finalProfile = downloadURL));
+            //console.log("File available at", (this.finalProfile = downloadURL));
           });
         }
       );
     },
-
     changeResume(event) {
       this.resumePresent = true;
       //Add code to upload the resume somewhere
@@ -389,13 +384,12 @@ export default {
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((url) => {
             console.log("File available at", (this.resumeLink = url));
-            this.resumeLink = url;
-            console.log(this.resumeLink);
           });
+          this.resumeLink = url;
+          console.log(this.resumeLink);
         }
       );
     },
-
     changeTranscript(event) {
       this.transcriptPresent = true;
       //Add code to upload the transcript somewhere
@@ -422,12 +416,10 @@ export default {
         this.interests = this.interests.filter((interest) => interest.id != id);
       }
     },
-
     showPopUp() {
       this.popUp = true;
-      console.log(this.popUp);
+      //console.log(this.popUp);
     },
-
     close(leave) {
       if (leave === false) {
         this.popUp = false;
@@ -436,14 +428,16 @@ export default {
         this.popUp = false;
       }
     },
-
     allInterestsEmpty() {
+      /*
+      console.log(this.interests);
+      console.log(this.interests.length);
+      */
       for (let i = 0; i < this.interests.length; i++) {
         if (this.interests[i].value != "") {
           return false;
         }
       }
-
       return true;
     },
     async save() {
@@ -456,7 +450,6 @@ export default {
       this.contactNumberErrorPresent = false;
       this.resumeErrorPresent = false;
       this.transcriptErrorPresent = false;
-
       if (this.name == "") {
         this.nameErrorPresent = true;
         this.errorMessage = "Please fill out your name";
@@ -483,8 +476,12 @@ export default {
       } else if (this.contactNo == "") {
         this.contactNumberErrorPresent = true;
         this.errorMessage = "Please enter your contact number";
-      } else if (this.contactNo.toString().length != 8) {
-        console.log(this.contactNo.length);
+      } else if (
+        this.contactNo == "" ||
+        /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d+)\)?)[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i.test(
+          this.contactNo
+        ) == false
+      ) {
         this.contactNumberErrorPresent = true;
         this.errorMessage = "Please enter a valid contact number";
       } else if (!this.resumePresent && this.resumeLink == "") {
@@ -494,7 +491,6 @@ export default {
         this.transcriptErrorPresent = true;
         this.errorMessage = "Please upload your transcript";
       } else {
-        console.log("link ", this.resumeLink);
         updateDoc(doc(db, "students", String(this.schoolEmail)), {
           email: this.schoolEmail,
           name: this.name,
@@ -510,10 +506,9 @@ export default {
         });
         this.$router.push({ name: "StudentHomePage" });
       }
-      // alert("save data");
+      //alert("save data");
     },
   },
-
   mounted() {
     /*
     const auth = getAuth();
@@ -524,9 +519,9 @@ export default {
     const that = this;
     async function getApplicant(userEmail) {
       const docSnap = await getDoc(doc(db, "students", userEmail));
-      console.log("doc: " + docSnap);
+  
       let data = docSnap.data();
-      console.log(data);
+     
       that.finalProfile = data.finalProfile;
       that.name = data.name;
       that.course = data.course;
@@ -559,12 +554,10 @@ export default {
   padding-bottom: 150px;
   padding-top: 20px;
 }
-
 h3 {
   font-family: verdana;
   text-align: center;
 }
-
 h1 {
   color: rgba(0, 0, 0, 0.829);
   font-family: verdana;
@@ -572,7 +565,6 @@ h1 {
   text-align: center;
   padding: 8px;
 }
-
 nav {
   background-color: "#004A23";
 }
@@ -585,17 +577,14 @@ nav {
   overflow: scroll;
   margin-bottom: 30px;
 }
-
 input,
 select {
   margin-bottom: 20px;
   margin-left: 10px;
 }
-
 .interest-flex {
   width: 200px;
 }
-
 input,
 select,
 textarea {
@@ -607,16 +596,13 @@ textarea {
   margin-left: auto;
   margin-right: auto;
 }
-
 textarea {
   margin-bottom: 8px;
 }
-
 .labelTag,
 .inputTag {
   border-radius: 20px;
 }
-
 label {
   text-align: left;
   width: 70%;
@@ -624,45 +610,37 @@ label {
   margin-right: auto;
   margin-bottom: 3px;
 }
-
 .addBtn {
   margin-top: 6vh;
 }
-
 .interest {
   gap: 10px;
   div {
     flex: 1;
   }
 }
-
 img {
   width: 40px;
   height: 40px;
 }
-
 select {
   padding-left: 0.55rem;
 }
-
 .delete {
   margin-top: -45px;
   margin-left: 35px;
   color: red;
 }
-
 .profile-pic {
   border-radius: 50%;
   margin: 10px 0px;
   width: 120px;
   height: 120px;
 }
-
 .errorMsg {
   color: red;
   margin-top: 5px;
 }
-
 button,
 .button {
   cursor: pointer;
@@ -673,15 +651,6 @@ button,
   margin-right: 8px;
   margin-left: 20px;
   color: #fff;
-  img {
-    margin-right: 4px;
-  }
-}
-
-.save {
-  div {
-    flex: 1;
-  }
 }
 
 .right {
@@ -691,7 +660,6 @@ button,
   margin-right: 180px;
   margin-top: 20px;
 }
-
 .dark-purple {
   background-color: #252945;
 }
@@ -713,7 +681,6 @@ button,
 .flex-column {
   flex-direction: column;
 }
-
 .flex-row {
   flex-direction: row;
   width: 70%;
@@ -721,7 +688,6 @@ button,
   margin-right: auto;
   padding-left: 0px;
 }
-
 .container {
   width: 100%;
   padding: 40px 10px;
@@ -735,15 +701,12 @@ button,
   text-decoration: none;
   color: initial;
 }
-
 li {
   cursor: pointer;
 }
-
 ul {
   padding-left: 0px;
 }
-
 .uploadIcon {
   border-radius: 10%;
   background-color: green;
@@ -751,23 +714,19 @@ ul {
   text-align: center;
   margin-top: -5px;
 }
-
 .profile-icon h4 {
   display: grid;
   place-items: center;
   cursor: pointer;
   color: blue;
 }
-
 #applyModal {
   background-color: rgba(0, 0, 0, 0.5);
 }
-
 .modal-content {
   background-color: #bbdfcc;
   border: none;
 }
-
 .words {
   width: max-content;
   margin-top: 20px;
@@ -776,7 +735,6 @@ ul {
   margin-bottom: 30px;
   height: 50px;
 }
-
 .applybtns {
   width: max-content;
   margin-top: 10px;
@@ -784,7 +742,6 @@ ul {
   margin-right: auto;
   margin-bottom: 20px;
 }
-
 #yesbtn,
 #nobtn {
   margin: 10px;
@@ -797,19 +754,16 @@ ul {
   font-size: 18px;
   padding-top: 3px;
 }
-
 #tickIcon {
   height: 38px;
   width: 38px;
   color: #3d9956;
 }
-
 .modal-body p {
   text-align: center;
   width: max-content;
   margin-bottom: 20px;
 }
-
 .but {
   text-decoration: none;
   background: #0e8044;
@@ -821,7 +775,10 @@ ul {
   margin-right: auto;
   margin-bottom: 5px;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> reyaaz
 #saveModal {
   background-color: rgba(0, 0, 0, 0.5);
 }

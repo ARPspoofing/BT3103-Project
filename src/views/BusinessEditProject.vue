@@ -141,43 +141,17 @@
           <input type="date" v-model.lazy="task.taskDueDate" required />
         </div>
       </div>
-      <!-- old
       <button id="saveButton" type="button" v-on:click="updateProject()">
-        -->
-        <button id="saveButton" type="button" data-bs-toggle="modal" data-bs-target="#saveModal">
         Save
       </button>
-      <div class="modal fade" id="saveModal" data-bs-backdrop="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel"></h5>
-              <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-            </div>
-            <div class="modal-body">
-              <i class="fa-solid fa-box-archive" id="box"></i>
-              <br>
-              Save details for <span style="color: #0e8044"
-                        ><strong>{{ item.projectTitle }} </strong></span>?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" id="yesbtn" data-bs-dismiss="modal" v-on:click="updateProject()">Save</button>
-              <button type="button" class="btn btn-secondary" id="nobtn" data-bs-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- <button id="saveButton" type="button" v-on:click="updateProject()">
-        Save
-      </button> -->
     </form>
   </div>
 </template>
 
 <script>
-import BusinessNavBar from "../../components/BusinessNavBar.vue";
+import BusinessNavBar from "../components/BusinessNavBar.vue";
 import * as moment from "moment";
-import firebaseApp from "../../firebase.js";
+import firebaseApp from "../firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
   collection,
@@ -224,7 +198,7 @@ export default {
     //this.items = JSON.parse(this.$route.params.items)
     /*
         this.item = JSON.parse(this.$route.params.items)
-        var prevTitle = JSON.parse(this.$route.params.items).projectId
+        var prevTitle = JSON.parse(this.$route.params.items).projectTitle
         this.previousTitle = prevTitle
         console.log(this.item)
         */
@@ -235,9 +209,8 @@ export default {
     //     }))
     //vuex
     this.item = JSON.parse(this.cardItems);
-    var prevTitle = JSON.parse(this.cardItems).projectId;
+    var prevTitle = JSON.parse(this.cardItems).projectTitle;
     this.previousTitle = prevTitle;
-    console.log(this.item);
   },
   methods: {
     addTaskEdit() {
@@ -245,8 +218,6 @@ export default {
         taskName: "",
         taskDescription: "",
         taskDueDate: "",
-        taskStatus: "To do",
-        taskIssueDate: new Date().toISOString().split("T")[0],
       });
     },
     deleteTaskEdit(counter) {
@@ -267,31 +238,32 @@ export default {
       } else {
         var g = this.item.tags;
       }
-      //console.log(g);
       var h = document.getElementById("projectDescription").value;
       var i = this.item.tasks;
 
       //alert("Updating your data for Project: " + a);
 
       try {
-        const docRef = await updateDoc(doc(db, "Project", this.previousTitle), {
-          Project_Title: a,
-          Position: b,
-          Num_Of_Vacancies: c,
-          Project_Start: d,
-          Project_End: e,
-          Allowance: f,
-          Tags: g,
-          Description: h,
-          Tasks: i,
-        });
+        const docRef = await updateDoc(
+          doc(db, "Project", JSON.parse(this.cardItems)["projectId"]),
+          {
+            Project_Title: a,
+            Position: b,
+            Num_Of_Vacancies: c,
+            Project_Start: d,
+            Project_End: e,
+            Allowance: f,
+            Tags: g,
+            Description: h,
+            Tasks: i,
+          }
+        );
 
         //console.log(docRef);
         document.getElementById("projectForm");
         this.$emit("updated");
-        this.$router.push({ name: "IndividualProjectInfo" });
       } catch (error) {
-        console.error("Error adding document: ", error);
+        console.error(" the error is: ", error);
       }
     },
   },
@@ -395,35 +367,5 @@ p {
 
 #crossIcon:hover {
   color: #004a23;
-}
-	.modal-content {
-  background-color: #bbdfcc;
-}
-.modal-header {
-  border-bottom: none;
-}
-.modal-footer {
-  border-top: none;
-  justify-content: center;
-}
-#yesbtn,
-#nobtn {
-  margin: 10px;
-  border: none;
-  border-radius: 10px;
-  background-color: #89ca9a;
-  color: #3f3f3f;
-  width: 120px;
-  height: 30px;
-  font-size: 18px;
-  padding-top: 3px;
-}
-#box {
-  height: 35px;
-  width: 35px;
-  color: #3d9956;
-}
-#saveModal {
-  background-color: rgba(0, 0, 0, 0.5);
 }
 </style>

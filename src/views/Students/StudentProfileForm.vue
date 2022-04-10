@@ -59,6 +59,7 @@
             <ul style="display: grid; grid-template-columns: repeat(5, 1fr)">
               <li
                 v-for="(item, index) in interests"
+                :key="index"
                 style="width: 20%; display: inline"
               >
                 <div class="interest-flex">
@@ -300,7 +301,6 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-
 const db = getFirestore(firebaseApp);
 /*
 const user = getAuth().currentUser
@@ -317,14 +317,11 @@ export default {
       id: uuidv4(),
       value: "",
     });
-    console.log(this.interests.target);
+    //console.log(this.interests.target);
     const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log("currUser", user.email);
-        this.schoolEmail = user.email;
-      }
-    });
+        //console.log("currUser", user.email);
+    this.schoolEmail = this.userEmail;
+     
   },
   data() {
     return {
@@ -341,7 +338,6 @@ export default {
       interests: [],
       popUp: false,
       menu: false,
-
       profileImage: null,
       resume: null,
       transcript: null,
@@ -356,7 +352,6 @@ export default {
       transcriptErrorPresent: false,
       transcriptPresent: false,
       resumePresent: false,
-
       finalProfile:
         "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",
       errorMessage: "",
@@ -433,7 +428,6 @@ export default {
         }
       );
     },
-
     changeTranscript(event) {
       this.transcriptPresent = true;
       //Add code to upload the transcript somewhere
@@ -467,8 +461,10 @@ export default {
       this.$emit("cancel", true);
     },
     allInterestsEmpty() {
+      /*
       console.log(this.interests);
       console.log(this.interests.length);
+      */
       for (let i = 0; i < this.interests.length; i++) {
         if (this.interests[i].value != "") {
           return false;
@@ -501,7 +497,6 @@ export default {
       this.contactNumberErrorPresent = false;
       this.resumeErrorPresent = false;
       this.transcriptErrorPresent = false;
-
       if (this.name == "") {
         this.nameErrorPresent = true;
         this.errorMessage = "Please fill out your name";
@@ -549,8 +544,8 @@ export default {
         this.errorMessage = "Please upload your transcript";
       } else {
         const auth = getAuth();
-        const email = auth.currentUser.email;
-        console.log(email);
+        const email = this.userEmail
+        //console.log(email);
         this.SET_NAME(this.name);
         await setDoc(doc(db, "students", String(email)), {
           email: email,
@@ -601,33 +596,27 @@ export default {
   bottom: 0;
   padding-top: 150px;
 }
-
 ::-webkit-scrollbar {
   display: none;
 }
-
 input,
 select {
   margin-bottom: 20px;
   margin-left: 10px;
 }
-
 p {
   color: blue;
   cursor: pointer;
 }
-
 .profile-icon {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .interest-flex {
   width: 200px;
   margin-left: 10px;
 }
-
 input,
 select,
 textarea {
@@ -636,23 +625,16 @@ textarea {
   border: none;
   outline: none;
 }
-
 textarea {
   margin-bottom: 8px;
 }
-
 .labelTag,
 .inputTag {
   border-radius: 20px;
 }
-
 .interest {
   gap: 5px;
-  div {
-    flex: 1;
-  }
 }
-
 .content {
   position: relative;
   padding: 50px;
@@ -663,12 +645,10 @@ textarea {
   height: 300%;
   margin-top: 600px;
 }
-
 img {
   width: 20px;
   height: 20px;
 }
-
 .addBtn {
   margin-left: 70%;
   margin-top: -50px;
@@ -677,37 +657,23 @@ img {
 select {
   padding-left: 0.55rem;
 }
-
 .delete {
   margin-top: -42px;
   margin-right: -15px;
   color: red;
 }
-
 button,
 .button {
   cursor: pointer;
   padding: 16px 24px;
   border-radius: 30px;
-  border: none;
   font-size: 12px;
   margin-right: 8px;
   color: #fff;
-  img {
-    margin-right: 4px;
-  }
 }
-
-.save {
-  div {
-    flex: 1;
-  }
-}
-
 .right {
   margin-left: 80%;
 }
-
 .dark-purple {
   background-color: #252945;
 }
@@ -742,40 +708,33 @@ button,
   text-decoration: none;
   color: initial;
 }
-
 li {
   cursor: pointer;
 }
-
 .errorMsg {
   color: red;
   margin-top: 5px;
 }
-
 .profile-pic {
   border-radius: 50%;
   margin-top: 10px;
   width: 10%;
   height: 10%;
 }
-
 img {
   width: 40px;
   height: 40px;
 }
-
 /*
     input,
     select {
         margin-bottom: 20px;
         margin-left:10px;
     }
-
     .interest-flex {
         width:200px;
         
     }
-
     input,
     select,
     textarea {
@@ -787,16 +746,13 @@ img {
         margin-left: auto;
         margin-right: auto;
     }
-
     textarea {
         margin-bottom: 8px;
     }
-
     .labelTag,
     .inputTag {
         border-radius:20px;
     }
-
     label {
         text-align: left;
         width: 70%;
@@ -804,18 +760,15 @@ img {
         margin-right: auto;
         margin-bottom: 3px;
     }
-
     .addBtn {
         margin-top: 6vh;
     }
-
     .interest {
         gap:10px;
         div {
             flex: 1;
         }
     }
-
     .content {
       position:relative;
       padding:50px;
@@ -823,12 +776,10 @@ img {
       background-color: #BBDFCC;
       color: #606060;
     }
-
     img {
         width:40px;
         height:40px;
     }
-
     .addBtn {
     
   
@@ -837,27 +788,21 @@ img {
     select{
         padding-left:0.55rem;
     }
-
     .delete {
         margin-top:-45px;
         margin-left:35px;
         color:red;
     }
-
     .profile-pic {
         border-radius: 50%;
         margin:10px 0px;
         width:120px;
         height: 120px;
-
     }
-
     .errorMsg {
         color: red;
         margin-top:5px;
     }
-
-
     button,
     .button {
     cursor: pointer;
@@ -871,17 +816,14 @@ img {
             margin-right: 4px;
           }
     }
-
     .save {
         div {
             flex:1;
         }
     }
-
     .right {
         margin-left:80%;
     }
-
     .dark-purple {
     background-color: #252945;
     }
@@ -903,7 +845,6 @@ img {
     .flex-column {
     flex-direction: column;
     }
-
     .flex-row {
         flex-direction: row;
         width: 70%;
@@ -911,7 +852,6 @@ img {
         margin-right: auto;
         padding-left: 0px;
     }
-
     .container {
     width: 100%;
     padding: 40px 10px;
@@ -925,15 +865,12 @@ img {
     text-decoration: none;
     color: initial;
     }
-
     li {
         cursor: pointer;
     }
-
     ul {
         padding-left: 0px;
     }
-
     .uploadIcon {
         border-radius: 10%;
         background-color:green;
@@ -941,7 +878,6 @@ img {
         text-align: center;
         margin-top:-5px;
     }
-
     .profile-icon h4 {
         display: grid;
         place-items: center;

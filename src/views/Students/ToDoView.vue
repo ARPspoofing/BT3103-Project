@@ -1,5 +1,5 @@
 <template>
-  <div class="mainBody">
+  <!--
     <router-link
       :to="{
         name: 'StudentManagement',
@@ -9,103 +9,106 @@
         },
       }"
     >
+    
       <button id="backButton">
         <i class="fa-solid fa-angles-left"></i> Back to Management
       </button>
     </router-link>
-    <div class="details flex flex-column">
-      <div class="top flex">
-        <div class="left flex">
-          <p>
-            <strong>{{ task_id }}</strong>
-          </p>
-        </div>
-        <div class="right flex flex-column">
-          <label>Change status</label>
-          <select v-model="status">
-            <option value="To do">To Do</option>
-            <option value="In progress">In Progress</option>
-            <option value="Pending review">Send for review</option>
-          </select>
-        </div>
+    -->
+  <div class="details flex flex-column">
+    <div class="top flex">
+      <div class="left flex">
+        <p>
+          <strong>{{ task_id }}</strong>
+        </p>
       </div>
-      <div class="top-middle flex">
-        <div id="duedate" class="date flex flex-column">
-          <!-- Task issue date necessary? -->
+      <div class="right flex flex-column">
+        <label>Change status</label>
+        <select v-model="status">
+          <option value="To do">To Do</option>
+          <option value="In progress">In Progress</option>
+          <option value="Pending review">Send for review</option>
+        </select>
+      </div>
+    </div>
+    <div class="top-middle flex">
+      <div id="duedate" class="date flex flex-column">
+        <!-- Task issue date necessary? Nope -->
+        <!--
           <p><b>Task Issue Date: </b> {{ duedate }}</p>
-          <p><b>Task Due Date:</b> {{ formatDate(duedate) }}</p>
-        </div>
+          -->
+        <p><b>Task Due Date:</b> {{ formatDate(duedate) }}</p>
       </div>
-      <!--<div class="top-middle flex">
+    </div>
+    <!--<div class="top-middle flex">
                 <div id="duedate" class="date flex flex-column">
                    <p><b>Task Issue Date :</b> {{formatDate(issuedate)}}</p>
                    <p><b>Due Date :</b> {{formatDate(duedate)}}</p>
                </div>
            </div>-->
-      <div class="middle flex">
-        <div id="description" class="description flex flex-column">
-          <p><b>Task Description</b></p>
-          <p>{{ this.description }}</p>
-        </div>
+    <div class="middle flex">
+      <div id="description" class="description flex flex-column">
+        <p><b>Task Description</b></p>
+        <p>{{ this.description }}</p>
       </div>
-      <!--<div class="middle-bottom flex">
+    </div>
+    <!--<div class="middle-bottom flex">
                <div class="documents flex flex-column">
                    <p>Relevant Documents:</p>
                    <img src="../../assets/document.jpeg">
                </div>
            </div>-->
-      <div class="middle-bottom flex">
-        <div class="documents flex flex-column">
-          <p><b>Submit Relevant Documents :</b></p>
-          <button id="addFileButton" @click="addFile">
-            <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
-            Add Files
+    <div class="middle-bottom flex">
+      <div class="documents flex flex-column">
+        <p><b>Submit Relevant Documents :</b></p>
+        <button id="addFileButton" @click="addFile">
+          <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
+          Add Files
+        </button>
+        <div
+          class="previous"
+          v-for="(task, counter) in files"
+          v-bind:key="counter"
+        >
+          <button id="deleteFile" @click="deleteFile(counter)">
+            <i class="fa fa-times" id="crossIcon"></i>
           </button>
-          <div
-            class="previous"
-            v-for="(task, counter) in files"
-            v-bind:key="counter"
-          >
-            <button id="deleteFile" @click="deleteFile(counter)">
-              <i class="fa fa-times" id="crossIcon"></i>
-            </button>
-            <input
-              type="file"
-              multiple
-              name="files[]"
-              id="files"
-              v-on:change="uploadFiles"
-            />
-          </div>
+          <input
+            type="file"
+            multiple
+            name="files[]"
+            id="files"
+            v-on:change="uploadFiles"
+          />
         </div>
       </div>
-      <div class="bottom flex flex-column">
-        <label for="comments">Comments</label>
-        <h4>Please limit additional comments to 500 characters</h4>
-        <div class="input flex flex-column">
-          <textarea
-            id="comments"
-            name="comments"
-            rows="4"
-            cols="60"
-            placeholder="Please enter your comment"
-            maxlength="500"
-          ></textarea>
-          <button id="commentButton" @click="addComment">Add Comment</button>
-        </div>
+    </div>
+    <div class="bottom flex flex-column">
+      <label for="comments">Comments</label>
+      <h4>Please limit additional comments to 500 characters</h4>
+      <div class="input flex flex-column">
+        <textarea
+          id="comments"
+          name="comments"
+          rows="4"
+          cols="60"
+          placeholder="Please enter your comment"
+          maxlength="500"
+        ></textarea>
+        <button id="commentButton" @click="addComment">Add Comment</button>
       </div>
-      <div
-        class="projectContainer"
-        :key="item.key"
-        v-for="(item, key) in comment"
-      >
-        <div id="eachComment">
-          <img v-bind:src="item.profPic" alt="Logo" class="logo" />
-          <p>
-            <strong>{{ item["name"] }}</strong
-            >: {{ item["comment"] }}
-          </p>
-        </div>
+    </div>
+    <div
+      class="projectContainer"
+      :key="item.key"
+      v-for="item in this.taskComment"
+    >
+      <div id="eachComment">
+        <img v-bind:src="item.profPic" alt="Logo" class="logo" />
+        <p>
+          <strong>{{ item["name"] }}</strong
+          >: {{ item["comment"] }}
+        </p>
       </div>
     </div>
   </div>
@@ -128,36 +131,68 @@ import {
 import { update } from "firebase/database";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { mapState } from "vuex";
+import { mapMutations } from "vuex";
 import Loading from "../../components/Loading.vue";
 const db = getFirestore(firebaseApp);
 const router = useRouter();
 import * as moment from "moment";
-import { getAuth } from "firebase/auth";
-const auth = getAuth();
-var email = auth.currentUser.email;
-console.log(email);
-
 export default {
   name: "ToDoView",
+  computed: {
+    ...mapState([
+      "studentTask",
+      "userEmail",
+      "studentTaskId",
+      "userEmail",
+      "studentProjectId",
+      "studentProjectTitle",
+      "studentToDo",
+      "studentInProgress",
+      "studentPendingReview",
+      "studentCompleted",
+      "taskComments",
+      "updated",
+    ]),
+  },
   data() {
     return {
       name: "",
+      /*
+      task_id: '',
+      projectId: '',
+      projectTitle: '',
+      duedate: '',
+      task: '',
+      description: '',
+      */
+
+      /*
       task_id: this.$route.params.taskId,
       projectId: this.$route.params.projectId,
       projectTitle: this.$route.params.projectTitle,
       duedate: this.$route.params.duedate,
       task: this.$route.params.task,
       description: this.$route.params.description,
+      */
       extend: "",
       documents: "",
       comment: [],
       long: "",
       status: "",
       dateOptions: { year: "numeric", month: "short", day: "numeric" },
-      email: auth.currentUser.email,
+      email: this.userEmail,
     };
   },
-
+  props: [
+    "task_id",
+    "projectId",
+    "projectTitle",
+    "duedate",
+    "task",
+    "description",
+    "taskComment",
+  ],
   watch: {
     extend() {
       const extendedDate = new Date();
@@ -169,21 +204,23 @@ export default {
         this.dateOptions
       );
     },
-
     status() {
       var self = this;
       self.updateStatus();
     },
+    updated(newVal,oldVal) {
+      //alert('businessUpdated')
+    },
   },
   methods: {
+    ...mapMutations(["SET_STUDENT_TASK"]),
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
 
-    async addComment() {
-      var a = document.getElementById("comments").value;
-      let ref = await doc(db, "Project", this.projectId);
-      let project = await getDoc(ref);
+    async updateFile() {
+      let proj = await doc(db, "Project", this.businessProjectId);
+      let project = await getDoc(proj);
 
       var dat = await project.data();
       var tasks = dat.Tasks;
@@ -192,25 +229,76 @@ export default {
 
       for (let i = 0; i < tasks.length; i++) {
         let currTask = tasks[i];
-        console.log(this.task_id);
+        //console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
           newTask = currTask;
         }
       }
+
+      await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
+      if (newTask.files) {
+        newTask.files.push(this.fileLink);
+      } else {
+        newTask.files = [];
+        newTask.files.push(this.fileLink);
+      }
+      this.files.push(this.fileLink);
+
+      await updateDoc(ref, { Tasks: arrayUnion(newTask) });
+    },
+
+    async uploadFiles(event) {
+      //Add code to upload the resume somewhere
+      this.file = event.target.files[0];
+      const storage = getStorage();
+      const fileref = ref(storage, this.file.name);
+      const uploadTask = uploadBytesResumable(fileref, this.file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {},
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            console.log("File available at", (this.fileLink = url));
+          });
+        }
+      );
+      this.updateFile();
+    },
+
+    async addComment() {
+      this.$emit('addComment',true)
+      var a = document.getElementById("comments").value;
+      let ref = await doc(db, "Project", this.studentProjectId);
+      let project = await getDoc(ref);
+      var dat = await project.data();
+      var tasks = dat.Tasks;
+      var toRemove = {};
+      var newTask = {};
+      for (let i = 0; i < tasks.length; i++) {
+        let currTask = tasks[i];
+        //console.log(this.task_id);
+        if (currTask.taskName == this.task_id) {
+          toRemove = { ...currTask };
+          newTask = currTask;
+        }
+      }
+      /*
       console.log(toRemove);
       console.log(newTask);
-      console.log(this.email);
-
-      let ref2 = doc(db, "students", this.email);
+      console.log(this.userEmail);
+      */
+      let ref2 = doc(db, "students", this.userEmail);
       let biz = await getDoc(ref2);
       var da = biz.data();
-      console.log(da);
-
+      //console.log(da);
       await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
       if (newTask.comments) {
         newTask.comments.push({
-          user: this.email,
+          user: this.userEmail,
           comment: a,
           date: new Date(),
           name: da.name,
@@ -219,7 +307,7 @@ export default {
       } else {
         newTask.comments = [];
         newTask.comments.push({
-          user: this.email,
+          user: this.userEmail,
           comment: a,
           date: new Date(),
           name: da.name,
@@ -227,110 +315,147 @@ export default {
         });
       }
       this.comment.unshift({
-        user: this.email,
+        user: this.userEmail,
         comment: a,
         date: new Date(),
         name: da.name,
         profPic: da.finalProfile,
       });
-
       await updateDoc(ref, { Tasks: arrayUnion(newTask) });
-
-      this.task = newTask;
+      //non-vuex
+      //this.task = newTask;
+      this.SET_STUDENT_TASK(newTask);
       document.getElementById("comments").value = "";
     },
-
     async updateStatus() {
       const currStatus = this.status;
-      console.log(currStatus);
-      let ref = await doc(db, "Project", this.projectId);
+      //console.log(currStatus);
+      let ref = await doc(db, "Project", this.studentProjectId);
       let project = await getDoc(ref);
-
       var tasks = await project.data().Tasks;
+      /*
+      console.log("all tasks", tasks);
+      console.log("tasks", tasks);
       console.log("ok");
-      console.log(this.task);
-      console.log(tasks);
-      console.log(tasks.length);
+      */
+      //console.log(this.task);
+      //console.log(tasks);
+      //console.log(tasks.length);
       var toRemove = {};
-
       var newTask = {};
-
       for (let i = 0; i < tasks.length; i++) {
-        console.log(i);
+        //console.log(i);
         let currTask = tasks[i];
-        console.log(this.task_id);
+        //console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
+          /*
+          console.log(
+            "to Remove",
+            toRemove,
+            "oldstatus",
+            currTask.taskStatus,
+            "newStatus",
+            currStatus
+          );
+          */
           currTask.taskStatus = currStatus;
           newTask = currTask;
         }
       }
-
+      /*
       console.log(tasks);
       console.log(newTask);
-
+      */
       await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
-
       await updateDoc(ref, { Tasks: arrayUnion(newTask) });
-
-      this.task = newTask;
+      //non-vuex
+      //this.task = newTask;
+      //vuex
+      this.SET_STUDENT_TASK(newTask);
+      this.$router.push({ name: "managementLoading" });
     },
-
     async updateTask() {
       try {
-        const docRef = await updateDoc(doc(db, "Project", this.projectId), {});
-
-        console.log(docRef);
+        const docRef = await updateDoc(
+          doc(db, "Project", this.studentProjectId),
+          {}
+        );
+        //console.log(docRef);
         this.$emit("updated");
       } catch (error) {
         console.error("Error updating document: ", error);
       }
     },
   },
-
   mounted() {
     const curr = this;
-    const taskId = curr.$route.params.taskId;
-    console.log(curr.$route.params.taskId);
-    const projectId = curr.$route.params.projectId;
-    const projectTitle = curr.$route.params.projectTitle;
-    console.log(curr.$route.params);
+    //Non vuex
+    //const taskId = curr.$route.params.taskId;
+    //console.log(curr.$route.params.taskId);
+    //const projectId = curr.$route.params.projectId;
+    //const projectTitle = curr.$route.params.projectTitle;
+    //vuex
+    const projectId = this.studentProjectId;
+    const taskId = this.task_id;
+    const projectTitle = this.projectTitle;
 
+    async function updateFile() {
+      let proj = await doc(db, "Project", projectId);
+      let project = await getDoc(proj);
+
+      var dat = await project.data();
+      var tasks = dat.Tasks;
+      var toRemove = {};
+      var newTask = {};
+
+      for (let i = 0; i < tasks.length; i++) {
+        let currTask = tasks[i];
+        //console.log(this.task_id);
+        if (currTask.taskName == this.task_id) {
+          toRemove = { ...currTask };
+          newTask = currTask;
+        }
+      }
+
+      await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
+      if (newTask.files) {
+        newTask.files.push(this.fileLink);
+      } else {
+        newTask.files = [];
+        newTask.files.push(this.fileLink);
+      }
+      this.files.push(this.fileLink);
+
+      await updateDoc(ref, { Tasks: arrayUnion(newTask) });
+    }
+
+    //console.log(curr.$route.params);
     async function getComments() {
       const docRef = doc(db, "Project", projectId);
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;
       var currTask = {};
+      //console.log("taskComments", tasks);
       for (let i = 0; i < tasks.length; i++) {
         let thisTask = tasks[i];
         if (thisTask.taskName == taskId) {
           currTask = thisTask;
-          curr.comment = currTask.comments.reverse();
+          if (currTask.comments) {
+            curr.comment = currTask.comments.reverse();
+            //console.log("comments", currTask.comments.reverse());
+          } else {
+            curr.comment = [];
+          }
           break;
         }
       }
-      console.log(curr.comment);
+      //console.log(curr.comment);
     }
     getComments();
-    console.log(curr.comment);
-
-    async function getTasksDetails() {
-      //Change "To-Do" to props later
-      const docRef = await doc(db, "Project", projectId);
-      let project = await getDoc(docRef);
-      var tasks = await project.data().Tasks;
-      console.log(tasks);
-      var currTask = {};
-
-      for (let i = 0; i < tasks.length; i++) {
-        let thisTask = tasks[i];
-        if (thisTask.taskName == taskId) {
-          currTask = thisTask;
-          break;
-        }
-      }
-
-      /* database.forEach((doc) => {
+    //console.log("currcomments", curr.comment);
+    /*
+       database.forEach((doc) => {
                //Change to dynamic props later
                if (doc.id == ("ToDo" + curr.task_id)) {
                    var data = doc.data()
@@ -343,7 +468,22 @@ export default {
                        long: data.longdescription,
                    })
                }
-               }) */
+               }) 
+    async function getTasksDetails() {
+      //Change "To-Do" to props later
+      const docRef = await doc(db, "Project", projectId);
+      let project = await getDoc(docRef);
+      var tasks = await project.data().Tasks;
+      console.log(tasks);
+      var currTask = {};
+      for (let i = 0; i < tasks.length; i++) {
+        let thisTask = tasks[i];
+        if (thisTask.taskName == taskId) {
+          currTask = thisTask;
+          break;
+        }
+      }
+      console.log("currTask",currTask)
       curr.name = currTask.taskName;
       curr.duedate = currTask.taskDueDate;
       curr.projectTitle = projectTitle;
@@ -355,11 +495,13 @@ export default {
         "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.";
     }
     getTasksDetails();
+    */
   },
 };
 </script>
 
 <style scoped>
+/*
 .mainBody {
   background-color: #f5f5f5;
   width: 100%;
@@ -367,69 +509,51 @@ export default {
   position: fixed;
   overflow-y: scroll;
   padding-bottom: 150px;
-  /*
-        filter: blur(5px);
-    */
 }
-
+*/
 .flex {
   display: flex;
 }
-
 .flex-column {
   flex-direction: column;
 }
-
 nav-link {
   margin-bottom: 12px;
   align-items: center;
   color: white;
   font-size: 12px;
 }
-
 img {
   margin-right: 16px;
   width: 7px;
   height: 10px;
 }
-
 .details {
-  padding: 48px;
-  margin-top: 24px;
   /*background-color:rgb(11, 167, 115);*/
   background-color: #b3cabe;
   border-radius: 20px;
-  margin-left: 60px;
-  margin-right: 60px;
 }
-
 .top div {
   flex-grow: 1;
 }
-
 .left {
   font-size: 12px;
 }
-
 .left p:first-child {
   font-size: 24px;
   text-transform: uppercase;
   margin-bottom: 8px;
 }
-
 .left p:nth-child(2) {
   font-size: 16px;
 }
-
 span {
   color: black;
 }
-
 .right {
   font-size: 12px;
   align-items: flex-end;
 }
-
 .middle {
   margin-top: 30px;
   color: black;
@@ -441,15 +565,12 @@ h4 {
   margin-bottom: 5px;
   margin-top: 20px;
 }
-
 p {
   font-size: 16px;
 }
-
-date h4 {
+.date h4 {
   margin-top: 20px;
 }
-
 .description {
   margin-left: 0px;
   text-align: justify;
@@ -461,8 +582,6 @@ textarea {
   -moz-border-radius: 12px;
   border-radius: 12px;
   outline: none;
-}
-.bottom {
 }
 #backButton {
   background: #0e8044;
@@ -526,7 +645,6 @@ label {
   width: 180px;
   position: right;
 }
-
 .logo {
   vertical-align: left;
   width: 45px;

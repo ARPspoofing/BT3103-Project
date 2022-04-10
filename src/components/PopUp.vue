@@ -68,8 +68,5 @@ button,
   font-size: 14px;
   margin-right: 8px;
   color: #fff;
-  img {
-    margin-right: 4px;
-  }
 }
 </style>

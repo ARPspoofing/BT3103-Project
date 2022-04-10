@@ -123,11 +123,11 @@ export default {
     this.searchId = this.searchData;
     const userEmail = this.userEmail;
     //const userEmail = window.localStorage.getItem('emailForSignIn')
-    console.log("testtesttesttest", userEmail);
+    //console.log("testtesttesttest", userEmail);
     var that = this;
     var temp = [];
     async function fetchInterests() {
-      console.log("filter user email", userEmail);
+      //console.log("filter user email", userEmail);
       const docRef = doc(db, "students", String(userEmail));
       const docs = await getDoc(docRef);
       for (var i = 0; i < docs.data()["interests"].length; i++) {
@@ -177,6 +177,7 @@ export default {
         this.rangeSelected = false;
       } else {
         this.rangeSelected = true;
+        /*
         console.log(
           this.date[0].toLocaleDateString("en-us", {
             year: "numeric",
@@ -191,10 +192,11 @@ export default {
             day: "numeric",
           })
         );
+        */
       }
     },
     checkPrice() {
-      console.log(this.value);
+      //console.log(this.value);
     },
     deleteInterest(id) {
       if (this.interests.length > 0) {
@@ -266,7 +268,7 @@ export default {
 
     async submitFilter() {
       this.$emit("submitFilter", true);
-      console.log("hhhhhhhhhhh", this.interests);
+      //console.log("hhhhhhhhhhh", this.interests);
       //this.$router.push({name:'StudentNavBar',params:{dateVal:this.date,priceVal:this.value,tagVal:this.interests}})
       var matchingResultsByTag = [];
       //array to store the matching results by price range
@@ -297,7 +299,7 @@ export default {
           .data()
           .poster_id.substr(0, doc.data().poster_id.indexOf("@"));
         //if the below condition is met, we should push it to the highest priority
-        console.log("filterprice", this.value, "projectprice", price);
+        //.log("filterprice", this.value, "projectprice", price);
         if (
           this.date == null ||
           this.includesDate(this.date, [projectStart, projectEnd])
@@ -332,7 +334,7 @@ export default {
           */
 
         this.CLEAR_TOP_THREE();
-        console.log("allmatchid", allMatch);
+        //console.log("allmatchid", allMatch);
         this.SET_HIGHEST_PRIORITYIDS(allMatch);
 
         //Add company search to search bar

@@ -1,4 +1,27 @@
 <template>
+  <div class="todo" @click="getData">
+    <div class="top flex flex-row">
+      <div class="title">{{ task["taskname"] }}</div>
+      <div class="status-button flex todoButton">
+        <div>
+          <p id="status">To Do</p>
+        </div>
+      </div>
+    </div>
+    <div class="top flex flex-row">
+      <p>Due date: {{ formatDate(task["duedate"]) }}</p>
+    </div>
+
+    <div class="short">
+      <!--
+        <p>
+            Short Description: {{task['shortdescription']}}
+        </p>
+        -->
+      <p>Short Description: {{ trimmedSentence }}...</p>
+    </div>
+  </div>
+
   <!--<router-link style="text-decoration: none; color: inherit; " 
         :to="{name:'ToDoView', 
             params: {
@@ -17,6 +40,8 @@
             }
         }"
     >-->
+
+  <!-- Non vuex non modal pop up version. To uncomment if cannot finish business vuex management in time
   <div v-if="user == 'student'">
     <router-link
       style="text-decoration: none; color: inherit"
@@ -90,6 +115,7 @@
       </div>
     </router-link>
   </div>
+-->
 </template>
 
 <script>
@@ -128,12 +154,24 @@ export default {
       duedate: this.task.duedate,
       dateOptions: { year: "numeric", month: "short", day: "numeric" },
       comments: [],
+      trimmedSentence: this.task["shortdescription"]
+        .substr(0, 50)
+        .substr(
+          0,
+          Math.min(
+            this.task["shortdescription"].substr(0, 50).length,
+            this.task["shortdescription"].substr(0, 50).lastIndexOf(" ")
+          )
+        ),
     };
   },
   watch: {},
   methods: {
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
+    },
+    getData() {
+      this.$emit("getData", this.task);
     },
   },
 };
@@ -226,15 +264,6 @@ a {
   background-color: rgb(230, 121, 139);
   padding-top: 10px;
   padding-bottom: 10px;
-}
-
-.inprogressButton {
-}
-
-.pendingreviewButton {
-}
-
-.completedButton {
 }
 
 .duedate {

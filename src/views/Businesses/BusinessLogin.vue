@@ -46,7 +46,7 @@
           <h4 class="forgot">Forgot Password</h4>
         </div>
         <div class="input">
-          <button @click="login"><b>Log In</b></button>
+          <button ref="refresh" @click="login"><b>Log In</b></button>
         </div>
         <div class="google">
           <GoogleButton @click="google" msg="sign in" />
@@ -83,7 +83,6 @@ const that = this;
 const router = useRouter();
 const db = getFirestore(firebaseApp);
 const provider = new GoogleAuthProvider();
-
 export default {
   name: "BusinessLogin",
   data() {
@@ -101,7 +100,12 @@ export default {
     GoogleButton,
   },
   computed: {
-    ...mapState(["userEmail"]),
+    ...mapState(["userEmail", "businessCounter"]),
+  },
+  mounted() {
+    if (this.businessCounter == 0) {
+      this.$refs.refresh.click();
+    }
   },
   /*
     mounted() {
@@ -114,7 +118,7 @@ export default {
     },  
     */
   methods: {
-    ...mapMutations(["SET_USEREMAIL"]),
+    ...mapMutations(["SET_USEREMAIL", "SET_BUSINESS_COUNTER"]),
     forgot() {
       this.forgetPassword = true;
     },
@@ -132,7 +136,6 @@ export default {
           const token = credential.accessToken;
           const user = result.user;
           this.SET_USEREMAIL(user.email);
-          //window.localStorage.setItem('emailForSignIn', user.email);
           this.$router.push({ name: "businessLoading" });
           // ...
         })
@@ -148,10 +151,11 @@ export default {
         });
     },
     async login() {
-      console.log("In method");
       if (this.email == "") {
-        this.emailErrorPresent = true;
-        this.errorMessage = "Please fill in your email";
+        if (this.businessCounter != 0) {
+          this.emailErrorPresent = true;
+          this.errorMessage = "Please fill in your email";
+        }
         setTimeout(() => {
           this.emailErrorPresent = false;
         }, 1500);
@@ -172,10 +176,10 @@ export default {
             this.emailErrorPresent = false;
           }, 1500);
         } else {
-          console.log(docs.data());
+          //console.log(docs.data());
           const formFilled = docs.data().profileFormCreated;
           const verifyEmail = docs.data().verifyEmail;
-          console.log(verifyEmail);
+          //console.log(verifyEmail);
           signInWithEmailAndPassword(getAuth(), this.email, this.password)
             .then((data) => {
               this.SET_USEREMAIL(this.email);
@@ -189,21 +193,21 @@ export default {
                 this.$router.push({ name: "BusinessVerify" });
               } else {
                 if (formFilled) {
-                  console.log("formFilled");
+                  //console.log("formFilled");
                   this.$router.push({
                     name: "BusinessHomePage",
                     params: { formFilled: true },
                   });
                 } else {
                   this.$router.push({
-                    name: "BusinessProfileForm",
+                    name: "BusinessHomePage",
                     params: { formFilled: false },
                   });
                 }
               }
             })
             .catch((error) => {
-              console.log(error);
+              //console.log(error);
               if (error.code === "auth/wrong-password") {
                 this.passwordErrorPresent = true;
                 this.errorMessage = "You have entered an incorrect password";
@@ -219,6 +223,7 @@ export default {
                 }, 1500);
               }
             });
+          this.SET_BUSINESS_COUNTER();
         }
       }
     },

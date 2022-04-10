@@ -114,7 +114,7 @@ export default {
     ApplicantsCard,
   },
   computed: {
-    ...mapState(["cardItems"]),
+    ...mapState(["cardItems", "studentInfo"]),
   },
   data() {
     return {
@@ -134,9 +134,41 @@ export default {
 
   methods: {
     ...mapActions(["GET_NEW_CARD"]),
+    ...mapMutations(["SET_STUDENT_INFO"]),
     indvApplicant(key) {
+      /*
       console.log(this.applicant[key]);
       console.log(this.offered);
+      */
+      /*
+      this.SET_STUDENT_INFO('applicants',JSON.stringify(this.applicant[key]))
+      this.SET_STUDENT_INFO('allApplicants', JSON.stringify(this.applicant))
+      this.SET_STUDENT_INFO('newApplicants', JSON.stringify(this.newApplicants))
+      this.SET_STUDENT_INFO('accApplicants',JSON.stringify(this.accApplicants))
+      this.SET_STUDENT_INFO('rejApplicants', JSON.stringify(this.rejApplicants))
+      this.SET_STUDENT_INFO('offered', JSON.stringify(this.offered))
+      this.SET_STUDENT_INFO('rejected', JSON.stringify(this.rejected))
+      this.SET_STUDENT_INFO('applied',JSON.stringify(this.applied))
+      this.SET_STUDENT_INFO('items', JSON.stringify(this.items))
+      this.SET_STUDENT_INFO('key', JSON.stringify(key))
+      this.SET_STUDENT_INFO('stat', JSON.stringify(""))
+      */
+      this.SET_STUDENT_INFO({
+        applicants: JSON.stringify(this.applicant[key]),
+        allApplicants: JSON.stringify(this.applicant),
+        newApplicants: JSON.stringify(this.newApplicants),
+        accApplicants: JSON.stringify(this.accApplicants),
+        rejApplicants: JSON.stringify(this.rejApplicants),
+        offered: JSON.stringify(this.offered),
+        rejected: JSON.stringify(this.rejected),
+        applied: JSON.stringify(this.applied),
+        items: JSON.stringify(this.items),
+        key: JSON.stringify(key),
+        stat: JSON.stringify(""),
+      });
+      //console.log("currStudentInfo", this.studentInfo);
+
+      //Non vuex
       this.$router.push({
         name: "BusinessViewStudentInfo",
         params: {
@@ -184,12 +216,13 @@ export default {
 
     //vuex
     this.items = JSON.parse(this.cardItems);
+    /*
     console.log(this.cardItems);
     console.log(this.cardItems);
     console.log("below carditems", this.items["accApplicants"]);
+    */
     this.projectId = JSON.parse(this.cardItems).projectId;
     if (this.items["accApplicants"]) {
-      // alert('There is an accepted applicant')
       this.accApplicants = this.items["accApplicants"];
       for (var i = 0; i < this.accApplicants.length; i++) {
         getApplicant(this.accApplicants[i]).then((res) => {
@@ -204,7 +237,7 @@ export default {
       const ref = doc(db, "students", app);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      console.log("studata", data.declineProjects);
+      //console.log("studata", data.declineProjects);
       var stat = "pending";
       var inProg = data.inProgProjects;
       var declined = data.rejectedProjects;
@@ -229,12 +262,12 @@ export default {
         course: data.course,
         status: stat,
         email: data.email,
-        finalProfile: data.finalProfile,
+        finalProfile: data.finalProfile ,
       };
     }
     // console.log(this.newApplicants)
     // console.log(this.rejApplicants)
-    console.log(this.applicant);
+    //console.log(this.applicant);
     // console.log(this.accApplicants)
     // console.log(this.offered)
     // console.log(this.rejected)

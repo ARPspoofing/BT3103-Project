@@ -48,7 +48,7 @@
         </div>
 
         <div class="input">
-          <button @click="login"><b>Log In</b></button>
+          <button ref="refresh" @click="login"><b>Log In</b></button>
         </div>
       </div>
     </form>
@@ -65,11 +65,10 @@ import { getDoc, collection, doc } from "firebase/firestore";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import ResetPassword from "../../components/ResetPassword.vue";
-
+import {store} from '../../store/globalStore.js'
 const router = useRouter();
 const auth = getAuth();
 const db = getFirestore(firebaseApp);
-
 export default {
   name: "StudentLogin",
   data() {
@@ -80,16 +79,23 @@ export default {
       errorMessage: "",
       emailError: false,
       passwordError: false,
+      storeState: store.state,
     };
+  },
+  mounted() {
+    store.addNumber(5)
+    if (this.counter == 0) {
+      this.$refs.refresh.click();
+    }
   },
   components: {
     ResetPassword,
   },
   computed: {
-    ...mapState(["userEmail"]),
+    ...mapState(["userEmail", "counter"]),
   },
   methods: {
-    ...mapMutations(["SET_USEREMAIL"]),
+    ...mapMutations(["SET_USEREMAIL", "SET_COUNTER"]),
     forgot() {
       this.forgetPassword = true;
     },
@@ -98,46 +104,60 @@ export default {
     },
 
     async login() {
-      console.log(this.email);
-      const docRef = doc(db, "students", String(this.email));
-      const docs = await getDoc(docRef);
-      if (!docs.exists()) {
-        this.emailError = true;
-        this.errorMessage = "Email not registered please sign up first";
+      if (this.email == "") {
+        if (this.counter != 0) {
+          this.emailError = true;
+          this.errorMessage = "Please fill in your email";
+        }
         setTimeout(() => {
           this.emailError = false;
         }, 1500);
-      } else {
-        const formFilled = docs.data().profileFormCreated;
-        console.log(formFilled);
-        await signInWithEmailAndPassword(auth, this.email, this.password)
-          .then((data) => {
-            this.SET_USEREMAIL(this.email);
-            //window.localStorage.setItem('emailForSignIn', this.email);
-            if (!formFilled) {
-              this.$router.push({ name: "StudentHomePage" });
-              //this.$router.push({name:'StudentProfileForm'})
-            } else {
-              this.$router.push({ name: "StudentHomePage" });
-            }
-          })
-          .catch((error) => {
-            if (error.code === "auth/wrong-password") {
-              this.passwordError = true;
-              this.errorMessage = "You have entered an incorrect password";
-              setTimeout(() => {
-                this.passwordError = false;
-              }, 1500);
-            } else if (error.code === "auth/user-not-found") {
-              this.emailError = true;
-              this.errorMessage =
-                "The email does not exist please sign up first";
-              setTimeout(() => {
-                this.emailError = false;
-              }, 1500);
-            }
-          });
+      } else if (this.password == "") {
+        this.passwordError = true;
+        this.errorMessage = "Please fill in your password";
+        setTimeout(() => {
+          this.emailError = false;
+        }, 1500);
+      } else if (this.email != "" && this.password != "") {
+        const docRef = doc(db, "students", String(this.email));
+        const docs = await getDoc(docRef);
+        if (!docs.exists()) {
+          this.emailError = true;
+          this.errorMessage = "Email not registered please sign up first";
+          setTimeout(() => {
+            this.emailError = false;
+          }, 1500);
+        } else {
+          const formFilled = docs.data().profileFormCreated;
+          //console.log(formFilled);
+          signInWithEmailAndPassword(getAuth(), this.email, this.password)
+            .then((data) => {
+              this.SET_USEREMAIL(this.email);
+              if (!formFilled) {
+                this.$router.push({ name: "StudentHomePage" });
+              } else {
+                this.$router.push({ name: "StudentHomePage" });
+              }
+            })
+            .catch((error) => {
+              if (error.code === "auth/wrong-password") {
+                this.passwordError = true;
+                this.errorMessage = "You have entered an incorrect password";
+                setTimeout(() => {
+                  this.passwordError = false;
+                }, 1500);
+              } else if (error.code === "auth/user-not-found") {
+                this.emailError = true;
+                this.errorMessage =
+                  "The email does not exist please sign up first";
+                setTimeout(() => {
+                  this.emailError = false;
+                }, 1500);
+              }
+            });
+        }
       }
+      this.SET_COUNTER();
     },
   },
 };
@@ -149,12 +169,10 @@ a {
   color: #2c3e50;
   text-decoration: none;
 }
-
 a.router-link-exact-active {
   color: #42b983;
   font-weight: 700px;
 }
-
 .link {
   font-weight: bold;
   color: blue;
@@ -167,7 +185,6 @@ h4 {
   margin-left: 15px;
   font-weight: bolder;
 }
-
 .form-wrap {
   display: flex;
   height: 105%;
@@ -175,7 +192,6 @@ h4 {
   background: url("../../assets/signupBG.png") no-repeat center center fixed;
   overflow: hidden;
 }
-
 form {
   padding: 0 10px;
   position: relative;
@@ -186,11 +202,9 @@ form {
   flex: 1;
   margin-left: 12vw;
 }
-
 .inputs {
   width: 40%;
 }
-
 .input {
   position: relative;
   display: flex;
@@ -201,7 +215,6 @@ form {
   color: red;
   font-size: 15px;
 }
-
 input {
   width: 80%;
   border: 2px solid darkgreen;
@@ -215,17 +228,14 @@ input {
   margin: 5px;
   margin-left: 10px;
 }
-
 input:focus {
   outline: none;
 }
-
 .icon {
   width: 12px;
   position: absolute;
   margin-left: 20px;
 }
-
 button {
   margin-top: 3vh;
   margin-left: 10px;
@@ -240,7 +250,6 @@ button {
   border-radius: 25px;
   color: white;
 }
-
 .forgot {
   font-size: 14px;
   color: darkgreen;
@@ -248,7 +257,6 @@ button {
   cursor: pointer;
   width: 80%;
 }
-
 .shake {
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   transform: translate3d(0, 0, 0);
@@ -275,7 +283,6 @@ button {
 .input-error {
   order: 2px solid red;
 }
-
 h1 {
   text-align: left;
   margin-top: 20px;

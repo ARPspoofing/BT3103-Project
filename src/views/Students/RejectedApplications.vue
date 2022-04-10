@@ -17,15 +17,19 @@
       </span>
     </h1>
     <hr />
-    <div class="projectContainer" :key="item.key" v-for="(item, index) in projects">
-         <Card 
-         :apply=false 
-         :offered=false 
-         :projectTitle = "item.projectTitle" 
-         :description="item.description"  
-         :stat="stat"
-         :picture = "item.profilePicture"
-          />
+    <div
+      class="projectContainer"
+      :key="item.key"
+      v-for="(item, index) in projects"
+    >
+      <Card
+        :apply="false"
+        :offered="false"
+        :projectTitle="item.projectTitle"
+        :description="item.description"
+        :stat="stat"
+        :picture = "item.profilePicture"
+      />
     </div>
   </div>
 </template>
@@ -84,13 +88,13 @@ export default {
       //For some reason if have for loop and the array is empty got error so I changed to this
       const response = await Promise.all(
         docSnap.data().rejectedProjects.map(async (item) => {
-          console.log("nested", item);
+          //console.log("nested", item);
           const finalResult = await getDoc(doc(db, "Project", item));
-          console.log(finalResult.data());
+          //console.log(finalResult.data());
           that.projects.push({
             projectTitle: finalResult.data().Project_Title,
             description: finalResult.data().Description,
-            profilePicture: finalResult.data().profPicture
+            profilePicture: finalResult.data().profPicture,
           });
         })
       );
@@ -113,7 +117,7 @@ export default {
       return {
         projectTitle: data.Project_Title,
         description: data.Description,
-        profilePicture: data.profPicture
+        profilePicture: data.profPicture,
       };
     }
   },

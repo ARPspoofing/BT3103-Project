@@ -200,8 +200,10 @@ export default {
           items: JSON.stringify(this.highestPriority[key]),
         },
       });
+      /*
       console.log(key);
       console.log(this.highestPriority[key]);
+      */
     },
 
     indivprojSecond(key) {
@@ -213,8 +215,10 @@ export default {
           items: JSON.stringify(this.secondPriority[key]),
         },
       });
+      /*
       console.log(key);
       console.log(this.secondPriority[key]);
+      */
     },
 
     indivprojThird(key) {
@@ -226,8 +230,10 @@ export default {
           items: JSON.stringify(this.thirdPriority[key]),
         },
       });
+      /*
       console.log(key);
       console.log(this.thirdPriority[key]);
+      */
     },
     async fetchProjectOrder(order) {
       //var businessEmail = auth.currentUser.email;
@@ -304,7 +310,7 @@ export default {
       //searchData is a dictionary of {0:projectId,1:projectId...}
       //convert values into an array
       var searchDataCopy = this.searchData;
-      console.log("copyyy", searchDataCopy);
+      //console.log("copyyy", searchDataCopy);
 
       var values = Object.keys(searchDataCopy).map(function (key) {
         return searchDataCopy[key];
@@ -313,10 +319,12 @@ export default {
       //But the values arr is 2d
       //To flatten use ES6 spread
       var newValues = [];
+      /*
       console.log("searchData", this.searchData);
       console.log("values", values);
+      */
       newValues = newValues.concat(...values);
-      console.log("newValues", newValues);
+      //console.log("newValues", newValues);
       let snapshot = await getDocs(projects);
       snapshot.forEach((docs) => {
         let data = docs.data();
@@ -325,10 +333,10 @@ export default {
           temp.push(id);
         }
       });
-      console.log("searchDataValues", this.newValues);
+      //console.log("searchDataValues", this.newValues);
       this.CLEAR_HIGHEST();
       this.SET_HIGHEST_PRIORITYIDS(temp);
-      console.log("temp", temp);
+      //console.log("temp", temp);
       this.$router.push({
         name: "StudentSearchResult2",
         params: { searched: this.searchString },
@@ -345,7 +353,7 @@ export default {
     this.receivedSearch = gottenSearch;
     //data variable = state variable
     this.searchId = this.searchData;
-    console.log("searchData", this.searchData);
+    //console.log("searchData", this.searchData);
     this.highestPriority = this.highestPriorityIds;
     this.secondPriority = this.secondPriorityIds;
     this.thirdPriority = this.thirdPriorityIds;
@@ -371,7 +379,7 @@ export default {
       const highestPriority = [];
       const secondPriority = [];
       const thirdPriority = [];
-      console.log(highestPriorityIds);
+      //console.log(highestPriorityIds);
       //let snapshot = await getDocs(collection(db, "Project"))
       if (that.recent == true) {
         //alert("recent")
@@ -491,10 +499,10 @@ export default {
 
       const testCollection = [];
 
-      console.log("passed the query");
+      //console.log("passed the query");
       snapshot.forEach((docs) => {
         let data = docs.data();
-        console.log("searchResultone", highestPriorityIds);
+        //console.log("searchResultone", highestPriorityIds);
         if (highestPriorityIds.includes(docs.id)) {
           highestPriority.push({
             projectTitle: data.Project_Title,
@@ -712,15 +720,6 @@ button,
   color: white;
   float: right;
   background-color: #ec9f39;
-  img {
-    margin-right: 4px;
-  }
-}
-
-.save {
-  div {
-    flex: 1;
-  }
 }
 
 .right {

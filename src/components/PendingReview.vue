@@ -1,4 +1,25 @@
 <template>
+  <div class="pendingreview" @click="getData">
+    <div class="top flex flex-row">
+      <div class="title">
+        <strong>{{ task["taskname"] }}</strong>
+      </div>
+      <div class="status-button flex todoButton">
+        <div>
+          <p id="status">Pending</p>
+        </div>
+      </div>
+    </div>
+    <div class="top flex flex-row">
+      <p>Due date: {{ duedate }}</p>
+    </div>
+
+    <div class="short">
+      <p>Short Description: {{ trimmedSentence }}...</p>
+    </div>
+  </div>
+
+  <!-- Non vuex non modal pop up business / student management. To uncomment if cannot finish business management vuex
   <div v-if="user == 'student'">
     <router-link
       style="text-decoration: none; color: inherit"
@@ -71,7 +92,7 @@
       </div>
     </router-link>
   </div>
-
+-->
   <!-- <router-link style="text-decoration: none; color: inherit; " :to="{name:'ToDoView', params: {task:task,
         taskId: task['id'], projectId:task['projectId'], description: task['shortdescription'],projectTitle:this.task['projectTitle'], duedate:this.duedate}}">
     <div class="pendingreview">
@@ -85,7 +106,7 @@
                 
             </div>
         </div>
-        <div class="duedate">
+        <div class="top flex flex-row">
             <p>
                  Due date: {{duedate}}
             </p>
@@ -97,10 +118,13 @@
         </p>
         </div>          
     </div>  
-    </router-link>   -->
+    
+    </router-link>  
+    -->
 </template>
 
 <script>
+import * as moment from "moment";
 export default {
   name: "PendingReview",
   props: {
@@ -111,13 +135,31 @@ export default {
   },
   mounted() {
     const curr = this;
-    console.log(curr.task);
+    //console.log(curr.task);
   },
   data() {
     return {
       duedate: this.task.duedate,
       dateOptions: { year: "numeric", month: "short", day: "numeric" },
+      trimmedSentence: this.task["shortdescription"]
+        .substr(0, 50)
+        .substr(
+          0,
+          Math.min(
+            this.task["shortdescription"].substr(0, 50).length,
+            this.task["shortdescription"].substr(0, 50).lastIndexOf(" ")
+          )
+        ),
     };
+  },
+  methods: {
+    formatDate(date) {
+      return moment(date).format("DD MMMM YYYY");
+    },
+    getData() {
+      this.$emit("getData", this.task);
+      //console.log(this.task);
+    },
   },
 };
 </script>

@@ -1,5 +1,76 @@
 <template>
   <BusinessNavBar :Heading="Heading" :header="true" />
+
+  <div
+    class="modal fade"
+    id="saveModalAccept"
+    tabindex="-1"
+    aria-labelledby="saveModalLabel"
+    aria-hidden="true"
+    data-bs-backdrop="false"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="words">
+            <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+            <p>Accept {{ modalName }}?</p>
+          </div>
+          <span>
+            <div class="applybtns">
+              <button
+                type="button"
+                id="yesbtn"
+                data-bs-dismiss="modal"
+                @click="confirmYesAccept"
+              >
+                Yes
+              </button>
+              <button type="button" id="nobtn" data-bs-dismiss="modal">
+                No
+              </button>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="saveModalReject"
+    tabindex="-1"
+    aria-labelledby="saveModalLabel"
+    aria-hidden="true"
+    data-bs-backdrop="false"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="words">
+            <i class="fa-solid fa-times-circle" id="tickIcon"></i>
+            <p>Reject {{ modalName }}?</p>
+          </div>
+          <span>
+            <div class="applybtns">
+              <button
+                type="button"
+                id="yesbtn"
+                data-bs-dismiss="modal"
+                @click="confirmYesReject"
+              >
+                Yes
+              </button>
+              <button type="button" id="nobtn" data-bs-dismiss="modal">
+                No
+              </button>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="mainBody">
     <router-link
       class="floating-right-bottom-btn"
@@ -77,12 +148,35 @@
             @acceptbtn="accApplicant(key)"
             @rejectbtn="rejApplicant(key)"
             @clickCard="indvApplicant(key)"
+            @firstClick="firstClick"
+            :popUpConfirm="this.popUpConfirm"
             :picture="item.finalProfile"
+            
           />
         </div>
       </div>
     </div>
   </div>
+  <button
+    type="submit"
+    style="visibility: hidden"
+    ref="confirmModalAccept"
+    class="green"
+    data-bs-toggle="modal"
+    data-bs-target="#saveModalAccept"
+  >
+    Accept
+  </button>
+  <button
+    type="submit"
+    style="visibility: hidden"
+    ref="confirmModalReject"
+    class="green"
+    data-bs-toggle="modal"
+    data-bs-target="#saveModalReject"
+  >
+    Reject
+  </button>
 </template>
 
 <script>
@@ -129,15 +223,34 @@ export default {
       offered: [],
       rejected: [],
       applied: [],
+      popUpConfirm: null,
+      modalName: null,
     };
   },
 
   methods: {
     ...mapActions(["GET_NEW_CARD"]),
     //...mapMutations(['SET_KEY',]),
+    firstClick(event, name) {
+      this.modalName = name;
+      if (event == true) {
+        this.$refs.confirmModalAccept.click();
+      } else {
+        this.$refs.confirmModalReject.click();
+      }
+    },
+    confirmYesAccept() {
+      this.popUpConfirm = true;
+    },
+    confirmYesReject() {
+      this.popUpConfirm = false;
+    },
     indvApplicant(key) {
+      /*
+      alert("key " + key);
       console.log(this.applicant[key]);
       console.log(this.offered[key]);
+      */
       this.$router.push({
         name: "BusinessViewStudentInfo",
         params: {
@@ -159,6 +272,8 @@ export default {
     async accApplicant(key) {
       //this.SET_KEY(key)
       //this.GET_NEW_CARD()
+      //TBC this.$refs.confirmModal.click()
+      alert("key " + key);
       var accApplicant = this.newApplicants[key];
       var offered = this.offered[key];
       var name = this.applicant[key].name;
@@ -193,7 +308,7 @@ export default {
           offeredProjects: offered,
           appliedProjects: applied,
         });
-        console.log(docRef);
+        //console.log(docRef);
         this.GET_NEW_CARD();
         this.$emit("updated");
       } catch (error) {
@@ -204,13 +319,14 @@ export default {
     async rejApplicant(key) {
       //this.SET_KEY(key)
       //this.GET_NEW_CARD()
+      alert("key " + key);
       var rejApplicant = this.newApplicants[key];
       var rejected = this.rejected[key];
       var name = this.applicant[key].name;
       var projTitle = this.items["projectTitle"];
       var projId = this.items["projectId"];
       var applied = this.applied[key];
-      console.log("bef" + applied);
+      //console.log("bef" + applied);
 
       if (!this.rejApplicants) {
         var rejApplicants = [];
@@ -222,7 +338,7 @@ export default {
 
       var index = applied.indexOf(projId);
       applied.splice(index, 1);
-      console.log("aft" + applied);
+      //console.log("aft" + applied);
 
       rejected.push(projId);
 
@@ -246,7 +362,7 @@ export default {
         this.GET_NEW_CARD();
         this.$emit("updated");
       } catch (error) {
-        console.error("Error updating document: ", error);
+        //console.error("Error updating document: ", error);
       }
     },
   },
@@ -310,7 +426,7 @@ export default {
         getAppliedProjects(this.newApplicants[i]).then((res) => {
           this.applied.push(res);
         });
-        console.log(this.applicant);
+        //console.log(this.applicant);
       }
     }
 
@@ -318,7 +434,7 @@ export default {
       const ref = doc(db, "students", app);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      return { name: data.name, course: data.course, email: data.email, finalProfile: data.finalProfile, };
+      return { name: data.name, course: data.course, email: data.email,finalProfile: data.finalProfile  };
     }
 
     async function getOfferedProjects(app) {
@@ -431,5 +547,58 @@ hr {
   height: 70px;
   width: 70px;
   color: #004a23;
+}
+
+#applyModal {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #bbdfcc;
+  border: none;
+}
+
+.words {
+  width: max-content;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  height: 50px;
+}
+
+.applybtns {
+  width: max-content;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+#yesbtn,
+#nobtn {
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #89ca9a;
+  color: #3f3f3f;
+  width: 120px;
+  height: 30px;
+  font-size: 18px;
+}
+
+#tickIcon {
+  height: 38px;
+  width: 38px;
+  color: #3d9956;
+  float: left;
+}
+
+.modal-body p {
+  font-size: 18px;
+  text-align: center;
+  width: 180px;
+  margin-left: 48px;
+  color: #3f3f3f;
 }
 </style>

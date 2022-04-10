@@ -1,8 +1,7 @@
-import { createStore } from "vuex";
-import createPersistedState from "vuex-persistedstate";
-import VuexPersistence from "vuex-persistedstate";
-import { getFirestore } from "firebase/firestore";
-import firebaseApp from "../firebase.js";
+import { createStore } from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
+import {getFirestore} from "firebase/firestore"
+import firebaseApp from "../firebase.js"
 
 import {
   collection,
@@ -32,8 +31,10 @@ export default createStore({
     highestPriorityIds: [],
     secondPriorityIds: [],
     thirdPriorityIds: [],
-    name: "",
-    userEmail: "",
+    counter:0,
+    businessCounter:0,
+    name: null,
+    userEmail: '',
     cardItems: null,
     recent: false,
     oldest: false,
@@ -43,6 +44,31 @@ export default createStore({
     lowest: false,
     searchString: "",
     key: null,
+    studentInfo: {},
+    studentToDo: null,
+    studentInProgress:null,
+    studentPendingReview:null,
+    studentCompleted:null,
+    studentProjectId:null,
+    studentTaskId:null,
+    studentTask:null,
+    studentProjectTitle:null,
+    businessToDo: null,
+    businessInProgress:null,
+    businessPendingReview:null,
+    businessCompleted:null,
+    businessProjectId:null,
+    businessTaskId:null,
+    businessTask:null,
+    businessProjectTitle:null,
+    //Addtional things for business only. 
+    businessInProgProjects:null,
+    businessCompletedProjects:null,
+    businessStudents:null,
+    businessStudentsInProg:null,
+    businessStudentsComp:null, 
+    TaskComments:null,
+    updated:false,
   },
   //getter for debugging
   getters: {
@@ -51,6 +77,12 @@ export default createStore({
     },
   },
   mutations: {
+    SET_COUNTER(state) {
+      state.counter = 1
+    },
+    SET_BUSINESS_COUNTER(state) {
+      state.businessCounter = 1
+    },
     TOGGLE_FILTER(state) {
       state.filterModal = !state.filterModal;
     },
@@ -99,7 +131,7 @@ export default createStore({
       state.searchData = state.searchData.filter(
         (x, i, a) => a.indexOf(x) === i
       );
-      console.log("searchData", state.searchData);
+      
     },
     SET_SEARCH_STRING(state, payload) {
       state.searchString = payload;
@@ -137,9 +169,83 @@ export default createStore({
     CLEAR_CARDITEMS(state) {
       state.cardItems = null;
     },
-    SET_NEW_CARD(state, payload) {
-      state.cardItems = JSON.stringify(payload[state.key]);
+    SET_STUDENT_INFO(state,payload) {
+      state.studentInfo = payload
     },
+    SET_NEW_CARD(state,payload) {
+      state.cardItems = JSON.stringify(payload[state.key])
+    },
+    SET_STUDENT_PROJECT_ID(state,payload) {
+      state.studentProjectId = payload
+    },
+    SET_STUDENT_TASK_ID(state,payload) {
+      state.studentTaskId = payload
+    },
+    SET_STUDENT_TASK(state,payload) {
+      state.studentTask = payload
+    },
+    SET_STUDENT_PROJECT_TITLE(state,payload) {
+      state.studentProjectTitle = payload
+    },
+    SET_STUDENT_TO_DO(state,payload) {
+      state.studentToDo = payload
+    },
+    SET_STUDENT_IN_PROGRESS(state,payload) {
+      state.studentInProgress = payload
+    },
+    SET_STUDENT_PENDING_REVIEW(state,payload) {
+      state.studentPendingReview = payload
+    },
+    SET_STUDENT_COMPLETED(state,payload) {
+      state.studentCompleted = payload
+    },
+    SET_BUSINESS_PROJECT_ID(state,payload) {
+      state.businessProjectId = payload
+    },
+    SET_BUSINESS_PROJECT_TITLE(state,payload) {
+      state.businessProjectTitle = payload
+    },
+    SET_BUSINESS_TASK_ID(state,payload) {
+      state.businessTaskId = payload
+    },
+    SET_BUSINESS_TASK(state,payload) {
+      state.businessTask = payload
+    },
+    SET_BUSINESS_TO_DO(state,payload) {
+      state.businessToDo = payload
+    },
+    SET_BUSINESS_IN_PROGRESS(state,payload) {
+      state.businessInProgress = payload
+    },
+    SET_BUSINESS_PENDING_REVIEW(state,payload) {
+      state.businessPendingReview = payload
+    },
+    SET_BUSINESS_COMPLETED(state,payload) {
+      state.businessCompleted = payload
+    },
+    SET_BUSINESS_IN_PROG_PROJECTS(state,payload) {
+      state.businessInProgProjects = payload
+    },
+    SET_BUSINESS_COMPLETED_PROJECTS(state,payload) {
+      state.businessCompletedProjects = payload
+    },
+    SET_BUSINESS_STUDENTS(state,payload) {
+      state.businessStudents = payload
+    },
+    SET_BUSINESS_STUDENTS_IN_PROG(state,payload) {
+      state.businessStudentsInProg = payload
+    },
+    SET_BUSINESS_STUDENTS_COMP(state,payload) {
+      state.businessStudentsComp = payload
+    },
+    SET_TASK_COMMENTS(state,payload) {
+      state.TaskComments = payload
+    },
+    SET_UPDATED(state,payload) {
+      state.updated = payload
+    },
+
+    
   },
   actions: {
     async GET_NEW_CARD({ commit, state }) {

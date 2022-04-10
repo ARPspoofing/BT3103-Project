@@ -1,4 +1,4 @@
-<template>
+z<template>
   <BusinessNavBar :Heading="Heading" :header="true" />
   <div class="mainBody">
     <router-link
@@ -319,7 +319,7 @@ export default {
           Application: "closed",
         });
 
-        console.log(docRef);
+        //console.log(docRef);
         this.$emit("updated");
       } catch (error) {
         console.error("Error updating document: ", error);
@@ -327,7 +327,7 @@ export default {
     },
 
     editProject() {
-      console.log(this.items);
+      //console.log(this.items);
       this.$router.push({
         name: "BusinessEditProject",
         params: {

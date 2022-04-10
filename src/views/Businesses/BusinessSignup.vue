@@ -115,13 +115,6 @@ import { mapMutations } from "vuex";
 import Loading from "../../components/Loading.vue";
 import VerifyEmail from "../../components/VerifyEmail.vue";
 import GoogleButton from "../../components/GoogleButton.vue";
-/*
-import firebase from '../../uifire'
-import 'firebase/compat/auth'
-import * as firebaseui from 'firebaseui'
-import 'firebaseui/dist/firebaseui.css'
-*/
-
 const actionCodeSettings = {
   // URL you want to redirect back to. The domain (www.example.com) for this
   // URL must be in the authorized domains list in the Firebase Console.
@@ -138,11 +131,9 @@ const actionCodeSettings = {
   },
   dynamicLinkDomain: "example.page.link",
 };
-
 const db = getFirestore(firebaseApp);
 const router = useRouter();
 const that = this;
-
 export default {
   data() {
     return {
@@ -244,6 +235,17 @@ export default {
         setTimeout(() => {
           this.confirmPasswordErrorPresent = false;
         }, 1500);
+      } else if (
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(
+          this.password
+        ) == false
+      ) {
+        this.passwordErrorPresent = true;
+        this.loading = false;
+        this.errorMessage = "Weak Password";
+        setTimeout(() => {
+          this.passwordErrorPresent = false;
+        }, 1500);
       } else if (this.password == this.confirmPassword) {
         /*
                 const actionCodeSettings = {
@@ -272,7 +274,7 @@ export default {
         createUserWithEmailAndPassword(getAuth(), this.email, this.password)
           .then((data) => {
             this.SET_USEREMAIL(this.email);
-            console.log("in method");
+            //console.log("in method");
             setDoc(doc(db, "businesses", String(this.email)), {
               profileFormCreated: false,
               verifyEmail: false,
@@ -299,19 +301,16 @@ export default {
                 // Save the email locally so you don't need to ask the user for it again
                 // if they open the link on the same device.
                 this.SET_USEREMAIL(this.email);
-                //window.localStorage.setItem('emailForSignIn', this.email);
 
                 this.$router.push({ name: "BusinessVerify" });
-                // ...
               })
               .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.log(errorMessage);
-                console.log("email", this.email);
-                // ...
+                //console.log("email", this.email);
               });
-            console.log("uploaded to firebase");
+            //console.log("uploaded to firebase");
             //this.$router.push({name:'BusinessProfileForm',params: {email}})
             //this.$router.push({name:'BusinessProfileForm'})
             this.loading = false;

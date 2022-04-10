@@ -51,6 +51,7 @@
             <ul style="display: grid; grid-template-columns: repeat(5, 1fr)">
               <li
                 v-for="(item, index) in interests"
+                :key="index"
                 style="width: 20%; display: inline"
               >
                 <div class="interest-flex">
@@ -142,6 +143,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
+import { mapState } from "vuex";
 const db = getFirestore(firebaseApp);
 const router = useRouter();
 export default {
@@ -149,12 +151,15 @@ export default {
   components: {
     BusinessNavBar,
   },
+  computed: {
+    ...mapState(["userEmail", "studentInfo"]),
+  },
   created() {
     this.interests.push({
       id: uuidv4(),
       value: "",
     });
-    console.log(this.interests.target);
+    //console.log(this.interests.target);
   },
   props: {
     buttonShow: Boolean,
@@ -173,7 +178,7 @@ export default {
     },
     async acceptbtn() {
       var theaccApplicant = this.newApplicant[this.theKey];
-      console.log(theaccApplicant);
+      //console.log(theaccApplicant);
       var offered = this.offer;
       var name = this.applicant.name;
       var projTitle = this.item["projectTitle"];
@@ -200,7 +205,7 @@ export default {
       // this.offer.splice(this.theKey, 1);
       // this.apply.splice(this.theKey, 1);
 
-      alert("Accepting applicant: " + name);
+      //alert("Accepting applicant: " + name);
       try {
         const docRef = await updateDoc(doc(db, "Project", projId), {
           Acc_Applicants: this.accApplicant,
@@ -247,6 +252,7 @@ export default {
       this.newApplicant.splice(this.theKey, 1);
       // this.applicant.splice(key, 1);
       // this.apply.splice(key, 1);
+      /*
       console.log(this.rejApplicant);
       console.log(this.newApplicant);
       console.log(rejected);
@@ -254,8 +260,9 @@ export default {
       console.log(applied);
       console.log(this.apply);
       console.log(this.theKey);
+      */
 
-      alert("Rejecting applicant: " + name);
+      //alert("Rejecting applicant: " + name);
 
       try {
         const docRef = await updateDoc(doc(db, "Project", projId), {
@@ -268,7 +275,7 @@ export default {
           appliedProjects: applied,
         });
 
-        console.log(docRef);
+        //console.log(docRef);
         this.$emit("updated");
       } catch (error) {
         console.error("Error updating document: ", error);
@@ -315,8 +322,31 @@ export default {
     };
   },
   mounted() {
-    const auth = getAuth();
-    var userEmail = auth.currentUser.email;
+    var userEmail = this.userEmail;
+    //console.log("studentInfo", this.studentInfo["applicants"]);
+    //vuex
+    this.applicant = JSON.parse(this.studentInfo["applicants"]);
+    this.allApplicant = JSON.parse(this.studentInfo["allApplicants"]);
+    // this.showButton = JSON.parse(this.$route.params.buttonShow);
+    this.newApplicant = JSON.parse(this.studentInfo["newApplicants"]);
+    this.accApplicant = JSON.parse(this.studentInfo["accApplicants"]);
+    this.rejApplicant = JSON.parse(this.studentInfo["rejApplicants"]);
+    this.offer = JSON.parse(this.studentInfo["offered"]);
+    this.reject = JSON.parse(this.studentInfo["rejected"]);
+    this.apply = JSON.parse(this.studentInfo["applied"]);
+    this.item = JSON.parse(this.studentInfo["items"]);
+    this.theKey = JSON.parse(this.studentInfo["key"]);
+    this.stat = JSON.parse(this.studentInfo["stat"]);
+    //console.log(this.accApplicant);
+    this.items = JSON.parse(this.studentInfo["items"]);
+    //console.log("items", this.items);
+    this.projectId = this.items["projectId"];
+    this.newApplicants = this.items["newApplicants"];
+    this.accApplicants = this.items["accApplicants"];
+    this.rejApplicants = this.items["rejApplicants"];
+
+    //Non vuex
+    /*
     this.applicant = JSON.parse(this.$route.params.applicants);
     this.allApplicant = JSON.parse(this.$route.params.allApplicants);
     // this.showButton = JSON.parse(this.$route.params.buttonShow);
@@ -335,15 +365,16 @@ export default {
     this.newApplicants = JSON.parse(this.$route.params.items).newApplicants;
     this.accApplicants = JSON.parse(this.$route.params.items).accApplicants;
     this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants;
+    */
 
-    var email = JSON.parse(this.$route.params.applicants).email;
-    console.log(email);
+    var email = JSON.parse(this.studentInfo.applicants).email;
+    //console.log(email);
     const that = this;
     async function getApplicant(email) {
       const docSnap = await getDoc(doc(db, "students", email));
-      console.log("doc: " + docSnap);
+      //console.log("doc: " + docSnap);
       let data = docSnap.data();
-      console.log(data);
+      //console.log(data);
       that.finalProfile = data.finalProfile;
       that.name = data.name;
       that.course = data.course;
@@ -447,9 +478,6 @@ label {
 
 .interest {
   gap: 10px;
-  div {
-    flex: 1;
-  }
 }
 
 img {
@@ -489,16 +517,13 @@ button,
   margin-right: 8px;
   margin-left: 20px;
   color: #fff;
-  img {
-    margin-right: 4px;
-  }
 }
 
-.save {
-  div {
-    flex: 1;
-  }
+/*
+.save div {
+  flex: 1;
 }
+*/
 
 .right {
   width: max-content;

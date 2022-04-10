@@ -47,6 +47,7 @@
       </form>
     </div>
     <ul class="navbar-nav ms-auto">
+      <!-- Name from data -->
       <div class="dropdown">
         <button
           class="btn btn-secondary dropdown-toggle"
@@ -122,7 +123,7 @@ export default {
     Heading: String,
     search: Boolean,
     header: Boolean,
-    //searchResult: String,
+    key: Number,
   },
   computed: {
     ...mapState([
@@ -163,7 +164,7 @@ export default {
         return false;
       } else {
         for (let tag of tags) {
-          console.log("tagaggagagaggaga", tag);
+          //console.log("tagaggagagaggaga", tag);
           tag = tag.toLowerCase();
           if (searchObj.includes(tag) || tag.includes(searchObj)) {
             return true;
@@ -211,7 +212,7 @@ export default {
 
     async searchProjects() {
       var currSearch = this.userSearch;
-      console.log(currSearch);
+      //console.log(currSearch);
       //Here, we are storing projects that match both
       var matchingResultsByBoth = [];
       //array to store the matching results by title for the entered search
@@ -237,7 +238,7 @@ export default {
         projects.forEach((doc) => {
           const id = doc.id;
           const name = doc.data().Project_Title;
-          console.log(name);
+          //console.log(name);
           var testname = name.toLowerCase();
           var searchObj = currSearch.toLowerCase();
           const projectTags = doc.data().Tags;
@@ -249,7 +250,7 @@ export default {
           const company_name = doc
             .data()
             .poster_id.substr(0, doc.data().poster_id.indexOf("@"));
-          console.log(projectTags);
+          //console.log(projectTags);
           //if the below condition is met, we should push it to the highest priority
           if (
             (searchObj.includes(testname) || testname.includes(searchObj)) &&
@@ -343,7 +344,7 @@ export default {
 
     async function getApplicant(userEmail) {
       const docSnap = await getDoc(doc(db, "students", userEmail));
-      console.log("doc: " + docSnap);
+      //console.log("doc: " + docSnap);
       let data = docSnap.data();
       //console.log(data)
       //name =  data.name;

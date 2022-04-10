@@ -1,13 +1,59 @@
 <template>
-  <StudentNavBar :search="true" :header="false" />
+  <StudentNavBar
+    :class="{ blur: !profileFormCreated }"
+    :search="true"
+    :header="false"
+    :key="componentKey"
+  />
+  <div>
+    <div class="right"></div>
+    <div
+      class="modal fade"
+      id="saveModal"
+      tabindex="-1"
+      aria-labelledby="saveModalLabel"
+      aria-hidden="true"
+      data-bs-backdrop="false"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="words">
+              <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+              <p>Apply to {{ currProject }}?</p>
+            </div>
+            <span>
+              <div class="applybtns">
+                <button
+                  type="button"
+                  id="yesbtn"
+                  data-bs-dismiss="modal"
+                  @click="confirmYes(true)"
+                >
+                  Yes
+                </button>
+                <button type="button" id="nobtn" data-bs-dismiss="modal">
+                  No
+                </button>
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!--div class="modal-overlay" v-if="applyConfirm"></div>-->
   <StudentProfileForm
     @cancel="cancel"
     @success="close"
     v-if="!profileFormCreated"
   />
-  <div :class="{ blur: !profileFormCreated, mainBody: foreverTrue }">
+  <div
+    v-if="profileFormCreated"
+    :class="{ blur: !profileFormCreated, mainBody: foreverTrue }"
+  >
     <h1 id="interest">Projects You May Like</h1>
+    <!--
     <transition name="applyConfirm" mode="out-in">
       <ApplyConfirm
         @confirmYes="confirmYes"
@@ -15,6 +61,7 @@
         :projectTitle="currProject"
       />
     </transition>
+    -->
 
     <!--
     <div v-if="isLoading">
@@ -221,6 +268,16 @@
       </button>
     </div>
   </div>
+  <button
+    style="visibility: hidden"
+    type="submit"
+    ref="confirmModal"
+    class="green"
+    data-bs-toggle="modal"
+    data-bs-target="#saveModal"
+  >
+    Save
+  </button>
 </template>
 
 <script>
@@ -255,7 +312,7 @@ export default {
   },
   emits: ["cancel"],
   computed: {
-    ...mapState(["userEmail", "cardItems"]),
+    ...mapState(["userEmail", "cardItems", "studentToDo"]),
   },
   data() {
     return {
@@ -276,20 +333,28 @@ export default {
       currKey: null,
       like: false,
       latest: false,
+      componentKey: 0,
     };
   },
 
   methods: {
     ...mapMutations(["SET_CARDITEMS", "CLEAR_CARDITEMS"]),
+    submitTest() {
+      this.$refs.submitBtn.click();
+    },
+    forceRender() {
+      this.componentKey += 1;
+    },
     close(e) {
       this.profileFormCreated = true;
+      this.forceRender();
     },
     cancel(e) {
       this.cancel = e;
-      console.log("eeeeeeeeeeeeeeee");
+      //console.log("eeeeeeeeeeeeeeee");
     },
     applying(event, key) {
-      // alert(key);
+      this.$refs.confirmModal.click();
       this.applyConfirm = true;
       this.currKey = key;
       if (event) {
@@ -306,21 +371,21 @@ export default {
       if (e == true) {
         this.addApplicant(this.currKey);
       }
-      console.log("yes");
+      //console.log("yes");
       this.applyConfirm = false;
     },
     async addApplicant(key) {
       // alert(key);
       if (this.like) {
-        console.log(this.testCollection[key]);
+        //console.log(this.testCollection[key]);
         var newApplicants = this.testCollection[key]["newApplicants"];
-        console.log(newApplicants);
+        //console.log(newApplicants);
         var projTitle = this.testCollection[key]["projectTitle"];
         newApplicants.push(this.userEmail);
         var applied = this.applied;
-        console.log(applied);
+        //console.log(applied);
         var projectId = this.testCollection[key]["projectId"];
-        console.log(projectId);
+        //console.log(projectId);
         applied.push(projectId);
         // applied.push(projTitle);
         this.testCollection[key]["appstat"] = "applied";
@@ -345,15 +410,15 @@ export default {
           console.error("Error updating document: ", error);
         }
       } else if (this.latest) {
-        console.log(this.wholeTestCollection[key]);
+        //console.log(this.wholeTestCollection[key]);
         var newApplicants = this.wholeTestCollection[key]["newApplicants"];
-        console.log(newApplicants);
+        //console.log(newApplicants);
         var projTitle = this.wholeTestCollection[key]["projectTitle"];
         newApplicants.push(this.userEmail);
         var applied = this.applied;
-        console.log(applied);
+        //console.log(applied);
         var projectId = this.wholeTestCollection[key]["projectId"];
-        console.log(projectId);
+        //console.log(projectId);
         applied.push(projectId);
         // applied.push(projTitle);
         this.wholeTestCollection[key]["appstat"] = "applied";
@@ -398,8 +463,10 @@ export default {
           items: JSON.stringify(this.testCollection[key]),
         },
       });
+      /*
       console.log(key);
       console.log(this.testCollection[key]);
+      */
     },
 
     indivprojlatest(key) {
@@ -414,8 +481,10 @@ export default {
           items: JSON.stringify(this.wholeTestCollection[key]),
         },
       });
+      /*
       console.log(key);
       console.log(this.wholeTestCollection[key]);
+      */
     },
 
     // interestProjects() {
@@ -473,7 +542,7 @@ export default {
       const ref = doc(db, "students", that.userEmailData);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      console.log(data.appliedProjects);
+      //console.log(data.appliedProjects);
       that.applied = data.appliedProjects;
     }
     getAppliedProjects();
@@ -499,7 +568,7 @@ export default {
       for (var i = 0; i < array[0].length; i++) {
         returnArray.push(array[0][i]["value"]);
       }
-      console.log(returnArray);
+      //console.log(returnArray);
 
       const projects = query(
         collection(db, "Project"),
@@ -527,7 +596,7 @@ export default {
         //     pictureprof = "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
         //   }
         if (that.allApplied.includes(id)) {
-          console.log("pic is: " + data.profPicture);
+          //console.log("pic is: " + data.profPicture);
           testCollection.push({
             /*projectTitle: data.Project_Title, 
             description: data.Description,
@@ -635,15 +704,17 @@ export default {
       });
       that.testCollection = testCollection;
       that.wholeTestCollection = wholeTestCollection;
+      /*
       console.log(testCollection);
       console.log(wholeTestCollection);
+      */
       testCollection.sort(function (x, y) {
         return y.timestamp - x.timestamp;
       });
       wholeTestCollection.sort(function (x, y) {
         return y.timestamp - x.timestamp;
       });
-      console.log(wholeTestCollection);
+      //console.log(wholeTestCollection);
     }
 
     getAllAppliedProjects();
@@ -726,5 +797,58 @@ hr {
   background: #2c3e50;
   opacity: 0.6;
   cursor: pointer;
+}
+
+#applyModal {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #bbdfcc;
+  border: none;
+}
+
+.words {
+  width: max-content;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  height: 50px;
+}
+
+.applybtns {
+  width: max-content;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+#yesbtn,
+#nobtn {
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #89ca9a;
+  color: #3f3f3f;
+  width: 120px;
+  height: 30px;
+  font-size: 18px;
+}
+
+#tickIcon {
+  height: 38px;
+  width: 38px;
+  color: #3d9956;
+  float: left;
+}
+
+.modal-body p {
+  font-size: 18px;
+  text-align: center;
+  width: 180px;
+  margin-left: 48px;
+  color: #3f3f3f;
 }
 </style>

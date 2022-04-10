@@ -1,5 +1,5 @@
 <template>
-<!--
+  <!--
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
   <img src="../assets/Pathfinders.png" class="d-inline-block align-top" width=200 alt="logo">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,48 +24,47 @@
     <router-link :to="{name:'BusinessHomePage'}">Business Home</router-link> |
     About
   </div>-->
-  <StudentNavBar :search=true :Heading="Heading" :header=true />
+  <StudentNavBar :search="true" :Heading="Heading" :header="true" />
   <div>
-  {{items.projectTitle}}  
+    {{ items.projectTitle }}
   </div>
 </template>
 
 <script>
-import StudentNavBar from '../components/StudentNavBar.vue'
+import StudentNavBar from "../components/StudentNavBar.vue";
 export default {
-  name: 'About',
+  name: "About",
   components: {
-    StudentNavBar
+    StudentNavBar,
   },
   data() {
     return {
       Heading: "PROFILE",
       items: [],
-    }
+    };
   },
   mounted() {
-    this.items = JSON.parse(this.$route.params.items)
-    console.log(this.items)
-  }
-}
+    this.items = JSON.parse(this.$route.params.items);
+    //console.log(this.items);
+  },
+};
 </script>
 
 <style scoped>
 h3 {
-    font-family: verdana;
-    text-align: center;
+  font-family: verdana;
+  text-align: center;
 }
 
 h1 {
-    color: rgba(0, 0, 0, 0.829);
-    font-family: verdana;
-    font-size: 170%;
-    text-align: center;
-    padding: 8px
+  color: rgba(0, 0, 0, 0.829);
+  font-family: verdana;
+  font-size: 170%;
+  text-align: center;
+  padding: 8px;
 }
 
 nav {
   background-color: "#004A23";
 }
-
 </style>

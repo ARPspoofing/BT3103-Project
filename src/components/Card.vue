@@ -1,15 +1,39 @@
 <template>
   <div class="card-body" @click.self="clickCard">
-    <div class="clogo">
-      <img v-bind:src="picture" alt="Logo" class="logo" />
+    <div class="clogo" @click.self="clickCard">
+      <img
+        @click.self="clickCard"
+        v-bind:src="picture"
+        alt="Logo"
+        class="logo"
+      />
       <span class="card-title"> {{ currProjectTitle }} <br /> </span>
     </div>
-    <div class="card-content">
-      <p class="card-text">{{ description }}</p>
+    <div class="card-content" @click.self="clickCard">
+      <p class="card-text" @click.self="clickCard">{{ description }}</p>
     </div>
-    <p id="appstatus" class="offered" v-if="stat == 'offered'">Offered</p>
-    <p id="appstatus" class="pending" v-else-if="stat == 'pending'">Pending</p>
-    <p id="appstatus" class="rejected" v-else-if="stat == 'rejected'">
+    <p
+      id="appstatus"
+      class="offered"
+      v-if="stat == 'offered'"
+      @click.self="clickCard"
+    >
+      Offered
+    </p>
+    <p
+      id="appstatus"
+      class="pending"
+      v-else-if="stat == 'pending'"
+      @click.self="clickCard"
+    >
+      Pending
+    </p>
+    <p
+      id="appstatus"
+      class="rejected"
+      v-else-if="stat == 'rejected'"
+      @click.self="clickCard"
+    >
       Rejected
     </p>
     <p id="closed" v-if="stat == 'closed'">Application Closed</p>
@@ -25,7 +49,7 @@
     <button
       id="applybtns"
       v-show="apply"
-      v-else="appstat == 'apply'"
+      v-else-if="appstat == 'apply'"
       class="btn-apply"
       data-bs-toggle="modal"
       data-bs-target="#applyModal"
@@ -149,8 +173,10 @@ export default {
   data() {
     return {
       testCollection: [],
+      /*
       stat: "",
       appstat: "",
+      */
       currProjectTitle: "",
     };
   },
@@ -169,7 +195,17 @@ export default {
     projectId: String,
     like: false,
     latest: false,
+    popUpConfirm: Boolean,
     //applicantbtn: Function,
+  },
+  watch: {
+    popUpConfirm(state) {
+      if (state == true) {
+        this.$emit("acceptBtn");
+      } else {
+        this.$emit("declineBtn");
+      }
+    },
   },
   methods: {
     applicantbtn() {
@@ -181,11 +217,11 @@ export default {
     },
 
     acceptBtn() {
-      this.$emit("acceptBtn");
+      this.$emit("firstClick", true, this.projectTitle);
     },
 
     declineBtn() {
-      this.$emit("declineBtn");
+      this.$emit("firstClick", false, this.projectTitle);
     },
 
     viewTasksBtn() {

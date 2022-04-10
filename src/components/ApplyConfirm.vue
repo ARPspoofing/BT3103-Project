@@ -93,11 +93,11 @@ export default {
   props: ["projectTitle"],
   methods: {
     applicantbtnYes() {
-      // alert("accept");
+      //alert("accept");
       this.$emit("confirmYes", true);
     },
     applicantbtnNo() {
-      // alert("decline");
+      //alert("decline");
       this.$emit("confirmYes", false);
     },
   },
@@ -105,8 +105,23 @@ export default {
 </script>
 
 <style scoped>
+/*
 .mainBody {
-      position: fixed;
+  position: fixed;
+  text-align: center;
+  width: 600px;
+  height: 80px;
+  max-width: 22em;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  z-index: 999;
+  transform: none;
+}
+*/
+.mainBody {
+    position: fixed;
     text-align: center;
     width: 800px;
     height: 180px;
@@ -245,12 +260,11 @@ export default {
   color: #ec5c5c;
 }
 
-#tickIcon {
+	#tickIcon {
   height: 38px;
   width: 38px;
   color: #3d9956;
 }
-
 #yesbtn,
 #nobtn {
   margin: 10px;
@@ -262,4 +276,6 @@ export default {
   height: 30px;
   font-size: 18px;
 }
+
+
 </style>

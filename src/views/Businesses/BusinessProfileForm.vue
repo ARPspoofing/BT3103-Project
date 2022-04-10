@@ -111,7 +111,7 @@ export default {
     ...mapMutations(["SET_NAME"]),
 
     try() {
-      console.log("testc");
+      //console.log("testc");
     },
 
     showPopUp() {
@@ -256,9 +256,6 @@ label {
 
 .interest {
   gap: 5px;
-  div {
-    flex: 1;
-  }
 }
 
 .content {
@@ -301,15 +298,9 @@ button,
   font-size: 12px;
   margin-right: 8px;
   color: #fff;
-  img {
-    margin-right: 4px;
-  }
 }
 
 .save {
-  div {
-    flex: 1;
-  }
 }
 
 .right {
