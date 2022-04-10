@@ -235,6 +235,11 @@ const routes = [
     name: "BusinessToDoView",
     component: () => import("../views/Businesses/BusinessToDoView.vue"),
   },
+  {
+    path: "/business/management/reroute",
+    name: "BusinessReRoute",
+    component: () => import("../views/Businesses/BusinessReRoute.vue"),
+  },
 
   {
     path: "/:catchall(.*)",

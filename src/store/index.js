@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 import {getFirestore} from "firebase/firestore"
 import firebaseApp from "../firebase.js"
+import * as Cookies from 'js-cookie';
 
 import {
   collection,
@@ -21,6 +22,14 @@ export default createStore({
   plugins: [
     createPersistedState({
       storage: window.sessionStorage,
+      /*
+      storage: {
+        getItem: (key) => Cookies.get(key),
+        setItem: (key, value) => Cookies.set(key, value, { expires: 3, secure: false }),
+        removeItem: (key) => Cookies.remove(key)
+      
+        }
+      */
     }),
   ],
 
@@ -69,6 +78,7 @@ export default createStore({
     businessStudentsComp:null, 
     TaskComments:null,
     updated:false,
+    
   },
   //getter for debugging
   getters: {

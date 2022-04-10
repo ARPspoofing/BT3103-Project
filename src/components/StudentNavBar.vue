@@ -155,6 +155,7 @@ export default {
     async logOut() {
       const auth = getAuth();
       await signOut(auth);
+      window.sessionStorage.clear()
       this.$router.push({ name: "StudentLogin" });
     },
 
