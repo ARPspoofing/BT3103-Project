@@ -453,7 +453,7 @@ export default {
       this.transcriptErrorPresent = false;
       if (this.name == "") {
         this.nameErrorPresent = true;
-        this.errorMessage = "Please fill out your name";
+        this.errorMessage = "Please fill in your name";
       } else if (this.course == "") {
         this.courseErrorPresent = true;
         this.errorMessage =
@@ -464,19 +464,19 @@ export default {
       } else if (parseInt(this.year) > 4 || parseInt(this.year) < 1) {
         this.yearErrorPresent = true;
         this.errorMessage =
-          "Please fill out a valid year of study (Must be between 1 and 4 inclusive)";
+          "Please fill in a valid year of study (Must be between 1 and 4 inclusive)";
       } else if (this.allInterestsEmpty()) {
         this.interestErrorPresent = true;
         this.errorMessage = "Please select at least one area of interest";
       } else if (this.schoolEmail == "") {
         this.schoolEmailErrorPresent = true;
-        this.errorMessage = "Please enter your school email";
+        this.errorMessage = "Please fill in your school email";
       } else if (this.personalEmail == "") {
         this.personalEmailErrorPresent = true;
-        this.errorMessage = "Please enter your personal email";
+        this.errorMessage = "Please fill in your personal email";
       } else if (this.contactNo == "") {
         this.contactNumberErrorPresent = true;
-        this.errorMessage = "Please enter your contact number";
+        this.errorMessage = "Please fill in your contact number";
       } else if (
         this.contactNo == "" ||
         /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d+)\)?)[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i.test(

@@ -58,7 +58,7 @@
                    <img src="../../assets/document.jpeg">
                </div>
            </div>-->
-    <div class="middle-bottom flex">
+    <!-- <div class="middle-bottom flex">
       <div class="documents flex flex-column">
         <p><b>Submit Relevant Documents :</b></p>
         <button id="addFileButton" @click="addFile">
@@ -82,7 +82,7 @@
           />
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="bottom flex flex-column">
       <label for="comments">Comments</label>
       <h4>Please limit additional comments to 500 characters</h4>
