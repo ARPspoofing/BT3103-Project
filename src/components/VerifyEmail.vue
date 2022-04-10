@@ -8,7 +8,7 @@
       </div>
       <div class="input">
         <p>
-          You're almost there! We sent as email to<b>
+          You're almost there! We sent an email to<b>
             <br />
             {{ this.userEmail }}</b
           ><br />Just click on the link in the email to complete your signup<br />
