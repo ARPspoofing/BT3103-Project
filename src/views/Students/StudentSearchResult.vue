@@ -65,7 +65,7 @@
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
-          :picture="item.profPicture"
+          :picture="item.profilePicture"
           :description="item.description"
           @clickCard="indivprojFirst(key)"
           @applicantbtn="addApplicantFirst(key + 2 * 6)"
@@ -76,7 +76,7 @@
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
-          :picture="item.profPicture"
+          :picture="item.profilePicture"
           :description="item.description"
           @clickCard="indivprojSecond(key)"
           @applicantbtn="addApplicantSecond(key + 2 * 6)"
@@ -87,7 +87,7 @@
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
-          :picture="item.profPicture"
+          :picture="item.profilePicture"
           :description="item.description"
           @clickCard="indivprojThird(key)"
           @applicantbtn="addApplicantThird(key + 2 * 6)"
@@ -376,13 +376,14 @@ export default {
       var offeredProjects = data.offeredProjects;  
       var rejectedProjects = data.rejectedProjects;
 
-      that.appliedProjects.concat(appliedProjects) 
-      that.appliedProjects.concat(inProgressProjects) 
-      that.appliedProjects.concat(offeredProjects) 
-      that.rejectedProjects.concat(rejectedProjects)
+      that.appliedProjects = that.appliedProjects.concat(appliedProjects) 
+      that.appliedProjects = that.appliedProjects.concat(inProgressProjects) 
+      that.appliedProjects = that.appliedProjects.concat(offeredProjects) 
+      that.appliedProjects = that.appliedProjects.concat(rejectedProjects)
 
     }
     getAppliedProjects()
+    console.log(that.appliedProjects)
     async function setProjects() {
       //Non VUEX version. Uncomment if VUEX does not work
       /*
@@ -523,6 +524,7 @@ export default {
       snapshot.forEach((docs) => {
         let data = docs.data();
         let appstat = ''
+        console.log(that.appliedProjects)
         if(that.appliedProjects.includes(docs.id)) {
           appstat = "applied"
         } else {
@@ -545,7 +547,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
-            profPicture: data.profPicture,
+            profilePicture: data.profPicture,
           });
         } else if (secondPriorityIds.includes(docs.id)) {
           secondPriority.push({
@@ -563,7 +565,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
-            profPicture: data.profPicture,
+            profilePicture: data.profPicture,
           });
         } else if (thirdPriorityIds.includes(docs.id)) {
           thirdPriority.push({
@@ -581,7 +583,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
-            profPicture: data.profPicture,
+            profilePicture: data.profPicture,
           });
         }
       });
