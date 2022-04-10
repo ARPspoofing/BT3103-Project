@@ -28,6 +28,7 @@
         :projectTitle="item.projectTitle"
         :description="item.description"
         :stat="stat"
+        :picture = "item.profilePicture"
       />
     </div>
   </div>
@@ -86,12 +87,13 @@ export default {
 
       const response = await Promise.all(
         docSnap.data().appliedProjects.map(async (item) => {
-          console.log("nested", item);
+          //console.log("nested", item);
           if (item) {
             const finalResult = await getDoc(doc(db, "Project", item));
             that.projects.push({
               projectTitle: finalResult.data().Project_Title,
               description: finalResult.data().Description,
+              profilePicture: finalResult.data().profPicture,
             });
           }
         })
@@ -106,6 +108,7 @@ export default {
       return {
         projectTitle: data.Project_Title,
         description: data.Description,
+        profilePicture: data.profPicture,
       };
     }
   },

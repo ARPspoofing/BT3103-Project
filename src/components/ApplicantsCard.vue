@@ -1,13 +1,13 @@
 <template>
   <div class="card-body" @click.self="clickCard">
     <div class="clogo" @click.self="clickCard">
-      <img src="../assets/google-logo.png" alt="Logo" class="logo" />
+      <img v-bind:src="picture" alt="Logo" class="logo" />
       <span>
         <div @click.self="clickCard" class="appDetails">
           {{ applicantName }} <br />
           {{ applicantCourse }}
-        </div> 
-        <div 
+        </div>
+        <div
           @click.self="clickCard"
           id="pendingOffer"
           class="acceptedStat"
@@ -44,7 +44,9 @@
           data-bs-toggle="modal"
           data-bs-target="#accModal"
         >-->
-        <button ref="accept" href="#" class="accept" @click="acceptbtn">Accept</button>
+        <button ref="accept" href="#" class="accept" @click="acceptbtn">
+          Accept
+        </button>
         <br />
         <!--<div
           class="modal fade"
@@ -91,7 +93,9 @@
           data-bs-toggle="modal"
           data-bs-target="#rejModal"
         >-->
-        <button ref="reject" href="#" class="reject" @click="rejectbtn">Reject</button>
+        <button ref="reject" href="#" class="reject" @click="rejectbtn">
+          Reject
+        </button>
         <br />
         <!--<div
           class="modal fade"
@@ -135,9 +139,16 @@
       </div>
     </span>
   </div>
-          <button style="visibility: hidden;" ref="clickMeAccept" @click="firstAccept"></button>
-          <button style="visibility: hidden;" ref="clickMeReject" @click="firstReject"></button>
-
+  <button
+    style="visibility: hidden"
+    ref="clickMeAccept"
+    @click="firstAccept"
+  ></button>
+  <button
+    style="visibility: hidden"
+    ref="clickMeReject"
+    @click="firstReject"
+  ></button>
 </template>
 
 <script>
@@ -151,11 +162,11 @@ export default {
   watch: {
     popUpConfirm(state) {
       if (state == true) {
-          this.$emit("acceptbtn");
+        this.$emit("acceptbtn");
       } else {
         this.$emit("rejectbtn");
       }
-    }
+    },
   },
   props: {
     buttons: Boolean,
@@ -164,9 +175,10 @@ export default {
     status: String,
     accepted: Boolean,
     popUpConfirm: Boolean,
+    picture: String,
   },
 
-/*
+  /*
   setup(props) {
     watch(()=>props.popUpConfirm, (state) => {
         if (state == true) {
@@ -181,12 +193,12 @@ export default {
   methods: {
     acceptbtn() {
       //this.$emit("acceptbtn");
-      this.$emit("firstClick",true,this.applicantName)
+      this.$emit("firstClick", true, this.applicantName);
     },
 
     rejectbtn() {
       //this.$emit("rejectbtn");
-      this.$emit("firstClick",false,this.applicantName)
+      this.$emit("firstClick", false, this.applicantName);
     },
 
     clickCard() {
@@ -206,7 +218,8 @@ export default {
   background-color: #bbdfcc;
   border-radius: 8px;
   width: 30%;
-  height: max-content;
+  /*height: max-content;*/
+  height: 200px;
   float: left;
   padding: 20px;
   margin: 10px;
@@ -244,7 +257,7 @@ export default {
 }
 
 .reject {
-  background-color: #f40000;
+  background-color: #ec5c5c;
   color: white;
   width: 110%;
   border-radius: 8px;

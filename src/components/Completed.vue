@@ -1,30 +1,25 @@
 <template>
-<div class="pendingreview" @click="getData">
-        <div class="top flex flex-row">
-            <div class="title"><strong>{{task['taskname']}}</strong></div>
-            <div class="status-button flex todoButton">
-                    <div>
-              <p id="status">Complete</p>
-            </div>
-            </div>
+  <div class="pendingreview" @click="getData">
+    <div class="top flex flex-row">
+      <div class="title">
+        <strong>{{ task["taskname"] }}</strong>
+      </div>
+      <div class="status-button flex todoButton">
+        <div>
+          <p id="status">Complete</p>
         </div>
-        <div class="top flex flex-row">
-            <p>
-                 Due date: {{duedate}}
-            </p>
-        </div>
-       
-        <div class="short">
-        <p>
-            Short Description: {{task['shortdescription']}}
-        </p>
-        </div>          
-    </div>  
+      </div>
+    </div>
+    <div class="top flex flex-row">
+      <p>Due date: {{ duedate }}</p>
+    </div>
 
+    <div class="short">
+      <p>Short Description: {{ trimmedSentence }}...</p>
+    </div>
+  </div>
 
-
-
-<!--
+  <!--
   <div v-if="user == 'student'">
     <router-link
       style="text-decoration: none; color: inherit"
@@ -96,8 +91,7 @@
     </router-link>
   </div>
   -->
-  
-  
+
   <!-- <router-link style="text-decoration: none; color: inherit; " 
         :to="{name:'ToDoView', 
         params: {
@@ -147,6 +141,15 @@ export default {
     return {
       duedate: this.task.duedate,
       dateOptions: { year: "numeric", month: "short", day: "numeric" },
+      trimmedSentence: this.task["shortdescription"]
+        .substr(0, 50)
+        .substr(
+          0,
+          Math.min(
+            this.task["shortdescription"].substr(0, 50).length,
+            this.task["shortdescription"].substr(0, 50).lastIndexOf(" ")
+          )
+        ),
     };
   },
   watch: {},
@@ -155,8 +158,8 @@ export default {
       return moment(date).format("DD MMMM YYYY");
     },
     getData() {
-      this.$emit('getData',this.task)
-      console.log(this.task)
+      this.$emit("getData", this.task);
+      //console.log(this.task);
     },
   },
 };
@@ -175,6 +178,7 @@ export default {
   box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.15);
   height: 170px;
   text-align: left;
+   width: 250px;
 }
 
 p {
@@ -389,7 +393,6 @@ a {
 
 .completedButton {
   background-color: rgb(230, 121, 139);
-  
 }
 
 .duedate {
@@ -415,7 +418,4 @@ a {
   margin: 0px;
   color: white;
 }
-
-
-
 </style>

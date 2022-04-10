@@ -79,36 +79,35 @@ import { mapMutations } from "vuex";
 import ResetPassword from "../../components/ResetPassword.vue";
 import GoogleButton from "../../components/GoogleButton.vue";
 
-const that = this
-const router = useRouter()
-const db = getFirestore(firebaseApp)
+const that = this;
+const router = useRouter();
+const db = getFirestore(firebaseApp);
 const provider = new GoogleAuthProvider();
 export default {
-    name:"BusinessLogin",
-    data() {
-        return {
-            email:'',
-            password:'',
-            errorMessage:'',
-            emailErrorPresent:false,
-            passwordErrorPresent:false,
-            forgetPassword: false,
-            
-        }
-    },   
-    components: {
-        ResetPassword,
-        GoogleButton,
-    }, 
-    computed: {
-        ...mapState(['userEmail','businessCounter'])
-    },
-    mounted() {
-        if (this.businessCounter == 0) {    
-            this.$refs.refresh.click()
-        }
-    },
-    /*
+  name: "BusinessLogin",
+  data() {
+    return {
+      email: "",
+      password: "",
+      errorMessage: "",
+      emailErrorPresent: false,
+      passwordErrorPresent: false,
+      forgetPassword: false,
+    };
+  },
+  components: {
+    ResetPassword,
+    GoogleButton,
+  },
+  computed: {
+    ...mapState(["userEmail", "businessCounter"]),
+  },
+  mounted() {
+    if (this.businessCounter == 0) {
+      this.$refs.refresh.click();
+    }
+  },
+  /*
     mounted() {
         async function checkVerified() {
             const docRef = doc(db,"businesses",String(this.email))
@@ -117,108 +116,119 @@ export default {
         }
         checkVerified()
     },  
-    */ 
-    methods: {
-    ...mapMutations(['SET_USEREMAIL','SET_BUSINESS_COUNTER']),
+    */
+  methods: {
+    ...mapMutations(["SET_USEREMAIL", "SET_BUSINESS_COUNTER"]),
     forgot() {
-        this.forgetPassword = true
+      this.forgetPassword = true;
     },
     close(e) {
-        this.forgetPassword = false
-    }, 
+      this.forgetPassword = false;
+    },
     async google() {
-        const that = this;
-        const auth = getAuth();
-        const provider = new GoogleAuthProvider();
-        signInWithPopup(auth, provider)
+      const that = this;
+      const auth = getAuth();
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider)
         .then((result) => {
-            // This gives you a Google Access Token. You can use it to access the Google API.
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential.accessToken;
-            const user = result.user;
-            this.SET_USEREMAIL(user.email)
-            this.$router.push({name:'businessLoading'})
-                // ...
-        }).catch((error) => {
-            // Handle Errors here.
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // The email of the user's account used.
-            const email = error.email;
-            // The AuthCredential type that was used.
-            const credential = GoogleAuthProvider.credentialFromError(error);
-            // ...
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          const user = result.user;
+          this.SET_USEREMAIL(user.email);
+          this.$router.push({ name: "businessLoading" });
+          // ...
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // The email of the user's account used.
+          const email = error.email;
+          // The AuthCredential type that was used.
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          // ...
         });
     },
     async login() {
-        if(this.email == '') {
-            if (this.businessCounter != 0) {
-                this.emailErrorPresent = true
-                this.errorMessage = "Please fill in your email"  
-            }
-            setTimeout(() => {
-                this.emailErrorPresent = false
-            },1500)
-        } else if (this.password == '') {
-            this.passwordErrorPresent = true
-            this.errorMessage = "Please fill in your password" 
-            setTimeout(() => {
-                this.passwordErrorPresent = false
-            },1500)
-        }else if(this.email != '' && this.password != '') {
-            const docRef = doc(db,"businesses",String(this.email))
-            const docs = await getDoc(docRef)
-            if(!docs.exists()) {
-            this.emailErrorPresent = true
-            this.errorMessage = "Email not registered, please create an account first"
-            setTimeout(() => {
-                this.emailErrorPresent = false
-            }, 1500)        
-            } else {
-            console.log(docs.data())
-            const formFilled = docs.data().profileFormCreated
-            const verifyEmail = docs.data().verifyEmail
-            console.log(verifyEmail)
-        signInWithEmailAndPassword(getAuth(), this.email,this.password)
-        .then((data) => {
-            this.SET_USEREMAIL(this.email)
-            //window.localStorage.setItem('emailForSignIn', this.email);
-            if(formFilled) {
-                 this.$router.push({name:'BusinessHomePage',params:{'formFilled':true}})
-            }else if (!verifyEmail) {
-                this.$router.push({name:'BusinessVerify'})
-            }
-            else {
-                if(formFilled) {  
-                    console.log("formFilled")      
-                    this.$router.push({name:'BusinessHomePage',params:{'formFilled':true}})
+      if (this.email == "") {
+        if (this.businessCounter != 0) {
+          this.emailErrorPresent = true;
+          this.errorMessage = "Please fill in your email";
+        }
+        setTimeout(() => {
+          this.emailErrorPresent = false;
+        }, 1500);
+      } else if (this.password == "") {
+        this.passwordErrorPresent = true;
+        this.errorMessage = "Please fill in your password";
+        setTimeout(() => {
+          this.passwordErrorPresent = false;
+        }, 1500);
+      } else if (this.email != "" && this.password != "") {
+        const docRef = doc(db, "businesses", String(this.email));
+        const docs = await getDoc(docRef);
+        if (!docs.exists()) {
+          this.emailErrorPresent = true;
+          this.errorMessage =
+            "Email not registered, please create an account first";
+          setTimeout(() => {
+            this.emailErrorPresent = false;
+          }, 1500);
+        } else {
+          //console.log(docs.data());
+          const formFilled = docs.data().profileFormCreated;
+          const verifyEmail = docs.data().verifyEmail;
+          //console.log(verifyEmail);
+          signInWithEmailAndPassword(getAuth(), this.email, this.password)
+            .then((data) => {
+              this.SET_USEREMAIL(this.email);
+              //window.localStorage.setItem('emailForSignIn', this.email);
+              if (formFilled) {
+                this.$router.push({
+                  name: "BusinessHomePage",
+                  params: { formFilled: true },
+                });
+              } else if (!verifyEmail) {
+                this.$router.push({ name: "BusinessVerify" });
+              } else {
+                if (formFilled) {
+                  //console.log("formFilled");
+                  this.$router.push({
+                    name: "BusinessHomePage",
+                    params: { formFilled: true },
+                  });
                 } else {
-                    this.$router.push({name:'BusinessHomePage',params:{'formFilled':false}})
+                  this.$router.push({
+                    name: "BusinessHomePage",
+                    params: { formFilled: false },
+                  });
                 }
-            }
-            
-        } ).catch((error) => {
-            console.log(error)
-            if(error.code === "auth/wrong-password") {
+              }
+            })
+            .catch((error) => {
+              //console.log(error);
+              if (error.code === "auth/wrong-password") {
                 this.passwordErrorPresent = true;
-                this.errorMessage = "You have entered an incorrect password"
+                this.errorMessage = "You have entered an incorrect password";
                 setTimeout(() => {
-                    this.passwordErrorPresent = false
-                }, 1500)
-            } else if (error.code === "auth/user-not-found") {
-                this.emailErrorPrsent = true  
-                this.errorMessage = "The email does not exist please sign up first"
-                 setTimeout(() => {
-                    this.emailErrorPresent = false
-                }, 1500)
-            }
-        })
-    this.SET_BUSINESS_COUNTER() 
-    }  
-    }
-},
-}
-}
+                  this.passwordErrorPresent = false;
+                }, 1500);
+              } else if (error.code === "auth/user-not-found") {
+                this.emailErrorPrsent = true;
+                this.errorMessage =
+                  "The email does not exist please sign up first";
+                setTimeout(() => {
+                  this.emailErrorPresent = false;
+                }, 1500);
+              }
+            });
+          this.SET_BUSINESS_COUNTER();
+        }
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>

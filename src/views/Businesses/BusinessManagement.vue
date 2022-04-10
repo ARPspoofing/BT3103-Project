@@ -1,22 +1,55 @@
 <template>
   <BusinessNavBar :Heading="Heading" :header="true" />
 
-  <button @click="blurBg" style = "visibility:hidden" type="submit" ref="confirmModal" class="green" data-bs-toggle="modal" data-bs-target="#saveModal" >Save</button>                  
-  <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">    
+  <button
+    @click="blurBg"
+    style="visibility: hidden"
+    type="submit"
+    ref="confirmModal"
+    class="green"
+    data-bs-toggle="modal"
+    data-bs-target="#saveModal"
+  >
+    Save
+  </button>
+  <div
+    class="modal fade"
+    id="saveModal"
+    tabindex="-1"
+    aria-labelledby="saveModalLabel"
+    aria-hidden="true"
+    data-bs-backdrop="false"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <BusinessToDoView
+            :taskComment="this.comment"
+            :description="this.longdescription"
+            :duedate="this.duedate"
+            :task_id="this.id"
+            :projectTitle="this.projectTitle"
+            :projectId="this.projectId"
+            :task="this.task"
+            @addComment="addComment"
+          />
 
-               <BusinessToDoView :description="this.longdescription" :duedate="this.duedate" :task_id="this.id" :projectTitle="this.projectTitle" :projectId="this.projectId" :task="this.task"/>
-                
-        <button @click="unblurBg" type="button" id="nobtn" data-bs-dismiss="modal">Cancel</button>
+          <button
+            @click="unblurBg"
+            type="button"
+            id="nobtn"
+            data-bs-dismiss="modal"
+            ref="cancelButton"
+          >
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
   <!--<div :class="{blurCss:toBlur,mainBody:foreverTrue}">-->
-    <div :class="{blurCss:toBlur}">
+  <div :class="{ blurCss: toBlur }">
     <button @click="goback" id="backButton">
       <i class="fa-solid fa-angles-left"></i>
       Back to Projects
@@ -85,7 +118,7 @@
           :task="task"
           :key="index"
           :user="Business"
-        />        
+        />
         <div v-else>
           <h3>No task has been completed yet.</h3>
         </div>
@@ -114,15 +147,15 @@ import {
 } from "firebase/firestore";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import {mapState} from 'vuex'
-import {mapMutations} from 'vuex'
+import { mapState } from "vuex";
+import { mapMutations } from "vuex";
 import Loading from "../../components/Loading.vue";
 const db = getFirestore(firebaseApp);
 const router = useRouter();
 import BusinessNavBar from "../../components/BusinessNavBar.vue";
 import { getAuth } from "firebase/auth";
-import BusinessToDoView from '../Businesses/BusinessToDoView.vue'
-import ToDoView from '../Students/ToDoView.vue'
+import BusinessToDoView from "../Businesses/BusinessToDoView.vue";
+import ToDoView from "../Students/ToDoView.vue";
 
 
 export default {
@@ -140,20 +173,38 @@ export default {
     //So that this page can easily access the project that it is clicked on
     projectName: String,
   },
+  watch: {
+    
+  },
   computed: {
-    ...mapState(['userEmail','businessTask','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted','businessInProgProjects','businessCompletedProjects','businessStudents','businessStudentsInProg','businessStudentsComp']),
+    ...mapState([
+      "taskComments",
+      "userEmail",
+      "businessTask",
+      "businessProjectId",
+      "businessProjectTitle",
+      "businessToDo",
+      "businessInProgress",
+      "businessPendingReview",
+      "businessCompleted",
+      "businessInProgProjects",
+      "businessCompletedProjects",
+      "businessStudents",
+      "businessStudentsInProg",
+      "businessStudentsComp",
+    ]),
   },
 
   data() {
     return {
-      task:null,
+      task: null,
       projectTitle: "",
       toDoTask: [],
       inProgressTask: [],
       pendingReviewTask: [],
       completedTask: [],
-      id:null,
-      duedate:null,
+      id: null,
+      duedate: null,
       projectId: "",
       Business: "business",
       inProgProjects: [],
@@ -162,11 +213,30 @@ export default {
       students: [],
       studentsInProg: [],
       studentsComp: [],
-      toBlur:false,
+      toBlur: false,
+      comment: null,
+
     };
   },
   methods: {
-    ...mapMutations(['SET_BUSINESS_TASK','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED','SET_BUSINESS_IN_PROG_PROJECTS','SET_BUSINESS_COMPLETED_PROJECTS','SET_BUSINESS_STUDENTS','SET_BUSINESS_STUDENTS_IN_PROG','SET_BUSINESS_STUDENTS_COMP',]),
+    ...mapMutations([
+      "SET_BUSINESS_TASK",
+      "SET_BUSINESS_PROJECT_ID",
+      "SET_BUSINESS_PROJECT_TITLE",
+      "SET_BUSINESS_TO_DO",
+      "SET_BUSINESS_IN_PROGRESS",
+      "SET_BUSINESS_PENDING_REVIEW",
+      "SET_BUSINESS_COMPLETED",
+      "SET_BUSINESS_IN_PROG_PROJECTS",
+      "SET_BUSINESS_COMPLETED_PROJECTS",
+      "SET_BUSINESS_STUDENTS",
+      "SET_BUSINESS_STUDENTS_IN_PROG",
+      "SET_BUSINESS_STUDENTS_COMP",
+      "SET_TASK_COMMENTS",
+    ]),
+    addComment() {
+      this.$refs.cancelButton.click()
+    },
     //...mapMutations(['SET_BUSINESS_TASK','SET_BUSINESS_PROJECT_ID','SET_BUSINESS_PROJECT_TITLE','SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED',]),
     goback() {
       this.$router.push({
@@ -175,27 +245,54 @@ export default {
       });
     },
     blurBg() {
-      this.toBlur = true
+      this.toBlur = true;
     },
     unblurBg() {
-      this.toBlur = false
+      this.toBlur = false;
     },
     attempt() {
-      this.openModal = true
+      this.openModal = true;
     },
-    capture(task_emit) {
-        this.task = task_emit
-        this.SET_BUSINESS_TASK(task_emit)
-        //this.SET_BUSINESS_TASK(task_emit)
-        this.id = task_emit['id']
-        this.projectId = task_emit['projectId']
-        this.projectTitle = task_emit['projectTitle']
-        this.longdescription = task_emit['longdescription']
-        this.duedate = task_emit['duedate']
-        console.log("task emit full",task_emit)
-        console.log("task emit",task_emit['id'])
-        this.openModal = true
-        this.$refs.confirmModal.click();
+    async capture(task_emit) {
+      const curr = this;
+      this.task = task_emit;
+      this.SET_BUSINESS_TASK(task_emit);
+      //this.SET_BUSINESS_TASK(task_emit)
+      this.id = task_emit["id"];
+      this.projectId = this.businessProjectId;
+      //this.projectId = task_emit['projectId']
+      this.projectTitle = task_emit["projectTitle"];
+      this.longdescription = task_emit["shortdescription"];
+      this.duedate = task_emit["duedate"];
+      /*
+      console.log("task emit full", task_emit);
+      console.log("task emit", task_emit["id"]);
+      */
+
+      //retrieve all the comments for all the task first
+      const docRef = doc(db, "Project", this.businessProjectId);
+      let project = await getDoc(docRef);
+      var tasks = await project.data().Tasks;
+      var currTask = {};
+      //console.log("taskComments", tasks);
+      for (let i = 0; i < tasks.length; i++) {
+        let thisTask = tasks[i];
+        if (thisTask.taskName == task_emit["id"]) {
+          currTask = thisTask;
+          if (currTask.comments) {
+            curr.comment = currTask.comments.reverse();
+            this.SET_TASK_COMMENTS(currTask.comments);
+            //console.log("comments", currTask.comments.reverse());
+          } else {
+            curr.comment = [];
+          }
+          break;
+        }
+      }
+      //console.log("current comments", curr.comment);
+
+      this.openModal = true;
+      this.$refs.confirmModal.click();
     },
     async completeProject() {
       if (this.completedProjects) {
@@ -211,9 +308,12 @@ export default {
       //console.log(this.inProgProjects)
 
       try {
-        const docRef = await updateDoc(doc(db, "Project", this.businessProjectId), {
-          Status: "completed",
-        });
+        const docRef = await updateDoc(
+          doc(db, "Project", this.businessProjectId),
+          {
+            Status: "completed",
+          }
+        );
 
         const docRef2 = await updateDoc(doc(db, "businesses", this.userEmail), {
           completedProjects: this.completedProjects,
@@ -230,9 +330,11 @@ export default {
           } else {
             stuComp = [this.businessProjectId];
           }
+          /*
           console.log(this.students[i]);
           console.log(stuInProg);
           console.log(stuComp);
+          */
           const docRef2 = await updateDoc(
             doc(db, "students", this.students[i]),
             {
@@ -263,23 +365,21 @@ export default {
     */
 
     //Previously assigned in getProjects()
-    this.inProgProjects = this.businessInProgProjects
-    this.completedProjects = this.businessCompletedProjects
+    this.inProgProjects = this.businessInProgProjects;
+    this.completedProjects = this.businessCompletedProjects;
 
     //Previously assigned in getStudents()
-    this.students = this.businessStudents
-    this.studentsInProg = this.businessStudentsInProg
-    this.studentsComp = this.businessStudentsComp
+    this.students = this.businessStudents;
+    this.studentsInProg = this.businessStudentsInProg;
+    this.studentsComp = this.businessStudentsComp;
 
-    this.projectId = this.businessProjectId
-    this.projectTitle = this.businessProjectTitle
-    this.fullTitle = "Tasks for " + this.projectTitle 
-    this.toDoTask = this.businessToDo
-    this.inProgressTask = this.businessInProgress
-    this.pendingReviewTask = this.businessPendingReview
-    this.completedTask = this.businessCompleted
-
-
+    this.projectId = this.businessProjectId;
+    this.projectTitle = this.businessProjectTitle;
+    this.fullTitle = "Tasks for " + this.projectTitle;
+    this.toDoTask = this.businessToDo;
+    this.inProgressTask = this.businessInProgress;
+    this.pendingReviewTask = this.businessPendingReview;
+    this.completedTask = this.businessCompleted;
 
     //Non vuex
     /*
@@ -483,55 +583,55 @@ h4 {
   margin-left: 50px;
 }
 
-
 #applyModal {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
-  .modal-content {
-    background-color: #b3cabe;
-    border: none;
-  }
+.modal-content {
+  background-color: #b3cabe;
+  border: none;
+}
 
-  .words {
-    width: max-content;
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
-    height: 50px;
-  }
+.words {
+  width: max-content;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  height: 50px;
+}
 
-  .applybtns {
-    width: max-content;
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-  }
+.applybtns {
+  width: max-content;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
 
-  #yesbtn, #nobtn {
-    margin: 10px;
-    border: none;
-    border-radius: 10px;
-    background-color:#89ca9a;
-    color: #3f3f3f;
-    width: 120px;
-    height: 30px;
-    font-size: 18px;
-  }
+#yesbtn,
+#nobtn {
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #89ca9a;
+  color: #3f3f3f;
+  width: 120px;
+  height: 30px;
+  font-size: 18px;
+}
 
-  .modal-body p {
-    font-size: 18px;
-    text-align: center;
-    color: #3f3f3f;
-  }
+.modal-body p {
+  font-size: 18px;
+  text-align: center;
+  color: #3f3f3f;
+}
 
-  .blurCss {
-      filter: blur(5px); 
-  }
+.blurCss {
+  filter: blur(5px);
+}
 
-  .mainBody {
+.mainBody {
   background-color: #f5f5f5;
   width: 100%;
   height: 100%;
@@ -566,10 +666,8 @@ h4 {
   padding: 15px;
 }
 
-
-
 .modal-overlay {
-  content: '';
+  content: "";
   position: absolute;
   position: fixed;
   top: 0;
@@ -582,65 +680,64 @@ h4 {
   cursor: pointer;
 }
 
-
 #applyModal {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-
-  .modal-content {
-    background-color: #b3cabe;
-    border: none;
-  }
-
-  .words {
-    width: max-content;
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
-    height: 50px;
-  }
-
-  .applybtns {
-    width: max-content;
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-  }
-
-  #yesbtn, #nobtn {
-    margin: 10px;
-    border: none;
-    border-radius: 10px;
-    background-color:#89ca9a;
-    color: #3f3f3f;
-    width: 120px;
-    height: 30px;
-    font-size: 18px;
-  }
-
-  .modal-body p {
-    font-size: 18px;
-    text-align: center;
-    color: #3f3f3f;
-  }
-
-  .blurCss {
-      filter: blur(5px); 
-  }
-
-  #backButton {
-    background: #0e8044;
-  /*width: 190px;
-        height: 30px;*/
-    color: white;
-    margin-top: 20px;
-    border: none;
-    border-radius: 15px;
-    border-radius: 30px;
-    padding: 10px 25px;
-    font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
+.modal-content {
+  background-color: #b3cabe;
+  border: none;
+}
+
+.words {
+  width: max-content;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  height: 50px;
+}
+
+.applybtns {
+  width: max-content;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+#yesbtn,
+#nobtn {
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #89ca9a;
+  color: #3f3f3f;
+  width: 120px;
+  height: 30px;
+  font-size: 18px;
+}
+
+.modal-body p {
+  font-size: 18px;
+  text-align: center;
+  color: #3f3f3f;
+}
+
+.blurCss {
+  filter: blur(5px);
+}
+
+#backButton {
+  background: #0e8044;
+  /*width: 190px;
+        height: 30px;*/
+  color: white;
+  margin-top: 20px;
+  border: none;
+  border-radius: 15px;
+  border-radius: 30px;
+  padding: 10px 25px;
+  font-size: 14px;
+}
 </style>

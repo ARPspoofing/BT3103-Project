@@ -1,6 +1,10 @@
 <template>
   <BusinessNavBar :Heading="Heading" :header="true" />
   <div class="mainBody">
+    <button @click="goback" id="backButton">
+      <i class="fa-solid fa-angles-left"></i>
+      Back to Projects
+    </button>
     <form id="projectForm">
       <div class="inputs">
         <label for="projectTitle">Project Title*</label>
@@ -214,7 +218,7 @@ import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
-console.log(auth.currentUser);
+//console.log(auth.currentUser);
 
 export default {
   data() {
@@ -257,6 +261,12 @@ export default {
     var email = this.userEmail;
   },
   methods: {
+    goback() {
+      this.$router.push({
+        name: "BusinessHomePage",
+        params: {},
+      });
+    },
     addTask() {
       this.tasks.push({
         taskName: "",
@@ -296,7 +306,7 @@ export default {
         var g = this.selected;
       }
 
-      console.log(g);
+      //console.log(g);
       var h = document.getElementById("projectDescription").value;
       var i = this.tasks;
       var j = [];
@@ -564,5 +574,15 @@ p {
   margin-top: 5px;
   text-align: left;
   margin-left: 210px;
+}
+	#backButton {
+  background: #0e8044;
+  color: white;
+  margin-top: 20px;
+  border: none;
+  border-radius: 15px;
+  border-radius: 30px;
+  padding: 10px 25px;
+  font-size: 14px;
 }
 </style>

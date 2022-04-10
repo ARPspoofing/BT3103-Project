@@ -325,7 +325,11 @@ hr {
 </style>
 -->
 <template>
-  <BusinessNavBar :class="{blur:!profileFormCreated}" :Heading="Heading" :header="true" />
+  <BusinessNavBar
+    :class="{ blur: !profileFormCreated }"
+    :Heading="Heading"
+    :header="true"
+  />
   <BusinessProfileForm @success="close" v-if="!profileFormCreated" />
   <div :class="{ blur: !profileFormCreated, mainBody: foreverTrue }">
     <router-link
@@ -439,8 +443,8 @@ export default {
           items: JSON.stringify(this.testCollection[key]),
         },
       });
-      console.log(key);
-      console.log(this.testCollection[key]);
+      //console.log(key);
+      //console.log(this.testCollection[key]);
     },
     isEqual(email) {
       return email == this.businessEmail;
@@ -499,7 +503,7 @@ export default {
     async function fetchProject() {
       //var businessEmail = auth.currentUser.email;
       //var businessEmail = window.localStorage.getItem('emailForSignIn')
-      
+
       //order projects by posted date, from latest to oldest
       let projects = query(
         collection(db, "Project"),
@@ -540,7 +544,7 @@ export default {
         });
       });
       that.testCollection = testCollection;
-      console.log(testCollection);
+      //console.log(testCollection);
     }
     fetchProject();
     /*

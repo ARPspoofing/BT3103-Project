@@ -62,6 +62,7 @@
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
+          :picture="item.profPicture"
           :description="item.description"
           @clickCard="indivprojFirst(key /*+ 2*6*/)"
           @applicantbtn="addApplicantFirst(key + 2 * 6)"
@@ -72,6 +73,7 @@
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
+          :picture="item.profPicture"
           :description="item.description"
           @clickCard="indivprojSecond(key)"
           @applicantbtn="addApplicantSecond(key + 2 * 6)"
@@ -82,6 +84,7 @@
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
+          :picture="item.profPicture"
           :description="item.description"
           @clickCard="indivprojThird(key)"
           @applicantbtn="addApplicantThird(key + 2 * 6)"
@@ -192,8 +195,10 @@ export default {
           items: JSON.stringify(this.highestPriority[key]),
         },
       });
+      /*
       console.log(key);
       console.log(this.highestPriority[key]);
+      */
     },
 
     indivprojSecond(key) {
@@ -205,8 +210,10 @@ export default {
           items: JSON.stringify(this.secondPriority[key]),
         },
       });
+      /*
       console.log(key);
       console.log(this.secondPriority[key]);
+      */
     },
 
     indivprojThird(key) {
@@ -218,17 +225,19 @@ export default {
           items: JSON.stringify(this.thirdPriority[key]),
         },
       });
+      /*
       console.log(key);
       console.log(this.thirdPriority[key]);
+      */
     },
     async fetchProjectOrder(order) {
       //var businessEmail = auth.currentUser.email;
       //var businessEmail = window.localStorage.getItem('emailForSignIn')
       //order projects by posted date, from latest to oldest
-      alert(order);
+      //alert(order);
       var projects = null;
       if (order == "recent") {
-        alert("true!!");
+        //alert("true!!");
         this.CLEAR_FILTER();
         this.SET_FILTER("recent");
         projects = query(
@@ -296,7 +305,7 @@ export default {
       //searchData is a dictionary of {0:projectId,1:projectId...}
       //convert values into an array
       var searchDataCopy = this.searchData;
-      console.log("copyyy", searchDataCopy);
+      //console.log("copyyy", searchDataCopy);
 
       var values = Object.keys(searchDataCopy).map(function (key) {
         return searchDataCopy[key];
@@ -305,10 +314,12 @@ export default {
       //But the values arr is 2d
       //To flatten use ES6 spread
       var newValues = [];
+      /*
       console.log("searchData", this.searchData);
       console.log("values", values);
+      */
       newValues = newValues.concat(...values);
-      console.log("newValues", newValues);
+      //console.log("newValues", newValues);
       let snapshot = await getDocs(projects);
       snapshot.forEach((docs) => {
         let data = docs.data();
@@ -317,10 +328,10 @@ export default {
           temp.push(id);
         }
       });
-      console.log("searchDataValues", this.newValues);
+      //console.log("searchDataValues", this.newValues);
       this.CLEAR_HIGHEST();
       this.SET_HIGHEST_PRIORITYIDS(temp);
-      console.log("temp", temp);
+      //console.log("temp", temp);
       this.$router.push({
         name: "StudentSearchResult",
         params: { searched: this.searchString },
@@ -337,10 +348,12 @@ export default {
     this.receivedSearch = gottenSearch;
     //data variable = state variable
     this.searchId = this.searchData;
+    /*
     console.log("searchData", this.searchData);
     console.log("highestPriorityIds", this.highestPriorityIds);
     console.log("secondPriorityIds", this.secondPriorityIds);
     console.log("thirdPriorityIds", this.thirdPriorityIds);
+    */
     this.highestPriority = this.highestPriorityIds;
     this.secondPriority = this.secondPriorityIds;
     this.thirdPriority = this.thirdPriorityIds;
@@ -361,10 +374,10 @@ export default {
       const highestPriority = [];
       const secondPriority = [];
       const thirdPriority = [];
-      console.log(highestPriorityIds);
+      //console.log(highestPriorityIds);
       //let snapshot = await getDocs(collection(db, "Project"))
       if (that.recent == true) {
-        alert("recent");
+        //alert("recent");
         var snapshot = query(
           collection(db, "Project"),
           where("Status", "not-in", ["closed", "completed"]),
@@ -372,7 +385,7 @@ export default {
           orderBy("Posted_Date", "desc")
         );
       } else if (that.oldest == true) {
-        alert("oldest");
+        //alert("oldest");
         var snapshot = query(
           collection(db, "Project"),
           where("Status", "not-in", ["closed", "completed"]),
@@ -380,7 +393,7 @@ export default {
           orderBy("Posted_Date")
         );
       } else if (that.highest == true) {
-        alert("highest");
+        //alert("highest");
         var snapshot = query(
           collection(db, "Project"),
           where("Status", "not-in", ["closed", "completed"]),
@@ -388,7 +401,7 @@ export default {
           orderBy("Allowance", "desc")
         );
       } else if (that.lowest == true) {
-        alert("lowest");
+        //alert("lowest");
         var snapshot = query(
           collection(db, "Project"),
           where("Status", "not-in", ["closed", "completed"]),
@@ -396,13 +409,13 @@ export default {
           orderBy("Allowance")
         );
       } else if (that.longest == true) {
-        alert("longest");
+        //alert("longest");
         var snapshot = query(
           collection(db, "Project"),
           where("Status", "not-in", ["closed", "completed"]),
           orderBy("Project_End")
         );
-        alert("shortest");
+        //alert("shortest");
         var snapshot = query(
           collection(db, "Project"),
           where("Status", "not-in", ["closed", "completed"]),
@@ -411,7 +424,7 @@ export default {
         );
         //Just Order by project end date if no filter
       } else {
-        alert("else");
+        //alert("else");
         var snapshot = query(
           collection(db, "Project"),
           where("Status", "not-in", ["closed", "completed"]),
@@ -479,10 +492,10 @@ export default {
 
       const testCollection = [];
 
-      console.log("passed the query");
+      //console.log("passed the query");
       snapshot.forEach((docs) => {
         let data = docs.data();
-        console.log("searchResultone", highestPriorityIds);
+        //console.log("searchResultone", highestPriorityIds);
         if (highestPriorityIds.includes(docs.id)) {
           highestPriority.push({
             projectTitle: data.Project_Title,
@@ -497,6 +510,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
           });
         } else if (secondPriorityIds.includes(docs.id)) {
           secondPriority.push({
@@ -512,6 +526,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
           });
         } else if (thirdPriorityIds.includes(docs.id)) {
           thirdPriority.push({
@@ -527,6 +542,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
+            profPicture: data.profPicture,
           });
         }
       });
@@ -574,15 +590,9 @@ export default {
 
 .projectContainer {
   margin-left: 30px;
-  /* flex-grow: 1;
+  /*flex-grow: 1;
     display: flex; */
-  flex-direction: column;
-}
-
-.noProjectsText {
-  font-size: 24px;
-  color: rgb(0, 0, 0);
-  padding: 30px;
+  flex-direction: row;
 }
 
 /*
@@ -668,11 +678,35 @@ hr {
   color: #004a23;
 }
 
+/* GENERAL STYLES */
+.visuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+}
+
+h1 {
+  text-align: center;
+  margin: 30px 30px 0px 50px;
+}
+
+.container {
+  width: 70%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
 button,
 .button {
   cursor: pointer;
   padding: 8px 44px;
-  border-radius: 8px;
+  border-radius: 0px;
   border: none;
   font-size: 16px;
   margin-right: 20px;
@@ -684,22 +718,31 @@ button,
   }
 }
 
+.save {
+  div {
+    flex: 1;
+  }
+}
+
+.right {
+  margin-left: 80%;
+}
+
 .menu ol {
   list-style: none;
   padding: 0;
   margin: 0;
   background-color: #ec9f39;
-  font-size: 16px;
 }
-.menu ol {
+.menu ol:first-child {
   width: 10%;
   max-width: 960px;
   margin: 1rem auto 0 auto;
+  margin-left: 75%;
   align-items: right;
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
 }
 .menu-item {
-  border-top: 2px solid #16a085;
+  border-top: 2px solid #de8614;
   position: relative;
   transition: background 0.3s ease-in-out;
 }
@@ -716,7 +759,7 @@ button,
   font-variant: normal;
   text-rendering: auto;
   line-height: 1;
-  color: #16a085;
+  color: #de8614;
 }
 
 .menu-item .sub-menu {
@@ -744,16 +787,16 @@ button,
   transform: rotateX(0deg);
 }
 .menu-item a {
-  font-size: 0.8rem;
+  font-size: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   color: white;
   text-decoration: none;
   text-transform: uppercase;
-  height: 100%;
-  width: 100%;
-  padding: 1.5em 1em;
+  height: 35.2px;
+  width: 125px;
+  padding: 8px 6px;
 }
 </style>
 

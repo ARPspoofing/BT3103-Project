@@ -67,6 +67,8 @@ export default createStore({
     businessStudents:null,
     businessStudentsInProg:null,
     businessStudentsComp:null, 
+    TaskComments:null,
+    updated:false,
   },
   //getter for debugging
   getters: {
@@ -129,7 +131,7 @@ export default createStore({
       state.searchData = state.searchData.filter(
         (x, i, a) => a.indexOf(x) === i
       );
-      console.log("searchData", state.searchData);
+      
     },
     SET_SEARCH_STRING(state, payload) {
       state.searchString = payload;
@@ -235,7 +237,13 @@ export default createStore({
     },
     SET_BUSINESS_STUDENTS_COMP(state,payload) {
       state.businessStudentsComp = payload
-    }
+    },
+    SET_TASK_COMMENTS(state,payload) {
+      state.TaskComments = payload
+    },
+    SET_UPDATED(state,payload) {
+      state.updated = payload
+    },
 
     
   },

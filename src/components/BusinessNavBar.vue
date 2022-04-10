@@ -134,16 +134,16 @@ export default {
     const userEmail = this.userEmail;
     async function getApplicant(userEmail) {
       const docSnap = await getDoc(doc(db, "businesses", userEmail));
-      console.log("doc: " + docSnap);
+      //console.log("doc: " + docSnap);
       let data = docSnap.data();
-      console.log(data);
+      //console.log(data);
       //name =  data.name;
       //console.log("name: "+ name)
       //let result = await data.name
       var name = data.name;
       dropdownMenuButton.innerHTML = name;
       var picture = data.finalProfile;
-      console.log(typeof picture === "undefined");
+      //console.log(typeof picture === "undefined");
       if (typeof picture === "undefined") {
         document.getElementById("profilepic").src =
           "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png";

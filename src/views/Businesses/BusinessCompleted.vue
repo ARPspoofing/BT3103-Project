@@ -97,7 +97,7 @@ export default {
       const ref = doc(db, "Project", proj);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      console.log(data);
+      //console.log(data);
 
       return {
         projectId: proj,
@@ -118,7 +118,7 @@ export default {
         status: data.Status,
       };
     }
-    console.log(that.testCollection);
+    //console.log(that.testCollection);
   },
 };
 </script>

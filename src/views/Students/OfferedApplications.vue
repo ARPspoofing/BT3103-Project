@@ -1,51 +1,75 @@
 <template>
-  <StudentNavBar :header="true" :Heading="Heading"/>
-  <div class="modal fade" id="saveModalAccept" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
-              <div class="words">
-                <i class="fa-solid fa-circle-check" id="tickIcon"></i>
-                  <p>Accept {{modalName}}?</p>
-              </div>
-              <span>
-                <div class = "applybtns">
-                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="confirmYesAccept">Yes</button>
-                  <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
-                </div>
-              </span>
-              </div>
-            </div>
+  <StudentNavBar :header="true" :Heading="Heading" />
+  <div
+    class="modal fade"
+    id="saveModalAccept"
+    tabindex="-1"
+    aria-labelledby="saveModalLabel"
+    aria-hidden="true"
+    data-bs-backdrop="false"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="words">
+            <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+            <p>Accept {{ modalName }}?</p>
           </div>
-        </div>
-        <div class="modal fade" id="saveModalReject" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true" data-bs-backdrop="false">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
-              <div class="words">
-                <i class="fa-solid fa-times-circle" id="tickIcon"></i>
-                  <p>Reject {{modalName}}?</p>
-              </div>
-              <span>
-                <div class = "applybtns">
-                  <button type="button" id="yesbtn" data-bs-dismiss="modal" @click="confirmYesReject">Yes</button>
-                  <button type="button" id="nobtn" data-bs-dismiss="modal">No</button>
-                </div>
-              </span>
-              </div>
+          <span>
+            <div class="applybtns">
+              <button
+                type="button"
+                id="yesbtn"
+                data-bs-dismiss="modal"
+                @click="confirmYesAccept"
+              >
+                Yes
+              </button>
+              <button type="button" id="nobtn" data-bs-dismiss="modal">
+                No
+              </button>
             </div>
-          </div>
+          </span>
         </div>
-
-
-
-
-
-
-
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal fade"
+    id="saveModalReject"
+    tabindex="-1"
+    aria-labelledby="saveModalLabel"
+    aria-hidden="true"
+    data-bs-backdrop="false"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="words">
+            <i class="fa-solid fa-times-circle" id="tickIcon"></i>
+            <p>Reject {{ modalName }}?</p>
+          </div>
+          <span>
+            <div class="applybtns">
+              <button
+                type="button"
+                id="yesbtn"
+                data-bs-dismiss="modal"
+                @click="confirmYesReject"
+              >
+                Yes
+              </button>
+              <button type="button" id="nobtn" data-bs-dismiss="modal">
+                No
+              </button>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="mainBody">
-
     <h1 id="status">
       <span class="options">
         <b>OFFERED</b>
@@ -76,12 +100,30 @@
         @acceptBtn="acceptProj(key)"
         @declineBtn="declineProj(key)"
         @firstClick="firstClick"
-        :popUpConfirm="this.popUpConfirm"    
+        :popUpConfirm="this.popUpConfirm"
       />
     </div>
   </div>
-  <button type="submit" style="visibility:hidden;" ref="confirmModalAccept" class="green" data-bs-toggle="modal" data-bs-target="#saveModalAccept" >Accept</button>                  
-  <button type="submit" style="visibility:hidden;" ref="confirmModalReject" class="green" data-bs-toggle="modal" data-bs-target="#saveModalReject" >Reject</button>  
+  <button
+    type="submit"
+    style="visibility: hidden"
+    ref="confirmModalAccept"
+    class="green"
+    data-bs-toggle="modal"
+    data-bs-target="#saveModalAccept"
+  >
+    Accept
+  </button>
+  <button
+    type="submit"
+    style="visibility: hidden"
+    ref="confirmModalReject"
+    class="green"
+    data-bs-toggle="modal"
+    data-bs-target="#saveModalReject"
+  >
+    Reject
+  </button>
 </template>
 
 <script>
@@ -122,31 +164,31 @@ export default {
       declined: [],
       bizProjects: [],
       popUpConfirm: null,
-      modalName:null,
+      modalName: null,
     };
   },
   computed: {
     ...mapState(["userEmail"]),
   },
   methods: {
-    firstClick(event,name) {
-      this.modalName = name
+    firstClick(event, name) {
+      this.modalName = name;
       if (event == true) {
-        this.$refs.confirmModalAccept.click()
+        this.$refs.confirmModalAccept.click();
       } else {
-        this.$refs.confirmModalReject.click()
+        this.$refs.confirmModalReject.click();
       }
     },
     confirmYesAccept() {
-      this.popUpConfirm = true
+      this.popUpConfirm = true;
     },
     confirmYesReject() {
-      this.popUpConfirm = false
+      this.popUpConfirm = false;
     },
     async acceptProj(key) {
       var projId = this.offered[key];
       var projName = this.projects[key].projectTitle;
-      alert(projName);
+      //alert(projName);
       var business = this.projects[key].business;
       var biz = this.bizProjects[key];
 
@@ -165,19 +207,23 @@ export default {
         biz.push(projId);
       }
       biz = [...new Set(biz)];
-      console.log("This is biz", biz)
-      console.log(business)
-      
+      /*
+      console.log("This is biz", biz);
+      console.log(business);
+      */
+
       for (var i = 0; i < this.projects.length; i++) {
+        /*
         console.log(business, this.projects[i].business === business);
-        console.log(this.bizProjects)
+        console.log(this.bizProjects);
+        */
         if (this.projects[i].business === business) {
-          console.log("projId", projId);
-          this.bizProjects[i].push(projId)
+          //console.log("projId", projId);
+          this.bizProjects[i].push(projId);
           //this.bizProjects.push(projId);
         }
       }
-      console.log(this.bizProjects);
+      //console.log(this.bizProjects);
 
       this.projects.splice(key, 1);
       this.offered.splice(key, 1);
@@ -190,7 +236,7 @@ export default {
           offeredProjects: this.offered,
         });
 
-        console.log("This is updated biz" ,biz)
+        //console.log("This is updated biz", biz);
         const docRef2 = await updateDoc(doc(db, "businesses", business), {
           inProgProjects: biz,
         });
@@ -204,7 +250,7 @@ export default {
     async declineProj(key) {
       var projId = this.offered[key];
       var projName = this.projects[key].projectTitle;
-      console.log("projId", projId, "projName", projName, "key", key);
+      //console.log("projId", projId, "projName", projName, "key", key);
 
       if (!this.declined) {
         var declined = [];
@@ -213,7 +259,7 @@ export default {
       } else {
         this.declined.push(projId);
       }
-      console.log("declineee", this.declined);
+      //console.log("declineee", this.declined);
       this.projects.splice(key, 1);
       this.offered.splice(key, 1);
 
@@ -272,10 +318,12 @@ export default {
           });
         })
       );*/
-      
+
       if (data.offeredProjects) {
-        for(var i = 0; i < data.offeredProjects.length; i++) {
-          getProject(data.offeredProjects[i]).then((res)=>{that.projects.push(res)})
+        for (var i = 0; i < data.offeredProjects.length; i++) {
+          getProject(data.offeredProjects[i]).then((res) => {
+            that.projects.push(res);
+          });
         }
       }
     }
@@ -300,11 +348,11 @@ export default {
     getDeclinedProjects();
 
     async function getBizProjects(email) {
-      console.log(email)
+      //console.log(email);
       const ref = doc(db, "businesses", email);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      console.log(data)
+      //console.log(data);
       return data.inProgProjects;
     }
     getBizProjects();
@@ -313,11 +361,11 @@ export default {
       const ref = doc(db, "Project", proj);
       const docSnap = await getDoc(ref);
       const data = docSnap.data();
-      console.log(data.poster_id)
+      //console.log(data.poster_id);
       getBizProjects(data.poster_id).then((res) => {
         that.bizProjects.push(res);
       });
-      console.log(that.bizProjects)
+      //console.log(that.bizProjects);
       return {
         projectTitle: data.Project_Title,
         description: data.Description,
@@ -378,58 +426,55 @@ hr {
 }
 
 #applyModal {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
-  .modal-content {
-    background-color: #BBDFCC;
-    border: none;
-  }
+.modal-content {
+  background-color: #bbdfcc;
+  border: none;
+}
 
-  .words {
-    width: max-content;
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
-    height: 50px;
-  }
+.words {
+  width: max-content;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  height: 50px;
+}
 
-  .applybtns {
-    width: max-content;
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-  }
+.applybtns {
+  width: max-content;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
 
-  #yesbtn, #nobtn {
-    margin: 10px;
-    border: none;
-    border-radius: 10px;
-    background-color:#89ca9a;
-    color: #3f3f3f;
-    width: 120px;
-    height: 30px;
-    font-size: 18px;
-  }
+#yesbtn,
+#nobtn {
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #89ca9a;
+  color: #3f3f3f;
+  width: 120px;
+  height: 30px;
+  font-size: 18px;
+}
 
-  #tickIcon {
-    height: 38px;
-    width: 38px;
-    color: #3D9956;
-    float: left;
-  }
+#tickIcon {
+  height: 38px;
+  width: 38px;
+  color: #3d9956;
+  float: left;
+}
 
-  .modal-body p {
-    font-size: 18px;
-    text-align: center;
-    width: 180px;
-    margin-left: 48px;
-    color: #3f3f3f;
-  }
-
-
-
-
+.modal-body p {
+  font-size: 18px;
+  text-align: center;
+  width: 180px;
+  margin-left: 48px;
+  color: #3f3f3f;
+}
 </style>

@@ -118,71 +118,72 @@ import GoogleButton from "../../components/GoogleButton.vue";
 const actionCodeSettings = {
   // URL you want to redirect back to. The domain (www.example.com) for this
   // URL must be in the authorized domains list in the Firebase Console.
-  url: 'https://www.example.com/finishSignUp?cartId=1234',
+  url: "https://www.example.com/finishSignUp?cartId=1234",
   // This must be true.
   handleCodeInApp: true,
   iOS: {
-    bundleId: 'com.example.ios'
+    bundleId: "com.example.ios",
   },
   android: {
-    packageName: 'com.example.android',
+    packageName: "com.example.android",
     installApp: true,
-    minimumVersion: '12'
+    minimumVersion: "12",
   },
-  dynamicLinkDomain: 'example.page.link'
+  dynamicLinkDomain: "example.page.link",
 };
-const db = getFirestore(firebaseApp)
-const router = useRouter()
-const that = this
+const db = getFirestore(firebaseApp);
+const router = useRouter();
+const that = this;
 export default {
-    data() {
-        return {
-            email:'',
-            password:'',
-            confirmPassword:'',
-            error:'',
-            emailErrorPresent:false,
-            passwordErrorPresent:false,
-            confirmPasswordErrorPresent:false,
-            errorMessage:'',
-            loading: null,
-            verifiedEmail:false,
-        }
+  data() {
+    return {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      error: "",
+      emailErrorPresent: false,
+      passwordErrorPresent: false,
+      confirmPasswordErrorPresent: false,
+      errorMessage: "",
+      loading: null,
+      verifiedEmail: false,
+    };
+  },
+  components: {
+    Loading,
+    VerifyEmail,
+    GoogleButton,
+  },
+  computed: {
+    ...mapState(["userEmail"]),
+  },
+  methods: {
+    ...mapMutations(["SET_USEREMAIL"]),
+    async google() {
+      const auth = getAuth();
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          const user = result.user;
+          this.SET_USEREMAIL(user.email);
+          this.$router.push({ name: "businessLoading" });
+          // ...
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // The email of the user's account used.
+          const email = error.email;
+          // The AuthCredential type that was used.
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          // ...
+        });
     },
-    components: {
-        Loading,
-        VerifyEmail,
-        GoogleButton
-    },
-    computed: {
-        ...mapState(['userEmail']),
-    },
-    methods: {
-        ...mapMutations(['SET_USEREMAIL']),
-        async google() {
-            const auth = getAuth();
-            const provider = new GoogleAuthProvider();
-            signInWithPopup(auth, provider)
-            .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                const user = result.user;
-                this.SET_USEREMAIL(user.email)
-                this.$router.push({name:'businessLoading'})
-                // ...
-            }).catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.email;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                // ...
-            });
-        },
-        /*
+    /*
         googleSignIn() {
             var ui = firebaseui.auth.AuthUI.getInstance();
             if (!ui) {
@@ -198,47 +199,55 @@ export default {
             ui.start('#firebaseui-auth-container',uiConfig)
         },
         */
-        
-         register() { 
-                this.loading = true
-                if (this.email == '' || /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email) == false) {
-                    this.emailErrorPresent = true
-                    this.loading = false
-                    this.errorMessage = "Please enter a valid email address"
-                    setTimeout(() => {
-                        this.emailErrorPresent = false
-                    }, 1500)
-                } else if (this.password == '') {
-                    this.passwordErrorPresent = true
-                    this.loading = false
-                    this.errorMessage = "Please enter a password"
-                    setTimeout(() => {
-                        this.passwordErrorPresent = false
-                    }, 1500)
-                }else if(this.confirmPassword == '') {
-                    this.confirmPasswordErrorPresent = true
-                    this.loading = false
-                    this.errorMessage = "Please confirm your password above"
-                    setTimeout(() => {
-                        this.confirmPasswordErrorPresent = false
-                    }, 1500)
-                } else if (this.confirmPassword != this.password) {
-                    this.confirmPasswordErrorPresent = true
-                    this.loading = false
-                    this.errorMessage = "Please ensure that your password and confirm password match"
-                    setTimeout(() => {
-                        this.confirmPasswordErrorPresent = false
-                    }, 1500)
-                } else if(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(this.password) == false) {
-                    this.passwordErrorPresent = true
-                    this.loading = false
-                    this.errorMessage = "Weak Password"
-                    setTimeout(() => {
-                        this.passwordErrorPresent = false
-                    }, 1500)
-                } else if(this.password == this.confirmPassword) {  
-                
-                /*
+
+    register() {
+      this.loading = true;
+      if (
+        this.email == "" ||
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email) ==
+          false
+      ) {
+        this.emailErrorPresent = true;
+        this.loading = false;
+        this.errorMessage = "Please enter a valid email address";
+        setTimeout(() => {
+          this.emailErrorPresent = false;
+        }, 1500);
+      } else if (this.password == "") {
+        this.passwordErrorPresent = true;
+        this.loading = false;
+        this.errorMessage = "Please enter a password";
+        setTimeout(() => {
+          this.passwordErrorPresent = false;
+        }, 1500);
+      } else if (this.confirmPassword == "") {
+        this.confirmPasswordErrorPresent = true;
+        this.loading = false;
+        this.errorMessage = "Please confirm your password above";
+        setTimeout(() => {
+          this.confirmPasswordErrorPresent = false;
+        }, 1500);
+      } else if (this.confirmPassword != this.password) {
+        this.confirmPasswordErrorPresent = true;
+        this.loading = false;
+        this.errorMessage =
+          "Please ensure that your password and confirm password match";
+        setTimeout(() => {
+          this.confirmPasswordErrorPresent = false;
+        }, 1500);
+      } else if (
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(
+          this.password
+        ) == false
+      ) {
+        this.passwordErrorPresent = true;
+        this.loading = false;
+        this.errorMessage = "Weak Password";
+        setTimeout(() => {
+          this.passwordErrorPresent = false;
+        }, 1500);
+      } else if (this.password == this.confirmPassword) {
+        /*
                 const actionCodeSettings = {
                 // URL you want to redirect back to. The domain (www.example.com) for this
                 // URL must be in the authorized domains list in the Firebase Console.
@@ -261,83 +270,84 @@ export default {
                     // ...
                 });
                 */
-                
-                createUserWithEmailAndPassword(getAuth(),this.email,this.password)
-                .then((data) => {
-                    this.SET_USEREMAIL(this.email)
-                    console.log("in method")
-                    setDoc(doc(db,"businesses",String(this.email)),{
-                            profileFormCreated:false,
-                            verifyEmail:false,
-                    })
-                const auth = getAuth()
-                const actionCodeSettings = {
-                // URL you want to redirect back to. The domain (www.example.com) for this
-                // URL must be in the authorized domains list in the Firebase Console.
-                url: 'http://localhost:8080/?#/business/verify',
-                // This must be true.
-                handleCodeInApp: true,
-                iOS: {
-                    bundleId: 'com.example.ios'
-                },
-                android: {
-                    packageName: 'com.example.android',
-                    installApp: true,
-                    minimumVersion: '12'
-                }
-                };
-                sendSignInLinkToEmail(auth, this.email, actionCodeSettings)
-                .then(() => {
-                    // The link was successfully sent. Inform the user.
-                    // Save the email locally so you don't need to ask the user for it again
-                    // if they open the link on the same device.
-                    this.SET_USEREMAIL(this.email)
-                    
-                    this.$router.push({name:'BusinessVerify'})
- 
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.log(errorMessage)
-                    console.log("email",this.email)
-      
-                });
-                console.log('uploaded to firebase')
-                    //this.$router.push({name:'BusinessProfileForm',params: {email}})
-                    //this.$router.push({name:'BusinessProfileForm'})
-                    this.loading = false
-                }).catch((err) => {
-                    this.error = err.code
-                    if (this.error === "auth/invalid-email" || this.email == '') {
-                        this.errorMessage = 'Invalid email'
-                        this.loading = false
-                        this.emailErrorPresent = true
-                        setTimeout(() => {
-                            this.emailErrorPresent = false
-                        }, 1500)
-                    } else if (this.error === "auth/email-already-in-use") {
-                        this.errorMessage = 'Email already registered. Please login'
-                        this.emailErrorPresent = true
-                        this.loading = false
-                        setTimeout(() => {
-                            this.emailErrorPresent = false
-                        }, 1500)
-                    } else if (this.error === "auth/weak-password" || this.password == '') {
-                        this.errorMessage = 'Weak password'
-                        this.loading = false
-                        this.passwordErrorPresent = true
-                        setTimeout(() => {
-                            this.passwordErrorPresent = false
-                        }, 1500)
-                    }
-                    console.log(this.error)
-                })
-                
-                }
-        }    
+
+        createUserWithEmailAndPassword(getAuth(), this.email, this.password)
+          .then((data) => {
+            this.SET_USEREMAIL(this.email);
+            //console.log("in method");
+            setDoc(doc(db, "businesses", String(this.email)), {
+              profileFormCreated: false,
+              verifyEmail: false,
+            });
+            const auth = getAuth();
+            const actionCodeSettings = {
+              // URL you want to redirect back to. The domain (www.example.com) for this
+              // URL must be in the authorized domains list in the Firebase Console.
+              url: "http://localhost:8080/?#/business/verify",
+              // This must be true.
+              handleCodeInApp: true,
+              iOS: {
+                bundleId: "com.example.ios",
+              },
+              android: {
+                packageName: "com.example.android",
+                installApp: true,
+                minimumVersion: "12",
+              },
+            };
+            sendSignInLinkToEmail(auth, this.email, actionCodeSettings)
+              .then(() => {
+                // The link was successfully sent. Inform the user.
+                // Save the email locally so you don't need to ask the user for it again
+                // if they open the link on the same device.
+                this.SET_USEREMAIL(this.email);
+
+                this.$router.push({ name: "BusinessVerify" });
+              })
+              .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorMessage);
+                //console.log("email", this.email);
+              });
+            //console.log("uploaded to firebase");
+            //this.$router.push({name:'BusinessProfileForm',params: {email}})
+            //this.$router.push({name:'BusinessProfileForm'})
+            this.loading = false;
+          })
+          .catch((err) => {
+            this.error = err.code;
+            if (this.error === "auth/invalid-email" || this.email == "") {
+              this.errorMessage = "Invalid email";
+              this.loading = false;
+              this.emailErrorPresent = true;
+              setTimeout(() => {
+                this.emailErrorPresent = false;
+              }, 1500);
+            } else if (this.error === "auth/email-already-in-use") {
+              this.errorMessage = "Email already registered. Please login";
+              this.emailErrorPresent = true;
+              this.loading = false;
+              setTimeout(() => {
+                this.emailErrorPresent = false;
+              }, 1500);
+            } else if (
+              this.error === "auth/weak-password" ||
+              this.password == ""
+            ) {
+              this.errorMessage = "Weak password";
+              this.loading = false;
+              this.passwordErrorPresent = true;
+              setTimeout(() => {
+                this.passwordErrorPresent = false;
+              }, 1500);
+            }
+            console.log(this.error);
+          });
+      }
     },
-}
+  },
+};
 </script>
 
 <style scoped>

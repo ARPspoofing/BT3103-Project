@@ -1,8 +1,8 @@
 <template>
-<!--
+  <!--
   <div class="mainBody">
     -->
-    <!--
+  <!--
     <router-link
       :to="{
         name: 'BusinessManagement',
@@ -17,13 +17,14 @@
       </button>
     </router-link>
     -->
-
-    <div class="view container">
-      <!-- <router-link :to="{name:'BusinessManagement'}">
+  <!--
+  <div class="view container">
+    -->
+    <!-- <router-link :to="{name:'BusinessManagement'}">
            
            <img src='../../assets/back.png'> Go Back
        </router-link> -->
-      <!--
+    <!--
        <div class="header flex">
            <div class="left flex">
                <Span>Status</Span>
@@ -38,14 +39,14 @@
            </div>
        </div>
        -->
-      <div class="details flex flex-column">
-        <div class="top flex">
-          <div class="left flex">
-            <p>
-              <strong>{{ task_id }}</strong>
-            </p>
-          </div>
-          <!--<div class="right flex flex-column">
+    <div class="details flex flex-column">
+      <div class="top flex">
+        <div class="left flex">
+          <p>
+            <strong>{{ task_id }}</strong>
+          </p>
+        </div>
+        <!--<div class="right flex flex-column">
             <label>Extend Due Date</label>
             <select v-model="extend" id="input">
               <option value="1 day">1 day</option>
@@ -54,36 +55,80 @@
               <option value="7 days">1 week</option>
             </select>
           </div>-->
-          <div class="right flex flex-column" id="rightmost">
-            <label>Change status</label>
-            <select v-model="status">
-              <option value="To do">To Do</option>
-              <option value="Pending review">In Progress</option>
-              <option value="Completed">Completed</option>
-            </select>
-          </div>
+        <div class="right flex flex-column" id="rightmost">
+          <label>Change status</label>
+          <select v-model="status">
+            <option value="To do">To Do</option>
+            <option value="In progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
         </div>
-        <div class="top-middle flex">
-          <div id="duedate" class="date flex flex-column">
-            <!--       Don't need issue date
+      </div>
+      <div class="top-middle flex">
+        <div id="duedate" class="date flex flex-column">
+          <!--       Don't need issue date
             <p><b>Task Issue Date :</b> {{ formatDate(issuedate) }}</p>
             -->
-            <p><b>Due Date :</b> {{ formatDate(duedate) }}</p>
-          </div>
+          <p><b>Due Date :</b> {{ formatDate(duedate) }}</p>
         </div>
-        <div class="middle flex">
-          <div id="description" class="description flex flex-column">
-            <p><b>Task Description</b></p>
-            <p>{{ this.description }}</p>
-          </div>
+      </div>
+      <div class="middle flex">
+        <div id="description" class="description flex flex-column">
+          <p><b>Task Description</b></p>
+          <p>{{ this.description }}</p>
         </div>
-        <div class="middle-bottom flex">
-          <div class="documents flex flex-column">
-            <p><b>Submit Relevant Documents :</b></p>
-            <!--<button id="addFileButton" @click="addFile">
-              <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
-              Add Files
-            </button>-->
+      </div>
+
+      <div class="middle-bottom flex">
+      <div class="documents flex flex-column">
+        <p><b>Submit Relevant Documents :</b></p>
+        <button id="addFileButton" @click="addFile">
+          <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
+          Add Files
+        </button>
+        <div
+          class="previous"
+          v-for="(task, counter) in files"
+          v-bind:key="counter"
+        >
+          <button id="deleteFile" @click="deleteFile(counter)">
+            <i class="fa fa-times" id="crossIcon"></i>
+          </button>
+          <input
+            type="file"
+            multiple
+            name="files[]"
+            id="files"
+            v-on:change="uploadFiles"
+          />
+        </div>
+      </div>
+    </div>
+
+
+
+
+      <!--
+      <div class="middle-bottom flex">
+        <div class="documents flex flex-column">
+          <p><b>Submit Relevant Documents :</b></p>
+         
+          <input
+            type="file"
+            multiple
+            name="files[]"
+            id="files"
+            accept=".jpeg,.pdf,.docx"
+            v-on:change="uploadFiles"
+          />
+          <div
+            class="previous"
+            v-for="(task, counter) in files"
+            v-bind:key="counter"
+          >
+            <button id="deleteFile" @click="deleteFile(counter)">
+              <i class="fa fa-times" id="crossIcon"></i>
+            </button>
             <input
               type="file"
               multiple
@@ -92,57 +137,44 @@
               accept=".jpeg,.pdf,.docx"
               v-on:change="uploadFiles"
             />
-            <div
-              class="previous"
-              v-for="(task, counter) in files"
-              v-bind:key="counter"
-            >
-              <button id="deleteFile" @click="deleteFile(counter)">
-                <i class="fa fa-times" id="crossIcon"></i>
-              </button>
-              <input
-                type="file"
-                multiple
-                name="files[]"
-                id="files"
-                accept=".jpeg,.pdf,.docx"
-                v-on:change="uploadFiles"
-              />
-            </div>
           </div>
         </div>
-        <div class="bottom flex flex-column">
-          <label for="comments">Comments</label>
-          <h4>Please limit additional comments to 500 characters</h4>
-          <div class="input flex flex-column">
-            <textarea
-              id="comments"
-              name="comments"
-              rows="4"
-              cols="60"
-              placeholder="Please enter your comment"
-              maxlength="500"
-            ></textarea>
-            <button id="commentButton" @click="addComment">Add Comment</button>
-            <!--<textarea required type="text" id="comments" rows="4" cols="50" maxlength="500" v-model="comments"></textarea>-->
-          </div>
+      </div>
+      -->
+      <div class="bottom flex flex-column">
+        <label for="comments">Comments</label>
+        <h4>Please limit additional comments to 500 characters</h4>
+        <div class="input flex flex-column">
+          <textarea
+            id="comments"
+            name="comments"
+            rows="4"
+            cols="60"
+            placeholder="Please enter your comment"
+            maxlength="500"
+          ></textarea>
+          <button id="commentButton" @click="addComment">Add Comment</button>
+          <!--<textarea required type="text" id="comments" rows="4" cols="50" maxlength="500" v-model="comments"></textarea>-->
         </div>
-        <div
-          class="projectContainer"
-          :key="item.key"
-          v-for="(item, key) in comment"
-        >
-          <div id="eachComment">
-            <img v-bind:src="item.profPic" alt="Logo" class="logo" />
-            <p>
-              <strong>{{ item["name"] }}</strong
-              >: {{ item["comment"] }}
-            </p>
-          </div>
+      </div>
+      <div
+        class="projectContainer"
+        :key="item.key"
+        v-for="(item) in this.taskComment"
+      >
+        <div id="eachComment">
+          <img v-bind:src="item.profPic" alt="Logo" class="logo" />
+          <p>
+            <strong>{{ item["name"] }}</strong
+            >: {{ item["comment"] }}
+          </p>
         </div>
       </div>
     </div>
     <!--
+  </div>
+  -->
+  <!--
   </div>
   -->
 </template>
@@ -176,8 +208,9 @@ import {
   storageRef,
 } from "firebase/storage";
 import { getAuth } from "firebase/auth";
-import {mapState} from 'vuex'
-import {mapMutations} from 'vuex'
+import { mapState } from "vuex";
+import { mapMutations } from "vuex";
+import {store} from '../../store/globalStore.js'
 
 export default {
   name: "BusinessToDoView",
@@ -203,9 +236,19 @@ export default {
       file: null,
       files: [],
       fileLink: "",
+      allTaskComments: null,
     };
   },
-  props: ['task_id','projectId','projectTitle','duedate','task','description'],
+  props: [
+    "task_id",
+    "projectId",
+    "projectTitle",
+    "duedate",
+    "task",
+    "description",
+    "taskComment",
+    "description",
+  ],
   watch: {
     extend() {
       const extendedDate = new Date();
@@ -221,16 +264,37 @@ export default {
       var self = this;
       self.updateStatus();
     },
+    updated(newVal,oldVal) {
+      //alert('businessUpdated!')
+    },
   },
   computed: {
-    ...mapState(['businessTask','userEmail','businessTaskId','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted','businessInProgProjects','businessCompletedProjects','businessStudents','businessStudentsInProg','businessStudentsComp']),
+    ...mapState([
+      "businessTask",
+      "userEmail",
+      "businessTaskId",
+      "businessProjectId",
+      "businessProjectTitle",
+      "businessToDo",
+      "businessInProgress",
+      "businessPendingReview",
+      "businessCompleted",
+      "businessInProgProjects",
+      "businessCompletedProjects",
+      "businessStudents",
+      "businessStudentsInProg",
+      "businessStudentsComp",
+      "taskComments",
+      "updated",
+    ]),
+    //This function is not used
     taskIndex() {
       return parseInt(this.number) + 1;
     },
   },
 
   methods: {
-    ...mapMutations(['SET_BUSINESS_TASK',]),
+    ...mapMutations(["SET_BUSINESS_TASK", "SET_ALL_TASK_COMMENTS","SET_UPDATED",]),
     formatDate(date) {
       return moment(date).format("DD MMMM YYYY");
     },
@@ -246,7 +310,7 @@ export default {
 
       for (let i = 0; i < tasks.length; i++) {
         let currTask = tasks[i];
-        console.log(this.task_id);
+        //console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
           newTask = currTask;
@@ -287,6 +351,7 @@ export default {
     },
 
     async addComment() {
+      this.$emit('addComment',true)
       var a = document.getElementById("comments").value;
       let ref = await doc(db, "Project", this.businessProjectId);
       let project = await getDoc(ref);
@@ -298,20 +363,21 @@ export default {
 
       for (let i = 0; i < tasks.length; i++) {
         let currTask = tasks[i];
-        console.log(this.task_id);
+        //console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
           newTask = currTask;
         }
       }
+      /*
       console.log(toRemove);
       console.log(newTask);
-  
+      */
 
       let ref2 = doc(db, "businesses", this.userEmail);
       let biz = await getDoc(ref2);
       var da = biz.data();
-      console.log(da);
+      //console.log(da);
 
       await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
       if (newTask.comments) {
@@ -343,14 +409,21 @@ export default {
       await updateDoc(ref, { Tasks: arrayUnion(newTask) });
       //Non vuex
       //this.task = newTask;
-      this.SET_BUSINESS_TASK(newTask)
+      this.SET_BUSINESS_TASK(newTask);
       document.getElementById("comments").value = "";
+      this.$emit('addedComment')
     },
 
     async updateStatus() {
+      //To remove 
+      this.SET_UPDATED(true)
+      store.addNumber(5)
+    
       const currStatus = this.status;
+      /*
       console.log(currStatus);
       console.log(this.projectId);
+      */
       let ref = await doc(db, "Project", this.businessProjectId);
       let project = await getDoc(ref);
 
@@ -366,19 +439,20 @@ export default {
       var newTask = {};
 
       for (let i = 0; i < tasks.length; i++) {
-        console.log(i);
+        //console.log(i);
         let currTask = tasks[i];
-        console.log(this.task_id);
+        //console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
-          console.log("toRemove",toRemove)
+          //console.log("toRemove", toRemove);
           currTask.taskStatus = currStatus;
           newTask = currTask;
         }
       }
-
+      /*
       console.log(tasks);
       console.log(newTask);
+      */
 
       await updateDoc(ref, { Tasks: arrayRemove(toRemove) });
 
@@ -387,15 +461,18 @@ export default {
       //non-vuex
       //this.task = newTask;
       //vuex
-      this.SET_BUSINESS_TASK(newTask)
-      this.$router.push({name:'businessManagementLoading'})
+      this.SET_BUSINESS_TASK(newTask);
+      this.$router.push({ name: "businessManagementLoading" });
     },
 
     async updateTask() {
       try {
-        const docRef = await updateDoc(doc(db, "Project", this.businessProjectId), {});
+        const docRef = await updateDoc(
+          doc(db, "Project", this.businessProjectId),
+          {}
+        );
 
-        console.log(docRef);
+        //console.log(docRef);
         this.$emit("updated");
       } catch (error) {
         console.error("Error updating document: ", error);
@@ -472,11 +549,10 @@ export default {
     console.log(curr.$route.params.comments);
     const projectTitle = curr.$route.params.projectTitle;
     */
-
-    const projectId = this.businessProjectId
-    const taskId = this.task_id
-    const projectTitle = this.projectTitle
-    
+    //console.log("task comments");
+    const projectId = this.businessProjectId;
+    const taskId = this.task_id;
+    const projectTitle = this.projectTitle;
 
     async function updateFile() {
       let proj = await doc(db, "Project", projectId);
@@ -489,7 +565,7 @@ export default {
 
       for (let i = 0; i < tasks.length; i++) {
         let currTask = tasks[i];
-        console.log(this.task_id);
+        //console.log(this.task_id);
         if (currTask.taskName == this.task_id) {
           toRemove = { ...currTask };
           newTask = currTask;
@@ -513,23 +589,25 @@ export default {
       let project = await getDoc(docRef);
       var tasks = await project.data().Tasks;
       var currTask = {};
+      //console.log("taskComments", tasks);
       for (let i = 0; i < tasks.length; i++) {
         let thisTask = tasks[i];
         if (thisTask.taskName == taskId) {
           currTask = thisTask;
           if (currTask.comments) {
             curr.comment = currTask.comments.reverse();
+            //console.log("comments", currTask.comments.reverse());
           } else {
             curr.comment = [];
           }
           break;
         }
       }
-      console.log(curr.comment);
+      //console.log(curr.comment);
     }
     getComments();
-    console.log(curr.comment);
-    
+    //console.log("currcomments", curr.comment);
+
     //Non vuex function. Not used already for vuex
 
     /* database.forEach((doc) => {
@@ -625,112 +703,78 @@ export default {
 </script>
 
 <style scoped>
-.mainBody {
-  background-color: #f5f5f5;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  overflow-y: scroll;
-  padding-bottom: 150px;
-  /*
-        filter: blur(5px);
-    */
-}
-
 .flex {
   display: flex;
 }
-
 .flex-column {
   flex-direction: column;
 }
-
 nav-link {
   margin-bottom: 12px;
   align-items: center;
   color: white;
   font-size: 12px;
 }
-
 img {
   margin-right: 16px;
   width: 7px;
   height: 10px;
 }
-
 .details {
-  padding: 48px;
-  margin-top: 24px;
   /*background-color:rgb(11, 167, 115);*/
   background-color: #b3cabe;
   border-radius: 20px;
 }
-
 .top div {
   flex-grow: 1;
 }
-
 .left {
   font-size: 12px;
 }
-
 .left p:first-child {
   font-size: 24px;
   text-transform: uppercase;
   margin-bottom: 8px;
 }
-
 .left p:nth-child(2) {
   font-size: 16px;
 }
-
 span {
   color: black;
 }
-
 .right {
   font-size: 12px;
   align-items: flex-end;
 }
-
 .middle {
   margin-top: 30px;
   color: black;
   gap: 16px;
 }
-
 h4 {
   font-size: 12px;
   font-weight: 400;
   margin-bottom: 5px;
   margin-top: 20px;
 }
-
 p {
   font-size: 16px;
 }
-
-date h4 {
+.date h4 {
   margin-top: 20px;
 }
-
 .description {
   margin-left: 0px;
   text-align: justify;
   text-justify: inter-word;
   color: #2c3e50;
 }
-
 textarea {
   -webkit-border-radius: 12px;
   -moz-border-radius: 12px;
   border-radius: 12px;
   outline: none;
 }
-
-.bottom {
-}
-
 #backButton {
   background: #0e8044;
   /*width: 190px;
@@ -742,32 +786,26 @@ textarea {
   padding: 10px 25px;
   font-size: 14px;
 }
-
 #duedate {
   text-align: left;
 }
-
 label {
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 7px;
 }
-
 #input {
   width: 150px;
   height: 25px;
 }
-
 .documents {
   text-align: left;
 }
-
 #files {
   background: #f5f5f5;
   width: 700px;
   margin-bottom: 10px;
 }
-
 #addFileButton {
   background: transparent;
   border: none;
@@ -775,13 +813,19 @@ label {
   width: 120px;
   padding-bottom: 7px;
 }
-
 #deleteFile {
   background: transparent;
   border: none;
   color: rgb(214, 28, 28);
 }
-
+#eachComment {
+  text-align: left;
+  position: centre;
+  margin: 10px;
+  padding: 5px;
+  background-color: lightgoldenrodyellow;
+  border-radius: 30px;
+}
 #commentButton {
   background: #0e8044;
   color: white;
@@ -793,7 +837,6 @@ label {
   width: 180px;
   position: right;
 }
-
 .logo {
   vertical-align: left;
   width: 45px;
@@ -803,14 +846,5 @@ label {
   margin-right: 10px;
   margin-top: -2.5px;
   float: left;
-}
-
-#eachComment {
-  text-align: left;
-  position: centre;
-  margin: 10px;
-  padding: 5px;
-  background-color: lightgoldenrodyellow;
-  border-radius: 30px;
 }
 </style>

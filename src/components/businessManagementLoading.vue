@@ -1,9 +1,10 @@
 <template>
-<div class="mainBody">
-        <div class="lds-hourglass"></div>
-        <button style="visibility: hidden;" ref="clickMe" @click="viewTasks"> Click me
-        </button>
-</div>
+  <div class="mainBody">
+    <div class="lds-hourglass"></div>
+    <button style="visibility: hidden" ref="clickMe" @click="viewTasks">
+      Click me
+    </button>
+  </div>
 </template>
 
 <script>
@@ -18,137 +19,149 @@ import {
   updateDoc,
   getDoc,
 } from "firebase/firestore";
-import {mapState} from "vuex"
-import {mapMutations} from "vuex"
+import { mapState } from "vuex";
+import { mapMutations } from "vuex";
 const db = getFirestore(firebaseApp);
-const curr = this
-const that = this
+const curr = this;
+const that = this;
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default {
-
-  name: 'managementLoading',
+  name: "managementLoading",
   computed: {
-    ...mapState(['businessTaskId','userEmail','businessProjectId','businessProjectTitle','businessToDo','businessInProgress','businessPendingReview','businessCompleted']),
+    ...mapState([
+      "businessTaskId",
+      "userEmail",
+      "businessProjectId",
+      "businessProjectTitle",
+      "businessToDo",
+      "businessInProgress",
+      "businessPendingReview",
+      "businessCompleted",
+    ]),
   },
   data() {
     return {
       Heading: "MY PROJECTS",
       inProgProjects: [],
-      STUDENT_TO_DO_TEMP:[],
-      STUDENT_IN_PROGRESS_TEMP:[],
-      STUDENT_PENDING_REVIEW_TEMP:[],
-      STUDENT_COMPLETED_TEMP:[],
-      click:false,
+      STUDENT_TO_DO_TEMP: [],
+      STUDENT_IN_PROGRESS_TEMP: [],
+      STUDENT_PENDING_REVIEW_TEMP: [],
+      STUDENT_COMPLETED_TEMP: [],
+      click: false,
     };
   },
   mounted() {
-    var id = this.studentProjectId
-    var title = this.studentProjectTitle
+    var id = this.studentProjectId;
+    var title = this.studentProjectTitle;
     setTimeout(() => {
-     this.$refs.clickMe.click()
-    }, 2500)
+      this.$refs.clickMe.click();
+    }, 2500);
   },
   methods: {
-      ...mapMutations(['SET_BUSINESS_TO_DO','SET_BUSINESS_IN_PROGRESS','SET_BUSINESS_PENDING_REVIEW','SET_BUSINESS_COMPLETED',]),
-      async viewTasks() {
-        let docRef = await doc(db,"Project",this.businessProjectId)
-        let project = await getDoc(docRef)
-        let tasks = project.data().Tasks
-        var toDoTask = []
-        var inProgressTask = []
-        var pendingReviewTask = []
-        var completedTask = []
-        tasks.forEach((document) => {  
-            console.log('document',document)   
-            if (document.taskStatus == "To do") {
-                toDoTask.push({
-                id: document.taskName,
-              /*
+    ...mapMutations([
+      "SET_BUSINESS_TO_DO",
+      "SET_BUSINESS_IN_PROGRESS",
+      "SET_BUSINESS_PENDING_REVIEW",
+      "SET_BUSINESS_COMPLETED",
+    ]),
+    async viewTasks() {
+      let docRef = await doc(db, "Project", this.businessProjectId);
+      let project = await getDoc(docRef);
+      let tasks = project.data().Tasks;
+      var toDoTask = [];
+      var inProgressTask = [];
+      var pendingReviewTask = [];
+      var completedTask = [];
+      tasks.forEach((document) => {
+        //console.log("document", document);
+        if (document.taskStatus == "To do") {
+          toDoTask.push({
+            id: document.taskName,
+            /*
               projectTitle: that.projectTitle,
               projectId: that.projectId,
               */
-                comments: document.comments,
-                documents: document.documents,
-                currStatus: document.taskStatus,
-                duedate: document.taskDueDate,
-                taskname: document.taskName,                    
-                shortdescription: document.taskDescription,
-                })
-            } else if (document.taskStatus == "In progress") {
-                inProgressTask.push({
-                id: document.taskName,
-              /*
+            comments: document.comments,
+            documents: document.documents,
+            currStatus: document.taskStatus,
+            duedate: document.taskDueDate,
+            taskname: document.taskName,
+            shortdescription: document.taskDescription,
+          });
+        } else if (document.taskStatus == "In progress") {
+          inProgressTask.push({
+            id: document.taskName,
+            /*
               projectTitle: that.projectTitle,
               projectId: that.projectId,
               */
-                comments: document.comments,
-                documents: document.documents,
-                status: document.taskStatus,
-                duedate: document.taskDueDate,
-                taskname: document.taskName,                  
-                shortdescription: document.taskDescription,   
-                })
-            } else if (document.taskStatus == "Pending review") {
-                pendingReviewTask.push({
-                id: document.taskName,
-              /*
+            comments: document.comments,
+            documents: document.documents,
+            status: document.taskStatus,
+            duedate: document.taskDueDate,
+            taskname: document.taskName,
+            shortdescription: document.taskDescription,
+          });
+        } else if (document.taskStatus == "Pending review") {
+          pendingReviewTask.push({
+            id: document.taskName,
+            /*
               projectTitle: that.projectTitle,
               projectId: that.projectId,
               */
-                comments: document.comments,
-                documents: document.documents,
-                status: document.taskStatus,
-                duedate: document.taskDueDate,
-                taskname: document.taskName,                   
-                shortdescription: document.taskDescription,
-                })
-            } else if (document.taskStatus == "Completed") {
-                completedTask.push({
-                id: document.id,
-                comments: document.comments,
-              /*
+            comments: document.comments,
+            documents: document.documents,
+            status: document.taskStatus,
+            duedate: document.taskDueDate,
+            taskname: document.taskName,
+            shortdescription: document.taskDescription,
+          });
+        } else if (document.taskStatus == "Completed") {
+          completedTask.push({
+            id: document.id,
+            comments: document.comments,
+            /*
               projectTitle: that.projectTitle,
               projectId: that.projectId,
               */
-                documents: document.documents,
-                status: document.taskStatus,
-                duedate: document.taskDueDate,
-                taskname: document.taskName,
-                shortdescription: document.taskDescription,                      
-                })
-            }
-        })
-        console.log("business todo",toDoTask)
-        console.log("business in progress",inProgressTask)
-        console.log("business pending",pendingReviewTask)
-        console.log("business todo",completedTask)
-        this.SET_BUSINESS_TO_DO(toDoTask)
-        this.SET_BUSINESS_IN_PROGRESS(inProgressTask)
-        this.SET_BUSINESS_PENDING_REVIEW(pendingReviewTask)
-        this.SET_BUSINESS_COMPLETED(completedTask)
-        console.log("vuex todo",this.businessToDo)
-        console.log("vuex in prog",this.businessInProgress)
-        console.log("vuex pending",this.businessPendingReview)
-        console.log("vuex completed",this.businessCompleted)
-        this.$router.push({name:'BusinessManagement'})
-    }
-  }
-};        
+            documents: document.documents,
+            status: document.taskStatus,
+            duedate: document.taskDueDate,
+            taskname: document.taskName,
+            shortdescription: document.taskDescription,
+          });
+        }
+      });
+      //console.log("business todo", toDoTask);
+      //console.log("business in progress", inProgressTask);
+      //console.log("business pending", pendingReviewTask);
+      //console.log("business todo", completedTask);
+      this.SET_BUSINESS_TO_DO(toDoTask);
+      this.SET_BUSINESS_IN_PROGRESS(inProgressTask);
+      this.SET_BUSINESS_PENDING_REVIEW(pendingReviewTask);
+      this.SET_BUSINESS_COMPLETED(completedTask);
+      //console.log("vuex todo", this.businessToDo);
+      //console.log("vuex in prog", this.businessInProgress);
+      //console.log("vuex pending", this.businessPendingReview);
+      //console.log("vuex completed", this.businessCompleted);
+      this.$router.push({ name: "BusinessManagement" });
+    },
+  },
+};
 </script>
 
 <style scoped>
-
 .mainBody {
-    background-color:#C3EEC5;
-    width:100vw;
-    height:150vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: #c3eec5;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-    .lds-hourglass {
+.lds-hourglass {
   display: inline-block;
   position: relative;
   width: 80px;

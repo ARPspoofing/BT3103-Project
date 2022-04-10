@@ -111,7 +111,7 @@ export default {
     ...mapMutations(["SET_NAME"]),
 
     try() {
-      console.log("testc");
+      //console.log("testc");
     },
 
     showPopUp() {
@@ -209,6 +209,8 @@ export default {
   justify-content: center;
   align-items: center;
   overflow: scroll;
+  padding-top: 400px;
+  padding-bottom: 100px;
 }
 
 ::-webkit-scrollbar {
@@ -230,7 +232,7 @@ input,
 select,
 textarea {
   width: 100%;
-  background-color: #33d69f;
+  background-color: white;
   border: none;
   outline: none;
 }
@@ -252,9 +254,9 @@ label {
   margin-bottom: 3px;
 }
 
-    .interest {
-        gap:5px;
-    }
+.interest {
+  gap: 5px;
+}
 
 .content {
   position: relative;
