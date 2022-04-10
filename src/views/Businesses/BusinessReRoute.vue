@@ -102,7 +102,7 @@ export default {
     },
   },
   beforeMount() {
-    this.fetchProject();
+    this.moveOn();
   },
   /*
   mounted() {
