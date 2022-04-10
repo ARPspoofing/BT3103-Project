@@ -30,16 +30,16 @@
                 <a href="#0">Oldest</a>
               </li>
               <li @click="fetchProjectOrder('shortest')" class="menu-item">
-                <a href="#0">Shortest</a>
-              </li>
-              <li @click="fetchProjectOrder('longest')" class="menu-item">
                 <a href="#0">Longest</a>
               </li>
+              <li @click="fetchProjectOrder('longest')" class="menu-item">
+                <a href="#0">Shortest</a>
+              </li>
               <li @click="fetchProjectOrder('highest')" class="menu-item">
-                <a href="#0">Highest</a>
+                <a href="#0">Lowest</a>
               </li>
               <li @click="fetchProjectOrder('lowest')" class="menu-item">
-                <a href="#0">Lowest</a>
+                <a href="#0">Highest</a>
               </li>
             </ol>
           </li>
