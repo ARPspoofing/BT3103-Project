@@ -1140,4 +1140,8 @@ button,
 #saveModal {
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+button[data-v-1865af63], .button[data-v-1865af63] {
+  margin-left: -60px;
+}
 </style>
