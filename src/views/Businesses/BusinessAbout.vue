@@ -76,7 +76,7 @@
               <div class="modal-body">
                 <div class="words">
                   <i class="fa-solid fa-circle-check" id="tickIcon"></i>
-                  <p>Edit changes?</p>
+                  <p>Save changes?</p>
                 </div>
                 <span>
                   <div class="applybtns">
@@ -526,5 +526,6 @@ ul {
   text-align: center;
   width: 180px;
   margin-left: 48px;
+  font-size: 18px;
 }
 </style>

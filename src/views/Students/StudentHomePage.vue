@@ -851,4 +851,8 @@ hr {
   margin-left: 48px;
   color: #3f3f3f;
 }
+
+#saveModal {
+  background-color: rgba(0, 0, 0, 0.5);
+}
 </style>
