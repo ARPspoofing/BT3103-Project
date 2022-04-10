@@ -318,10 +318,12 @@ export default {
       this.applyConfirm = false;
     },
     async addApplicantFirst(key) {
-      alert(key);
+      //alert(key);
+      /*
       console.log("ADDING!", this.firstPriority);
       console.log("ADDING!", this.secondPriority);
       console.log("ADDING!", this.thirdPriority);
+      */
       var testCollection = this.firstPriority;
       //console.log(this.testCollection[key]);
       var newApplicants = testCollection[key]["newApplicants"];
@@ -359,8 +361,8 @@ export default {
       }
     },
     async addApplicantSecond(key) {
-      alert(key);
-      console.log("ADDING!", this.secondPriority);
+      //alert(key);
+      //console.log("ADDING!", this.secondPriority);
       var testCollection = this.secondPriority;
       //console.log(this.testCollection[key]);
       var newApplicants = testCollection[key]["newApplicants"];
@@ -398,8 +400,8 @@ export default {
       }
     },
     async addApplicantThird(key) {
-      alert(key);
-      console.log("ADDING!", this.thirdPriority);
+      //alert(key);
+      //console.log("ADDING!", this.thirdPriority);
       var testCollection = this.thirdPriority;
       //console.log(this.testCollection[key]);
       var newApplicants = testCollection[key]["newApplicants"];
@@ -634,7 +636,7 @@ export default {
       that.appliedProjects = that.appliedProjects.concat(rejectedProjects);
     }
     getAppliedProjects();
-    console.log(that.appliedProjects);
+    //console.log(that.appliedProjects);
     async function setProjects() {
       //Non VUEX version. Uncomment if VUEX does not work
       /*

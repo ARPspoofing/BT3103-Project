@@ -235,7 +235,7 @@ export default {
       this.offered.splice(key, 1);
       this.bizProjects.splice(key, 1);
 
-      alert("Accepting Project: " + projName);
+      //alert("Accepting Project: " + projName);
       try {
         const docRef = await updateDoc(doc(db, "students", this.userEmail), {
           inProgProjects: this.accepted,
@@ -269,7 +269,7 @@ export default {
       this.projects.splice(key, 1);
       this.offered.splice(key, 1);
 
-      alert("Declining Project: " + projName);
+      //alert("Declining Project: " + projName);
       try {
         /*
         const docRef = doc(db,"students",this.userEmail)

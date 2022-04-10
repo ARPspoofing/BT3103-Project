@@ -290,9 +290,10 @@ export default {
     */
     //Vuex version
     this.tasks = JSON.parse(this.cardItems).tasks;
+    //console.log(this.tasks)
     this.tags = JSON.parse(this.cardItems).tags;
     this.items = JSON.parse(this.cardItems);
-    console.log(JSON.parse(this.cardItems).posterId)
+    //console.log(JSON.parse(this.cardItems).posterId)
     this.newApplicants = JSON.parse(this.cardItems).newApplicants;
     this.accApplicants = JSON.parse(this.cardItems).accApplicants;
     this.rejApplicants = JSON.parse(this.cardItems).rejApplicants;

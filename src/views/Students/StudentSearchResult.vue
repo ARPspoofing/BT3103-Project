@@ -775,7 +775,7 @@ export default {
       snapshot.forEach((docs) => {
         let data = docs.data();
         let appstat = "";
-        console.log(that.appliedProjects);
+        //console.log(that.appliedProjects);
         if (that.appliedProjects.includes(docs.id)) {
           appstat = "applied";
         } else {
