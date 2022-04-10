@@ -68,7 +68,7 @@
     </h1>
     <hr />
     <div class="appContainer">
-      <div :key="item.key" v-for="(item, key) in applicant">
+      <div id="appCon" :key="item.key" v-for="(item, key) in applicant">
         <ApplicantsCard
           :buttons="false"
           :applicantName="item.name"
@@ -255,6 +255,10 @@ export default {
 
 .appContainer {
   margin-left: 30px;
+}
+
+#appCon {
+  height: 0px;
 }
 
 #interest {
