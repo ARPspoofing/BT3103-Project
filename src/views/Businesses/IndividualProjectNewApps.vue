@@ -273,7 +273,7 @@ export default {
       //this.SET_KEY(key)
       //this.GET_NEW_CARD()
       //TBC this.$refs.confirmModal.click()
-      alert("key " + key);
+      //alert("key " + key);
       var accApplicant = this.newApplicants[key];
       var offered = this.offered[key];
       var name = this.applicant[key].name;
@@ -298,7 +298,7 @@ export default {
       this.offered.splice(key, 1);
       this.applied.splice(key, 1);
 
-      alert("Accepting applicant: " + name);
+      //alert("Accepting applicant: " + name);
       try {
         const docRef = await updateDoc(doc(db, "Project", projId), {
           Acc_Applicants: this.accApplicants,
@@ -320,7 +320,7 @@ export default {
     async rejApplicant(key) {
       //this.SET_KEY(key)
       //this.GET_NEW_CARD()
-      alert("key " + key);
+      //alert("key " + key);
       var rejApplicant = this.newApplicants[key];
       var rejected = this.rejected[key];
       var name = this.applicant[key].name;
@@ -348,7 +348,7 @@ export default {
       this.applicant.splice(key, 1);
       this.applied.splice(key, 1);
 
-      alert("Rejecting applicant: " + name);
+      //alert("Rejecting applicant: " + name);
 
       try {
         const docRef = await updateDoc(doc(db, "Project", projId), {
@@ -378,7 +378,7 @@ export default {
     this.rejApplicants = JSON.parse(this.$route.params.items).rejApplicants;
     */
     //vuex
-    console.log(this.cardItems);
+    //console.log(this.cardItems);
     this.items = JSON.parse(this.cardItems);
     this.projectId = JSON.parse(this.cardItems).projectId;
     this.newApplicants = JSON.parse(this.cardItems).newApplicants;

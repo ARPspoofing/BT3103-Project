@@ -215,7 +215,7 @@ export default {
           offeredProjects: offered,
           appliedProjects: applied,
         });
-        console.log(docRef);
+        //console.log(docRef);
         this.$emit("updated");
       } catch (error) {
         console.error("Error updating document: ", error);

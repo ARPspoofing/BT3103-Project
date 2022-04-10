@@ -398,7 +398,7 @@ export default {
             Application: "open",
           });
 
-          console.log(docRef);
+          //console.log(docRef);
           document.getElementById("projectForm").reset();
           this.$emit("added");
           this.$router.push({ name: "BusinessHomePage" });
