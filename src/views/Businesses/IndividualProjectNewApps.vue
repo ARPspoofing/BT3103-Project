@@ -601,4 +601,8 @@ hr {
   margin-left: 48px;
   color: #3f3f3f;
 }
+
+#saveModalAccept, #saveModalReject {
+  background-color: rgba(0, 0, 0, 0.5);
+}
 </style>

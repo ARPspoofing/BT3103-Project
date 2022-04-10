@@ -65,7 +65,7 @@ z<template>
         <span>
           <div class="projTitle">
             {{ items.projectTitle }} <br />
-            Company Name <br />
+            <h5 id="companyName">name</h5> <br />
             <!--Tags-->
             <div id="tagsbox">
               <div id="tags" :key="item.key" v-for="(item, index) in tags">
@@ -83,7 +83,6 @@ z<template>
             <button
               href="#"
               class="close-proj"
-              @click="closeProject()"
               data-bs-toggle="modal"
               data-bs-target="#closeModal"
             >
@@ -116,6 +115,7 @@ z<template>
                       <div class="applybtns">
                         <button
                           type="button"
+                          @click="closeProject()"
                           id="yesbtn"
                           data-bs-dismiss="modal"
                         >
@@ -289,9 +289,20 @@ export default {
     this.tasks = JSON.parse(this.cardItems).tasks;
     this.tags = JSON.parse(this.cardItems).tags;
     this.items = JSON.parse(this.cardItems);
+    console.log(JSON.parse(this.cardItems).posterId)
     this.newApplicants = JSON.parse(this.cardItems).newApplicants;
     this.accApplicants = JSON.parse(this.cardItems).accApplicants;
     this.rejApplicants = JSON.parse(this.cardItems).rejApplicants;
+
+    async function getApplicant(userEmail) {
+      const docSnap = await getDoc(doc(db, "businesses", userEmail));
+      let data = docSnap.data();
+      var name = data.name;
+      companyName.innerHTML = name;
+      
+      return { name: data.name };
+    }
+    getApplicant(JSON.parse(this.cardItems).posterId);
 
     if (this.$route.params.newApplicants) {
       this.newApplicants = JSON.parse(this.$route.params.newApplicants);
@@ -364,6 +375,7 @@ export default {
 #tagsbox {
   width: 450px;
   word-wrap: break-word;
+  margin-top: -30px;
 }
 
 #tags {
