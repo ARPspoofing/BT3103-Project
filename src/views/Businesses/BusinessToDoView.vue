@@ -81,7 +81,7 @@
       </div>
 
       <div class="middle-bottom flex">
-      <div class="documents flex flex-column">
+      <!-- <div class="documents flex flex-column">
         <p><b>Submit Relevant Documents :</b></p>
         <button id="addFileButton" @click="addFile">
           <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
@@ -103,7 +103,7 @@
             v-on:change="uploadFiles"
           />
         </div>
-      </div>
+      </div> -->
     </div>
 
 
