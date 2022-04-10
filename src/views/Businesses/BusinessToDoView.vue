@@ -60,6 +60,7 @@
           <select v-model="status">
             <option value="To do">To Do</option>
             <option value="In progress">In Progress</option>
+            <option value="Pending review">Pending Review</option>
             <option value="Completed">Completed</option>
           </select>
         </div>
@@ -80,7 +81,7 @@
       </div>
 
       <div class="middle-bottom flex">
-      <div class="documents flex flex-column">
+      <!-- <div class="documents flex flex-column">
         <p><b>Submit Relevant Documents :</b></p>
         <button id="addFileButton" @click="addFile">
           <i class="fa-solid fa-circle-plus icon-4x" id="plusIcon"></i>
@@ -102,7 +103,7 @@
             v-on:change="uploadFiles"
           />
         </div>
-      </div>
+      </div> -->
     </div>
 
 

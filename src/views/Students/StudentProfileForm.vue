@@ -499,24 +499,24 @@ export default {
       this.transcriptErrorPresent = false;
       if (this.name == "") {
         this.nameErrorPresent = true;
-        this.errorMessage = "Please fill out your name";
+        this.errorMessage = "Please fill in your name";
       } else if (this.course == "") {
         this.courseErrorPresent = true;
         this.errorMessage =
           "Please select your course from the options provided";
       } else if (this.year == "") {
         this.yearErrorPresent = true;
-        this.errorMessage = "Please fill out your current year of study";
+        this.errorMessage = "Please fill in your current year of study";
       } else if (parseInt(this.year) > 4 || parseInt(this.year) < 1) {
         this.yearErrorPresent = true;
         this.errorMessage =
-          "Please fill out a valid year of study (Must be between 1 and 4 inclusive)";
+          "Please fill in a valid year of study (Must be between 1 and 4 inclusive)";
       } else if (this.allInterestsEmpty()) {
         this.interestErrorPresent = true;
         this.errorMessage = "Please select at least one area of interest";
       } else if (this.schoolEmail == "") {
         this.schoolEmailErrorPresent = true;
-        this.errorMessage = "Please enter your school email";
+        this.errorMessage = "Please fill in your school email";
       } else if (
         this.personalEmail == "" ||
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
@@ -524,7 +524,7 @@ export default {
         ) == false
       ) {
         this.personalEmailErrorPresent = true;
-        this.errorMessage = "Please enter a valid personal email";
+        this.errorMessage = "Please fill in a valid personal email";
       } else if (
         this.contactNo == "" ||
         /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d+)\)?)[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i.test(
@@ -532,7 +532,7 @@ export default {
         ) == false
       ) {
         this.contactNumberErrorPresent = true;
-        this.errorMessage = "Please enter your contact number";
+        this.errorMessage = "Please fill in your contact number";
       } /*else if (this.contactNo.length != 8) {
                 this.contactNumberErrorPresent = true;
                 this.errorMessage = "Please enter a valid contact number"

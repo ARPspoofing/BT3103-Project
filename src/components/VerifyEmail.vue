@@ -66,15 +66,17 @@ export default {
   },
   mounted() {
     const that = this
-    let email = window.localStorage.getItem("emailForSignIn")
+    let email = this.userEmail
     alert(this.userEmail)
     //alert('hello' + email)
     async function check() {
       const auth = getAuth();
       that.email = email;
+      console.log(email)
       const docRef = doc(db, "businesses", String(email));
       const docs = await getDoc(docRef);
       const formFilled = docs.data().profileFormCreated;
+      console.log(docs.data())
       const verifyEmail = docs.data().verifyEmail;
       if (verifyEmail) {
         if (formFilled) {

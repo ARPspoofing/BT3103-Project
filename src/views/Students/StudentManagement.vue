@@ -58,7 +58,9 @@
 -->
 
   <div :class="{ blurCss: toBlur }">
-    <button @click="goback" id="backButton">Back to Projects</button>
+    <button @click="goback" id="backButton">
+      <i class="fa-solid fa-angles-left"></i>
+      Back to Projects</button>
     <div v-if="toDoTask.length >= 0" class="wrapper-outer">
       <div class="wrapper">
         <h4>To-Do</h4>

@@ -30,16 +30,16 @@
                 <a href="#0">Oldest</a>
               </li>
               <li @click="fetchProjectOrder('shortest')" class="menu-item">
-                <a href="#0">Shortest</a>
-              </li>
-              <li @click="fetchProjectOrder('longest')" class="menu-item">
                 <a href="#0">Longest</a>
               </li>
+              <li @click="fetchProjectOrder('longest')" class="menu-item">
+                <a href="#0">Shortest</a>
+              </li>
               <li @click="fetchProjectOrder('highest')" class="menu-item">
-                <a href="#0">Highest</a>
+                <a href="#0">Lowest</a>
               </li>
               <li @click="fetchProjectOrder('lowest')" class="menu-item">
-                <a href="#0">Lowest</a>
+                <a href="#0">Highest</a>
               </li>
             </ol>
           </li>
@@ -65,7 +65,7 @@
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
-          :picture="item.profPicture"
+          :picture="item.profilePicture"
           :description="item.description"
           @clickCard="indivprojFirst(key)"
           @applicantbtn="addApplicantFirst(key + 2 * 6)"
@@ -76,7 +76,7 @@
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
-          :picture="item.profPicture"
+          :picture="item.profilePicture"
           :description="item.description"
           @clickCard="indivprojSecond(key)"
           @applicantbtn="addApplicantSecond(key + 2 * 6)"
@@ -87,7 +87,7 @@
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
-          :picture="item.profPicture"
+          :picture="item.profilePicture"
           :description="item.description"
           @clickCard="indivprojThird(key)"
           @applicantbtn="addApplicantThird(key + 2 * 6)"
@@ -545,7 +545,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
-            profPicture: data.profPicture,
+            profilePicture: data.profPicture,
           });
         } else if (secondPriorityIds.includes(docs.id)) {
           secondPriority.push({
@@ -563,7 +563,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
-            profPicture: data.profPicture,
+            profilePicture: data.profPicture,
           });
         } else if (thirdPriorityIds.includes(docs.id)) {
           thirdPriority.push({
@@ -581,7 +581,7 @@ export default {
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
-            profPicture: data.profPicture,
+            profilePicture: data.profPicture,
           });
         }
       });
