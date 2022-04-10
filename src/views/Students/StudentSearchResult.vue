@@ -7,6 +7,54 @@
     <button @click="closeFilterMenu"> close filter menu </button>
     -->
 
+    <div>
+      <div class="right"></div>
+      <div
+        class="modal fade"
+        id="saveModal"
+        tabindex="-1"
+        aria-labelledby="saveModalLabel"
+        aria-hidden="true"
+        data-bs-backdrop="false"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="words">
+                <i class="fa-solid fa-circle-check" id="tickIcon"></i>
+                <p>Apply to {{ currProject }}?</p>
+              </div>
+              <span>
+                <div class="applybtns">
+                  <button
+                    type="button"
+                    id="yesbtn"
+                    data-bs-dismiss="modal"
+                    @click="confirmYes(true)"
+                  >
+                    Yes
+                  </button>
+                  <button type="button" id="nobtn" data-bs-dismiss="modal">
+                    No
+                  </button>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        style="visibility: hidden"
+        type="submit"
+        ref="confirmModal"
+        class="green"
+        data-bs-toggle="modal"
+        data-bs-target="#saveModal"
+      >
+        Save
+      </button>
+    </div>
+
     <transition name="filter">
       <Filter @submitFilter="closeFilterMenu" v-if="filterModal" />
     </transition>
@@ -62,6 +110,7 @@
     <PathfinderLoading v-if="!stopLoader" />
     <div v-if="stopLoader" class="projectContainer">
       <div :key="item.key" v-for="(item, key) in highestPriority">
+        <!--
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
@@ -70,9 +119,23 @@
           @clickCard="indivprojFirst(key)"
           @applicantbtn="addApplicantFirst(key + 2 * 6)"
         />
+        -->
+        <Card
+          :apply="true"
+          :like="true"
+          :latest="false"
+          :projectTitle="item.projectTitle"
+          :description="item.description"
+          :appstat="item.appstat"
+          @applicantbtn="addApplicantFirst(key)"
+          @clickCard="indivprojFirst(key)"
+          @applying="applyingFirst($event, key)"
+          :picture="item.profilePicture"
+        />
       </div>
 
       <div :key="item.key" v-for="(item, key) in secondPriority">
+        <!--
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
@@ -81,9 +144,23 @@
           @clickCard="indivprojSecond(key)"
           @applicantbtn="addApplicantSecond(key + 2 * 6)"
         />
+        -->
+        <Card
+          :apply="true"
+          :like="true"
+          :latest="false"
+          :projectTitle="item.projectTitle"
+          :description="item.description"
+          :appstat="item.appstat"
+          @applicantbtn="addApplicantSecond(key)"
+          @clickCard="indivprojSecond(key)"
+          @applying="applyingSecond($event, key)"
+          :picture="item.profilePicture"
+        />
       </div>
 
       <div :key="item.key" v-for="(item, key) in thirdPriority">
+        <!--
         <Card
           :apply="true"
           :projectTitle="item.projectTitle"
@@ -91,6 +168,19 @@
           :description="item.description"
           @clickCard="indivprojThird(key)"
           @applicantbtn="addApplicantThird(key + 2 * 6)"
+        />
+        -->
+        <Card
+          :apply="true"
+          :like="true"
+          :latest="false"
+          :projectTitle="item.projectTitle"
+          :description="item.description"
+          :appstat="item.appstat"
+          @applicantbtn="addApplicantThird(key)"
+          @clickCard="indivprojThird(key)"
+          @applying="applyingThird($event, key)"
+          :picture="item.profilePicture"
         />
       </div>
     </div>
@@ -109,9 +199,11 @@ import {
   doc,
   setDoc,
   deleteDoc,
+  updateDoc,
   getDocs,
   getDoc,
   where,
+  arrayUnion,
 } from "firebase/firestore";
 import { signOut, getAuth } from "firebase/auth";
 import { mapState } from "vuex";
@@ -120,6 +212,7 @@ import { mapGetters } from "vuex";
 import Filter from "../../components/Filter.vue";
 import PathfinderLoading from "../../components/PathfinderLoading.vue";
 const db = getFirestore(firebaseApp);
+const that = this;
 
 export default {
   name: "StudentSearchResult2",
@@ -145,6 +238,7 @@ export default {
       "highest",
       "lowest",
       "cardItems",
+      "userEmail",
     ]),
     //...mapState(['filterModal','searchData','highestPriorityIds','secondPriorityIds','thirdPriorityIds','recent','oldest','highest','lowest','longest','shortest']),
     ...mapGetters(["GET_SEARCH_DATA"]),
@@ -161,7 +255,11 @@ export default {
       //store all id in one array
       searchId: null,
       stopLoader: false,
-      appliedProjects:[],
+      appliedProjects: [],
+      currKey: null,
+      rank: null,
+      projTitleApply: null,
+      currProject: null,
       //store all id in separate arrays
     };
   },
@@ -187,6 +285,157 @@ export default {
       //alert('close')
       this.TOGGLE_FILTER();
     },
+    applyingFirst(event, key) {
+      this.$refs.confirmModal.click();
+      this.applyConfirm = true;
+      this.currKey = key;
+      this.currProject = this.highestPriority[key]["projectTitle"];
+      this.rank = "first";
+    },
+    applyingSecond(event, key) {
+      this.$refs.confirmModal.click();
+      this.applyConfirm = true;
+      this.currKey = key;
+      this.currProject = this.secondPriority[key]["projectTitle"];
+      this.rank = "second";
+    },
+    applyingThird(event, key) {
+      this.$refs.confirmModal.click();
+      this.applyConfirm = true;
+      this.currKey = key;
+      this.currProject = this.thirdPriority[key]["projectTitle"];
+      this.rank = "third";
+    },
+    confirmYes(e) {
+      if (e == true && this.rank == "first") {
+        this.addApplicantFirst(this.currKey);
+      } else if (e == true && this.rank == "second") {
+        this.addApplicantSecond(this.currKey);
+      } else if (e == true && this.rank == "third") {
+        this.addApplicantThird(this.currKey);
+      }
+      //console.log("yes");
+      this.applyConfirm = false;
+    },
+    async addApplicantFirst(key) {
+      alert(key);
+      console.log("ADDING!", this.firstPriority);
+      console.log("ADDING!", this.secondPriority);
+      console.log("ADDING!", this.thirdPriority);
+      var testCollection = this.firstPriority;
+      //console.log(this.testCollection[key]);
+      var newApplicants = testCollection[key]["newApplicants"];
+      //console.log(newApplicants);
+      var projTitle = testCollection[key]["projectTitle"];
+      //that.projTitleApply = projTitle
+      //newApplicants.push(this.userEmail);
+      //var applied = this.applied;
+      //console.log(applied);
+      var projectId = testCollection[key]["projectId"];
+      //console.log(projectId);
+      //applied.push(projectId);
+      // applied.push(projTitle);
+      //testCollection[key]["appstat"] = "applied";
+
+      // alert("Applying for proj: " + projTitle);
+
+      //const auth = getAuth();
+      //this.fbuser = auth.currentUser.email;
+
+      try {
+        const docRef = await updateDoc(doc(db, "Project", projectId), {
+          New_Applicants: arrayUnion(this.userEmail),
+        });
+
+        const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
+          appliedProjects: arrayUnion(projectId),
+        });
+
+        //console.log(docRef)
+        this.$emit("updated");
+        window.location.reload();
+      } catch (error) {
+        console.error("Error updating document: ", error);
+      }
+    },
+    async addApplicantSecond(key) {
+      alert(key);
+      console.log("ADDING!", this.secondPriority);
+      var testCollection = this.secondPriority;
+      //console.log(this.testCollection[key]);
+      var newApplicants = testCollection[key]["newApplicants"];
+      //console.log(newApplicants);
+      var projTitle = testCollection[key]["projectTitle"];
+      //that.projTitleApply = projTitle
+      //newApplicants.push(this.userEmail);
+      //var applied = this.applied;
+      //console.log(applied);
+      var projectId = testCollection[key]["projectId"];
+      //console.log(projectId);
+      //applied.push(projectId);
+      // applied.push(projTitle);
+      //testCollection[key]["appstat"] = "applied";
+
+      // alert("Applying for proj: " + projTitle);
+
+      //const auth = getAuth();
+      //this.fbuser = auth.currentUser.email;
+
+      try {
+        const docRef = await updateDoc(doc(db, "Project", projectId), {
+          New_Applicants: arrayUnion(this.userEmail),
+        });
+
+        const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
+          appliedProjects: arrayUnion(projectId),
+        });
+
+        //console.log(docRef)
+        this.$emit("updated");
+        window.location.reload();
+      } catch (error) {
+        console.error("Error updating document: ", error);
+      }
+    },
+    async addApplicantThird(key) {
+      alert(key);
+      console.log("ADDING!", this.thirdPriority);
+      var testCollection = this.thirdPriority;
+      //console.log(this.testCollection[key]);
+      var newApplicants = testCollection[key]["newApplicants"];
+      //console.log(newApplicants);
+      var projTitle = testCollection[key]["projectTitle"];
+      //that.projTitleApply = projTitle
+      //newApplicants.push(this.userEmail);
+      //var applied = this.applied;
+      //console.log(applied);
+      var projectId = testCollection[key]["projectId"];
+      //console.log(projectId);
+      //applied.push(projectId);
+      // applied.push(projTitle);
+      //testCollection[key]["appstat"] = "applied";
+
+      // alert("Applying for proj: " + projTitle);
+
+      //const auth = getAuth();
+      //this.fbuser = auth.currentUser.email;
+
+      try {
+        const docRef = await updateDoc(doc(db, "Project", projectId), {
+          New_Applicants: arrayUnion(this.userEmail),
+        });
+
+        const docRef2 = await updateDoc(doc(db, "students", this.userEmail), {
+          appliedProjects: arrayUnion(projectId),
+        });
+
+        //console.log(docRef)
+        this.$emit("updated");
+        window.location.reload();
+      } catch (error) {
+        console.error("Error updating document: ", error);
+      }
+    },
     /*
     populateSearch() {
       this.searchId = this.searchData
@@ -194,6 +443,7 @@ export default {
     */
     indivprojFirst(key) {
       this.CLEAR_CARDITEMS();
+      console.log("click card", this.highestPriority);
       this.SET_CARDITEMS(JSON.stringify(this.highestPriority[key]));
       this.$router.push({
         name: "StudentViewProjectInfo",
@@ -209,6 +459,7 @@ export default {
 
     indivprojSecond(key) {
       this.CLEAR_CARDITEMS();
+      console.log("click card", this.secondPriority);
       this.SET_CARDITEMS(JSON.stringify(this.secondPriority[key]));
       this.$router.push({
         name: "StudentViewProjectInfo",
@@ -347,9 +598,10 @@ export default {
 
   mounted() {
     const that = this;
-    const auth = getAuth()  
-    that.appliedProjects = []
-    const email = auth.currentUser.email
+    const auth = getAuth();
+    that.appliedProjects = [];
+    const email = this.userEmail;
+    //const email = auth.currentUser.email
     setTimeout(() => {
       this.stopLoader = true;
     }, 2500);
@@ -372,18 +624,17 @@ export default {
       const data = docSnap.data();
       //console.log(data.id)
       var appliedProjects = data.appliedProjects;
-      var inProgressProjects = data.inProgProjects; 
-      var offeredProjects = data.offeredProjects;  
+      var inProgressProjects = data.inProgProjects;
+      var offeredProjects = data.offeredProjects;
       var rejectedProjects = data.rejectedProjects;
 
-      that.appliedProjects = that.appliedProjects.concat(appliedProjects) 
-      that.appliedProjects = that.appliedProjects.concat(inProgressProjects) 
-      that.appliedProjects = that.appliedProjects.concat(offeredProjects) 
-      that.appliedProjects = that.appliedProjects.concat(rejectedProjects)
-
+      that.appliedProjects = that.appliedProjects.concat(appliedProjects);
+      that.appliedProjects = that.appliedProjects.concat(inProgressProjects);
+      that.appliedProjects = that.appliedProjects.concat(offeredProjects);
+      that.appliedProjects = that.appliedProjects.concat(rejectedProjects);
     }
-    getAppliedProjects()
-    console.log(that.appliedProjects)
+    getAppliedProjects();
+    console.log(that.appliedProjects);
     async function setProjects() {
       //Non VUEX version. Uncomment if VUEX does not work
       /*
@@ -523,17 +774,17 @@ export default {
       //console.log("passed the query");
       snapshot.forEach((docs) => {
         let data = docs.data();
-        let appstat = ''
-        console.log(that.appliedProjects)
-        if(that.appliedProjects.includes(docs.id)) {
-          appstat = "applied"
+        let appstat = "";
+        console.log(that.appliedProjects);
+        if (that.appliedProjects.includes(docs.id)) {
+          appstat = "applied";
         } else {
-          appstat = "apply"
+          appstat = "apply";
         }
         //console.log("searchResultone", highestPriorityIds);
         if (highestPriorityIds.includes(docs.id)) {
           highestPriority.push({
-            projectId:docs.id,
+            projectId: docs.id,
             projectTitle: data.Project_Title,
             description: data.Description,
             vacancies: data.Num_Of_Vacancies,
@@ -543,7 +794,7 @@ export default {
             projectEnd: data.Project_End,
             tasks: data.Tasks,
             tags: data.Tags,
-            appstat:appstat,
+            appstat: appstat,
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
@@ -561,7 +812,7 @@ export default {
             projectEnd: data.Project_End,
             tasks: data.Tasks,
             tags: data.Tags,
-            appstat:appstat,
+            appstat: appstat,
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
@@ -579,7 +830,7 @@ export default {
             projectEnd: data.Project_End,
             tasks: data.Tasks,
             tags: data.Tags,
-            appstat:appstat,
+            appstat: appstat,
             newApplicants: data.New_Applicants,
             accApplicants: data.Acc_Applicants,
             rejApplicants: data.Rej_Applicants,
@@ -591,6 +842,10 @@ export default {
       that.highestPriority = highestPriority;
       that.secondPriority = secondPriority;
       that.thirdPriority = thirdPriority;
+      console.log("mountedFirst", highestPriority);
+      console.log("mountedSecond", secondPriority);
+      console.log("mountedThird", thirdPriority);
+
       if (
         highestPriority.length > 0 ||
         secondPriority.length > 0 ||
@@ -829,5 +1084,61 @@ button,
   height: 35.2px;
   width: 125px;
   padding: 8px 6px;
+}
+#applyModal {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #bbdfcc;
+  border: none;
+}
+
+.words {
+  width: max-content;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  height: 50px;
+}
+
+.applybtns {
+  width: max-content;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+#yesbtn,
+#nobtn {
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #89ca9a;
+  color: #3f3f3f;
+  width: 120px;
+  height: 30px;
+  font-size: 18px;
+}
+
+#tickIcon {
+  height: 38px;
+  width: 38px;
+  color: #3d9956;
+  float: left;
+}
+
+.modal-body p {
+  font-size: 18px;
+  text-align: center;
+  width: 180px;
+  margin-left: 48px;
+  color: #3f3f3f;
+}
+
+#saveModal {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 </style>

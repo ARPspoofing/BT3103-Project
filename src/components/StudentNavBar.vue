@@ -293,6 +293,7 @@ export default {
         if (this.$route.name == "StudentSearchResult") {
           this.$router.push({
             name: "StudentSearchResult2",
+            //name: "StudentSearchResult2",
             params: {
               displayFirst: matchingResultsByBoth,
               displaySecond: matchingResultsByTitle,
