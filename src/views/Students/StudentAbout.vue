@@ -764,8 +764,8 @@ ul {
 .modal-body p {
   font-size: 18px;
   text-align: center;
-  width: max-content;
-  margin-bottom: 20px;
+  width: 200px;
+  margin-top: 10px;
 }
 .but {
   text-decoration: none;
