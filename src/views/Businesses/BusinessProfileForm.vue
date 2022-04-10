@@ -151,7 +151,8 @@ export default {
                  const email = auth.currentUser.email;
                  */
         //New version
-        var email = window.localStorage.getItem("emailForSignIn")
+        var email = this.userEmail
+        //var email = window.localStorage.getItem("emailForSignIn")
         //var email = this.userEmail;
         //const email = window.localStorage.getItem('emailForSignIn')
         //window.localStorage.setItem('businessName',this.name)

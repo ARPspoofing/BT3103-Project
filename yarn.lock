@@ -7376,6 +7376,11 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
+recaptcha-v3@^1.8.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/recaptcha-v3/-/recaptcha-v3-1.10.0.tgz#f966b5a0d8021fd2ed85ac4be832f6acb6ec1ed1"
+  integrity sha512-aGTxYSk3FFNKnXeKDbLpgRDRyIHRZNBF5HyaXXAN1Aj4TSyyZvmoAn9CylvpqLV3pYpIQavwc+2rzhNFn5SsLQ==
+
 regenerate-unicode-properties@^10.0.1:
   version "10.0.1"
   resolved "https://registry.npmjs.org/regenerate-unicode-properties/-/regenerate-unicode-properties-10.0.1.tgz"
@@ -8709,6 +8714,11 @@ vue-cli-plugin-bootstrap-vue@~0.8.2:
   dependencies:
     lodash "^4.17.21"
 
+vue-demi@^0.12.1:
+  version "0.12.5"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.5.tgz#8eeed566a7d86eb090209a11723f887d28aeb2d1"
+  integrity sha512-BREuTgTYlUr0zw0EZn3hnhC3I6gPWv+Kwh4MCih6QcAeaTlaIX0DwOVN0wHej7hSvDPecz4jygy/idsgKfW58Q==
+
 vue-functional-data-merge@^3.1.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/vue-functional-data-merge/-/vue-functional-data-merge-3.1.0.tgz"
@@ -8757,6 +8767,20 @@ vue-multiselect@^2.1.6:
   resolved "https://registry.npmjs.org/vue-multiselect/-/vue-multiselect-2.1.6.tgz"
   integrity sha512-s7jmZPlm9FeueJg1RwJtnE9KNPtME/7C8uRWSfp9/yEN4M8XcS/d+bddoyVwVnvFyRh9msFo0HWeW0vTL8Qv+w==
 
+vue-recaptcha-v3@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/vue-recaptcha-v3/-/vue-recaptcha-v3-2.0.1.tgz#10b07bbe07881734b9997111cfe3c9a9ca786bdb"
+  integrity sha512-isEDtOfHU4wWRrZZuxciAELtQmPOeEEdicPNa0f1AOyLPy3sCcBEcpFt+FOcO3RQv5unJ3Yn5NlsWtXv9rXqjg==
+  dependencies:
+    recaptcha-v3 "^1.8.0"
+
+vue-recaptcha@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/vue-recaptcha/-/vue-recaptcha-2.0.1.tgz#b366133bf25b348095353df1fd7e48fe65dec818"
+  integrity sha512-k7IHZUEqmMAwWQafkcQz6Y2PxBed7VUerM0ehCY8BlA0hXokTO1OVmj3xnr8m0J54XiNyoG2Jin270zQOvvsDA==
+  dependencies:
+    vue-demi "^0.12.1"
+
 vue-router@^4.0.0-0:
   version "4.0.13"
   resolved "https://registry.npmjs.org/vue-router/-/vue-router-4.0.13.tgz"
@@ -8803,6 +8827,16 @@ vue-uid@^0.4.5:
   version "0.4.5"
   resolved "https://registry.npmjs.org/vue-uid/-/vue-uid-0.4.5.tgz"
   integrity sha512-Rtb2MLRDkPM5VEmYSDcH2oSmcoGsQ/YQDya1j1TlaJyK5MMZntjfQtlNOyTp7yPIWkwVfPBUb19FyQ//ytNHxw==
+
+vue3-recaptcha-v2@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vue3-recaptcha-v2/-/vue3-recaptcha-v2-1.0.1.tgz#999df9e1ef10e6e11882e44602ad3373e8116512"
+  integrity sha512-nn7kcVTze/gRdb2kMEf9CAVpStXID+cKlt1tIWNR+K5OYER8cSfcm5Mz+9/w9gDgLTIdRPsGTiqssAD+L/4c/g==
+
+vue3-recaptcha2@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/vue3-recaptcha2/-/vue3-recaptcha2-1.4.0.tgz#60048b4a3d8197fb67c80567bada4cbd0796e2d5"
+  integrity sha512-Wv6IiXkMsBWbBJ3mAHVdUPdjYBYFItCIxhedtcqpP2u796TVqBSUyAJdM/RDKP83w52nci6V31OWyyLV+wjgzw==
 
 vue@^3.0.0:
   version "3.2.31"

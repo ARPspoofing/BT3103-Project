@@ -78,6 +78,9 @@ import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 import ResetPassword from "../../components/ResetPassword.vue";
 import GoogleButton from "../../components/GoogleButton.vue";
+import {store} from '../../store/globalStore'
+import {getCurrentInstance } from "vue";
+
 
 const that = this;
 const router = useRouter();
@@ -93,6 +96,7 @@ export default {
       emailErrorPresent: false,
       passwordErrorPresent: false,
       forgetPassword: false,
+      navigationProps:getCurrentInstance().appContext.config.globalProperties.$navigationProps,
     };
   },
   components: {
@@ -119,6 +123,9 @@ export default {
     */
   methods: {
     ...mapMutations(["SET_USEREMAIL", "SET_BUSINESS_COUNTER"]),
+    add() {
+      this.navigationProps.mobileMenuClosed=!this.navigationProps.mobileMenuClosed;
+    },
     forgot() {
       this.forgetPassword = true;
     },
@@ -191,9 +198,11 @@ export default {
                   name: "BusinessHomePage",
                   params: { formFilled: true },
                 });
+              /*
               } else if (!verifyEmail) {
                 
                 this.$router.push({ name: "BusinessVerify" });
+              */
               } else {
                 if (formFilled) {
                   //console.log("formFilled");

@@ -19,11 +19,20 @@ import Multiselect from "vue-multiselect";
 import BusinessNavBar from "./components/BusinessNavBar.vue";
 import StudentNavBar from "./components/StudentNavBar.vue";
 import Card from "./components/Card.vue";
+import VueRecaptcha from "vue3-recaptcha-v2";
 
-createApp(App)
-  .use(store)
+
+let app = createApp(App)
+app.config.globalProperties.$navigationProps = {mobileMenuClosed: false, closeIconHidden:false };
+  
+  app.use(store)
   .use(router)
   .use(BootstrapVue3)
+  .use(VueRecaptcha, {
+    siteKey: "6LcxrmAfAAAAANk86MvDo_yiyl6g7U6cZHfZKiXG",
+    // default: 'vue-recaptcha'
+    alterDomain: false, // default: false
+  })
   .component("font-awesome-icon", FontAwesomeIcon)
   .component("multiselect", Multiselect)
   .component("BusinessNavBar", BusinessNavBar)

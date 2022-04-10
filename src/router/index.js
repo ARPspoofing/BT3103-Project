@@ -207,7 +207,6 @@ const routes = [
     name: "BusinessVerify",
     component: () => import("../components/VerifyEmail.vue"),
   },
-
   {
     path: "/business/loading",
     name: "businessLoading",
@@ -240,7 +239,6 @@ const routes = [
     name: "BusinessReRoute",
     component: () => import("../views/Businesses/BusinessReRoute.vue"),
   },
-
   {
     path: "/:catchall(.*)",
     name: "NotFound",

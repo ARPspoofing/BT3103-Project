@@ -101,6 +101,7 @@
         @declineBtn="declineProj(key)"
         @firstClick="firstClick"
         :popUpConfirm="this.popUpConfirm"
+        :picture:
       />
     </div>
   </div>
