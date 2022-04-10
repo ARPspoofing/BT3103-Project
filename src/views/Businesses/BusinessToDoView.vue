@@ -17,8 +17,9 @@
       </button>
     </router-link>
     -->
-
+  <!--
   <div class="view container">
+    -->
     <!-- <router-link :to="{name:'BusinessManagement'}">
            
            <img src='../../assets/back.png'> Go Back
@@ -170,7 +171,9 @@
         </div>
       </div>
     </div>
+    <!--
   </div>
+  -->
   <!--
   </div>
   -->
